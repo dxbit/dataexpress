@@ -1,0 +1,135 @@
+object EditMaskFm: TEditMaskFm
+  Left = 0
+  Height = 216
+  Top = 0
+  Width = 577
+  ActiveControl = Mask
+  BorderIcons = [biSystemMenu]
+  Caption = 'Маска ввода'
+  ClientHeight = 216
+  ClientWidth = 577
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  Visible = False
+  object Label1: TLabel
+    Left = 8
+    Height = 17
+    Top = 8
+    Width = 44
+    Caption = 'Маска'
+    ParentColor = False
+  end
+  object Mask: TEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 27
+    Top = 26
+    Width = 264
+    BorderSpacing.Top = 1
+    OnChange = MaskChange
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Blank
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 17
+    Top = 66
+    Width = 157
+    Caption = 'Символ для пробелов'
+    ParentColor = False
+  end
+  object Blank: TEdit
+    AnchorSideLeft.Control = Label2
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Mask
+    AnchorSideTop.Side = asrBottom
+    Left = 173
+    Height = 27
+    Top = 61
+    Width = 32
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    MaxLength = 1
+    OnChange = BlankChange
+    TabOrder = 1
+    Text = '_'
+  end
+  object SaveChars: TCheckBox
+    AnchorSideTop.Control = Blank
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 24
+    Top = 96
+    Width = 223
+    BorderSpacing.Top = 8
+    Caption = 'Сохранять прочие символы'
+    Checked = True
+    OnChange = SaveCharsChange
+    State = cbChecked
+    TabOrder = 2
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = SaveChars
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 17
+    Top = 128
+    Width = 143
+    BorderSpacing.Top = 8
+    Caption = 'Тестирование ввода'
+    ParentColor = False
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 37
+    Top = 173
+    Width = 565
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label4: TLabel
+    Left = 280
+    Height = 17
+    Top = 8
+    Width = 113
+    Caption = 'Примеры масок'
+    ParentColor = False
+  end
+  object Samples: TListView
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 280
+    Height = 128
+    Top = 26
+    Width = 290
+    Anchors = [akTop, akLeft, akRight]
+    AutoSort = False
+    AutoWidthLastColumn = True
+    BorderSpacing.Top = 1
+    Columns = <    
+      item
+        Width = 150
+      end    
+      item
+        Width = 122
+      end>
+    ReadOnly = True
+    RowSelect = True
+    ShowColumnHeaders = False
+    TabOrder = 4
+    ViewStyle = vsReport
+    OnDblClick = SamplesDblClick
+  end
+end

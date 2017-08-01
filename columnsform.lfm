@@ -1,0 +1,151 @@
+object ColumnsFm: TColumnsFm
+  Left = 415
+  Height = 413
+  Top = 225
+  Width = 493
+  BorderIcons = [biSystemMenu]
+  Caption = 'ColumnsFm'
+  ClientHeight = 413
+  ClientWidth = 493
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '1.2.6.0'
+  object Cols: TListBox
+    Left = 4
+    Height = 363
+    Top = 4
+    Width = 221
+    Align = alLeft
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    ItemHeight = 0
+    OnSelectionChange = ColsSelectionChange
+    TabOrder = 0
+  end
+  object Panel1: TPanel
+    Left = 230
+    Height = 367
+    Top = 0
+    Width = 263
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 367
+    ClientWidth = 263
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 8
+      Height = 15
+      Top = 32
+      Width = 39
+      Caption = 'Шрифт'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 8
+      Height = 15
+      Top = 144
+      Width = 39
+      Caption = 'Шрифт'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      Left = 8
+      Height = 15
+      Top = 88
+      Width = 26
+      Caption = 'Цвет'
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 8
+      Height = 15
+      Top = 200
+      Width = 26
+      Caption = 'Цвет'
+      ParentColor = False
+    end
+    object FontSampler1: TFontSampler
+      Left = 88
+      Height = 50
+      Top = 32
+      Width = 166
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'FontSampler1'
+      Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      Transparent = False
+    end
+    object FontSampler2: TFontSampler
+      Left = 88
+      Height = 50
+      Top = 144
+      Width = 166
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'FontSampler2'
+      Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      Transparent = False
+    end
+    object ColorSampler1: TColorSampler
+      Left = 88
+      Height = 23
+      Top = 88
+      Width = 88
+    end
+    object ColorSampler2: TColorSampler
+      Left = 88
+      Height = 23
+      Top = 200
+      Width = 88
+    end
+    object Label5: TLabel
+      Left = 8
+      Height = 15
+      Top = 8
+      Width = 94
+      Caption = 'Область данных'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 8
+      Height = 15
+      Top = 120
+      Width = 60
+      Caption = 'Заголовок'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 373
+    Width = 481
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object Splitter1: TSplitter
+    Left = 225
+    Height = 367
+    Top = 0
+    Width = 5
+  end
+end

@@ -1,0 +1,47 @@
+object CalcErrsFm: TCalcErrsFm
+  Left = 440
+  Height = 388
+  Top = 157
+  Width = 444
+  BorderIcons = [biSystemMenu]
+  Caption = 'CalcErrsFm'
+  ClientHeight = 388
+  ClientWidth = 444
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '1.4.0.4'
+  object Memo1: TMemo
+    Left = 4
+    Height = 346
+    Top = 4
+    Width = 436
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    Lines.Strings = (
+      'Memo1'
+    )
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 0
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 356
+    Width = 432
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbClose, pbHelp]
+    ShowBevel = False
+  end
+end
