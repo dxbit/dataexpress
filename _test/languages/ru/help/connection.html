@@ -1,0 +1,35 @@
+﻿
+<html
+><head>
+<meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
+<title>Подключение к БД</title>
+</head>
+<body bgcolor=#fff8dc>
+Путь к базе имеет следующий формат:<br>
+<center><code>сервер:полный путь к файлу БД</code></center><br>
+Сервер - это имя компьютера в сети или IP-адрес. Примеры:<br>
+<center><code>192.168.1.34:d:\bases\mybase.fdb<br>
+myserver:d:\data\my.fdb</code></center><br>
+
+Если база данных находится на этом компьютере, то путь будет таким:<br>
+<center><code>127.0.0.1:d:\bases\mybase.fdb<br>
+localhost:d:\data\my.fdb</code></center><br>
+
+<b>Чтобы можно было работать по сети, на сервере должен быть установлен Firebird 2.5.</b><br><br>
+
+Из соображений безопасности пароль пользователя SYSDBA на сервере Firebird может быть изменен. О том как его изменить можно прочитать в Интернете. Введите этот пароль в соответствующее поле.<br><br>
+
+По умолчанию порт Firebird равен 3050. Но его можно изменить. Для этого нужно отредактировать файл firebird.conf, который находится в папке Firebird (по умолчанию это c:\program files\firebird\firebird_2_5). Найдите строку RemoteServicePort, уберите символ решетки и поменяйте порт, например на 3051. Строка подключения будет такой, например:<br>
+
+<center><code>192.168.1.34/3051:d:\bases\mybase.fdb</code></center><br>
+
+Путь к базе данных может быть задан в виде псевдонима. Например:<br>
+
+<center><code>192.168.1.34:mybase</center><br>
+
+Это делается для скрытия реального местоположения файла базы данных. Чтобы использовать псевдоним, найдите в папке установки Firebird файл aliases.conf. И добавьте в него строку, например:<br>
+
+<center><code>mybase=d:\mybases\mybase.fdb<center><br>
+
+</body>
+</html>
