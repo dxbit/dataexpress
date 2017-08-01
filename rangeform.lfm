@@ -1,0 +1,81 @@
+object RangeFm: TRangeFm
+  Left = 325
+  Height = 240
+  Top = 184
+  Width = 412
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'RangeFm'
+  ClientHeight = 240
+  ClientWidth = 412
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  Visible = False
+  object Label1: TLabel
+    Left = 48
+    Height = 17
+    Top = 72
+    Width = 70
+    Caption = 'Диапазон'
+    ParentColor = False
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 37
+    Top = 197
+    Width = 400
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object MinV: TFloatSpinEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 48
+    Height = 27
+    Top = 90
+    Width = 152
+    BorderSpacing.Top = 1
+    Increment = 1
+    MaxValue = 999999999999999
+    MinValue = 0
+    TabOrder = 0
+    Value = 0
+  end
+  object MaxV: TFloatSpinEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 216
+    Height = 27
+    Top = 90
+    Width = 152
+    BorderSpacing.Top = 1
+    Increment = 1
+    MaxValue = 999999999999999
+    MinValue = 0
+    TabOrder = 1
+    Value = 0
+  end
+  object Bn: TBitBtn
+    AnchorSideTop.Control = MinV
+    AnchorSideTop.Side = asrBottom
+    Left = 176
+    Height = 25
+    Top = 149
+    Width = 64
+    BorderSpacing.Top = 32
+    Caption = 'All'
+    OnClick = BnClick
+    TabOrder = 2
+  end
+end

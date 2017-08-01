@@ -1,0 +1,44 @@
+object ParentFieldFm: TParentFieldFm
+  Left = 474
+  Height = 265
+  Top = 147
+  Width = 320
+  BorderIcons = [biSystemMenu]
+  Caption = 'Поле предка'
+  ClientHeight = 265
+  ClientWidth = 320
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '1.4.0.4'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 233
+    Width = 308
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object List: TListBox
+    Left = 4
+    Height = 223
+    Top = 4
+    Width = 312
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    ItemHeight = 0
+    TabOrder = 1
+  end
+end

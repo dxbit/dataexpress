@@ -1,0 +1,182 @@
+object MainFm: TMainFm
+  Left = 573
+  Height = 545
+  Top = 215
+  Width = 750
+  Caption = 'MainFm'
+  KeyPreview = True
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '1.7'
+  object MainMenu1: TMainMenu
+    left = 36
+    top = 142
+    object FileMnu: TMenuItem
+      Caption = 'Файл'
+      object MenuItem3: TMenuItem
+        Caption = 'Создать'
+        OnClick = MenuItem3Click
+      end
+      object MenuItem4: TMenuItem
+        Caption = 'Открыть'
+        OnClick = MenuItem4Click
+      end
+      object MenuItem19: TMenuItem
+        Caption = 'Подключить'
+        OnClick = MenuItem19Click
+      end
+      object RecentsMnu: TMenuItem
+        Caption = 'Недавние'
+        object MenuItem28: TMenuItem
+          Caption = 'Пусто'
+        end
+      end
+      object MenuItem7: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem6: TMenuItem
+        AutoCheck = True
+        Caption = 'Дизайнер'
+        OnClick = MenuItem6Click
+      end
+      object MenuItem12: TMenuItem
+        Caption = 'Отчеты'
+        OnClick = MenuItem12Click
+      end
+      object MenuItem5: TMenuItem
+        Caption = 'Шаблоны'
+        OnClick = MenuItem5Click
+      end
+      object MenuItem33: TMenuItem
+        Caption = 'Модули'
+        OnClick = MenuItem33Click
+      end
+      object UsersMnu: TMenuItem
+        Caption = 'Пользователи'
+        OnClick = UsersMnuClick
+      end
+      object MenuItem30: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem29: TMenuItem
+        Caption = 'Режим эксперта'
+        OnClick = MenuItem29Click
+      end
+      object MenuItem13: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem8: TMenuItem
+        Caption = 'Параметры'
+        OnClick = MenuItem8Click
+      end
+      object MenuItem9: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem10: TMenuItem
+        Caption = 'Выход'
+        OnClick = MenuItem10Click
+      end
+    end
+    object DataMnu: TMenuItem
+      Caption = 'Данные'
+    end
+    object ReportMnu: TMenuItem
+      Caption = 'Отчеты'
+    end
+    object ToolsMnu: TMenuItem
+      Caption = 'Сервис'
+      object MenuItem18: TMenuItem
+        Caption = 'Пересчитать'
+        OnClick = MenuItem18Click
+      end
+      object MenuItem24: TMenuItem
+        Caption = 'Установить значение'
+        OnClick = MenuItem24Click
+      end
+      object MenuItem23: TMenuItem
+        Caption = 'Удаление записей'
+        OnClick = MenuItem23Click
+      end
+      object MenuItem25: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem22: TMenuItem
+        Caption = 'Экспорт данных'
+        OnClick = MenuItem22Click
+      end
+      object MenuItem17: TMenuItem
+        Caption = 'Импорт данных'
+        OnClick = MenuItem17Click
+      end
+      object MenuItem20: TMenuItem
+        Caption = 'Экспорт проекта'
+        OnClick = MenuItem20Click
+      end
+      object MenuItem21: TMenuItem
+        Caption = 'Импорт проекта'
+        OnClick = MenuItem21Click
+      end
+      object MenuItem27: TMenuItem
+        Caption = 'Объединить проекты'
+        OnClick = MenuItem27Click
+      end
+      object MenuItem1: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem11: TMenuItem
+        Caption = 'Монитор'
+        OnClick = MenuItem11Click
+      end
+    end
+    object HelpMnu: TMenuItem
+      Caption = 'Помощь'
+      object MenuItem14: TMenuItem
+        Caption = 'Справочник'
+        OnClick = MenuItem14Click
+      end
+      object MenuItem26: TMenuItem
+        Caption = 'Статьи'
+        OnClick = MenuItem26Click
+      end
+      object MenuItem35: TMenuItem
+        Caption = 'Видеоуроки'
+        OnClick = MenuItem35Click
+      end
+      object MenuItem32: TMenuItem
+        Caption = 'Программирование'
+        OnClick = MenuItem32Click
+      end
+      object MenuItem31: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem16: TMenuItem
+        Caption = 'Сайт программы'
+        OnClick = MenuItem16Click
+      end
+      object MenuItem34: TMenuItem
+        Caption = 'Форум'
+        OnClick = MenuItem34Click
+      end
+      object MenuItem15: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem2: TMenuItem
+        Caption = 'О программе'
+        OnClick = MenuItem2Click
+      end
+    end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = Timer1Timer
+    left = 161
+    top = 52
+  end
+end
