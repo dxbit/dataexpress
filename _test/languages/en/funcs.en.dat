@@ -1,0 +1,634 @@
+﻿
+[groups]
+Text
+Totals
+Mathematica
+Date
+Other
+Time
+DB access
+
+[COUNT]
+1
+Return number of records in form.
+Parameters: form name - text
+Result: number
+Example: COUNT('Services')
+
+[SUM]
+1
+Calculates the total of the field.
+Parameters: form name - text, field name - text
+Result: number
+Exampe: SUM('Services', 'Amount')
+
+[LENGTH]
+0
+Return text length.
+Parameters: text
+Result: number
+Exampe: LENGTH('Ivanov'). Result: 6
+
+[CUT]
+0
+Return part of text. If the "length" exceeds the length of the text, the text will be cut to the last character.
+Parameters: text, begin - number, length - number
+Result: text
+Exampe: CUT('Ivanov', 4, 3). Result: nov.
+
+[FIND]
+0
+Returns the starting position of the text.
+Parameters: search text, text, begin - number
+Result: number
+Exampe: FIND('world', 'Hello, world!!!', 1). Result: 8
+
+[REPLACE]
+0
+Replaces the found part of the text replacement text.
+Parameters: text, search text, replacement text.
+Result: text
+Exampe: REPLACE('Hello, WORLD!!!', 'WORLD', 'FRIEND'). Result: HELLO, FRIEND!!!
+
+[REPLACEALL]
+0
+Replaces all found the text replacement text.
+Parameters: text, search text, replacement text.
+Result: text
+Exampe: REPLACEALL('---+++---+++---', '+++', '|'). Result: ---|---|---
+
+[UPPER]
+0
+Returns the text of all the letters, whose uppercase.
+Parameters: text
+Result: text
+Exampe: UPPER('Hello, World!!!'). Result: HELLO, WORLD!!!
+
+[LOWER]
+0
+Returns the text of all the letters, whose lowercase.
+Parameters: text
+Result: text
+Exampe: LOWER('Hello, WORLD!!!'). Result: hello, world!!!
+
+[TOWORDS]
+0
+NOT IMPLEMENTED! Returns the number of words. The fractional part is ignored.
+Parameters: number
+Result: text
+Exampe: TOWORDS(1823).
+
+[RURTOWORDS]
+0
+NOT IMPLEMENTED! Returns the number of words in rubles.
+Parameters: number
+Result: text
+Exampe: RURTOWORDS(1823.23). 
+
+[FUPPER]
+0
+Returns the text, all the letters that lowercase, and the first title.
+Parameters: number
+Result: text
+Exampe: FUPPER('HELLO, World!!!'). Result: Hello, world!!!
+
+[ROUND]
+2
+Returns a number rounded to the specified precision.
+Parameters: number, the number of decimal places
+Result: number
+Exampe: ROUND(234.69, 1). Result: 234.7
+
+[TRUNC]
+2
+Returns the integer part of the number.
+Parameters: number
+Result: number
+Exampe: TRUNC(234.69). Result: 234
+
+[FRAC]
+2
+Returns the fractional part.
+Parameters: number
+Result: number
+Exampe: FRAC(234.69). Result: 69
+
+[POWER]
+2
+Raises a number to a power.
+Parameters: number, power - number
+Result: number
+Exampe: POWER(2, 3). Result: 8
+
+[DATE]
+3
+Return current date.
+Parameters: none
+Result: date
+Exampe: DATE()
+
+[TIME]
+5
+Return current time.
+Parameters: нет
+Result: time
+Exampe: TIME()
+
+[YEARSBETWEEN]
+3
+Specifies the interval between dates in years.
+Parameters: date1, date2
+Result: number
+Exampe: YEARSBETWEEN([Begin date], [End date])
+
+[MONTHSBETWEEN]
+3
+Specifies the interval between the dates in months.
+Parameters: date1, date2
+Result: number
+Exampe: MONTHSBETWEEN([Begin date], [End date])
+
+[DAYSBETWEEN]
+3
+Specifies the interval between dates in days.
+Parameters: date1, date2
+Result: number
+Exampe: DAYSBETWEEN([Begin date], [End date])
+
+[DAYOF]
+3
+Extracts from the date of number of day.
+Parameters: date
+Result: number
+Exampe: DAYOF('23.12.15'). Result: 23
+
+[MONTHOF]
+3
+Extracts from the date of the month.
+Parameters: date
+Result: number
+Exampe: MONTHOF('23.12.15'). Result: 12
+
+[YEAROF]
+3
+Extracts from the date of number of year.
+Parameters: date
+Result: number
+Exampe: YEAROF('23.12.15'). Result: 15
+
+[WEEKOF]
+3
+Extracts from the date of the week number of the year.
+Parameters: date
+Result: number
+Exampe: WEEKOF('23.12.15'). 
+
+[WEEKDAY]
+3
+Determined by the date weekday name.
+Parameters: date
+Result: text
+Exampe: WEEKDAY('23.12.15'). Result: Wednesday
+
+[WEEKDAYBRIEF]
+3
+Determined by the date weekday name brief.
+Parameters: date
+Result: text
+Exampe: WEEKDAYBRIEF('23.12.15'). Result: Wed
+
+[MONTH]
+3
+Determines the name of the month to date.
+Parameters: date
+Result: text
+Exampe: MONTH('23.12.15'). Result: December
+
+[MONTHBRIEF]
+3
+Determines the name of the month to date brief.
+Parameters: date
+Result: text
+Exampe: MONTHBRIEF('23.12.15'). Result: Dec
+
+[NULL]
+4
+Undefined value.
+Parameters: none
+Result: NULL
+Exampe: NULL()
+
+[IIF]
+4
+If the first set to TRUE, returns the second value, otherwise it returns the third.
+Parameters: Condition, Value1 - any, Value2 - any
+Result: any
+Exampe: IIF([Amount] > 0, [Amount], '-')
+In this example, if a certain amount greater than 0, the value of this sum is written, otherwise, a dash.
+
+[DAYOFWEEK]
+3
+Extracts from the date of number of the day of the week.
+Parameters: date
+Result: number
+Exampe: DAYOFWEEK('23.12.15'). Result: 3
+
+[RECNO]
+4
+Determines the number of the current record form.
+Parameters: form name - text
+Result: number
+Example: RECNO('Peoples'). Result: 4
+
+[SUMIF]
+1
+Calculates the total of the field.
+Parameters: form name - text, field name - text, condition - text
+Result: number
+Exampe: SUMIF('Services', 'Amount', '[completed]=1')
+
+[COUNTIF]
+1
+Return number of records in form.
+Parameters: form name - text, condition - text
+Result: number
+Example: COUNTIF('Services', '[completed]=1')
+
+[ROUNDTO]
+0
+Returns a number rounded to the specified precision, adding zeros.
+Parameters: number, the number of decimal places
+Result: text
+Exampe: ROUNDTO(234.69, 2). Result: 234.70
+
+[MAX]
+1
+Calculates the maximum value.
+Parameters: form name - text, field name - text
+Result: number
+Example: MAX('Services', 'Price')
+
+[MAXIF]
+1
+Calculates the maximum value.
+Parameters: form name - text, field name - text, condition - text
+Result: number
+Example: MAXIF('Services', 'Price', '[completed]=1')
+
+[MIN]
+1
+Calculates the minimum value.
+Parameters: form name - text, field name - text
+Result: number
+Example: MIN('Services', 'Price')
+
+[MINIF]
+1
+Calculates the minimum value.
+Parameters: form name - text, field name - text, condition - text
+Result: number
+Example: MINIF('Services', 'Price', '[completed]=1')
+
+[AVG]
+1
+Calculates the average value.
+Parameters: form name - text, field name - text
+Result: number
+Example: AVG('Services', 'Price')
+
+[AVGIF]
+1
+Calculates the average value.
+Parameters: form name - text, field name - text, condition - text
+Result: number
+Example: AVGIF('Services', 'Price', '[completed]=1')
+
+[CSTR]
+4
+Converts a value to text.
+Parameters: value - number, date, time
+Result: text
+Example: 'Current date: ' + CSTR([date])
+
+[CNUM]
+4
+Converts a text to number.
+Parameters: text
+Result: number
+Example: [price] * CNUM([text])
+
+[CDATE]
+4
+Converts a text to date.
+Parameters: text
+Result: date
+Example: MONTHSBETWEEN([date], CDATE('12.10.2013'))
+
+[ADDDAY]
+3
+Adds / subtracts from the date specified number of days.
+Parameters: date, number
+Result: date
+Example: ADDDAY([date], 8) or ADDDAY([date], -3)
+
+[ADDWEEK]
+3
+Adds / subtracts from the date specified number of weeks.
+Parameters: date, number
+Result: date
+Example: ADDWEEK([date], 8) or ADDWEEK([date], -3)
+
+[ADDMONTH]
+3
+Adds / subtracts from the date specified number of months.
+Parameters: date, number
+Result: date
+Example: ADDMONTH([date], 8) or ADDMONTH([date], -3)
+
+[ADDYEAR]
+3
+Adds / subtracts from the date specified number of years.
+Parameters: date, number
+Result: date
+Example: ADDYEAR([date], 8) or ADDYEAR([date], -3)
+
+[CTIME]
+4
+Converts a text to time.
+Parameters: text
+Result: time
+Example: CTIME('8:34')
+
+[HOUROF]
+5
+Extracts from the time of number of hours.
+Parameters: time
+Result: number
+Example: HOUROF([time]). If [time] = 08:23 then function return: 8.
+
+[MINUTEOF]
+5
+Extracts from the time of number of minutes.
+Parameters: time
+Result: number
+Example: MINUTEOF([time]). If [time] = 08:23 then function return: 23.
+
+[SECONDOF]
+5
+Extracts from the time of number of seconds.
+Parameters: time
+Result: number
+Example: SECONDOF([time]). If [time] = 08:23:56 then function return: 56.
+
+[HOURSBETWEEN]
+5
+Returns the time interval in hours.
+Parameters: date1, time1, date2, time2
+Result: number
+Example: HOURSBETWEEN([begin date], [begin time], [end date], [end time]). If you want to know the interval between the time fields, without the use of dates, it is possible to write an expression like this: HOURSBETWEEN([begin date], [begin time], [end date], [end time]).
+
+[MINUTESBETWEEN]
+5
+Returns the time interval in minutes.
+Parameters: date1, time1, date2, time2
+Result: number
+Example: MINUTESBETWEEN([begin date], [begin time], [end date], [end time]). 
+
+[SECONDSBETWEEN]
+5
+Returns the time interval in seconds.
+Parameters: date1, time1, date2, time2
+Result: number
+Example: SECONDSBETWEEN([begin date], [begin time], [end date], [end time]). 
+
+[ADDHOUR]
+5
+Adds / subtracts from the time specified number of hours.
+Parameters: date, time, number, date field - text
+Return: time
+Example: ADDHOUR([begin date], [begin time], [hours], 'end date'). In this example, the expression is evaluated time for the "end time." The result of calculation also changes the "End date". If, for example, "start time" = 23:00, increases by 2 hours, "begin date" = 23.01.2015, the result of "end time" = 01:00, "end date" = 24.01.2015. The fourth parameter can be empty.
+
+[ADDMINUTE]
+5
+Adds / subtracts from the time specified number of minutes.
+Parameters: date, time, number, date field - text
+Result: time
+Example: ADDMINUTE([begin date], [begin time], [minutes], 'end date').
+
+[ADDSECOND]
+5
+Adds / subtracts from the time specified number of seconds.
+Parameters: date, time, number, date field - text
+Result: time
+Example: ADDSECOND([begin date], [begin time], [seconds], 'end date').
+
+[PERIOD]
+3
+NOT IMPLEMENTED! Calculates seniority.
+Parameters: date1, date2, format - number
+Result: text
+Example: PERIOD([begin date], [end date], 3). 
+
+[FDATE]
+3
+NOT IMPLEMENTED! Returns the date in the format of "January 1, 2009".
+Parameters: date
+Result: text
+Example: FDATE([date])
+
+[NZ]
+4
+Returns the second argument if the first - NULL.
+Parameters: any, any
+Result: any
+Example: NZ([date], "no date"). Function returns "no date" if [date]=NULL, else - [date].
+
+[INDEXOF]
+0
+Returns a substring index N.
+Parameters: N - number, text
+Result: text
+Example: INDEXOF(4, "zero;one;two;three;four;five"), function returns "four". The index starts at zero. 
+
+[MERGE]
+0
+Merges into a single string column values of the table.
+Parameters: form name - text, field name - text, delimiter - text
+Result: text
+Example: MERGE('Bugs', 'Bug', ', ')
+
+[RECID]
+4
+Returns the record ID (primary key) form.
+Parameters: form name - text
+Result: number
+Example: RECID('clients').
+It uses the filter query.
+
+[OBJID]
+6
+Returns the identifier (primary key) of the object.
+Parameters: form name - text, field name - text, value - text
+Result: number
+Example: OBJID('clients', 'name', 'Ivanon I. I.').
+Used in the filter list from the query.
+
+[USER]
+4
+Returns current user name.
+Parameters: none
+Result: text
+
+[ROLE]
+4
+Returns role name of current user.
+Parameters: none
+Result: text
+
+[DBSUM]
+6
+Calculates the sum of the values of the field.
+Parameters: name of the form - text, the field name - text, filter - text.
+Result: The number or NULL (any type)
+Example: DBSUM('Sales', 'Sum', '[!Date] <= [date]')
+The calculation includes only those records that meet the filter criteria. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBAVG]
+6
+Calculates the arithmetic mean of the values of the field.
+Parameters: name of the form - text, the field name - text, filter - text.
+Result: The number or NULL (any type)
+Example: DBAVG('Sales', 'Sum', '[!Date] <= [date]')
+The calculation includes only those records that meet the filter criteria. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBMAX]
+6
+Calculates the maximum value of the field.
+Parameters: name of the form - text, the field name - text, filter - text.
+Result: any type
+Example: DBMAX('Sales', 'Sum', '[!Date] <= [date]')
+The calculation includes only those records that meet the filter criteria. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBMIN]
+6
+Calculates the minimum value of the field.
+Parameters: name of the form - text, the field name - text, filter - text.
+Result: any type
+Example: DBMIN('Sales', 'Sum', '[!Date] <= [date]')
+The calculation includes only those records that meet the filter criteria. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBCOUNT]
+6
+Calculates the number of records.
+Parameters: name of the form - text, filter - text.
+Result: The number or NULL (any type)
+Example: DBCOUNT('Sales', 'Sum', '[!Date] <= [date]')
+The calculation includes only those records that meet the filter criteria. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBGET]
+6
+Returns the value of the field.
+Parameters: name of the form - text, the field name - text, filter - text.
+Result: any type
+Example: DBGET('Sales', 'Sum', '[!Date] = [date]')
+The database can be several records that match the filter. The function takes the first record. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBGETID]
+6
+Returns the record ID.
+Parameters: name of the form - text, filter - text.
+Result: number
+Example: DBGET('Sales', '[!Date] = [date]')
+The database can be several records that match the filter. The function takes the first record. The syntax is the same as the filter in the filter of source (see. Help topic "Request", "Reports"). The function can be applied to any form of database.
+
+[DBGETBYID]
+6
+Returns the value of the record with the specified identifier.
+Parameters: name of the form - text, the field name - text, id - number.
+Result: any type
+Example: DBGETBYID('Services', 'Name', DBGETID(...))
+
+[MINV]
+2
+Returns the minimum value.
+Parameters: value1 - any type, value2, ..., valueN
+Result: any type
+Example: MINV([price1], [price2], [price3])
+
+[MAXV]
+2
+Returns the maximum value.
+Parameters: value1 - any type, value2, ..., valueN
+Result: any type
+Example: MAXV([price1], [price2], [price3])
+
+[SETVAR]
+4
+Stores value in the variable.
+Parameters: name - text, value - any type
+Result: any type
+Example: SETVAR('My var', LENGTH([text])
+The variable name may contain any characters that are not case sensitive. The function returns a value the second parameter.
+
+[GETVAR]
+4
+Returns the value of the variable.
+Parameters: name - text
+Result: any type
+Example: GETVAR('My var')
+If the variable is not found, the program reports an error.
+
+[IFZ]
+4
+Returns the second argument if the first is 0.
+Parameters: number, any type
+Result: any type
+Example: IFZ([number], '-')
+
+[IFE]
+4
+Returns the second argument if the first - empty string.
+Parameters: text, any type
+Result: any type
+Example: IFE([text], '-')
+
+[TRIM]
+0
+Removes all leading and trailing spaces.
+Parameters: text
+Result: text
+Example: TRIM([text])
+
+[AGE]
+3
+NOT IMPLEMENTED! Calculates age.
+Parameters: date1, date2, format - number
+Result: text
+
+[SUMPERIOD]
+1
+NOT IMPLEMENTED! Calculate the general seniority according to the table.
+Parameters: form name - text, begin date field - text, end date field - text, format - number
+Result: text
+
+[ZEROS]
+0
+Adds ahead of zeros.
+Parameters: number, text length - number
+Result: text
+Examples: ZEROS(4, 3), return: 004
+
+[BLOCK]
+4
+Returns the value of the last argument.
+Parameters: value1 - any type, value2, ..., valueN
+Result: any type
+Example: BLOCK(setvar('var1', 10), setvar('var2', 20), 0)
+The purpose of this function to perform some action sequence before the main calculations, for example, to prepare variables.
+
+[VAREXISTS]
+4
+Returns 1 if variable exists, otherwise 0.
+Parameters: variable name - text
+Result: number
+Example: iif(varexists('my') = 1, setvar('my', getvar('my') + 1), setvar('my', 0))

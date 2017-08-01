@@ -1,0 +1,3881 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: fpsqlparser.serrasteriskonlyincount
+msgctxt "fpsqlparser.serrasteriskonlyincount"
+msgid "* allowed only in COUNT aggregate"
+msgstr ""
+
+#: fpsqlparser.serrcannotaltergenerator
+msgctxt "fpsqlparser.serrcannotaltergenerator"
+msgid "Alter generator statement unknown"
+msgstr ""
+
+#: fpsqlparser.serrcommaorbraceexpected
+msgctxt "fpsqlparser.serrcommaorbraceexpected"
+msgid "Expected , or )."
+msgstr ""
+
+#: fpsqlparser.serrdomainnotallowed
+msgctxt "fpsqlparser.serrdomainnotallowed"
+msgid "Domain name not allowed in type definition."
+msgstr ""
+
+#: fpsqlparser.serrexpectedchar
+msgctxt "fpsqlparser.serrexpectedchar"
+msgid "Expected CHAR or CHARACTER, got \"%s\""
+msgstr ""
+
+#: fpsqlparser.serrexpecteddbobject
+msgctxt "fpsqlparser.serrexpecteddbobject"
+msgid "Expected database object type. Got: '%s'"
+msgstr ""
+
+#: fpsqlparser.serrhavingwithoutgroupby
+msgctxt "fpsqlparser.serrhavingwithoutgroupby"
+msgid "HAVING without GROUP BY clause not allowed"
+msgstr ""
+
+#: fpsqlparser.serrintegerexpected
+msgctxt "fpsqlparser.serrintegerexpected"
+msgid "Integer expression expected"
+msgstr ""
+
+#: fpsqlparser.serrinvalidextract
+msgctxt "fpsqlparser.serrinvalidextract"
+msgid "Invalid element for extract: %s"
+msgstr ""
+
+#: fpsqlparser.serrinvalidliteral
+msgctxt "fpsqlparser.serrinvalidliteral"
+msgid "Invalid literal: \"%s\""
+msgstr ""
+
+#: fpsqlparser.serrinvaliduseofcollate
+msgctxt "fpsqlparser.serrinvaliduseofcollate"
+msgid "Invalid use of COLLATE"
+msgstr ""
+
+#: fpsqlparser.serrnoaggregateallowed
+msgctxt "fpsqlparser.serrnoaggregateallowed"
+msgid "Aggregate function not allowed."
+msgstr ""
+
+#: fpsqlparser.serrnoasteriskinsingleton
+msgctxt "fpsqlparser.serrnoasteriskinsingleton"
+msgid "* not allowed in singleton select"
+msgstr ""
+
+#: fpsqlparser.serrouterwithout
+msgctxt "fpsqlparser.serrouterwithout"
+msgid "OUTER without preceding LEFT, RIGHT or FULL"
+msgstr ""
+
+#: fpsqlparser.serrtokenmismatch
+msgctxt "fpsqlparser.serrtokenmismatch"
+msgid "Unexpected token: '%s', expected: '%s'"
+msgstr ""
+
+#: fpsqlparser.serrunexpectedtoken
+msgctxt "fpsqlparser.serrunexpectedtoken"
+msgid "Unexpected token: %s"
+msgstr ""
+
+#: fpsqlparser.serrunexpectedtokenof
+msgctxt "fpsqlparser.serrunexpectedtokenof"
+msgid "Unexpected token: %s, expected one of %s"
+msgstr ""
+
+#: fpsqlparser.serrunionfieldcountmatch
+msgctxt "fpsqlparser.serrunionfieldcountmatch"
+msgid "Field count mismatch in select union : %d <> %d"
+msgstr ""
+
+#: fpsqlparser.serrunknownbooleanop
+msgctxt "fpsqlparser.serrunknownbooleanop"
+msgid "Unknown boolean operation"
+msgstr ""
+
+#: fpsqlparser.serrunknowncomparison
+msgctxt "fpsqlparser.serrunknowncomparison"
+msgid "unknown Comparison operation"
+msgstr ""
+
+#: fpsqlparser.serrunmatchedbrace
+msgctxt "fpsqlparser.serrunmatchedbrace"
+msgid "Expected )."
+msgstr ""
+
+#: fpsqlparser.serrupperoneargument
+msgctxt "fpsqlparser.serrupperoneargument"
+msgid "Only one argument for UPPER allowed"
+msgstr ""
+
+#: fpsqlparser.serrvaryingnotallowed
+msgctxt "fpsqlparser.serrvaryingnotallowed"
+msgid "VARYING not allowed at this point."
+msgstr ""
+
+#: fpsqlscanner.sbarexpected
+msgctxt "fpsqlscanner.sbarexpected"
+msgid "| character expected"
+msgstr ""
+
+#: fpsqlscanner.serrifxxxnestinglimitreached
+msgctxt "fpsqlscanner.serrifxxxnestinglimitreached"
+msgid "Nesting of $IFxxx too deep"
+msgstr ""
+
+#: fpsqlscanner.serrincludefilenotfound
+msgctxt "fpsqlscanner.serrincludefilenotfound"
+msgid "Could not find include file '%s'"
+msgstr ""
+
+#: fpsqlscanner.serrinvalidcharacter
+msgctxt "fpsqlscanner.serrinvalidcharacter"
+msgid "Invalid character '%s'"
+msgstr ""
+
+#: fpsqlscanner.serrinvalidnonequal
+msgctxt "fpsqlscanner.serrinvalidnonequal"
+msgid "SyntaxError: != or !== expected"
+msgstr ""
+
+#: fpsqlscanner.serrinvalidppelse
+msgctxt "fpsqlscanner.serrinvalidppelse"
+msgid "$ELSE without matching $IFxxx"
+msgstr ""
+
+#: fpsqlscanner.serrinvalidppendif
+msgctxt "fpsqlscanner.serrinvalidppendif"
+msgid "$ENDIF without matching $IFxxx"
+msgstr ""
+
+#: fpsqlscanner.serropenstring
+msgctxt "fpsqlscanner.serropenstring"
+msgid "string exceeds end of line"
+msgstr ""
+
+#: fpsqlscanner.serrunknowntoken
+msgctxt "fpsqlscanner.serrunknowntoken"
+msgid "Unknown token: %s"
+msgstr ""
+
+#: fpsqlscanner.sinvalidhexadecimalnumber
+msgctxt "fpsqlscanner.sinvalidhexadecimalnumber"
+msgid "Invalid hexadecimal number"
+msgstr ""
+
+#: myfpsqlparser.serrasteriskonlyincount
+msgctxt "myfpsqlparser.serrasteriskonlyincount"
+msgid "* allowed only in COUNT aggregate"
+msgstr ""
+
+#: myfpsqlparser.serrcannotaltergenerator
+msgctxt "myfpsqlparser.serrcannotaltergenerator"
+msgid "Alter generator statement unknown"
+msgstr ""
+
+#: myfpsqlparser.serrcommaorbraceexpected
+msgctxt "myfpsqlparser.serrcommaorbraceexpected"
+msgid "Expected , or )."
+msgstr ""
+
+#: myfpsqlparser.serrdomainnotallowed
+msgctxt "myfpsqlparser.serrdomainnotallowed"
+msgid "Domain name not allowed in type definition."
+msgstr ""
+
+#: myfpsqlparser.serrexpectedchar
+msgctxt "myfpsqlparser.serrexpectedchar"
+msgid "Expected CHAR or CHARACTER, got \"%s\""
+msgstr ""
+
+#: myfpsqlparser.serrexpecteddbobject
+msgctxt "myfpsqlparser.serrexpecteddbobject"
+msgid "Expected database object type. Got: '%s'"
+msgstr ""
+
+#: myfpsqlparser.serrhavingwithoutgroupby
+msgctxt "myfpsqlparser.serrhavingwithoutgroupby"
+msgid "HAVING without GROUP BY clause not allowed"
+msgstr ""
+
+#: myfpsqlparser.serrintegerexpected
+msgctxt "myfpsqlparser.serrintegerexpected"
+msgid "Integer expression expected"
+msgstr ""
+
+#: myfpsqlparser.serrinvalidextract
+msgctxt "myfpsqlparser.serrinvalidextract"
+msgid "Invalid element for extract: %s"
+msgstr ""
+
+#: myfpsqlparser.serrinvalidliteral
+msgctxt "myfpsqlparser.serrinvalidliteral"
+msgid "Invalid literal: \"%s\""
+msgstr ""
+
+#: myfpsqlparser.serrinvaliduseofcollate
+msgctxt "myfpsqlparser.serrinvaliduseofcollate"
+msgid "Invalid use of COLLATE"
+msgstr ""
+
+#: myfpsqlparser.serrnoaggregateallowed
+msgctxt "myfpsqlparser.serrnoaggregateallowed"
+msgid "Aggregate function not allowed."
+msgstr ""
+
+#: myfpsqlparser.serrnoasteriskinsingleton
+msgctxt "myfpsqlparser.serrnoasteriskinsingleton"
+msgid "* not allowed in singleton select"
+msgstr ""
+
+#: myfpsqlparser.serrouterwithout
+msgctxt "myfpsqlparser.serrouterwithout"
+msgid "OUTER without preceding LEFT, RIGHT or FULL"
+msgstr ""
+
+#: myfpsqlparser.serrtokenmismatch
+msgctxt "myfpsqlparser.serrtokenmismatch"
+msgid "Unexpected token: '%s', expected: '%s'"
+msgstr ""
+
+#: myfpsqlparser.serrunexpectedtoken
+msgctxt "myfpsqlparser.serrunexpectedtoken"
+msgid "Unexpected token: %s"
+msgstr ""
+
+#: myfpsqlparser.serrunexpectedtokenof
+msgctxt "myfpsqlparser.serrunexpectedtokenof"
+msgid "Unexpected token: %s, expected one of %s"
+msgstr ""
+
+#: myfpsqlparser.serrunionfieldcountmatch
+msgctxt "myfpsqlparser.serrunionfieldcountmatch"
+msgid "Field count mismatch in select union : %d <> %d"
+msgstr ""
+
+#: myfpsqlparser.serrunknownbooleanop
+msgctxt "myfpsqlparser.serrunknownbooleanop"
+msgid "Unknown boolean operation"
+msgstr ""
+
+#: myfpsqlparser.serrunknowncomparison
+msgctxt "myfpsqlparser.serrunknowncomparison"
+msgid "unknown Comparison operation"
+msgstr ""
+
+#: myfpsqlparser.serrunmatchedbrace
+msgctxt "myfpsqlparser.serrunmatchedbrace"
+msgid "Expected )."
+msgstr ""
+
+#: myfpsqlparser.serrupperoneargument
+msgctxt "myfpsqlparser.serrupperoneargument"
+msgid "Only one argument for UPPER allowed"
+msgstr ""
+
+#: myfpsqlparser.serrvaryingnotallowed
+msgctxt "myfpsqlparser.serrvaryingnotallowed"
+msgid "VARYING not allowed at this point."
+msgstr ""
+
+#: myfpsqlscanner.sbarexpected
+msgctxt "myfpsqlscanner.sbarexpected"
+msgid "| character expected"
+msgstr ""
+
+#: myfpsqlscanner.serrifxxxnestinglimitreached
+msgctxt "myfpsqlscanner.serrifxxxnestinglimitreached"
+msgid "Nesting of $IFxxx too deep"
+msgstr ""
+
+#: myfpsqlscanner.serrincludefilenotfound
+msgctxt "myfpsqlscanner.serrincludefilenotfound"
+msgid "Could not find include file '%s'"
+msgstr ""
+
+#: myfpsqlscanner.serrinvalidcharacter
+msgctxt "myfpsqlscanner.serrinvalidcharacter"
+msgid "Invalid character '%s'"
+msgstr ""
+
+#: myfpsqlscanner.serrinvalidnonequal
+msgctxt "myfpsqlscanner.serrinvalidnonequal"
+msgid "SyntaxError: != or !== expected"
+msgstr ""
+
+#: myfpsqlscanner.serrinvalidppelse
+msgctxt "myfpsqlscanner.serrinvalidppelse"
+msgid "$ELSE without matching $IFxxx"
+msgstr ""
+
+#: myfpsqlscanner.serrinvalidppendif
+msgctxt "myfpsqlscanner.serrinvalidppendif"
+msgid "$ENDIF without matching $IFxxx"
+msgstr ""
+
+#: myfpsqlscanner.serropenstring
+msgctxt "myfpsqlscanner.serropenstring"
+msgid "string exceeds end of line"
+msgstr ""
+
+#: myfpsqlscanner.serrunknowntoken
+msgctxt "myfpsqlscanner.serrunknowntoken"
+msgid "Unknown token: %s"
+msgstr ""
+
+#: myfpsqlscanner.sinvalidhexadecimalnumber
+msgctxt "myfpsqlscanner.sinvalidhexadecimalnumber"
+msgid "Invalid hexadecimal number"
+msgstr ""
+
+#: mysqldblib.serrconnnected
+msgid "This operation is not allowed while the datatabase is loaded"
+msgstr ""
+
+#: mysqldblib.serrinvalidconnectiontype
+msgid "Invalid connection type : \"%s\""
+msgstr ""
+
+#: strconsts.rsabout
+msgid "About"
+msgstr ""
+
+#: strconsts.rsaboutlang
+msgid "About language"
+msgstr ""
+
+#: strconsts.rsaboutlangmsg
+msgid "Author: %s/Version: %s/Description: %s"
+msgstr ""
+
+#: strconsts.rsaccess
+msgid "Access"
+msgstr ""
+
+#: strconsts.rsaccessdenied
+msgid "Access denied"
+msgstr ""
+
+#: strconsts.rsaccesstocmp
+msgid "Access to components"
+msgstr ""
+
+#: strconsts.rsaccesstofields
+msgid "Access to fields"
+msgstr ""
+
+#: strconsts.rsaccesstoforms
+msgid "Access to forms"
+msgstr ""
+
+#: strconsts.rsaccesstoreports
+msgid "Access to reports"
+msgstr ""
+
+#: strconsts.rsaction
+msgid "Action"
+msgstr ""
+
+#: strconsts.rsactiveusers
+msgid "Active users"
+msgstr ""
+
+#: strconsts.rsactiveusersindb
+msgid "There are active users in the database. Log into single mode is not possible."
+msgstr ""
+
+#: strconsts.rsadd
+msgctxt "strconsts.rsadd"
+msgid "Add"
+msgstr ""
+
+#: strconsts.rsadddevel
+msgid "Add a user-developer"
+msgstr ""
+
+#: strconsts.rsaddfield
+msgid "Add field"
+msgstr ""
+
+#: strconsts.rsaddfields
+msgid "Add fields"
+msgstr ""
+
+#: strconsts.rsaddformmodule
+msgid "Add form module"
+msgstr ""
+
+#: strconsts.rsaddition
+msgid "Addition"
+msgstr ""
+
+#: strconsts.rsaddlangfilter
+msgid "DataExpress language files (*.lng)|*.lng"
+msgstr ""
+
+#: strconsts.rsaddnewlang
+msgid "Add new language"
+msgstr ""
+
+#: strconsts.rsaddtoexisting
+msgid "Add to existing"
+msgstr ""
+
+#: strconsts.rsaddusermodule
+msgid "Add user module"
+msgstr ""
+
+#: strconsts.rsaddvalue
+msgid "Add value"
+msgstr ""
+
+#: strconsts.rsalignment
+msgid "Alignment"
+msgstr ""
+
+#: strconsts.rsalignmentbottom
+msgid "Bottom"
+msgstr ""
+
+#: strconsts.rsalignmentleft
+msgid "Left align"
+msgstr ""
+
+#: strconsts.rsalignmentright
+msgid "Right align"
+msgstr ""
+
+#: strconsts.rsalignmenttop
+msgid "Top"
+msgstr ""
+
+#: strconsts.rsall
+msgid "All"
+msgstr ""
+
+#: strconsts.rsallfilesfilter
+msgid "All files (*.*)|*.*"
+msgstr ""
+
+#: strconsts.rsallfilesflt
+msgid "All files|*.*"
+msgstr ""
+
+#: strconsts.rsallfunctions
+msgid "All functions"
+msgstr ""
+
+#: strconsts.rsallmodulesflt
+msgid "All modules|*.pas;*.epas|"
+msgstr ""
+
+#: strconsts.rsallowmultiauth
+msgid "Allow multiple authorization"
+msgstr ""
+
+#: strconsts.rsallowsingleusermode
+msgid "Allow single-user mode"
+msgstr ""
+
+#: strconsts.rsalternatecolor
+msgid "Alternate color"
+msgstr ""
+
+#: strconsts.rsanchors
+msgid "Anchors"
+msgstr ""
+
+#: strconsts.rsanintfwithsamenameexists
+msgid "An interface with this name exists"
+msgstr ""
+
+#: strconsts.rsappdescription
+msgid "Description"
+msgstr ""
+
+#: strconsts.rsappend
+msgid "Append"
+msgstr ""
+
+#: strconsts.rsappendfield
+msgid "Append field"
+msgstr ""
+
+#: strconsts.rsappendsource
+msgid "Append source"
+msgstr ""
+
+#: strconsts.rsapplicationsfilter
+msgid "Applications (*.exe)|*.exe"
+msgstr ""
+
+#: strconsts.rsapplicationsfilterunix
+msgid "Applications|*"
+msgstr ""
+
+#: strconsts.rsapplyselcondtoobj
+msgid "Apply condition of selection to objects"
+msgstr ""
+
+#: strconsts.rsappname
+msgid "DataExpress"
+msgstr ""
+
+#: strconsts.rsapppath
+msgid "Path"
+msgstr ""
+
+#: strconsts.rsapptype
+msgctxt "strconsts.rsapptype"
+msgid "Type"
+msgstr ""
+
+#: strconsts.rsareyousure
+msgid "Are you sure?"
+msgstr ""
+
+#: strconsts.rsargexpected
+msgid "Argument expected"
+msgstr ""
+
+#: strconsts.rsarolewiththisnameexists
+msgid "A role with this name exists"
+msgstr ""
+
+#: strconsts.rsarticles
+msgid "Articles"
+msgstr ""
+
+#: strconsts.rsauserwiththisnameexists
+msgid "A user with this name exists"
+msgstr ""
+
+#: strconsts.rsauthor
+msgid "Author"
+msgstr ""
+
+#: strconsts.rsautotaborder
+msgid "Auto"
+msgstr ""
+
+#: strconsts.rsaverage
+msgid "Average"
+msgstr ""
+
+#: strconsts.rsbackcolor
+msgid "Back color"
+msgstr ""
+
+#: strconsts.rsbackground
+msgid "Background"
+msgstr ""
+
+#: strconsts.rsbalance
+msgid "Balance"
+msgstr ""
+
+#: strconsts.rsbeginmonth
+msgid "Beginning of month"
+msgstr ""
+
+#: strconsts.rsbeginvalue
+msgid "Begin value"
+msgstr ""
+
+#: strconsts.rsbeginweek
+msgid "Beginning of week"
+msgstr ""
+
+#: strconsts.rsbeginyear
+msgid "Beginning of year"
+msgstr ""
+
+#: strconsts.rsbold
+msgid "Bold <Ctrl-B>"
+msgstr ""
+
+#: strconsts.rsbottomside
+msgid "Bottom side"
+msgstr ""
+
+#: strconsts.rsbreakpoints
+msgid "Breakpoints"
+msgstr ""
+
+#: strconsts.rsbrexpected
+msgid "Bracket expected"
+msgstr ""
+
+#: strconsts.rsbringtofront
+msgid "Bring to front"
+msgstr ""
+
+#: strconsts.rsbutton
+msgid "Button"
+msgstr ""
+
+#: strconsts.rsbuttons
+msgid "Buttons"
+msgstr ""
+
+#: strconsts.rscalcfieldnameexists
+msgid "A calculation field with the same field name already exists."
+msgstr ""
+
+#: strconsts.rscalcfields
+msgid "Calculated fields"
+msgstr ""
+
+#: strconsts.rscalclabelcaptionexists
+msgid "A calculation label with same caption already exists."
+msgstr ""
+
+#: strconsts.rscalclabelcaptionexists2
+msgid "This property is not available, because a calculation label same caption already exists."
+msgstr ""
+
+#: strconsts.rscalclabels
+msgid "Calculation labels"
+msgstr ""
+
+#: strconsts.rscallfunction
+msgid "Call function"
+msgstr ""
+
+#: strconsts.rscancel
+msgid "Cancel"
+msgstr ""
+
+#: strconsts.rscancelchange
+msgid "Cancel changes"
+msgstr ""
+
+#: strconsts.rscancelchangesmsg
+msgid "Are you sure want to cancel the changes?"
+msgstr ""
+
+#: strconsts.rscanceledbyuser
+msgid "Canceled by user"
+msgstr ""
+
+#: strconsts.rscancelmsg
+msgid "&Cancel"
+msgstr ""
+
+#: strconsts.rscannotdeletefile
+msgid "Can not delete the file"
+msgstr ""
+
+#: strconsts.rscannotgetvalue
+msgid "[Can not get value]"
+msgstr ""
+
+#: strconsts.rscantcopyfile
+msgid "Can't copy file %s"
+msgstr ""
+
+#: strconsts.rscantcopyfiletostoragefolder
+msgid "Can not copy file from %s to %s"
+msgstr ""
+
+#: strconsts.rscantdeletefieldquery
+msgid "Can not delete field [%s], because it used in query [%s] in form [%s]"
+msgstr ""
+
+#: strconsts.rscantdeletefieldreport
+msgid "Can not delete field [%s], because it used in report [%s]"
+msgstr ""
+
+#: strconsts.rscantdeleteformquery
+msgid "Can not delete form [%s], because it used in query [%s] in form [%s]"
+msgstr ""
+
+#: strconsts.rscantdeleteformreport
+msgid "Can not delete form [%s], because it used in report [%s]"
+msgstr ""
+
+#: strconsts.rscantdeleterecord
+msgid "On that record referenced %s can not be deleted"
+msgstr ""
+
+#: strconsts.rscantdelrec
+msgid "You can not delete this record"
+msgstr ""
+
+#: strconsts.rscantsortcol
+msgid "You can not sort on a calculated fields"
+msgstr ""
+
+#: strconsts.rscaption
+msgctxt "strconsts.rscaption"
+msgid "Caption"
+msgstr ""
+
+#: strconsts.rscaptionsubtotal
+msgid "Caption subtotal"
+msgstr ""
+
+#: strconsts.rscasesensitive
+msgid "Case sensitive"
+msgstr ""
+
+#: strconsts.rscellsize
+msgid "Cell size"
+msgstr ""
+
+#: strconsts.rscentertext
+msgid "Center text"
+msgstr ""
+
+#: strconsts.rschangecounter
+msgid "Change counter"
+msgstr ""
+
+#: strconsts.rschangepwd
+msgid "Change password"
+msgstr ""
+
+#: strconsts.rscharforblanks
+msgid "Character for blanks"
+msgstr ""
+
+#: strconsts.rscharlbrexpext
+msgid "Character { expected"
+msgstr ""
+
+#: strconsts.rscharrbrexpect
+msgid "Character } expected"
+msgstr ""
+
+#: strconsts.rscheckbox
+msgid "Checkbox"
+msgstr ""
+
+#: strconsts.rscheckexpr
+msgctxt "strconsts.rscheckexpr"
+msgid "Check"
+msgstr ""
+
+#: strconsts.rscheckunique
+msgid "Check unique"
+msgstr ""
+
+#: strconsts.rscheckvalue
+msgid "Check value"
+msgstr ""
+
+#: strconsts.rscid
+msgid "CID"
+msgstr ""
+
+#: strconsts.rscircularrefmodules
+msgid "Detected circular reference between modules %s and %s."
+msgstr ""
+
+#: strconsts.rsclear
+msgctxt "strconsts.rsclear"
+msgid "Clear"
+msgstr ""
+
+#: strconsts.rsclearall
+msgid "Clear all"
+msgstr ""
+
+#: strconsts.rsclearallvalues
+msgid "Clear all values"
+msgstr ""
+
+#: strconsts.rsclearfields
+msgid "Clear fields"
+msgstr ""
+
+#: strconsts.rsclearhistory
+msgid "Clear history"
+msgstr ""
+
+#: strconsts.rsclearhistorymsg
+msgid "You want to clear the history of recently opened databases. Continue?"
+msgstr ""
+
+#: strconsts.rsclearimage
+msgctxt "strconsts.rsclearimage"
+msgid "Clear"
+msgstr ""
+
+#: strconsts.rsclearselection
+msgid "Clear selection"
+msgstr ""
+
+#: strconsts.rscleartablebeforefill
+msgid "Clear table before filling"
+msgstr ""
+
+#: strconsts.rsclearvalue
+msgid "Clear value"
+msgstr ""
+
+#: strconsts.rsclose
+msgid "Close"
+msgstr ""
+
+#: strconsts.rscmptype
+msgctxt "strconsts.rscmptype"
+msgid "Type"
+msgstr ""
+
+#: strconsts.rscodefolding
+msgid "Code folding"
+msgstr ""
+
+#: strconsts.rscollapseall
+msgid "Collapse all"
+msgstr ""
+
+#: strconsts.rscolor
+msgid "Color"
+msgstr ""
+
+#: strconsts.rscoloring
+msgid "Coloring"
+msgstr ""
+
+#: strconsts.rscolumn
+msgid "Column"
+msgstr ""
+
+#: strconsts.rscolumns
+msgid "Columns"
+msgstr ""
+
+#: strconsts.rscolumnwidthtotal
+msgid "Column width total"
+msgstr ""
+
+#: strconsts.rscommaexpected
+msgid "Comma expected"
+msgstr ""
+
+#: strconsts.rscommonprops
+msgid "Common properties"
+msgstr ""
+
+#: strconsts.rscompilationsuccess
+msgid "Compilation is successful"
+msgstr ""
+
+#: strconsts.rscompile
+msgid "Compile"
+msgstr ""
+
+#: strconsts.rscompileerrormsg
+msgid "During script compilation errors have been detected."
+msgstr ""
+
+#: strconsts.rscompilermsgs
+msgid "Compiler messages"
+msgstr ""
+
+#: strconsts.rscomponent
+msgid "Component"
+msgstr ""
+
+#: strconsts.rscomponentfieldnameexists
+msgid "A component with the same field name already exists."
+msgstr ""
+
+#: strconsts.rscomponentname
+msgid "Component name"
+msgstr ""
+
+#: strconsts.rscomponentnameempty
+msgid "Component name is empty"
+msgstr ""
+
+#: strconsts.rscomponents
+msgid "Components"
+msgstr ""
+
+#: strconsts.rsconfirmationmsg
+msgid "Confirmation message"
+msgstr ""
+
+#: strconsts.rsconfirmautosavemsg
+msgid "Save changes?"
+msgstr ""
+
+#: strconsts.rsconfirmautosaverec
+msgid "Confirm autosave record"
+msgstr ""
+
+#: strconsts.rsconfirmcancelediting
+msgid "Confirm cancel editing"
+msgstr ""
+
+#: strconsts.rsconfirmcanceleditmsg
+msgid "Cancel changes?"
+msgstr ""
+
+#: strconsts.rsconfirmdelete
+msgid "Confirm delete"
+msgstr ""
+
+#: strconsts.rsconfirmdelete2
+msgid "One or more tables contain data. Are you sure you want to delete this record?"
+msgstr ""
+
+#: strconsts.rsconfirmexit
+msgid "Confirm when application exit"
+msgstr ""
+
+#: strconsts.rsconfirmsavemsg
+msgid "Continue saving changes?"
+msgstr ""
+
+#: strconsts.rsconfirmsaverec
+msgid "Confirm save record"
+msgstr ""
+
+#: strconsts.rsconnect
+msgid "Connect"
+msgstr ""
+
+#: strconsts.rsconnecttodb
+msgid "Connect to database"
+msgstr ""
+
+#: strconsts.rscontainingtext
+msgid "Containing text"
+msgstr ""
+
+#: strconsts.rscontents
+msgid "Contents"
+msgstr ""
+
+#: strconsts.rscontinuerunbn
+msgid "Continue running <F5>"
+msgstr ""
+
+#: strconsts.rscopy
+msgctxt "strconsts.rscopy"
+msgid "Copy"
+msgstr ""
+
+#: strconsts.rscopyreportstyle
+msgctxt "strconsts.rscopyreportstyle"
+msgid "Copy style"
+msgstr ""
+
+#: strconsts.rscopystyle
+msgctxt "strconsts.rscopystyle"
+msgid "Copy style"
+msgstr ""
+
+#: strconsts.rscopytopastescript
+msgid "Copy to paste in the script"
+msgstr ""
+
+#: strconsts.rscorner
+msgid "Corner"
+msgstr ""
+
+#: strconsts.rscouldnotcreatefolder
+msgid "Could not create folder %s"
+msgstr ""
+
+#: strconsts.rscount
+msgid "Count"
+msgstr ""
+
+#: strconsts.rscounter
+msgid "Counter"
+msgstr ""
+
+#: strconsts.rscountfieldname
+msgctxt "strconsts.rscountfieldname"
+msgid "Total"
+msgstr ""
+
+#: strconsts.rscreate
+msgid "Create"
+msgstr ""
+
+#: strconsts.rscreatedialogtitle
+msgid "Create new database"
+msgstr ""
+
+#: strconsts.rscurrenttime
+msgid "Current time"
+msgstr ""
+
+#: strconsts.rscursorpos
+msgid "Cursor position"
+msgstr ""
+
+#: strconsts.rscut
+msgid "Cut"
+msgstr ""
+
+#: strconsts.rsdash
+msgid "Dash"
+msgstr ""
+
+#: strconsts.rsdataarea
+msgctxt "strconsts.rsdataarea"
+msgid "Data"
+msgstr ""
+
+#: strconsts.rsdatadelimiter
+msgid "Data delimiter"
+msgstr ""
+
+#: strconsts.rsdatamenu
+msgctxt "strconsts.rsdatamenu"
+msgid "Data"
+msgstr ""
+
+#: strconsts.rsdatatype
+msgid "Data type"
+msgstr ""
+
+#: strconsts.rsdate
+msgid "Date"
+msgstr ""
+
+#: strconsts.rsdatefieldnotfound
+msgid "Date field not found"
+msgstr ""
+
+#: strconsts.rsdatefieldshoulbevisible
+msgid "Date field should be visible"
+msgstr ""
+
+#: strconsts.rsdbinsinglemode
+msgid "The database is into single-user mode. Log is not possible."
+msgstr ""
+
+#: strconsts.rsdblclickchange
+msgid "Double-click to change"
+msgstr ""
+
+#: strconsts.rsdbnotfound
+msgid "Database %s not found"
+msgstr ""
+
+#: strconsts.rsdbpath
+msgid "Database path"
+msgstr ""
+
+#: strconsts.rsddday
+msgid "Day"
+msgstr ""
+
+#: strconsts.rsddhalfyear
+msgid "Half-Year"
+msgstr ""
+
+#: strconsts.rsddmonth
+msgid "Month"
+msgstr ""
+
+#: strconsts.rsddquarter
+msgid "Quarter"
+msgstr ""
+
+#: strconsts.rsddweek
+msgid "Week"
+msgstr ""
+
+#: strconsts.rsddyear
+msgid "Year"
+msgstr ""
+
+#: strconsts.rsdebugformcaption
+msgid "Debug: %s [%s]"
+msgstr ""
+
+#: strconsts.rsdefault
+msgid "Default"
+msgstr ""
+
+#: strconsts.rsdefaultformcaption
+msgid "Form %s"
+msgstr ""
+
+#: strconsts.rsdefaultimage
+msgid "Default image"
+msgstr ""
+
+#: strconsts.rsdefaultintf
+msgid " (Default)"
+msgstr ""
+
+#: strconsts.rsdefaultpwd
+msgid "Default password"
+msgstr ""
+
+#: strconsts.rsdefaultrpcolcaption
+msgctxt "strconsts.rsdefaultrpcolcaption"
+msgid "Field"
+msgstr ""
+
+#: strconsts.rsdefaultvalue
+msgid "Default value"
+msgstr ""
+
+#: strconsts.rsdelcond
+msgid "Delete condition"
+msgstr ""
+
+#: strconsts.rsdelete
+msgctxt "strconsts.rsdelete"
+msgid "Delete"
+msgstr ""
+
+#: strconsts.rsdeleteall
+msgid "Delete all"
+msgstr ""
+
+#: strconsts.rsdeletecomponents
+msgctxt "strconsts.rsdeletecomponents"
+msgid "Delete"
+msgstr ""
+
+#: strconsts.rsdeleteexprmoduleconfirm
+msgid "Some expressions may stop working. Do you really want to delete this module?"
+msgstr ""
+
+#: strconsts.rsdeletefield
+msgid "Delete field"
+msgstr ""
+
+#: strconsts.rsdeletelimitedmsg
+msgid "Access to the table [%s] is limited. Deleting is not possible."
+msgstr ""
+
+#: strconsts.rsdeleterecords
+msgid "Delete records"
+msgstr ""
+
+#: strconsts.rsdeletesource
+msgid "Delete source"
+msgstr ""
+
+#: strconsts.rsdeletevalue
+msgid "Delete value"
+msgstr ""
+
+#: strconsts.rsdeletingallbreakpoints
+msgid "Deleting all breakpoints"
+msgstr ""
+
+#: strconsts.rsdeletingbreakpoint
+msgid "Deleting breakpoint"
+msgstr ""
+
+#: strconsts.rsdelimiter
+msgid "Delimiter"
+msgstr ""
+
+#: strconsts.rsdelrecsconfirm
+msgid "I confirm deletion"
+msgstr ""
+
+#: strconsts.rsdelrecsmsg
+msgid "Warning!%sDo you want to delete all records selected current filters. The data will be deleted forever.%sAre you sure?"
+msgstr ""
+
+#: strconsts.rsdesigner
+msgid "Designer"
+msgstr ""
+
+#: strconsts.rsdestfldnotsel
+msgid "Destination field not selected"
+msgstr ""
+
+#: strconsts.rsdestination
+msgid "Destination"
+msgstr ""
+
+#: strconsts.rsdesttable
+msgid "Destination table"
+msgstr ""
+
+#: strconsts.rsdesttblnotsel
+msgid "Destination table not selected"
+msgstr ""
+
+#: strconsts.rsdetailingperiod
+msgid "Detailing period"
+msgstr ""
+
+#: strconsts.rsdeveloper
+msgctxt "strconsts.rsdeveloper"
+msgid "Developer"
+msgstr ""
+
+#: strconsts.rsdialogfilter
+msgid "DataExpress files (*.fdb)|*.fdb;*.FDB|All files (*.*)|*.*"
+msgstr ""
+
+#: strconsts.rsdistinctcount
+msgid "Distinct count"
+msgstr ""
+
+#: strconsts.rsdivision
+msgid "Division"
+msgstr ""
+
+#: strconsts.rsdivzero
+msgid "Division by zero"
+msgstr ""
+
+#: strconsts.rsdot
+msgid "Dot"
+msgstr ""
+
+#: strconsts.rsdownload
+msgid "Download"
+msgstr ""
+
+#: strconsts.rsdsgnbackimage
+msgid "Background image"
+msgstr ""
+
+#: strconsts.rsdsgnfile
+msgctxt "strconsts.rsdsgnfile"
+msgid "File"
+msgstr ""
+
+#: strconsts.rsduplicate
+msgid "Duplicate"
+msgstr ""
+
+#: strconsts.rsduplicateall
+msgid "Duplicate all"
+msgstr ""
+
+#: strconsts.rsduplicatecomponentname
+msgid "A component name already exists"
+msgstr ""
+
+#: strconsts.rsduplicatefieldname
+msgid "Duplicate field name"
+msgstr ""
+
+#: strconsts.rsdxsite
+msgid "DataExpress website"
+msgstr ""
+
+#: strconsts.rsedit
+msgctxt "strconsts.rsedit"
+msgid "Edit"
+msgstr ""
+
+#: strconsts.rseditable
+msgid "Editable"
+msgstr ""
+
+#: strconsts.rseditablerecs
+msgid "Editable records"
+msgstr ""
+
+#: strconsts.rseditcond
+msgid "Edit condition"
+msgstr ""
+
+#: strconsts.rsediting
+msgid "Editing"
+msgstr ""
+
+#: strconsts.rseditmask
+msgid "Edit mask"
+msgstr ""
+
+#: strconsts.rselapsedtime
+msgid "Elapsed time"
+msgstr ""
+
+#: strconsts.rsempty
+msgid "Empty"
+msgstr ""
+
+#: strconsts.rsencoding
+msgid "Encoding"
+msgstr ""
+
+#: strconsts.rsendlineexpected
+msgid "End of line expected"
+msgstr ""
+
+#: strconsts.rsendwthbegin
+msgid "End tag without begin tag"
+msgstr ""
+
+#: strconsts.rsentercaption
+msgctxt "strconsts.rsentercaption"
+msgid "Enter caption"
+msgstr ""
+
+#: strconsts.rsentercolumntitle
+msgid "Enter column title"
+msgstr ""
+
+#: strconsts.rsenterexpr
+msgid "Enter expression"
+msgstr ""
+
+#: strconsts.rsenterfieldname
+msgid "Enter field name"
+msgstr ""
+
+#: strconsts.rsenterfieldsize
+msgid "Enter field size"
+msgstr ""
+
+#: strconsts.rsenterfiltername
+msgid "Enter filter name"
+msgstr ""
+
+#: strconsts.rsenterformname
+msgid "Enter form name"
+msgstr ""
+
+#: strconsts.rsenterminmax
+msgid "Enter minimal and maximal value"
+msgstr ""
+
+#: strconsts.rsentername
+msgid "Enter name"
+msgstr ""
+
+#: strconsts.rsenterprecisionnum
+msgid "Enter precision of number"
+msgstr ""
+
+#: strconsts.rsenterpwd
+msgid "Enter password"
+msgstr ""
+
+#: strconsts.rsenterqueryname
+msgid "Enter query name"
+msgstr ""
+
+#: strconsts.rsentersearchtext
+msgid "Enter search text"
+msgstr ""
+
+#: strconsts.rsentertext
+msgid "Enter text"
+msgstr ""
+
+#: strconsts.rsentervalue
+msgid "Enter value"
+msgstr ""
+
+#: strconsts.rsentirescope
+msgid "Entire scope"
+msgstr ""
+
+#: strconsts.rsequal
+msgctxt "strconsts.rsequal"
+msgid "Equal"
+msgstr ""
+
+#: strconsts.rserrconnect
+msgid "Can not connect to database. Error message: "
+msgstr ""
+
+#: strconsts.rserrdelrecs
+msgid "Some records have not been deleted"
+msgstr ""
+
+#: strconsts.rserrfieldnotfound
+msgid "Field not found"
+msgstr ""
+
+#: strconsts.rserror
+msgid "Error"
+msgstr ""
+
+#: strconsts.rserrorcalcfield
+msgid "Error in calculated field [%s]: "
+msgstr ""
+
+#: strconsts.rserrorexpr
+msgid "Expression: "
+msgstr ""
+
+#: strconsts.rserrorinexpr
+msgid "Error in expression: %s"
+msgstr ""
+
+#: strconsts.rserrorinexprfix
+msgid "The expression contains an error:%sYou want to fix it?"
+msgstr ""
+
+#: strconsts.rserrorinfield
+msgid "Error in field [%s]: %s"
+msgstr ""
+
+#: strconsts.rserrorinfillfilter
+msgid "Error in the filter source table. Object is %s"
+msgstr ""
+
+#: strconsts.rserrorloadingimg
+msgid "Error loading image: %s"
+msgstr ""
+
+#: strconsts.rserrormsg
+msgid "Error: "
+msgstr ""
+
+#: strconsts.rserroroutflt
+msgid "Error in output filter %s"
+msgstr ""
+
+#: strconsts.rserrors
+msgid "Errors"
+msgstr ""
+
+#: strconsts.rserrorsavingimg
+msgid "Error saving image: %s"
+msgstr ""
+
+#: strconsts.rserrorsnotfound
+msgid "Errors not found"
+msgstr ""
+
+#: strconsts.rserrorsoccured
+msgid "Errors occured"
+msgstr ""
+
+#: strconsts.rserrorsrcflt
+msgid "Error in source filter %s"
+msgstr ""
+
+#: strconsts.rsexample
+msgid "Example"
+msgstr ""
+
+#: strconsts.rsexchgoldnewrow
+msgid "You are trying to exchange the old and new rows. You must first save the record. Continue?"
+msgstr ""
+
+#: strconsts.rsexeccond
+msgid "Execution condition"
+msgstr ""
+
+#: strconsts.rsexecutesql
+msgid "Execute SQL <F9>"
+msgstr ""
+
+#: strconsts.rsexit
+msgid "Exit"
+msgstr ""
+
+#: strconsts.rsexitmsg
+msgid "You are sure to exit"
+msgstr ""
+
+#: strconsts.rsexpandall
+msgid "Expand all"
+msgstr ""
+
+#: strconsts.rsexpertmode
+msgid "Expert mode"
+msgstr ""
+
+#: strconsts.rsexportcantcreatefile
+msgid "Can not create file: %s. The export operation will be aborted."
+msgstr ""
+
+#: strconsts.rsexportcantcreatefolder
+msgid "Can not create folder: %s. The export operation will be aborted."
+msgstr ""
+
+#: strconsts.rsexportdata
+msgid "Export data"
+msgstr ""
+
+#: strconsts.rsexportmodule
+msgid "Export module"
+msgstr ""
+
+#: strconsts.rsexportprjok
+msgid "Export of project was successfull"
+msgstr ""
+
+#: strconsts.rsexportproject
+msgid "Export Project"
+msgstr ""
+
+#: strconsts.rsexportsuccess
+msgid "Export successfull"
+msgstr ""
+
+#: strconsts.rsexprcheck
+msgctxt "strconsts.rsexprcheck"
+msgid "Check expression <F5>"
+msgstr ""
+
+#: strconsts.rsexprcheck2
+msgid "Check expression"
+msgstr ""
+
+#: strconsts.rsexpression
+msgid "Expression"
+msgstr ""
+
+#: strconsts.rsexpressionmodules
+msgid "Expression modules"
+msgstr ""
+
+#: strconsts.rsexprmodulefailedmsg
+msgid "Failed in the expression module. Try to find and remove the module that causes the error."
+msgstr ""
+
+#: strconsts.rsexprmodulesflt
+msgid "Expression modules (*.epas)|*.epas|"
+msgstr ""
+
+#: strconsts.rsfailedloadplugin
+msgid "Failed to load plugin %s"
+msgstr ""
+
+#: strconsts.rsfailedtoloadimage
+msgid "Failed to load image"
+msgstr ""
+
+#: strconsts.rsfatalerror
+msgid "Unexpected exception"
+msgstr ""
+
+#: strconsts.rsfatalerrormsg
+msgid "Oops! Sorry for the inconvenience. An unexpected exception. If this error occurs frequently, contact me.%s%sException class: %s%sException message: %s%s%sDo you want to continue running the program?"
+msgstr ""
+
+#: strconsts.rsfield
+msgctxt "strconsts.rsfield"
+msgid "Field"
+msgstr ""
+
+#: strconsts.rsfieldcantparam
+msgid "Field can not be a parameter"
+msgstr ""
+
+#: strconsts.rsfieldisrequired
+msgid "Field [%s] is required"
+msgstr ""
+
+#: strconsts.rsfieldname
+msgid "Field name"
+msgstr ""
+
+#: strconsts.rsfieldnameempty
+msgctxt "strconsts.rsfieldnameempty"
+msgid "Field name is empty"
+msgstr ""
+
+#: strconsts.rsfieldnotdate
+msgid "Field [%s] not date"
+msgstr ""
+
+#: strconsts.rsfieldnotfound
+msgid "Field not found: %s"
+msgstr ""
+
+#: strconsts.rsfieldnotsel
+msgid "Field not selected"
+msgstr ""
+
+#: strconsts.rsfieldprops
+msgid "Field properties: %s"
+msgstr ""
+
+#: strconsts.rsfields
+msgid "Fields"
+msgstr ""
+
+#: strconsts.rsfieldshouldbenum
+msgid "Field should be numeric"
+msgstr ""
+
+#: strconsts.rsfieldshouldbevisibleorparam
+msgid "Field should be visible or parameter"
+msgstr ""
+
+#: strconsts.rsfieldsize
+msgid "Field size"
+msgstr ""
+
+#: strconsts.rsfieldsizemustnotexceed
+msgid "Field size must not exceed 1000 characters."
+msgstr ""
+
+#: strconsts.rsfieldsizemustrange
+msgid "Field size must be in range from 1 to 2000 characters."
+msgstr ""
+
+#: strconsts.rsfieldsnotselected
+msgid "Select any fields"
+msgstr ""
+
+#: strconsts.rsfieldswithexprnotfound
+msgid "Fields with expressions %snot found"
+msgstr ""
+
+#: strconsts.rsfieldtype
+msgid "Field type"
+msgstr ""
+
+#: strconsts.rsfieldtypemustnumeric
+msgid "Field type must be numeric for selected function."
+msgstr ""
+
+#: strconsts.rsfile
+msgctxt "strconsts.rsfile"
+msgid "File"
+msgstr ""
+
+#: strconsts.rsfilefilter
+msgid "Files %s|*.%s|All files (*.*)|*.*"
+msgstr ""
+
+#: strconsts.rsfilename
+msgid "Filename"
+msgstr ""
+
+#: strconsts.rsfilenameempty
+msgid "Enter filename"
+msgstr ""
+
+#: strconsts.rsfilenametoolong
+msgid "File name too long (> 150)"
+msgstr ""
+
+#: strconsts.rsfilenotexists
+msgid "File %s not exists"
+msgstr ""
+
+#: strconsts.rsfilepathtoolong
+msgid "File path too long (> 255)"
+msgstr ""
+
+#: strconsts.rsfillcolor
+msgid "Fill color"
+msgstr ""
+
+#: strconsts.rsfilltable
+msgid "Fill table"
+msgstr ""
+
+#: strconsts.rsfilter
+msgid "Filter"
+msgstr ""
+
+#: strconsts.rsfilterbytotals
+msgid "Filter by totals"
+msgstr ""
+
+#: strconsts.rsfiltername
+msgid "Filter name"
+msgstr ""
+
+#: strconsts.rsfilterpresets
+msgid "Filter presets"
+msgstr ""
+
+#: strconsts.rsfiltershint
+msgid "The first filter used by default."
+msgstr ""
+
+#: strconsts.rsfind
+msgid "Find"
+msgstr ""
+
+#: strconsts.rsfindlost
+msgid "Find lost"
+msgstr ""
+
+#: strconsts.rsfindprevious
+msgid "Find previous"
+msgstr ""
+
+#: strconsts.rsfindreplace
+msgid "Find / Replace"
+msgstr ""
+
+#: strconsts.rsfindtointernet
+msgid "Find to Internet"
+msgstr ""
+
+#: strconsts.rsflat
+msgid "Flat"
+msgstr ""
+
+#: strconsts.rsflatbuttons
+msgid "Flat buttons"
+msgstr ""
+
+#: strconsts.rsfoldallcode
+msgid "Fold all code"
+msgstr ""
+
+#: strconsts.rsfont
+msgid "Font"
+msgstr ""
+
+#: strconsts.rsfontbold
+msgid "B"
+msgstr ""
+
+#: strconsts.rsfontitalic
+msgid "I"
+msgstr ""
+
+#: strconsts.rsfontname
+msgid "Font name"
+msgstr ""
+
+#: strconsts.rsfontstrikeout
+msgid "S"
+msgstr ""
+
+#: strconsts.rsfontunderline
+msgid "U"
+msgstr ""
+
+#: strconsts.rsform
+msgid "Form"
+msgstr ""
+
+#: strconsts.rsformfield
+msgid "Form field"
+msgstr ""
+
+#: strconsts.rsformfieldnotsel
+msgid "Form field not selected"
+msgstr ""
+
+#: strconsts.rsformlinkto
+msgid "Form link to"
+msgstr ""
+
+#: strconsts.rsformmodulesflt
+msgid "Form modules (*.fpas)|*.fpas|"
+msgstr ""
+
+#: strconsts.rsformname
+msgid "Form name"
+msgstr ""
+
+#: strconsts.rsformnameexists
+msgid "A form with the same name already exists."
+msgstr ""
+
+#: strconsts.rsformnotavail
+msgid "In this expression forms is not available"
+msgstr ""
+
+#: strconsts.rsformnotfound
+msgid "Form not found: %s"
+msgstr ""
+
+#: strconsts.rsformnotsel
+msgid "Form not selected"
+msgstr ""
+
+#: strconsts.rsformqrynotfound
+msgid "Form or query not found: %s"
+msgstr ""
+
+#: strconsts.rsforms
+msgid "Forms"
+msgstr ""
+
+#: strconsts.rsformslinktoselfm
+msgid "Forms link to selected form"
+msgstr ""
+
+#: strconsts.rsformsmodules
+msgid "Forms modules"
+msgstr ""
+
+#: strconsts.rsforum
+msgid "Forum"
+msgstr ""
+
+#: strconsts.rsfpboolopexpect
+msgid "Boolean operation expected"
+msgstr ""
+
+#: strconsts.rsfpcmpopexpect
+msgid "Comparsion operation expected"
+msgstr ""
+
+#: strconsts.rsfperrinexpr
+msgid "Error in expression ( %s ): %s"
+msgstr ""
+
+#: strconsts.rsfpexprexpect
+msgid "Expression expected"
+msgstr ""
+
+#: strconsts.rsfpexprnotparsed
+msgid "Expression not parsed"
+msgstr ""
+
+#: strconsts.rsfpsrcfldexcept
+msgid "Source field expected"
+msgstr ""
+
+#: strconsts.rsfpsrcfldnotaccept
+msgid "Source field [%s] unacceptable"
+msgstr ""
+
+#: strconsts.rsfpsrcfldnotacceptpar
+msgid "Source field [!%s] unacceptable"
+msgstr ""
+
+#: strconsts.rsfpsrcfldnotfound
+msgid "Source field [%s] not found"
+msgstr ""
+
+#: strconsts.rsfpsrcfldnotfoundin
+msgid "Source field [%s] not found in [%s]"
+msgstr ""
+
+#: strconsts.rsfpunsupportedparam
+msgid "Unsupported parameter type in function %s, no %d"
+msgstr ""
+
+#: strconsts.rsfpunsupportedreslt
+msgid "Unsupported returned type in function %s"
+msgstr ""
+
+#: strconsts.rsfrombegin
+msgid "From the beginning"
+msgstr ""
+
+#: strconsts.rsfromcursor
+msgid "From cursor"
+msgstr ""
+
+#: strconsts.rsfullaccess
+msgid "Full access"
+msgstr ""
+
+#: strconsts.rsfuncnotfound
+msgid "Function not found"
+msgstr ""
+
+#: strconsts.rsfuncnotfound2
+msgid "Function %s not found"
+msgstr ""
+
+#: strconsts.rsfuncnotsel
+msgctxt "strconsts.rsfuncnotsel"
+msgid "Function not selected"
+msgstr ""
+
+#: strconsts.rsfuncnotselect
+msgctxt "strconsts.rsfuncnotselect"
+msgid "Function not selected"
+msgstr ""
+
+#: strconsts.rsfunction
+msgid "Function"
+msgstr ""
+
+#: strconsts.rsfunctions
+msgid "Functions"
+msgstr ""
+
+#: strconsts.rsfunctionsbn
+msgid "Functions. Show help by function under cursor <F2>"
+msgstr ""
+
+#: strconsts.rsgetvalue
+msgid "Get value under cursor"
+msgstr ""
+
+#: strconsts.rsglyph
+msgid "Glyph"
+msgstr ""
+
+#: strconsts.rsgoto
+msgid "Go to"
+msgstr ""
+
+#: strconsts.rsgotoform
+msgid "Go to form"
+msgstr ""
+
+#: strconsts.rsgotourl
+msgid "Go to URL"
+msgstr ""
+
+#: strconsts.rsgrandtotal
+msgid "Grand total"
+msgstr ""
+
+#: strconsts.rsgreat
+msgid "Great"
+msgstr ""
+
+#: strconsts.rsgreatorequal
+msgid "Great or equal"
+msgstr ""
+
+#: strconsts.rsgridbottom
+msgid "Grid bottom"
+msgstr ""
+
+#: strconsts.rsgridleft
+msgid "Grid left"
+msgstr ""
+
+#: strconsts.rsgridlines
+msgid "Grid lines"
+msgstr ""
+
+#: strconsts.rsgridonly
+msgid "Grid only"
+msgstr ""
+
+#: strconsts.rsgridright
+msgid "Grid right"
+msgstr ""
+
+#: strconsts.rsgridtop
+msgid "Grid top"
+msgstr ""
+
+#: strconsts.rsgroup
+msgid "Group"
+msgstr ""
+
+#: strconsts.rsgroupbydate
+msgid "Group by date"
+msgstr ""
+
+#: strconsts.rsgroupfield
+msgid "Group field"
+msgstr ""
+
+#: strconsts.rsheader
+msgid "Header"
+msgstr ""
+
+#: strconsts.rsheaderlines
+msgid "Header lines"
+msgstr ""
+
+#: strconsts.rsheaders
+msgid "Headers"
+msgstr ""
+
+#: strconsts.rsheadertotal
+msgid "Header total"
+msgstr ""
+
+#: strconsts.rsheight
+msgid "Height"
+msgstr ""
+
+#: strconsts.rshelp
+msgid "Help"
+msgstr ""
+
+#: strconsts.rshelptext
+msgid "Help text"
+msgstr ""
+
+#: strconsts.rshh
+msgid "HH"
+msgstr ""
+
+#: strconsts.rshhmm
+msgid "HH:MM"
+msgstr ""
+
+#: strconsts.rshhmmss
+msgid "HH:MM:SS"
+msgstr ""
+
+#: strconsts.rshideparents
+msgid "Hide parents"
+msgstr ""
+
+#: strconsts.rshidewhenlostfocus
+msgid "Hide when lost focus"
+msgstr ""
+
+#: strconsts.rshint
+msgid "Hint"
+msgstr ""
+
+#: strconsts.rshorz
+msgid "Horizontal"
+msgstr ""
+
+#: strconsts.rshorzcenter
+msgid "Horz center"
+msgstr ""
+
+#: strconsts.rsid
+msgid "ID"
+msgstr ""
+
+#: strconsts.rsillegalboolop
+msgid "Illegal boolean operation"
+msgstr ""
+
+#: strconsts.rsillegaldateop
+msgid "Illegal date/time operation"
+msgstr ""
+
+#: strconsts.rsillegalnumop
+msgid "Illegal numeric operation"
+msgstr ""
+
+#: strconsts.rsillegalstrop
+msgid "Illegal string operation"
+msgstr ""
+
+#: strconsts.rsimage
+msgid "Image"
+msgstr ""
+
+#: strconsts.rsimpincorrectcheck
+msgid "Incorrect check: %s"
+msgstr ""
+
+#: strconsts.rsimpincorrectcounter
+msgid "Incorrect counter value: %s"
+msgstr ""
+
+#: strconsts.rsimpincorrectdate
+msgid "Incorrect date: %s"
+msgstr ""
+
+#: strconsts.rsimpincorrectnumber
+msgid "Incorrect number: %s"
+msgstr ""
+
+#: strconsts.rsimpincorrecttime
+msgid "Incorrect time: %s"
+msgstr ""
+
+#: strconsts.rsimportdata
+msgid "Import data"
+msgstr ""
+
+#: strconsts.rsimporterrorrow
+msgid "Row %d: %s"
+msgstr ""
+
+#: strconsts.rsimporterrors
+msgid "Import errors"
+msgstr ""
+
+#: strconsts.rsimportexportdatafilter
+msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*"
+msgstr ""
+
+#: strconsts.rsimportexportprjfilter
+msgid "DataExpress Project (*.dxp)|*.dxp|All files (*.*)|*.*"
+msgstr ""
+
+#: strconsts.rsimportmodule
+msgid "Import module"
+msgstr ""
+
+#: strconsts.rsimportproject
+msgid "Import Project"
+msgstr ""
+
+#: strconsts.rsimportsucess
+msgid "%d records were imported sucessfully"
+msgstr ""
+
+#: strconsts.rsincoming
+msgid "Incoming"
+msgstr ""
+
+#: strconsts.rsincompatiblearg
+msgid "Incompatible argument"
+msgstr ""
+
+#: strconsts.rsincompatiblefields
+msgid "Incompatible fields"
+msgstr ""
+
+#: strconsts.rsincompatibletypes
+msgid "Incompatible types"
+msgstr ""
+
+#: strconsts.rsincompatibletypessrcfieldandexpr
+msgid "The field type of the source form is incompatible with the type of the result of evaluating the expression"
+msgstr ""
+
+#: strconsts.rsincorrectaccess
+msgid "Incorrect access"
+msgstr ""
+
+#: strconsts.rsincorrectargcount
+msgid "Incorrect argument count"
+msgstr ""
+
+#: strconsts.rsindent
+msgid "Indent"
+msgstr ""
+
+#: strconsts.rsindication
+msgid "Indication"
+msgstr ""
+
+#: strconsts.rsinput
+msgid "Input"
+msgstr ""
+
+#: strconsts.rsinselected
+msgid "In selected"
+msgstr ""
+
+#: strconsts.rsinsert
+msgctxt "strconsts.rsinsert"
+msgid "Insert"
+msgstr ""
+
+#: strconsts.rsinsertformfield
+msgid "Insert form field"
+msgstr ""
+
+#: strconsts.rsinserting
+msgid "INS"
+msgstr ""
+
+#: strconsts.rsinsertqueryfield
+msgid "Insert query field"
+msgstr ""
+
+#: strconsts.rsinsertsourcefield
+msgid "Insert source field"
+msgstr ""
+
+#: strconsts.rsinserttotalfunc
+msgid "Insert total function"
+msgstr ""
+
+#: strconsts.rsinsertvalues
+msgid "Insert values"
+msgstr ""
+
+#: strconsts.rsinterface
+msgid "Interface"
+msgstr ""
+
+#: strconsts.rsinterfaces
+msgid "Interfaces"
+msgstr ""
+
+#: strconsts.rsinvalidchars
+msgid "You can not use the following characters in the names of forms, fields, queries and reports: ' \" | ! < > [ ] { } /"
+msgstr ""
+
+#: strconsts.rsinvalidchars2
+msgid "This property is not available because the label caption contains invalid characters."
+msgstr ""
+
+#: strconsts.rsinvalidcmpname
+msgid "Invalid component name"
+msgstr ""
+
+#: strconsts.rsinvalidcmpop
+msgid "Invalid comparison operation"
+msgstr ""
+
+#: strconsts.rsinvalidfn
+msgid "Invalid function name: %s"
+msgstr ""
+
+#: strconsts.rsinvalidmethotcall
+msgid "Invalid method call child form: %s"
+msgstr ""
+
+#: strconsts.rsinvalidmodulename
+msgid "Invalid module name"
+msgstr ""
+
+#: strconsts.rsinvalidnumber
+msgid "Invalid number"
+msgstr ""
+
+#: strconsts.rsinvalidpwd
+msgid "Invalid password"
+msgstr ""
+
+#: strconsts.rsinvalidrange
+msgid "Invalid range"
+msgstr ""
+
+#: strconsts.rsip
+msgid "IP"
+msgstr ""
+
+#: strconsts.rsipaddress
+msgid "IP address"
+msgstr ""
+
+#: strconsts.rsitalic
+msgid "Italic <Ctrl-I>"
+msgstr ""
+
+#: strconsts.rslabel
+msgid "Label"
+msgstr ""
+
+#: strconsts.rslabelempty
+msgid "The label can not be empty or filled with spaces."
+msgstr ""
+
+#: strconsts.rslanguage
+msgid "Language"
+msgstr ""
+
+#: strconsts.rslasterrormsg
+msgid "The last time there was a critical error. Continue database connection?"
+msgstr ""
+
+#: strconsts.rslbltext
+msgctxt "strconsts.rslbltext"
+msgid "Label text"
+msgstr ""
+
+#: strconsts.rsleft
+msgctxt "strconsts.rsleft"
+msgid "Left"
+msgstr ""
+
+#: strconsts.rsleftjustify
+msgid "Left justify"
+msgstr ""
+
+#: strconsts.rsleftside
+msgid "Left side"
+msgstr ""
+
+#: strconsts.rsless
+msgid "Less"
+msgstr ""
+
+#: strconsts.rslessorequal
+msgid "Less or equal"
+msgstr ""
+
+#: strconsts.rslimit64kmsg
+msgid "The total size of the form fields exceeds 64 KB. Reduce the size of the fields or delete unnecessary."
+msgstr ""
+
+#: strconsts.rslimitedaccess
+msgid "Limited access"
+msgstr ""
+
+#: strconsts.rslinecolor
+msgid "Line color"
+msgstr ""
+
+#: strconsts.rslinecomment
+msgid "Single line comment"
+msgstr ""
+
+#: strconsts.rslines
+msgid "Lines"
+msgstr ""
+
+#: strconsts.rslinestyle
+msgid "Line style"
+msgstr ""
+
+#: strconsts.rslinewidth
+msgid "Line width"
+msgstr ""
+
+#: strconsts.rslinkedobject
+msgid "Linked object"
+msgstr ""
+
+#: strconsts.rslinksetup
+msgid "Link setup"
+msgstr ""
+
+#: strconsts.rslist
+msgid "List"
+msgstr ""
+
+#: strconsts.rslistfilter
+msgid "List filter"
+msgstr ""
+
+#: strconsts.rslistsource
+msgid "List Source"
+msgstr ""
+
+#: strconsts.rsloadfile
+msgid "Load file"
+msgstr ""
+
+#: strconsts.rsloadimage
+msgid "Load image"
+msgstr ""
+
+#: strconsts.rsloading
+msgid "Loading..."
+msgstr ""
+
+#: strconsts.rslogicaland
+msgid "Logical AND"
+msgstr ""
+
+#: strconsts.rslogicalor
+msgid "Logical OR"
+msgstr ""
+
+#: strconsts.rslogintime
+msgid "Login time"
+msgstr ""
+
+#: strconsts.rslook
+msgid "Look"
+msgstr ""
+
+#: strconsts.rsloopdetected
+msgid "Loop detected in the calculations (field [%s]). All calculations will be disabled."
+msgstr ""
+
+#: strconsts.rsmacaddress
+msgid "MAC address"
+msgstr ""
+
+#: strconsts.rsmaskerrormsg
+msgid "The entered value does not match the mask"
+msgstr ""
+
+#: strconsts.rsmasscalc
+msgid "Mass calculation"
+msgstr ""
+
+#: strconsts.rsmaxheight
+msgid "Max height"
+msgstr ""
+
+#: strconsts.rsmaximizeeditor
+msgid "Maximize editor <F12>"
+msgstr ""
+
+#: strconsts.rsmaximum
+msgid "Maximum"
+msgstr ""
+
+#: strconsts.rsmaxwidth
+msgid "Max width"
+msgstr ""
+
+#: strconsts.rsmemo
+msgid "Memo"
+msgstr ""
+
+#: strconsts.rsmenu
+msgid "Menu"
+msgstr ""
+
+#: strconsts.rsmerge
+msgid "Merge"
+msgstr ""
+
+#: strconsts.rsmergeall
+msgid "Merge All"
+msgstr ""
+
+#: strconsts.rsmergeprjrenamemsg
+msgid "Some forms / reports have been renamed because the project already have such names."
+msgstr ""
+
+#: strconsts.rsmergeprojects
+msgid "Merge projects"
+msgstr ""
+
+#: strconsts.rsminheight
+msgid "Min height"
+msgstr ""
+
+#: strconsts.rsminimum
+msgid "Minimum"
+msgstr ""
+
+#: strconsts.rsminwidth
+msgid "Min width"
+msgstr ""
+
+#: strconsts.rsmodified
+msgid "Modified"
+msgstr ""
+
+#: strconsts.rsmodulealreadyexists
+msgid "The module named \"%s\" already exists."
+msgstr ""
+
+#: strconsts.rsmodulename
+msgid "Module name"
+msgstr ""
+
+#: strconsts.rsmonthnames
+msgid "January February March April May June July August September October November December"
+msgstr ""
+
+#: strconsts.rsmonthnamesbrief
+msgid "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+msgstr ""
+
+#: strconsts.rsmoreprops
+msgid "More properties"
+msgstr ""
+
+#: strconsts.rsmovecomponents
+msgid "Move"
+msgstr ""
+
+#: strconsts.rsmovedown
+msgid "Move down"
+msgstr ""
+
+#: strconsts.rsmovefirst
+msgid "Move first"
+msgstr ""
+
+#: strconsts.rsmovelast
+msgid "Move last"
+msgstr ""
+
+#: strconsts.rsmoveleft
+msgctxt "strconsts.rsmoveleft"
+msgid "Move left"
+msgstr ""
+
+#: strconsts.rsmovenext
+msgid "Move next"
+msgstr ""
+
+#: strconsts.rsmoveprevious
+msgid "Move previous"
+msgstr ""
+
+#: strconsts.rsmoveright
+msgctxt "strconsts.rsmoveright"
+msgid "Move right"
+msgstr ""
+
+#: strconsts.rsmoveup
+msgid "Move up"
+msgstr ""
+
+#: strconsts.rsmultilinecomment
+msgid "Multiline comment"
+msgstr ""
+
+#: strconsts.rsmultiplication
+msgid "Multiplication"
+msgstr ""
+
+#: strconsts.rsname
+msgid "Name"
+msgstr ""
+
+#: strconsts.rsnewdb
+msgid "New"
+msgstr ""
+
+#: strconsts.rsnewform
+msgid "New Form"
+msgstr ""
+
+#: strconsts.rsnewline
+msgid "New line <Ctrl-Space>"
+msgstr ""
+
+#: strconsts.rsnewmodule
+msgid "New module"
+msgstr ""
+
+#: strconsts.rsnewreport
+msgid "New report"
+msgstr ""
+
+#: strconsts.rsnewsection
+msgid "New section"
+msgstr ""
+
+#: strconsts.rsnext
+msgctxt "strconsts.rsnext"
+msgid "Next"
+msgstr ""
+
+#: strconsts.rsno
+msgctxt "strconsts.rsno"
+msgid "No"
+msgstr ""
+
+#: strconsts.rsnoaccess
+msgid "No access"
+msgstr ""
+
+#: strconsts.rsnoformsavailable
+msgid "No forms available"
+msgstr ""
+
+#: strconsts.rsnomsg
+msgid "&No"
+msgstr ""
+
+#: strconsts.rsnone
+msgid "None"
+msgstr ""
+
+#: strconsts.rsnosavechangesexit
+msgid "You close the application. All the changes that were made after the command \"Save\" will not be saved. Continue?"
+msgstr ""
+
+#: strconsts.rsnot
+msgid "Not"
+msgstr ""
+
+#: strconsts.rsnotallfieldssel
+msgid "Not all fields are selected"
+msgstr ""
+
+#: strconsts.rsnotavailablesubform
+msgid "Not available for child form"
+msgstr ""
+
+#: strconsts.rsnotcontainingtext
+msgid "Not containing text"
+msgstr ""
+
+#: strconsts.rsnotequal
+msgid "Not equal"
+msgstr ""
+
+#: strconsts.rsnothingfound
+msgid "Nothing found"
+msgstr ""
+
+#: strconsts.rsnotobjfield
+msgid "Field is not object"
+msgstr ""
+
+#: strconsts.rsnovisiblefiels
+msgid "No visible fields"
+msgstr ""
+
+#: strconsts.rsnow
+msgid "Current date"
+msgstr ""
+
+#: strconsts.rsnull
+msgid "Null"
+msgstr ""
+
+#: strconsts.rsnumber
+msgid "Number"
+msgstr ""
+
+#: strconsts.rsobject
+msgctxt "strconsts.rsobject"
+msgid "Object"
+msgstr ""
+
+#: strconsts.rsobjectfieldnotfound
+msgid "Object field not found: %s"
+msgstr ""
+
+#: strconsts.rsobjectfieldnotsel
+msgid "Object field not selected"
+msgstr ""
+
+#: strconsts.rsobjectfields
+msgid "Object fields"
+msgstr ""
+
+#: strconsts.rsobjectinform
+msgid "Object in form"
+msgstr ""
+
+#: strconsts.rsobjectnotsel
+msgid "Object not selected"
+msgstr ""
+
+#: strconsts.rsobjfield
+msgid "Object field"
+msgstr ""
+
+#: strconsts.rsok
+msgctxt "strconsts.rsok"
+msgid "OK"
+msgstr ""
+
+#: strconsts.rsonlyedit
+msgid "Only editing"
+msgstr ""
+
+#: strconsts.rsonlylist
+msgid "Only values from the list"
+msgstr ""
+
+#: strconsts.rsonlyview
+msgid "Only viewing"
+msgstr ""
+
+#: strconsts.rsoodocument
+msgid "OpenOffice Document"
+msgstr ""
+
+#: strconsts.rsoospreadsheet
+msgid "OpenOffice Spreadsheet"
+msgstr ""
+
+#: strconsts.rsopen
+msgctxt "strconsts.rsopen"
+msgid "Open"
+msgstr ""
+
+#: strconsts.rsopendatabase
+msgid "Open database"
+msgstr ""
+
+#: strconsts.rsopendb
+msgctxt "strconsts.rsopendb"
+msgid "Open"
+msgstr ""
+
+#: strconsts.rsopenfile
+msgid "Open file"
+msgstr ""
+
+#: strconsts.rsopenpicturesfilter
+msgctxt "strconsts.rsopenpicturesfilter"
+msgid "All pictures (*.bmp, *.gif, *.ico, *.jpg, *.pcx, *.png, *.psd, *.tga, *.tif, *.xpm)|*.bmp;*.gif;*.ico;*.jpg;*.pcx;*.png;*.psd;*.tga;*.tif;*.xpm"
+msgstr ""
+
+#: strconsts.rsopenreport
+msgid "Open report"
+msgstr ""
+
+#: strconsts.rsopentemplate
+msgid "Open template with"
+msgstr ""
+
+#: strconsts.rsoperandexpected
+msgid "Operand expected"
+msgstr ""
+
+#: strconsts.rsopexpected
+msgid "Operation expected"
+msgstr ""
+
+#: strconsts.rsorderedlist
+msgid "Ordered list"
+msgstr ""
+
+#: strconsts.rsorexpression
+msgid "or Expression"
+msgstr ""
+
+#: strconsts.rsother
+msgid "Other"
+msgstr ""
+
+#: strconsts.rsoutcoming
+msgid "Outcoming"
+msgstr ""
+
+#: strconsts.rsoutput
+msgid "Output"
+msgstr ""
+
+#: strconsts.rsoutputfilter
+msgid "Output filter"
+msgstr ""
+
+#: strconsts.rsoutputfolder
+msgid "Output folder"
+msgstr ""
+
+#: strconsts.rspage
+msgid "Page"
+msgstr ""
+
+#: strconsts.rspages
+msgid "Pages"
+msgstr ""
+
+#: strconsts.rsparameter
+msgid "Parameter"
+msgstr ""
+
+#: strconsts.rsparentfield
+msgid "Parent field"
+msgstr ""
+
+#: strconsts.rsparentform
+msgid "-- Parent form --"
+msgstr ""
+
+#: strconsts.rspassportid
+msgid "Passport ID"
+msgstr ""
+
+#: strconsts.rspassportseries
+msgid "Passport series"
+msgstr ""
+
+#: strconsts.rspassword
+msgid "Password"
+msgstr ""
+
+#: strconsts.rspaste
+msgctxt "strconsts.rspaste"
+msgid "Paste"
+msgstr ""
+
+#: strconsts.rspastefromscript
+msgid "Paste from script"
+msgstr ""
+
+#: strconsts.rspaused
+msgid "Paused"
+msgstr ""
+
+#: strconsts.rsperiod
+msgid "Period"
+msgstr ""
+
+#: strconsts.rsperiodfrom
+msgctxt "strconsts.rsperiodfrom"
+msgid "from "
+msgstr ""
+
+#: strconsts.rsperiodto
+msgctxt "strconsts.rsperiodto"
+msgid " to "
+msgstr ""
+
+#: strconsts.rsphonenumber
+msgid "Phone number"
+msgstr ""
+
+#: strconsts.rspivottable
+msgid "Pivot table"
+msgstr ""
+
+#: strconsts.rspngfiles
+msgid "PNG files (*.png)|*.png"
+msgstr ""
+
+#: strconsts.rsprecisionmustnotexceed
+msgid "Precision must not exceed 10 digits."
+msgstr ""
+
+#: strconsts.rsprecission
+msgid "Precission"
+msgstr ""
+
+#: strconsts.rspreview
+msgid "Preview <F5>"
+msgstr ""
+
+#: strconsts.rsprevious
+msgid "Previous"
+msgstr ""
+
+#: strconsts.rsprice
+msgid "Price"
+msgstr ""
+
+#: strconsts.rspricefldnotsel
+msgid "Price field not selected"
+msgstr ""
+
+#: strconsts.rsprint
+msgid "Print"
+msgstr ""
+
+#: strconsts.rsprintout
+msgid "Printout"
+msgstr ""
+
+#: strconsts.rsprnerror
+msgid "An error occurred during printing."
+msgstr ""
+
+#: strconsts.rsproblemsolution
+msgid "To program this feature to work, you need to enter and exit the designer."
+msgstr ""
+
+#: strconsts.rsprocessing
+msgid "Processing..."
+msgstr ""
+
+#: strconsts.rsprogindx
+msgid "Programmers"
+msgstr ""
+
+#: strconsts.rspromptbeforefill
+msgid "Prompt before filling"
+msgstr ""
+
+#: strconsts.rspromptfilltable
+msgid "Do you want to fill the table?"
+msgstr ""
+
+#: strconsts.rsproperties
+msgid "Properties"
+msgstr ""
+
+#: strconsts.rsqttyfldnotsel
+msgid "Quantity field not selected"
+msgstr ""
+
+#: strconsts.rsquantity
+msgid "Quantity"
+msgstr ""
+
+#: strconsts.rsquery
+msgid "Query"
+msgstr ""
+
+#: strconsts.rsqueryfield
+msgid "Query field"
+msgstr ""
+
+#: strconsts.rsqueryfieldnameexists
+msgid "A field with the same name already exists."
+msgstr ""
+
+#: strconsts.rsqueryfieldnotsel
+msgid "Query field not selected"
+msgstr ""
+
+#: strconsts.rsquerygrid
+msgid "Query grid"
+msgstr ""
+
+#: strconsts.rsqueryname
+msgid "Query name"
+msgstr ""
+
+#: strconsts.rsquerynotfound
+msgid "Query not found: %s"
+msgstr ""
+
+#: strconsts.rsradd
+msgctxt "strconsts.rsradd"
+msgid "Add"
+msgstr ""
+
+#: strconsts.rsrange
+msgid "Range"
+msgstr ""
+
+#: strconsts.rsrangefrom
+msgctxt "strconsts.rsrangefrom"
+msgid "from "
+msgstr ""
+
+#: strconsts.rsrangemsg
+msgid "[%s] should be in the range from %s to %s"
+msgstr ""
+
+#: strconsts.rsrangemsg2
+msgid "Value should be in the range from %s to %s"
+msgstr ""
+
+#: strconsts.rsrangeto
+msgctxt "strconsts.rsrangeto"
+msgid " to "
+msgstr ""
+
+#: strconsts.rsrdel
+msgid "Del"
+msgstr ""
+
+#: strconsts.rsreadonly
+msgid "Read-only"
+msgstr ""
+
+#: strconsts.rsrecalculate
+msgid "Recalculate"
+msgstr ""
+
+#: strconsts.rsrecchangeduser
+msgid "This record is changed by another user. Refresh data?"
+msgstr ""
+
+#: strconsts.rsrecchangedyou
+msgid "This record is changed by you. Refresh data?"
+msgstr ""
+
+#: strconsts.rsrecdeleteduser
+msgctxt "strconsts.rsrecdeleteduser"
+msgid "This record has been deleted by another user."
+msgstr ""
+
+#: strconsts.rsrecdeleteduserrefresh
+msgctxt "strconsts.rsrecdeleteduserrefresh"
+msgid "This record has been deleted by another user. Refresh data?"
+msgstr ""
+
+#: strconsts.rsrecdeletedyourefresh
+msgid "This record was deleted by you. Refresh data?"
+msgstr ""
+
+#: strconsts.rsrecedituser
+msgid "This record is already being edited by the user \"%s\"."
+msgstr ""
+
+#: strconsts.rsrecents
+msgid "Recents"
+msgstr ""
+
+#: strconsts.rsredit
+msgctxt "strconsts.rsredit"
+msgid "Edit"
+msgstr ""
+
+#: strconsts.rsredo
+msgid "Redo"
+msgstr ""
+
+#: strconsts.rsreference
+msgid "Reference"
+msgstr ""
+
+#: strconsts.rsrefresh
+msgid "Refresh"
+msgstr ""
+
+#: strconsts.rsrename
+msgid "Rename"
+msgstr ""
+
+#: strconsts.rsrenamemodule
+msgid "Rename module"
+msgstr ""
+
+#: strconsts.rsrenamereport
+msgid "Rename report"
+msgstr ""
+
+#: strconsts.rsrenamesection
+msgid "Rename section"
+msgstr ""
+
+#: strconsts.rsreplace
+msgid "Replace"
+msgstr ""
+
+#: strconsts.rsreplaceall
+msgid "Replace All"
+msgstr ""
+
+#: strconsts.rsreplaceallmsg
+msgid "Do you really want to replace all?"
+msgstr ""
+
+#: strconsts.rsreplacedby
+msgid "Replaced by"
+msgstr ""
+
+#: strconsts.rsreplacing
+msgid "REPL"
+msgstr ""
+
+#: strconsts.rsreport
+msgid "Report"
+msgstr ""
+
+#: strconsts.rsreportexport
+msgid "Report export"
+msgstr ""
+
+#: strconsts.rsreportexportfilename
+msgid "Filename (optional)"
+msgstr ""
+
+#: strconsts.rsreportgrid
+msgid "Report grid"
+msgstr ""
+
+#: strconsts.rsreportname
+msgid "Report name"
+msgstr ""
+
+#: strconsts.rsreportnameexists
+msgid "A report or query with the same name already exists."
+msgstr ""
+
+#: strconsts.rsreportnotfound
+msgid "Report not found: %s"
+msgstr ""
+
+#: strconsts.rsreportnotsel
+msgid "Report not selected"
+msgstr ""
+
+#: strconsts.rsreportrefersto
+msgid "Report refers to"
+msgstr ""
+
+#: strconsts.rsreports
+msgid "Reports"
+msgstr ""
+
+#: strconsts.rsreportslinktofm
+msgid "Reports that link to selected form"
+msgstr ""
+
+#: strconsts.rsrequired
+msgid "Required"
+msgstr ""
+
+#: strconsts.rsrexp
+msgid "Exp"
+msgstr ""
+
+#: strconsts.rsright
+msgctxt "strconsts.rsright"
+msgid "Right"
+msgstr ""
+
+#: strconsts.rsrightjustify
+msgid "Right justify"
+msgstr ""
+
+#: strconsts.rsrightside
+msgid "Right side"
+msgstr ""
+
+#: strconsts.rsrmore
+msgctxt "strconsts.rsrmore"
+msgid "More"
+msgstr ""
+
+#: strconsts.rsrole
+msgid "Role"
+msgstr ""
+
+#: strconsts.rsrolenotsel
+msgid "Role not selected"
+msgstr ""
+
+#: strconsts.rsroles
+msgid "Roles"
+msgstr ""
+
+#: strconsts.rsroleused
+msgid "This role used by user %s"
+msgstr ""
+
+#: strconsts.rsrowcountinlist
+msgid "Row count in dropped down list"
+msgstr ""
+
+#: strconsts.rsrowheight
+msgid "Row height"
+msgstr ""
+
+#: strconsts.rsrown
+msgid "Row %d: "
+msgstr ""
+
+#: strconsts.rsrownum
+msgid "Row Num"
+msgstr ""
+
+#: strconsts.rsrows
+msgid "Rows"
+msgstr ""
+
+#: strconsts.rsrunning
+msgid "Running"
+msgstr ""
+
+#: strconsts.rsrvsbl
+msgid "Vsbl"
+msgstr ""
+
+#: strconsts.rssamplemasks
+msgid "Sample masks"
+msgstr ""
+
+#: strconsts.rssave
+msgid "Save"
+msgstr ""
+
+#: strconsts.rssavechanges
+msgid "Save changes"
+msgstr ""
+
+#: strconsts.rssavefile
+msgid "Save file"
+msgstr ""
+
+#: strconsts.rssaveimage
+msgid "Save image"
+msgstr ""
+
+#: strconsts.rssaveliteralchars
+msgid "Save literal characters"
+msgstr ""
+
+#: strconsts.rssavepicturesfilter
+msgctxt "strconsts.rssavepicturesfilter"
+msgid "All pictures (*.bmp, *.jpg, *.png, *.tif, *.tga, *.pcx)|*.bmp;*.jpg;*.png;*.tif;*.tga;*.pcx"
+msgstr ""
+
+#: strconsts.rssaverecmsg
+msgid "You must first save the record. Continue?"
+msgstr ""
+
+#: strconsts.rssaverecord
+msgid "Save record"
+msgstr ""
+
+#: strconsts.rsscripteditor
+msgid "Script Editor"
+msgstr ""
+
+#: strconsts.rsscripteditorbn
+msgid "Script Editor <F4>"
+msgstr ""
+
+#: strconsts.rssearch
+msgid "Search"
+msgstr ""
+
+#: strconsts.rssearchallfields
+msgid "Search all fields"
+msgstr ""
+
+#: strconsts.rssearcharea
+msgid "Search area"
+msgstr ""
+
+#: strconsts.rssearchbn
+msgid "Search <F3>"
+msgstr ""
+
+#: strconsts.rssearchcomponent
+msgid "Search component"
+msgstr ""
+
+#: strconsts.rssearchedtext
+msgid "Searched text"
+msgstr ""
+
+#: strconsts.rssearchexpr
+msgid "Search expression"
+msgstr ""
+
+#: strconsts.rssearchnode
+msgid "Search node"
+msgstr ""
+
+#: strconsts.rssearchoptions
+msgid "Search options"
+msgstr ""
+
+#: strconsts.rssearchsettings
+msgid "Search settings"
+msgstr ""
+
+#: strconsts.rssearchtext
+msgid "Search text"
+msgstr ""
+
+#: strconsts.rssearchtextnotfound
+msgid "Search text \"%s\" was not found."
+msgstr ""
+
+#: strconsts.rssection
+msgid "Section"
+msgstr ""
+
+#: strconsts.rsselcond
+msgid "Selection condition"
+msgstr ""
+
+#: strconsts.rsselect
+msgid "Select"
+msgstr ""
+
+#: strconsts.rsselectall
+msgid "Select all"
+msgstr ""
+
+#: strconsts.rsselectapplication
+msgid "Select application"
+msgstr ""
+
+#: strconsts.rsselectcolor
+msgid "Select color"
+msgstr ""
+
+#: strconsts.rsselectcomponents
+msgid "Select components"
+msgstr ""
+
+#: strconsts.rsselected
+msgid "Selected"
+msgstr ""
+
+#: strconsts.rsselectedcomponentcount
+msgid "Components: %d"
+msgstr ""
+
+#: strconsts.rsselectedfield
+msgid "Selected field"
+msgstr ""
+
+#: strconsts.rsselectfields
+msgid "Select fields"
+msgstr ""
+
+#: strconsts.rsselectfieldtype
+msgctxt "strconsts.rsselectfieldtype"
+msgid "Select field type"
+msgstr ""
+
+#: strconsts.rsselectform
+msgid "Select form"
+msgstr ""
+
+#: strconsts.rsselectformfield
+msgid "Select form field"
+msgstr ""
+
+#: strconsts.rsselection
+msgctxt "strconsts.rsselection"
+msgid "Selection"
+msgstr ""
+
+#: strconsts.rsselectioncolor
+msgctxt "strconsts.rsselectioncolor"
+msgid "Selection color"
+msgstr ""
+
+#: strconsts.rsselectionset
+msgid "Selection settings"
+msgstr ""
+
+#: strconsts.rsselectquery
+msgid "Select query"
+msgstr ""
+
+#: strconsts.rsselectqueryfield
+msgid "Select query field"
+msgstr ""
+
+#: strconsts.rsselectreport
+msgid "Select report"
+msgstr ""
+
+#: strconsts.rsselectsourcefield
+msgid "Select source field"
+msgstr ""
+
+#: strconsts.rsselectsourcetype
+msgid "Select type"
+msgstr ""
+
+#: strconsts.rssendtoback
+msgid "Send to back"
+msgstr ""
+
+#: strconsts.rssettings
+msgid "Settings"
+msgstr ""
+
+#: strconsts.rssettozero
+msgid "Set to zero"
+msgstr ""
+
+#: strconsts.rssetvalue
+msgid "Set value"
+msgstr ""
+
+#: strconsts.rsshape
+msgid "Shape"
+msgstr ""
+
+#: strconsts.rsshapetype
+msgid "Shape type"
+msgstr ""
+
+#: strconsts.rsshopping
+msgid "Shopping"
+msgstr ""
+
+#: strconsts.rsshowbuttons
+msgid "Show buttons"
+msgstr ""
+
+#: strconsts.rsshowcolumntotal
+msgid "Show column total"
+msgstr ""
+
+#: strconsts.rsshowerrors
+msgid "Show errors"
+msgstr ""
+
+#: strconsts.rsshowgrandtotal
+msgid "Show grand total"
+msgstr ""
+
+#: strconsts.rsshowrowtotal
+msgid "Show row total"
+msgstr ""
+
+#: strconsts.rsshowscrollbars
+msgid "Show scroll bars"
+msgstr ""
+
+#: strconsts.rsshowsubtotal
+msgid "Show subtotal"
+msgstr ""
+
+#: strconsts.rssimpleform
+msgid "Simple form"
+msgstr ""
+
+#: strconsts.rssingle
+msgid "Single"
+msgstr ""
+
+#: strconsts.rssinglemodeactiveusers
+msgid "You are logged in single user mode, but there are active users in the database."
+msgstr ""
+
+#: strconsts.rssingleusermode
+msgid "Single-user mode"
+msgstr ""
+
+#: strconsts.rssite
+msgid "Site: "
+msgstr ""
+
+#: strconsts.rssize
+msgctxt "strconsts.rssize"
+msgid "Size"
+msgstr ""
+
+#: strconsts.rssizeprec
+msgid "Size/Prec"
+msgstr ""
+
+#: strconsts.rssnils
+msgid "SNILS"
+msgstr ""
+
+#: strconsts.rssolid
+msgid "Solid"
+msgstr ""
+
+#: strconsts.rssort
+msgctxt "strconsts.rssort"
+msgid "Sort"
+msgstr ""
+
+#: strconsts.rssortza
+msgid "Z-A"
+msgstr ""
+
+#: strconsts.rssource
+msgid "Source"
+msgstr ""
+
+#: strconsts.rssourcefilter
+msgid "Source filter"
+msgstr ""
+
+#: strconsts.rssourcenotsel
+msgid "Source not select"
+msgstr ""
+
+#: strconsts.rssourcenum
+msgid "Source %d"
+msgstr ""
+
+#: strconsts.rssourcetable
+msgid "Source table"
+msgstr ""
+
+#: strconsts.rssourcetablefilter
+msgid "Source table filter"
+msgstr ""
+
+#: strconsts.rssourcetype
+msgctxt "strconsts.rssourcetype"
+msgid "Type"
+msgstr ""
+
+#: strconsts.rssqbrexpected
+msgid "Square bracket expected"
+msgstr ""
+
+#: strconsts.rssqleditor
+msgid "SQL Editor"
+msgstr ""
+
+#: strconsts.rssqltextcopytoclip
+msgid "SQL text is successfully copied to the clipboard"
+msgstr ""
+
+#: strconsts.rssrcfldnotsel
+msgid "Source field not selected"
+msgstr ""
+
+#: strconsts.rssrctblnotsel
+msgid "Source table not selected"
+msgstr ""
+
+#: strconsts.rsstart
+msgid "Start"
+msgstr ""
+
+#: strconsts.rsstarted
+msgid "Started"
+msgstr ""
+
+#: strconsts.rsstartwith
+msgid "Start with"
+msgstr ""
+
+#: strconsts.rsstatusbrowse
+msgid "Browse"
+msgstr ""
+
+#: strconsts.rsstatusedit
+msgctxt "strconsts.rsstatusedit"
+msgid "Edit"
+msgstr ""
+
+#: strconsts.rsstatusinsert
+msgctxt "strconsts.rsstatusinsert"
+msgid "Insert"
+msgstr ""
+
+#: strconsts.rsstdatabase
+msgid "Database"
+msgstr ""
+
+#: strconsts.rsstepinto
+msgid "Step Into"
+msgstr ""
+
+#: strconsts.rsstepintobn
+msgid "Step Into <F7>"
+msgstr ""
+
+#: strconsts.rsstepover
+msgid "Step Over"
+msgstr ""
+
+#: strconsts.rsstepoverbn
+msgid "Step Over <F8>"
+msgstr ""
+
+#: strconsts.rsstfolder
+msgid "Folder"
+msgstr ""
+
+#: strconsts.rsstlink
+msgid "Link"
+msgstr ""
+
+#: strconsts.rsstoragetype
+msgid "Storage type"
+msgstr ""
+
+#: strconsts.rssubsection
+msgid "Subsection"
+msgstr ""
+
+#: strconsts.rssubtotalcolumn
+msgid "Subtotal (column)"
+msgstr ""
+
+#: strconsts.rssubtraction
+msgid "Subtraction"
+msgstr ""
+
+#: strconsts.rssuccess
+msgid "Success"
+msgstr ""
+
+#: strconsts.rssuccessmsg
+msgid "Success message"
+msgstr ""
+
+#: strconsts.rssum
+msgid "Sum"
+msgstr ""
+
+#: strconsts.rssummary
+msgid "Summary"
+msgstr ""
+
+#: strconsts.rssupport
+msgid "Support: "
+msgstr ""
+
+#: strconsts.rstable
+msgid "Table"
+msgstr ""
+
+#: strconsts.rstablenotselect
+msgid "Table not selected"
+msgstr ""
+
+#: strconsts.rstableorquery
+msgid "Table or Query"
+msgstr ""
+
+#: strconsts.rstaborder
+msgid "Tab order"
+msgstr ""
+
+#: strconsts.rstabs
+msgid "Tabs"
+msgstr ""
+
+#: strconsts.rstabsheet
+msgid "Tab"
+msgstr ""
+
+#: strconsts.rstemplatefile
+msgid "Template file"
+msgstr ""
+
+#: strconsts.rstemplatefilenotfound
+msgid "Template file %s not found"
+msgstr ""
+
+#: strconsts.rstemplates
+msgid "Templates"
+msgstr ""
+
+#: strconsts.rstemplatesfolder
+msgid "Templates folder"
+msgstr ""
+
+#: strconsts.rstemplateunknown
+msgid "Template unknown"
+msgstr ""
+
+#: strconsts.rstest
+msgid "Test"
+msgstr ""
+
+#: strconsts.rstestform
+msgid "Test form"
+msgstr ""
+
+#: strconsts.rstestinput
+msgid "Test input"
+msgstr ""
+
+#: strconsts.rstext
+msgctxt "strconsts.rstext"
+msgid "Text"
+msgstr ""
+
+#: strconsts.rstextalignindatacells
+msgid "Text alignment in data cells"
+msgstr ""
+
+#: strconsts.rstextalignment
+msgid "Text alignment"
+msgstr ""
+
+#: strconsts.rstextcolor
+msgid "Text color"
+msgstr ""
+
+#: strconsts.rstextpropnotavail
+msgctxt "strconsts.rstextpropnotavail"
+msgid "This property is not available for a calculated label"
+msgstr ""
+
+#: strconsts.rsthereproblem
+msgid "There is a problem"
+msgstr ""
+
+#: strconsts.rsthiscommandnotapplysimpleform
+msgid "This command does not apply to a simple form."
+msgstr ""
+
+#: strconsts.rsthismonth
+msgid "This month"
+msgstr ""
+
+#: strconsts.rsthisweek
+msgid "This week"
+msgstr ""
+
+#: strconsts.rsthisyear
+msgid "This year"
+msgstr ""
+
+#: strconsts.rsthumbsize
+msgid "Thumbnails size"
+msgstr ""
+
+#: strconsts.rstime
+msgid "Time"
+msgstr ""
+
+#: strconsts.rstimeformat
+msgid "Time format"
+msgstr ""
+
+#: strconsts.rstitle
+msgid "Title"
+msgstr ""
+
+#: strconsts.rstoday
+msgid "Today"
+msgstr ""
+
+#: strconsts.rstools
+msgid "Tools"
+msgstr ""
+
+#: strconsts.rstopside
+msgid "Top side"
+msgstr ""
+
+#: strconsts.rstotal
+msgctxt "strconsts.rstotal"
+msgid "Total"
+msgstr ""
+
+#: strconsts.rstotalfunc
+msgid "Total function"
+msgstr ""
+
+#: strconsts.rstotals
+msgid "Totals"
+msgstr ""
+
+#: strconsts.rstree
+msgid "Tree"
+msgstr ""
+
+#: strconsts.rsunablefindfilemanager
+msgid "Unable find a supported file manager from list: Nautilus, Thunar, Nemo, Dolphin, PCManFM"
+msgstr ""
+
+#: strconsts.rsunderline
+msgid "Underline <Ctrl-U>"
+msgstr ""
+
+#: strconsts.rsundo
+msgid "Undo"
+msgstr ""
+
+#: strconsts.rsunfoldallcode
+msgid "Unfold all code"
+msgstr ""
+
+#: strconsts.rsunknownfieldsource
+msgid "Unknown field source"
+msgstr ""
+
+#: strconsts.rsunknownidentifier
+msgid "Unknown Identifier"
+msgstr ""
+
+#: strconsts.rsunknownmodule
+msgid "Unknown module: %s"
+msgstr ""
+
+#: strconsts.rsunknowntag
+msgid "Unknown tag: %s"
+msgstr ""
+
+#: strconsts.rsunknowntoken
+msgid "Unknown token"
+msgstr ""
+
+#: strconsts.rsunorderedlist
+msgid "Unordered list"
+msgstr ""
+
+#: strconsts.rsunsuccessfullcompile
+msgid "Unsuccessfull compile"
+msgstr ""
+
+#: strconsts.rsurlpatterntosearch
+msgid "URL pattern to search for"
+msgstr ""
+
+#: strconsts.rsuser
+msgid "User"
+msgstr ""
+
+#: strconsts.rsuseralreadylogged
+msgid "User \"%s\" is already logged"
+msgstr ""
+
+#: strconsts.rsusermodules
+msgid "User modules"
+msgstr ""
+
+#: strconsts.rsusermodulesflt
+msgid "User modules (*.pas)|*.pas|"
+msgstr ""
+
+#: strconsts.rsusermonitor
+msgid "User monitor"
+msgstr ""
+
+#: strconsts.rsusername
+msgid "Username"
+msgstr ""
+
+#: strconsts.rsusernotsel
+msgid "User not selected"
+msgstr ""
+
+#: strconsts.rsusers
+msgid "Users"
+msgstr ""
+
+#: strconsts.rsvalue
+msgid "Value"
+msgstr ""
+
+#: strconsts.rsvalues
+msgid "Values"
+msgstr ""
+
+#: strconsts.rsvarnotfound
+msgid "Variable %s not found"
+msgstr ""
+
+#: strconsts.rsversion
+msgid "Version"
+msgstr ""
+
+#: strconsts.rsvert
+msgid "Vertical"
+msgstr ""
+
+#: strconsts.rsvertcenter
+msgid "Vert center"
+msgstr ""
+
+#: strconsts.rsvideolessons
+msgid "Video lessons"
+msgstr ""
+
+#: strconsts.rsviewing
+msgid "Viewing"
+msgstr ""
+
+#: strconsts.rsviewtype
+msgctxt "strconsts.rsviewtype"
+msgid "View"
+msgstr ""
+
+#: strconsts.rsvisible
+msgid "Visible"
+msgstr ""
+
+#: strconsts.rsvisiblebuttons
+msgid "Visible buttons"
+msgstr ""
+
+#: strconsts.rsvisiblecaptions
+msgid "Visible captions"
+msgstr ""
+
+#: strconsts.rsvisiblecolumns
+msgid "Visible columns"
+msgstr ""
+
+#: strconsts.rsvisibleforms
+msgid "Visible forms"
+msgstr ""
+
+#: strconsts.rswarning
+msgid "Warning"
+msgstr ""
+
+#: strconsts.rswebpage
+msgid "Web page"
+msgstr ""
+
+#: strconsts.rsweeknames
+msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
+msgstr ""
+
+#: strconsts.rsweeknamesbrief
+msgid "Mon Tue Wed Thu Fri Sat Sun"
+msgstr ""
+
+#: strconsts.rswelcome
+msgid "Welcome!"
+msgstr ""
+
+#: strconsts.rswholewords
+msgid "Whole words"
+msgstr ""
+
+#: strconsts.rswidth
+msgid "Width"
+msgstr ""
+
+#: strconsts.rswithoutgrid
+msgid "Without grid"
+msgstr ""
+
+#: strconsts.rsworddocument
+msgid "Word Document"
+msgstr ""
+
+#: strconsts.rswordwrap
+msgid "Word wrap"
+msgstr ""
+
+#: strconsts.rswordxml
+msgid "Word XML"
+msgstr ""
+
+#: strconsts.rsyes
+msgctxt "strconsts.rsyes"
+msgid "Yes"
+msgstr ""
+
+#: strconsts.rsyesmsg
+msgid "&Yes"
+msgstr ""
+
+#: strconsts.rsyoucantdelcuruser
+msgid "You can not delete the current user."
+msgstr ""
+
