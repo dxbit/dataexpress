@@ -700,8 +700,9 @@
         <CustomData Count="1">
           <Item0 Name="IDEDirectives" Value="{%BuildCommand $(CompPath) $(EdFile) -gh -gl}"/>
         </CustomData>
-        <TopLine Value="2958"/>
-        <CursorPos X="15" Y="2979"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="3028"/>
+        <CursorPos X="48" Y="3086"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -1402,10 +1403,9 @@
         <Filename Value="ibconnection.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="IBConnection"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="161"/>
-        <CursorPos X="43" Y="182"/>
+        <CursorPos X="21" Y="171"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit142>
