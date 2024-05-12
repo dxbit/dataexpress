@@ -1,0 +1,95 @@
+object ImagePropsFm: TImagePropsFm
+  Left = 461
+  Height = 263
+  Top = 282
+  Width = 358
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Параметры изображения'
+  ClientHeight = 263
+  ClientWidth = 358
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 223
+    Width = 346
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object GroupBox1: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    Left = 38
+    Height = 144
+    Top = 32
+    Width = 282
+    AutoSize = True
+    ClientHeight = 124
+    ClientWidth = 278
+    TabOrder = 0
+    object StretchChk: TCheckBox
+      Left = 16
+      Height = 19
+      Top = 8
+      Width = 113
+      BorderSpacing.Left = 16
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 16
+      Caption = 'Растянуть/Сжать'
+      OnChange = StretchChkChange
+      TabOrder = 0
+    end
+    object PropChk: TCheckBox
+      AnchorSideTop.Control = StretchChk
+      AnchorSideTop.Side = asrBottom
+      Left = 16
+      Height = 19
+      Top = 35
+      Width = 246
+      BorderSpacing.Left = 16
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 16
+      Caption = 'Пропорциональное  растяжение/сжатие'
+      TabOrder = 1
+    end
+    object KeepSizeChk: TCheckBox
+      AnchorSideTop.Control = PropChk
+      AnchorSideTop.Side = asrBottom
+      Left = 16
+      Height = 19
+      Top = 62
+      Width = 121
+      BorderSpacing.Left = 16
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 16
+      Caption = 'Сохранять размер'
+      TabOrder = 2
+    end
+    object CenterChk: TCheckBox
+      AnchorSideTop.Control = KeepSizeChk
+      AnchorSideTop.Side = asrBottom
+      Left = 16
+      Height = 19
+      Top = 89
+      Width = 159
+      BorderSpacing.Left = 16
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 16
+      BorderSpacing.Bottom = 16
+      Caption = 'Выравнивание по центру'
+      TabOrder = 3
+    end
+  end
+end

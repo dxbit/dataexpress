@@ -1,0 +1,1462 @@
+[groups]
+Text
+Summary
+Maths
+Date
+Other
+Time
+DB access
+Records
+Case
+Number in words
+
+[COUNT]
+1
+Returns the number of records in a subform or query. <br><br>
+<center><code> COUNT (form / query name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>
+COUNT ('Services')
+</center></code><br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[SUM]
+1
+Calculates the total amount for the field of a subordinate form or query. <br><br>
+<center><code> SUM (form name, field name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> SUM ('Services', 'Amount') </code></center><br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[LENGTH]
+0
+Returns the length of the text. <br><br>
+<center><code>LENGTH(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br><br>
+<center><code>LENGTH('Ivanov')</code></center><br><br>
+Result: 6.
+
+[CUT]
+0
+Returns a piece of text. If the "length" exceeds the length of the text, the text will be cut to the last character. <br><br>
+<center><code> CUT (text, start, length) </code></center><br><br>
+<b> Parameters: </b> text, start - number, length - number <br>
+<b> Result: </b> text <br><br>
+<b> Example: </b><br>
+<center><code> CUT ('Ivanov', 4, 3) </code></center><br><br>
+Result: nov
+
+[FIND]
+0
+Returns the starting position of the searched text. Numbering of characters goes from one. <br><br>
+<center><code> FIND (search text, text, start) </code></center><br><br>
+<b> Parameters: </b> search text, text, start - number. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> FIND ('world', 'Hello world !!!', 1) </code></center><br><br>
+Result: 7. <br>
+
+[REPLACE]
+0
+Replaces the found part of the text with other text. <br><br>
+<center><code> REPLACE (text, search text, replacement text) </code></center><br><br>
+<b> Parameters: </b> text, search text, replacement text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> REPLACE ('Hello WORLD !!!', 'WORLD', 'FRIEND') </code></center><br><br>
+Result: Hello FRIEND !!!
+
+[REPLACEALL]
+0
+Replaces all found parts of the text with other text. <br><br>
+<center><code> REPLACEALL (text, search text, replacement text) </code></center><br><br>
+<b> Parameters: </b> text, search text, replacement text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> REPLACEALL ('Hello WORLD !!!', '!', '?') </code></center><br><br>
+Result: Hello WORLD ???
+
+[UPPER]
+0
+Returns all uppercase text. <br><br>
+<center><code>UPPER(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> UPPER ('Hello World !!!') </code></center><br><br>
+Result: HELLO, WORLD !!!
+
+[LOWER]
+0
+Returns all lowercase text. <br><br>
+<center><code>LOWER(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> LOWER ('Hello WORLD !!!') </code></center><br><br>
+Result: hello world !!!
+
+[TOWORDS]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+Returns a number in words. The fractional part is ignored. <br><br>
+<center><code>TOWORDS(number)</code></center><br><br>
+<b> Parameters: </b> Number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>TOWORDS(1823)</code></center><br><br>
+Result: one thousand eight hundred twenty three
+
+[RURTOWORDS]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+Returns the number in words in rubles. <br><br>
+<center><code>RURTOWORDS(number)</code></center><br><br>
+<b> Parameters: </b> Number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>RURTOWORDS(1823.23)</code></center><br><br>
+Result: one thousand eight hundred twenty three rubles 23 kopecks
+
+[FUPPER]
+0
+Returns text, all letters of which are lowercase, and the first uppercase. <br><br>
+<center><code>FUPPER(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> FUPPER ('HELLO, World !!!') </code></center><br><br>
+Result: Hello world !!!
+
+[ROUND]
+2
+Returns a number rounded to the specified precision. The number is rounded according to mathematical rules. <br><br>
+<center><code> ROUND (number, decimal places) </code></center><br><br>
+<b> Parameters: </b> number, decimal places. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> ROUND (234.69, 1) </code></center><br><br>
+Result: 234.7
+
+[TRUNC]
+2
+Returns the integer part of a number. <br><br>
+<center><code>TRUNC(number)</code></center><br><br>
+<b> Parameters: </b> Number. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>TRUNC(234.69)</code></center><br><br>
+Result: 234
+
+[FRAC]
+2
+Returns the fractional part. <br><br>
+<center><code> FRAC (number, decimal places) </code></center><br><br>
+<b> Parameters: </b> number, decimal places - the number of decimal places. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> FRAC (234.6932, 2) </code></center><br><br>
+Result: 69
+
+[POWER]
+2
+Returns the power of a number. <br><br>
+<center><code> POWER (number, degree) </code></center><br><br>
+<b> Parameters: </b> number, degree - number. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> POWER (2, 3) </code></center><br><br>
+Result: 8
+
+[DATE]
+3
+Returns the current date. <br><br>
+<center><code>DATE</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> date. <br><br>
+
+[TIME]
+5
+Returns the current time. <br><br>
+<center><code>TIME</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> time. <br><br>
+
+[YEARSBETWEEN]
+3
+Determines the interval between dates in years. <br><br>
+<center><code> YEARSBETWEEN (date1, date2) </code></center><br><br>
+<b> Parameters: </b> date1, date2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> YEARSBETWEEN ([Start date], [End date]) </code></center><br><br>
+If the fields specified in the example are equal to the values ​​of 2008-08-10 and 2019-02-02, respectively, then the result will be 10. It does not matter in what order the dates are indicated, that is, the end date can go first, and then the start: ><br>
+<center><code> YEARSBETWEEN ([End date], [Start date]) </code></center>
+
+[MONTHSBETWEEN]
+3
+Determines the interval between dates in months. <br><br>
+<center><code> MONTHSBETWEEN (date1, date2) </code></center><br><br>
+<b> Parameters: </b> date1, date2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> MONTHSBETWEEN ([Start date], [End date]) </code></center><br><br>
+If the fields specified in the example are equal to the values ​​of 2018-08-10 and 2019-02-02, respectively, then the result will be 5.
+It does not matter in what order the dates are indicated, that is, the end date can go first, and then the start date: <br><br>
+<center><code> MONTHSBETWEEN ([End date], [Start date]) </code></center>
+
+[DAYSBETWEEN]
+3
+Determines the interval between dates in days. <br><br>
+<center><code> DAYSBETWEEN (date1, date2) </code></center><br><br>
+<b> Parameters: </b> date1, date2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> DAYSBETWEEN ([Start date], [End date]) </code></center><br><br>
+If the fields specified in the example are equal to the values ​​of 2019-01-10 and 2019-02-02, then the result will be 23.
+It does not matter in what order the dates are indicated, that is, the end date can go first, and then the start date: <br><br>
+<center><code> DAYSBETWEEN ([End date], [Start date]) </code></center>
+
+[DAYOF]
+3
+Retrieves the day number from a date. <br><br>
+<center><code>DAYOF(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>DAYOF(CDATE('2015-12-23'))</code></center><br><br>
+Result: 23
+
+[MONTHOF]
+3
+Retrieves the month number from a date. <br><br>
+<center><code>MONTHOF(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>MONTHOF(CDATE('2015-12-23'))</code></center><br><br>
+Result: 12
+
+[YEAROF]
+3
+Retrieves the year number from a date. <br><br>
+<center><code>YEAROF(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>YEAROF(CDATE('2015-12-23'))</code></center><br><br>
+Result: 2015
+
+[WEEKOF]
+3
+Retrieves the week number of the year from a date. <br><br>
+<center><code>WEEKOF(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>WEEKOF(CDATE('2015-12-23'))</code></center><br><br>
+Result: 52
+
+[WEEKDAY]
+3
+Determines the name of the day of the week by date. <br><br>
+<center><code>WEEKDAY(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>WEEKDAY(CDATE('2015-12-23'))</code></center><br><br>
+Result: Wednesday
+
+[WEEKDAYBRIEF]
+3
+Determines by date the short name of the day of the week. <br><br>
+<center><code>WEEKDAYBRIEF</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>WEEKDAYBRIEF(CDATE('2015-12-23'))</code></center><br><br>
+Result: Wed
+
+[MONTH]
+3
+Determines the month name by date. <br><br>
+<center><code>MONTH(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>MONTH(CDATE('2015-12-23'))</code></center><br><br>
+Result: December
+
+[MONTHBRIEF]
+3
+Determines the month’s short name by date. <br><br>
+<center><code>MONTHBRIEF</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>MONTHBRIEF(CDATE('2015-12-23'))</code></center><br><br>
+Result: Dec
+
+[NULL]
+4
+Undefined value or empty. <br><br>
+<center><code>NULL</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> NULL. <br><br>
+The function is often used to clear the field and in the IIF function to check the filling of the field. Example expression in a value check: <br><br>
+<center><code> IIF ([Client] = NULL, 'Client not selected', '') </code></center>
+
+[IIF]
+4
+The function returns the result depending on the condition. If the condition is satisfied, the function returns value1, otherwise value2. <br><br>
+<center><code> IIF (condition, value1, value2) </code></center><br><br>
+<b> Parameters: </b> Condition - boolean, Value 1 - any type, Value 2 - any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> IIF ([Amount]> 0, [Amount], '-') </code></center><br><br>
+The first parameter of the function is a logical expression, the result of which should be the value TRUE or FALSE (corresponding functions are not provided). If the result of the expression is TRUE, then the function will return the value of the second parameter; if the result is FALSE, the function will return the value of the third parameter. Essentially, a function is a way to create branches in a computation chain. You can create nested IIF: <br><br>
+<center><code> IIF ([Color] = 'Red' & [Figure] = 'Square', SUM ('Red Squares', 'Sum'), IIF ([Color] = 'Yellow' & [Figure] = 'Circle', SUM ('Yellow Circles', 'Sum'), SUM ('Green Lanterns', 'Sum')))
+
+[DAYOFWEEK]
+3
+Retrieves the day of the week number from a date. <br><br>
+<center><code>DAYOFWEEK(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>DAYOFWEEK(CDATE('2015-12-23'))</code></center><br><br>
+Result: 3
+
+[RECNO]
+7
+Determines the number of the current record of the form or query. <br><br>
+<center><code> RECNO (form / query name) </code></center><br><br>
+Parameter: form / query name - text. <br><br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>RECNO('Countries')</code></center>
+
+[SUMIF]
+1
+Calculates the total amount for the field of a subordinate form or query. <br><br>
+<center><code> SUMIF (form / query name, field name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query - text, field name - text, condition - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> SUMIF ('Services', 'Amount', '[completed] = 1') </code></center><br><br>
+The third parameter is a logical expression that is evaluated in the context of the form (query) specified in the first parameter. To calculate the amount, the function goes through all the records and for each record checks the condition: if the condition is fulfilled, the function considers the record, otherwise it skips. Even if no record satisfies the condition, the function will return 0. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[COUNTIF]
+1
+Returns the number of records in a subform or query. <br><br>
+<center><code> COUNTIF (form / query name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, condition - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> COUNTIF ('Services', '[done] = 1') </code></center><br><br>
+The third parameter is a logical expression that is evaluated in the context of the form (query) specified in the first parameter. To calculate the quantity, the function goes through all the records and for each record checks the condition: if the condition is fulfilled, the function considers the record, otherwise it skips. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[ROUNDTO]
+0
+Rounds a number to the specified precision, padding with zeros. The number is rounded according to mathematical rules. <br><br>
+<center><code> ROUNDTO (number, decimal places) </code></center><br><br>
+<b> Parameters: </b> number, decimal places - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> ROUNDTO (234.69, 2) </code></center><br><br>
+Result: 234.70
+
+[MAX]
+1
+Returns the maximum value of a subform or query field. <br><br>
+<center><code> MAX (form / query name, field name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MAX ('Services', 'Price') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will also return NULL. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[MAXIF]
+1
+Calculates the maximum value of a subform field or query field among records that satisfy the condition. <br><br>
+<center><code> MAXIF (form / query name, field name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query - text, field name - text, condition - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MAXIF ('Services', 'Price', '[done] = 1') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will also return NULL. <br><br>
+The third parameter is a logical expression that is evaluated in the context of the form (query) specified in the first parameter. To determine the maximum value, the function goes through all the records and for each record checks the condition: if the condition is fulfilled, the function considers the record, otherwise it skips. <br><br>
+It is allowed to pass the name of the current form to the function, including the parent form, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[MIN]
+1
+Calculates the minimum field value of a subform or query. <br><br>
+<center><code> MIN (form / query name, field name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MIN ('Services', 'Price') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will also return NULL. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[MINIF]
+1
+Calculates the minimum value of a subform field or query among records that satisfy the condition. <br><br>
+<center><code> MINIF (form / query name, field name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query - text, field name - text, condition - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MINIF ('Services', 'Price', '[done] = 1') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will also return NULL. <br><br>
+The third parameter is a logical expression that is evaluated in the context of the form (query) specified in the first parameter. To determine the minimum value, the function goes through all the records and for each record checks the condition: if the condition is met, the function considers the record, otherwise it skips. <br><br>
+It is allowed to pass the name of the current form to the function, including the parent form, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[AVG]
+1
+Calculates the average value of a subform or query field. <br><br>
+<center><code> AVG (form / query name, field name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> AVG ('Services', 'Price') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will return 0. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[AVGIF]
+1
+Calculates the average value of a subform or query field among records that satisfy the condition. <br><br>
+<center><code> AVGIF (form / query name, field name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text, condition - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> AVGIF ('Services', 'Price', '[completed] = 1') </code></center><br><br>
+The function ignores fields with a NULL value. If all fields contain NULL, then the function will return 0. <br><br>
+The third parameter is a logical expression that is evaluated in the context of the form (query) specified in the first parameter. To determine the average value, the function goes through all the records and for each record checks the condition: if the condition is fulfilled, the function considers the record, otherwise it skips. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[CSTR]
+4
+Converts a value (number, date, time) to text. <br><br>
+<center><code>CSTR(value)</code></center><br><br>
+<b> Parameters: </b> value - number, date, time. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> 'Current date:' + CSTR ([date]) </code></center><br><br>
+If the value is NULL, then the function will return empty text: CSTR(NULL) = ''.
+
+[CNUM]
+4
+Converts text to number. <br><br>
+<center><code>CNUM(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> [price] * CNUM ('30') </code></center><br><br>
+For correct conversion, the number must be presented according to the regional settings of the system.
+
+[CDATE]
+4
+Converts text to date. <br><br>
+<center><code>CDATE(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code> MONTHSBETWEEN ([date], CDATE ('2013-10-12')) </code></center><br><br>
+For correct conversion, the date must be presented according to the regional settings of the system.
+
+[ADDDAY]
+3
+Adds / subtracts the specified number of days from the date. <br><br>
+<center><code> ADDDAY (date, number) </code></center><br><br>
+<b> Parameters: </b> date, number. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code> ADDDAY ([date], 8) <br> ADDDAY ([date], -3) </code></center><br><br>
+If the second parameter is less than zero, then the function subtracts the days from the date.
+
+[ADDWEEK]
+3
+Adds / subtracts the specified number of weeks from the date. <br><br>
+<center><code> ADDWEEK (date, number) </code></center><br><br>
+<b> Parameters: </b> date, number. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code> ADDWEEK ([date], 8) <br> ADDWEEK ([date], -3) </code></center><br><br>
+If the second parameter is less than zero, then the function subtracts the weeks from the date.
+
+[ADDMONTH]
+3
+Adds / subtracts the specified number of months from the date. <br><br>
+<center><code> ADDMONTH (date, number) </code></center><br><br>
+<b> Parameters: </b> date, number. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code> ADDMONTH ([date], 8) <br> ADDMONTH ([date], -3) </code></center><br><br>
+If the second parameter is less than zero, then the function subtracts the months from the date.
+
+[ADDYEAR]
+3
+Adds / subtracts the specified number of years from the date. <br><br>
+<center><code> ADDYEAR (date, number) </code></center><br><br>
+<b> Parameters: </b> date, number. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code> ADDYEAR ([date], 8) <br> ADDYEAR ([date], -3) </code></center><br><br>
+If the second parameter is less than zero, then the function subtracts the years from the date.
+
+[CTIME]
+4
+Converts text to time. <br><br>
+<center><code>CTIME(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> time. <br><br>
+<b> Example: </b><br>
+<center><code>CTIME('8:34')</code></center><br><br>
+For correct conversion, the time should be presented according to the regional settings of the system.
+
+[HOUROF]
+5
+Retrieves the number of hours from time. <br><br>
+<center><code>HOUROF(Time)</code></center><br><br>
+<b> Parameters: </b> time. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>HOUROF([time])</code></center><br><br>
+If [time] = 08:23, the function will return 8.
+
+[MINUTEOF]
+5
+Retrieves the number of minutes from time. <br><br>
+<center><code>MINUTEOF(time)</code></center><br><br>
+<b> Parameters: </b> time. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>MINUTEOF([time])</code></center><br><br>
+If [time] = 08:23, the function will return 23.
+
+[SECONDOF]
+5
+Retrieves the number of seconds from time. <br><br>
+<center><code>SECONDOF(time)</code></center><br><br>
+<b> Parameters: </b> time. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>SECONDOF([time])</code></center><br><br>
+If [time] = 08:23:56, the function will return 56.
+
+[HOURSBETWEEN]
+5
+Returns the time interval in hours. <br><br>
+<center><code> HOURSBETWEEN (date1, time1, date2, time2) </code></center><br><br>
+<b> Parameters: </b> date1, time1, date2, time2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> HOURSBETWEEN ([Start date], [start time], [End date], [End time]) </code></center><br><br>
+If you need to know the interval between time fields, without using dates, you can write an expression like this: <br><br>
+<center><code> HOURSBETWEEN (date, [start time], date, [end time]) </code></center>
+
+[MINUTESBETWEEN]
+5
+Returns the time interval in minutes. <br><br>
+<center><code> MINUTESBETWEEN (date1, time1, date2, time2) </code></center><br><br>
+<b> Parameters: </b> date1, time1, date2, time2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> MINUTESBETWEEN ([Start date], [start time], [End date], [End time]) </code></center><br><br>
+If you need to know the interval between time fields, without using dates, you can write an expression like this: <br><br>
+<center><code> MINUTESBETWEEN (date, [start time], date, [end time]) </code></center>
+
+[SECONDSBETWEEN]
+5
+Returns the time interval in seconds. <br><br>
+<center><code> SECONDBETWEEN (date1, time1, date2, time2) </code></center><br><br>
+<b> Parameters: </b> date1, time1, date2, time2. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> SECONDSBETWEEN ([Start date], [start time], [End date], [End time]) </code></center><br><br>
+If you need to know the interval between time fields, without using dates, you can write an expression like this: <br><br>
+<center><code> SECONDSBETWEEN (date, [start time], date, [end time]) </code></center>
+
+[ADDHOUR]
+5
+Adds / subtracts the number of hours from time. <br><br>
+<center><code> ADDHOUR (date, time, number, date field name) </code></center><br><br>
+<b> Parameters: </b> date, time, number, date field - text. <br>
+<b> Result: </b> time. <br><br>
+<b> Example: </b><br>
+<center><code> ADDHOUR ([start date], [start time], 2, 'end date') </code></center><br><br>
+Besides the fact that the function calculates the time, it changes the date field specified in the fourth parameter. If, for example, "start time" = 23:00, increase by 2 hours, "start date" = 2015-01-23, then as a result, "end time" = 01:00, "end date" = 2015-01-24. <br><br>
+The fourth parameter can be empty, and the first parameter, in this case, any date:
+<center><code> ADDHOUR (date, [start time], 2, '') </code></center><br><br>
+If the third parameter is less than zero, then the function subtracts the clock from time.
+
+[ADDMINUTE]
+5
+Adds / subtracts the number of minutes from the time. <br><br>
+<center><code> ADDMINUTE (date, time, number, date field name) </code></center><br><br>
+<b> Parameters: </b> date, time, number, date field - text. <br>
+<b> Result: </b> time. <br><br>
+<b> Example: </b><br>
+<center><code> ADDMINUTE ([start date], [start time], 120, 'end date') </code></center><br><br>
+Besides the fact that the function calculates the time, it changes the date field specified in the fourth parameter. If, for example, "start time" = 23:00, increase by 120 minutes, "start date" = 2015-01-23, then as a result, "end time" = 01:00, "end date" = 2015-01-24. <br><br>
+The fourth parameter can be empty, and the first parameter, in this case, any date:
+<center><code> ADDMINUTE (date, [start time], 2, '') </code></center><br><br>
+If the third parameter is less than zero, then the function subtracts the minutes from the time.
+
+[ADDSECOND]
+5
+Adds / subtracts the number of seconds from time. <br><br>
+<center><code> ADDSECOND (date, time, number, date field name) </code></center><br><br>
+<b> Parameters: </b> date, time, number, date field - text. <br>
+<b> Result: </b> time. <br><br>
+<b> Example: </b><br>
+<center><code> ADDSECOND ([start date], [start time], 120, 'end date') </code></center><br><br>
+Besides the fact that the function calculates the time, it changes the date field specified in the fourth parameter. If, for example, "start time" = 23:59, increase by 120 seconds, "start date" = 2015-01-23, then as a result, "end time" = 00:01, "end date" = 2015-01-24. <br><br>
+The fourth parameter can be empty, and the first parameter, in this case, any date:
+<center><code> ADDSECOND (date, [start time], 2, '') </code></center><br><br>
+If the third parameter is less than zero, then the function subtracts seconds from time.
+
+[PERIOD]
+3
+Calculates seniority. <br><br>
+<center><code> PERIOD (date1, date2, format) </code></center><br><br>
+<b> Parameters: </b> date1, date2, format - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> PERIOD ([start date], [end date], 3) </code></center><br><br>
+The function will return, for example: 7 years 9 months 21 days. The third parameter sets the output format: 1 - only year, 2 - year and month, 3 - day, month, year. If any element is 0, then it is not displayed. When calculating, it is considered that there are 30 days in a month. The order of the dates does not matter, that is, the end date can be indicated in the first parameter, and the start date in the second.
+
+[FDATE]
+3
+Returns a date in the format "1 January 2009." <br><br>
+<center><code>FDATE(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>FDATE([Date])</code></center>
+
+[NZ]
+4
+Returns the second parameter if the first is NULL. <br><br>
+<center><code> NZ (value1, value2) </code></center><br><br>
+<b> Parameters: </b> any type, any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> NZ ([date], "Date not specified") </code></center><br><br>
+The function will return "date not specified" if [date] = NULL, otherwise the value [date] itself. Is a shortened version of IIF: <br><br>
+<center><code> IIF ([date] = NULL, "Date not specified", [date]) </code></center><br><br>
+
+[INDEXOF]
+0
+Returns a substring with index N. <br><br>
+<center><code> INDEXOF (index, text) </code></center><br><br>
+<b> Parameters: </b> index - number, text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> INDEXOF (4, "zero;one;two;three;four;five") </code></center><br><br>
+The function will return four. The index starts from zero.
+
+[MERGE]
+1
+Combines the values ​​of a column in a subordinate form or query into a single row. <br><br>
+<center><code> MERGE (form / query name, field name, separator) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text, separator - text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> MERGE ('Faults', 'Fault', ',') </code></center><br><br>
+You can use objects as a field. In this case, the object field that is displayed in the list will be used. Even if there is not a single record in the form or query, the function will return an empty string: ''. <br><br>
+It is allowed to pass the name of the current form, including the parent form, to the function, but when the function is called, the form should not be in edit mode - otherwise you will receive an error message.
+
+[RECID]
+7
+Returns the record identifier (primary key) of the form / query. <br><br>
+<center><code> RECID (form / query name) </code></center><br><br>
+<b> Parameters: </b> form / query name - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>RECID('clients')</code></center><br><br>
+Often used in a source filter to create subordinate queries.
+
+[OBJID]
+6
+Returns the identifier (primary key) of an object. <br><br>
+<center><code> OBJID (form name, field name, field value) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, field value - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> OBJID ('customers', 'name', 'Ivanov I. I.') </code></center><br><br>
+Often used in list and query filters, in the default value of objects.
+
+[USER]
+4
+Returns the name of the current user. <br><br>
+<center><code>USER</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> text. <br><br>
+
+[ROLE]
+4
+Returns the role name of the current user. <br><br>
+<center><code>ROLE</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> text. <br><br>
+
+[DBSUM]
+6
+Calculates the amount by the form field. <br><br>
+<center><code> DBSUM (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> DBSUM ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not fall into the filter, 0 is returned. When calculating the sum, fields with a NULL value are ignored. <br><br>
+Unlike the SUM function, which summarizes the values ​​in the data set, the DBSUM function accesses the database directly (the function is a complete analogue of the sum function in the query selection). In this regard, the result of the DBSUM and SUM functions may differ. If you need to calculate the amount in a subordinate form within the entire database, use DBSUM, if within the framework of one current edited parent record, use the SUM function.
+
+[DBAVG]
+6
+Calculates the arithmetic average of a form field. <br><br>
+<center><code> DBAVG (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> DBAVG ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not get into the filter, 0 is returned. When calculating the average, fields with a NULL value are ignored. <br><br>
+Unlike the AVG function, which calculates the average value in a data set, the DBAVG function accesses the database directly (the function is a complete analogue of the final "Average" function in query selection). In this regard, the result of the DBAVG and AVG functions may differ. If you need to calculate the average in a subordinate form within the entire database, use DBAVG, if within the framework of one current edited parent record - the AVG function.
+
+[DBMAX]
+6
+Calculates the maximum value from a form field. <br><br>
+<center><code> DBMAX (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> DBMAX ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
+Unlike the MAX function, which searches for the maximum in the data set, the DBMAX function accesses the database directly (the function is a complete analogue of the final "Maximum" function in query selection). In this regard, the result of DBMAX and MAX functions may differ. If you need to find the maximum value in a subordinate form within the entire database, use DBMAX, if within the limits of one current edited parent record, use the MAX function.
+
+[DBMIN]
+6
+Calculates the minimum field value. <br><br>
+<center><code> DBMIN (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> DBMIN ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
+Unlike the MIN function, which searches for the minimum in the data set, the DBMIN function accesses the database directly (the function is a complete analogue of the final "Minimum" function in query selection). In this regard, the result of the DBMIN and MIN functions may differ. If you need to find the maximum value in the subordinate form within the entire database, use DBMIN, if within the current parent editable record - the MIN function.
+
+[DBCOUNT]
+6
+Calculates the number of records in a form. <br><br>
+<center><code> DBCOUNT (form name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, filter - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> DBCOUNT ('Sales', '[!date] <= [date]') </code></center><br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. <br><br>
+Unlike the COUNT function, which returns the number of records in the data set, the DBCOUNT function accesses the database directly (the function is a complete analogue of the final "Count" function in query selection). Therefore, the result of the DBCOUNT and COUNT functions may differ. If you need to find the number of records in a subordinate form within the entire database, use DBCOUNT, if the COUNT function is used within the same current edited parent record.
+
+[DBGET]
+6
+Returns the value of a form field. <br><br>
+<center><code> DBGET (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> DBGET ('Sales', 'Amount', '[!date] = [date]') </code></center><br><br>
+There can be several records in the database that match the filter, the function takes the first record. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
+
+[DBGETID]
+6
+Returns the identifier of the form entry. <br><br>
+<center><code> DBGETID (form name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, filter - text. <br>
+<b> Result: </b> number or NULL (any type). <br><br>
+<b> Example: </b><br>
+<center><code> DBGETID ('Sales', '[!date] = [date]') </code></center><br><br>
+A database may have several records matching the filter. The function takes the first record. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
+
+[DBGETBYID]
+6
+Returns the value of a record field with the specified identifier (ID). <br><br>
+<center><code> DBGETBYID (form name, field name, identifier) ​​</code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, identifier - number. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> DBGETBYID ('Services', 'Name', DBGETID (...)) </code></center><br><br>
+The record identifier uniquely identifies a record in the database. There are several ways to get the identifier: RECID, DBGETID, OBJID, object type field functions.
+
+[MINV]
+2
+Returns the minimum value. <br><br>
+<center><code> MINV (value1, value2, ..., valueN) </code></center><br><br>
+<b> Parameters: </b> value - any type <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MINV ([price1], [price2], [price3]) </code></center>
+
+[MAXV]
+2
+Returns the maximum value. <br><br>
+<center><code> MAXV (value1, value2, ..., valueN) </code></center><br><br>
+<b> Parameters: </b> value1 - any type, value2, ..., valueN. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> MAXV ([price1], [price2], [price3]) </code></center>
+
+[SETVAR]
+4
+Saves the value to a variable. <br><br>
+<center><code> SETVAR (variable name, value) </code></center><br><br>
+<b> Parameters: </b> variable name - text, value - any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> SETVAR ('My Variable', LENGTH ([text]) </code></center><br><br>
+The variable name can contain any characters, case insensitive. The function returns the value of the second parameter. The variable is global, that is, accessible from any form or report.
+
+[GETVAR]
+4
+Returns the value of a variable. <br><br>
+<center><code> GETVAR (variable name) </code></center><br><br>
+<b> Parameters: </b> variable name - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> GETVAR ('My Variable') </code></center><br><br>
+The variable name can contain any characters, case insensitive. The variable is global, that is, accessible from any form or report. If the variable is not found, then the function returns null.
+
+[IFZ]
+4
+Returns the second parameter if the first is 0, otherwise the first parameter. <br><br>
+<center><code> IFZ (value1, value2) </code></center><br><br>
+<b> Parameters: </b> number, any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> IFZ ([number], '-') </code></center><br><br>
+Function is shortened version of IIF function: <br><br>
+<center><code> IIF ([number] = 0, '-', [number]) </code></center>
+
+[IFE]
+4
+Returns the second parameter, if the first is empty text, otherwise the first parameter. <br><br>
+<center><code> IFE (value1, value2) </code></center><br><br>
+<b> Parameters: </b> text, any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> IFE ([text], '-') </code></center><br><br>
+Function is shortened version of IIF function: <br><br>
+<center><code> IIF ([text] = '', '-', [text]) </code></center>
+
+[TRIM]
+0
+Removes all leading and trailing spaces. <br><br>
+<center><code>TRIM(text)</code></center><br><br>
+<b> Parameters: </b> text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>TRIM([text])</code></center>
+
+[AGE]
+3
+Calculates age. <br><br>
+<center><code> AGE (date1, date2, format) </code></center><br><br>
+<b> Parameters: </b> date1, date2, format - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> AGE ([start date], [end date], 3) </code></center><br><br>
+The function will return, for example, 7 years 9 months 21 days. The third parameter sets the output format: 1 - only year, 2 - year and month, 3 - day, month, year. If any element is 0, then it is not displayed. When calculating, it is considered that there are 30 days in a month. It differs from the PERIOD function in that it does not add one to the number of days.
+
+[ZEROS]
+0
+Add leading zeros to the number. <br><br>
+<center><code> ZEROS (number, text length) </code></center><br><br>
+<b> Parameters: </b> number, text length - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> ZEROS (4, 3) </code></center><br><br>
+Result: 004
+
+[BLOCK]
+4
+The purpose of the function is to perform a sequence of actions. Returns the value of the last parameter. <br><br>
+<center><code> BLOCK (value1, value2, ..., valueN) </code></center><br><br>
+<b> Parameters: </b> value - any type. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> BLOCK (SETVAR ('var1', 10), SETVAR ('var2', 20), GETVAR ('var1') + GETVAR ('var2')) </code></center><br ><br>
+In fact, the function does nothing, except that it returns the value of the last parameter. The expression calculation mechanism is simply used when, before calling the function, its parameters are calculated and then transferred to the function itself. Within the BLOCK function, action functions such as SETVAR, SETFIELD, etc. are usually used. For example, using the BLOCK and SETFIELD functions, you can set the value of several fields at once. By using the SETVAR function inside BLOCK, you can simplify expressions by breaking complex computation into parts and storing intermediate results in variables. Please note that in any case, the function will calculate all parameters, i.e. it is impossible to interrupt the sequence of actions in some place.
+<center><code> BLOCK (SETFIELD ('Client', Null), SETFIELD ('Date', DATE), SETFIELD ('Sum', 0), Null) <br>
+BLOCK (SETVAR ('MaxDate', MAX ('Payments', 'Date')), MAXIF ('Payments', 'Amount', '[Date] = GETVAR ("MaxDate")')) </code></ center>
+
+[VAREXISTS]
+4
+Returns 1 if the variable exists, otherwise 0. <br><br>
+<center><code> VAREXISTS (variable name) </code></center><br><br>
+<b> Parameters: </b> variable name - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> iif (varexists ('my') = 1, setvar ('my', getvar ('my') + 1), setvar ('my', 0)) </code></center><br><br>
+Variables are global, that is, accessible from any form or report. The variable name is not case sensitive.
+
+[PATHLEN]
+0
+Returns the length of the path. The path is a line of the form: Level1\Level2\...\LevelN. <br><br>
+<center><code>PATHLEN(path></code></center><br><br>
+<b> Parameters: </b> path - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> PATHLEN ('Level1\Level2\Level3'), <b> Result: </b> 3. PATHLEN ('Level1') = 1, PATHLEN ('') = 0 </code></ center><br><br>
+The function is used to determine the depth of nesting of hierarchical groups.
+
+[EXTRACTPATH]
+0
+Returns a fragment of the path. The path is a line of the form: Level1\Level2\...\LevelN. <br><br>
+<center><code> EXTRACTPATH ​​(path, start, length) </code></center><br><br>
+<b> Parameters: </b> path - text, start - number, length - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> EXTRACTPATH ​​('Level1\Level2\Level3\Level4', 2, 2) </code></center><br><br>
+Result: Level 2\Level 3. The function is used when using hierarchical groups.
+
+[NEWLINE]
+0
+Returns end of line characters. <br><br>
+<center><code>NEWLINE</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> IIF ([count] = 0, 'Quantity' + NEWLINE + 'must be greater than 0', '') </code></center><br><br>
+The function is used when the text of the inscription should be divided into several lines.
+
+[NEWREC]
+7
+Returns 1 if a new record is being edited, otherwise 0. <br><br>
+<center><code>NEWREC</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> IIF (NEWREC = 1, 'New Entry', '') </code></center><br><br>
+The function is used when some calculations need to be performed only in a new record.
+
+[GET]
+7
+Returns the field value of the current query record. <br><br>
+<center><code> GET (query name, field name) </code></center><br><br>
+<b> Parameters: </b> query name - text, field name - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> GET ('Query', 'Field') </code></center><br><br>
+A function is often used to access query fields from an expression of another query or a calculated form field.
+
+[DBCOUNTD]
+6
+Calculates the number of unique values ​​in a form field. <br><br>
+<center><code> DBCOUNTD (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> DBCOUNTD ('Applications', 'Date', '[!date] <= [date]') </code></center><br><br>
+The function can be applied to any form of the database. It is an analogue of the selection function "Distinct count". The function does not consider fields with a NULL value. Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+
+[OLDVALUE]
+7
+Returns the value of the field of the current form before editing. <br><br>
+<center><code> OLDVALUE (field name) </code></center><br><br>
+<b> Parameters: </b> field name - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code>OLDVALUE('date')</code></center>
+
+[DBMERGE]
+6
+Concatenates field values ​​in one line, separating values ​​with a semicolon and a space. <br><br>
+<center><code> DBMERGE (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> text or NULL. <br><br>
+<b> Example: </b><br>
+<center><code> DBMERGE ('Orders', 'Number', '[!Customer] = [Customer]') <br>
+Result: 3; 5; 12; 16 </code></center><br><br>
+The function can be applied to any form of the database. It is an analogue of the "Merge" selection function. The result of the function does not include duplicate values. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+
+[DBMERGEALL]
+6
+Concatenates field values ​​in one line, separating values ​​with a semicolon and a space. <br><br>
+<center><code> DBMERGEALL (form name, field name, filter) </code></center><br><br>
+<b> Parameters: </b> form name - text, field name - text, filter - text. <br>
+<b> Result: </b> text or NULL. <br><br>
+<b> Example: </b><br>
+<center><code> DBMERGEALL ('Orders', 'Number', '[!Customer] = [Customer]') <br>
+Result: 3; 3; 5; 12; 16; 16; 16 </code></center><br><br>
+Unlike DBMERGE, the result includes all field values, including duplicate ones. The function can be applied to any form of the database. It is an analogue of the "Merge All" selection function. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+
+[BEGINYEAR]
+3
+Returns the beginning of the year. <br><br>
+<center><code>BEGINYEAR(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>BEGINYEAR(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-01-01
+
+[BEGINMONTH]
+3
+Returns the beginning of the month. <br><br>
+<center><code>BEGINMONTH(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>BEGINMONTH(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-08-01
+
+[BEGINWEEK]
+3
+Returns the beginning of the week. <br><br>
+<center><code>BEGINWEEK(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>BEGINWEEK(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-08-08
+
+[ENDYEAR]
+3
+Returns the end of the year. <br><br>
+<center><code>ENDYEAR(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>ENDYEAR(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-12-31
+
+[ENDMONTH]
+3
+Returns the end of the month. <br><br>
+<center><code>ENDMONTH(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>ENDMONTH(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-08-31
+
+[ENDWEEK]
+3
+Returns the end of the week. <br><br>
+<center><code>ENDWEEK(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>ENDWEEK(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-08-14
+
+[BEGINQUARTER]
+3
+Returns the beginning of the quarter. <br><br>
+<center><code>BEGINQUARTER(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>BEGINQUARTER(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-07-01
+
+[ENDQUARTER]
+3
+Returns the end of a quarter. <br><br>
+<center><code>ENDQUARTER(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> date. <br><br>
+<b> Example: </b><br>
+<center><code>ENDQUARTER(cdate('2016-08-14'))</code></center><br><br>
+Result: 2016-09-30
+
+[QUARTEROF]
+3
+Returns the quarter number. <br><br>
+<center><code>QUARTEROF(date)</code></center><br><br>
+<b> Parameters: </b> Date. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code>QUARTEROF(cdate('2016-08-14'))</code></center><br><br>
+Result: 3
+
+[DBUNIQUE]
+6
+Checks the record of the current form for uniqueness. Returns 1 if the entry is unique, or 0 otherwise. <br><br>
+<center><code> DBUNIQUE (field list) </code></center><br><br>
+<b> Parameters: </b> field list - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> IIF (DBUNIQUE ('last name;first name;middle name') = 0, 'Such a person already exists in the database', '') </code></center><br><br>
+The field list is the name of the fields, separated by a semicolon. This function is mainly used when checking values ​​to prevent duplicate entries. Text fields are case-insensitive, that is, "Ivanov" and "Ivanovo" are the same. All form entries in the database are checked, regardless of the installed filter or restrictions. <b> Do not use this function to check for uniqueness in subordinate forms. </b> The UNIQUE function is used for this purpose.
+
+[UNIQUE]
+1
+Checks records of a subordinate form or query for uniqueness. Returns 1 if there are no repetitions among the records, or 0 otherwise. If the function found a non-unique entry, the cursor will be placed on this entry. <br><br>
+<center><code> UNIQUE (form or query name, list of fields) </code></center><br><br>
+<b> Parameters: </b> form or query name - text, list of fields - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> IIF (UNIQUE ('products', 'product name;unit') = 0, 'Product is indicated more than once', '')) </code></center><br><br >
+The field list is the name of the field, separated by a semicolon. This function is mainly used when checking values ​​to prevent duplicate entries. Text fields are case-insensitive, that is, "Ivanov" and "Ivanovo" are the same. Only table records subordinate to the current parent record are checked. <b> Check for uniqueness by this function is carried out after filling in the table. The expression should not be in the table, but in the parent form, for example, in the field of totals or inscriptions. </b>
+
+[MSGBOX]
+4
+Shows a message. <br><br>
+<center><code> MSGBOX (header, message) </code></center><br><br>
+<b> Parameters: </b> heading - text, message - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> MSGBOX ('SMS sending', 'Message delivered successfully') </code></center><br><br>
+The function always returns 0.
+
+[YESNOBOX]
+4
+Shows a message with a choice of Yes / No. <br><br>
+<center><code> YESNOBOX (header, message) </code></center><br><br>
+<b> Parameters: </b> heading - text, message - text. <br>
+<b> Result: </b> number. <br><br>
+<b> Example: </b><br>
+<center><code> IIF (YESNOBOX ('Caution!', 'Do you definitely want to download this data?') = 1, ..., ...) </code></center><br><br>
+Returned result: 1 - Yes, 2 - No.
+
+[YESNOCANCELBOX]
+4
+Shows a message with a choice of Yes / No / Cancel. <br><br>
+<center><code> YESNOCANCELBOX (header, message) </code></center><br><br>
+<b> Parameters: </b> heading - text, message - text. <br>
+<b> Result: </b> number. <br><br>
+Returned result: 1 - Yes, 2 - No, 3 - Cancel.
+
+[SETFIELD]
+7
+Writes a value in the field of the current form. <br><br>
+<center><code> SETFIELD (field name, value) </code></center><br><br>
+<b> Parameters: </b> field name - text, value - any type. <br>
+<b> Result: </b> any type. <br><br>
+If the file or image acts as the field, then the field value must be the full path to the file, the file must exist. The function will not work if the recording is not in edit mode. Field access restrictions are ignored. Changing the field will recalculate the related fields. <b> Do not try to change a field whose change will recalculate the current field (in which expression), because it will lead to a loop. </b> The function is mainly used in the "Call a function" action.
+
+[SETLABEL]
+7
+Sets the caption text. <br><br>
+<center><code> SETLABEL (label name, value) </code></center><br><br>
+<b> Parameters: </b> the name of the inscription is text, the value is any type. <br>
+<b> Result: </b> any type. <br><br>
+As the name of the inscription, the source text of the inscription in the designer is used. It is possible to change the labels with expressions. Changing the inscription NOT (!) Will lead to recounts in the related inscriptions. A function is mainly used in the expression to invoke a function.
+
+[EDITREC]
+7
+Checks if the current non-new record is in edit mode. <br><br>
+<center><code>EDITREC</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> number. <br><br>
+Returns 1 if the record is in edit mode, or 0 otherwise. <b> Note that the function checks whether an existing record is being edited. </b> To check whether a new record is being edited, use the NEWREC function.
+
+[MODIFIEDREC]
+7
+Checks if a record has been changed. <br><br>
+<center><code>MODIFIEDREC</code></center><br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> number. <br><br>
+Returns 1 if the record is changed, or 0 otherwise.
+
+[PADEG_FIO]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function converts the name to the given case. <br><br>
+<center><code> PADEG_FIO (name, gender, case) </code></center><br><br>
+<b> Parameters: </b> Name - text, gender - number, case - number. <br>
+<b> Result: </b> text. <br><br>
+The order of the components of the full name - surname, name, patronymic. <br>
+Gender: 1 - male, 2 - female, 0 - automatically determined by middle name. <br>
+Case: 1 - nominative, 2 - genitive, 3 - dative, 4 - accusative, 5 -
+instrumental, 6 - prepositional. <br><br>
+Allowed the use of initials and abbreviated name, middle name. Can perform
+name conversion type chinese. For the function to work correctly, it is necessary
+the presence of three components of the full name (names of the Chinese type can be specified in two words).
+In some cases, the name, recorded in the format "Last Name First Name [First Name]" is correctly processed.
+In addition to the conversion, the function performs formatting of the name. <br><br>
+<b> Examples: </b><br>
+<center><code> PADEG_FIO ('Иванов Иван Иванович', 1, 2) - result of Иванова Ивана Ивановича <br>
+PADEG_FIO ('Петров П. П.', 1, 2) - result of Петров П.П. </code></center>
+
+[PADEG_IF]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function is designed to induce couples "First Name Last Name" (Mark Twain). <br><br>
+<center><code> PADEG_IF (First Name Last Name, Gender, Case) </code></center><br><br>
+<b> Parameters: </b> Name - text, gender - number, case - number. <br>
+<b> Result: </b> text. <br><br>
+Gender: 1 - male, 2 - female. <br>
+Case: 1 - nominative, 2 - genitive, 3 - dative, 4 - accusative,
+5 - instrumental, 6 - prepositional. <br><br>
+This function is also suitable for declension of proper names like John Fiegerald.
+Kennedy. When using this function, it should be borne in mind that the last name
+the last word of the parameter is considered, and all previous ones are considered names and are inclined
+accordingly. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_IF ('Марк Твен', 1, 2) </code></center>
+
+[PADEG_NOMINATIVE]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function performs restoration of the nominative case for the name, specified in an arbitrary case in the format "Last name First name Patronymic". <br><br>
+<center><code>PADEG_NOMINATIVE( Full Name )</code></center><br><br>
+<b> Parameters: </b> Name - Text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_NOMINATIVE ('Иванова Ивана Ивановича') </code></center>
+
+[PADEG_APPOINTMENT]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function is intended for declining job titles. <br><br>
+<center><code> PADEG_APPOINTMENT (position, case) </code></center><br><br>
+<b> Parameters: </b> position - text, case - number. <br>
+<b> Result: </b> text. <br><br>
+Unfortunately, the function does not allow declining posts of the type:
+"Director of the department - chief accountant", which, in essence, is an association
+two posts. In such cases, we can advise you to select from the original
+substring strings corresponding to each post and pass them as
+parameter of the reduced function. And after the conversion is done, combine
+results. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_APPOINTMENT ([Position], 2) </code><center>
+
+[PADEG_FULLAPPOINTMENT]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function allows you to get the full name of the position and execute
+its conversion to a given case. <br><br>
+<center><code> PADEG_FULLAPPOINTMENT (position, unit, case) </code></center><br><br>
+<b> Parameters: </b> position - text, unit - text, case - number. <br>
+<b> Result: </b> text. <br><br>
+When combining, duplicate words are deleted if any. For example position
+- Foreman; division - Non-standard equipment workshop; the result is
+Head of non-standard equipment workshop. Everything said above regarding
+compound posts, true for this function. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_FULLAPPOINTMENT ([Position], [Unit], 2) </code></center>
+
+[PADEG_OFFICE]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+The function is intended for declining the names of units recorded
+one line. <br><br>
+<center><code> PADEG_OFFICE (unit, case) </code></center><br><br>
+<b> Parameters: </b> unit - text, case - number. <br>
+<b> Result: </b> text. <br><br>
+In addition to units, the function can also perform declination and
+enterprises. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_OFFICE ([Unit], 3) </code></center>
+
+[PADEG_SEX]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Defines gender by middle name, recorded in an arbitrary case. <br><br>
+<center><code>PADEG_SEX(patternname)</code></center><br><br>
+<b> Parameters: </b> middle name - text. <br>
+<b> Result: </b> number. <br><br>
+Returned values: 1 - male, 2 - female, 0 - undefined. <br><br>
+<b> Example: </b><br>
+<center><code>PADEG_SEX([middle name])</code></center>
+
+[PADEG_ID]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Determines the number of the case in which the name is written. <br><br>
+<center><code>PADEG_ID(Full name)</code></center><br><br>
+<b> Parameters: </b> Name - Text. <br>
+<b> Result: </b> number. <br><br>
+The return value is from 1 to 6. <br><br>
+<b> Example: </b><br>
+<center><code> PADEG_ID ('Ivanova Olga Vasilievna') </code></center>
+
+[PADEG_FIOBRIEF]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Similar to the PADEG_FIO function, but returns the name in short form: Ivanov I.I. <br><br>
+<center><code> PADEG_FIOBRIEF (name, gender, case) </code></center><br><br>
+<b> Parameters: </b> Name - text, gender - number, case - number. <br>
+<b> Result: </b> text.
+
+[PADEG_IOFBRIEF]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Similar to the PADEG_FIO function, but returns the name in short form,
+and the initials go ahead: I.I. Ivanov. <br><br>
+<center><code> PADEG_IOFBRIEF (name, gender, case) </code></center><br><br>
+<b> Parameters: </b> Name - text, gender - number, case - number. <br>
+<b> Result: </b> text.
+
+[PADEG_F]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Extracts surname from name. <br><br>
+<center><code>PADEG_F(Full name)</code></center><br><br>
+<b> Parameters: </b> Full name - Text. <br>
+<b> Result: </b> text.
+
+[PADEG_I]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Extracts name from name. <br><br>
+<center><code>PADEG_I(Full name)</code></center><br><br>
+<b> Parameters: </b> Full name - Text. <br>
+<b> Result: </b> text.
+
+[PADEG_O]
+8
+<b>Attention! Only Russian language is supported.</b><br>
+Extracts middle name from name. <br><br>
+<center><code>PADEG_O(Full name)</code></center><br><br>
+<b> Parameters: </b> Full name - Text. <br>
+<b> Result: </b> text.
+
+[RESULT]
+4
+The function returns the result of the action. Applies only to the action editor. <br><br>
+<b> Parameters: </b> None. <br>
+<b> Result: </b> any type.
+
+[CONCAT]
+0
+The function combines parameters of different types into one line, leading and trailing spaces are truncated, NULL values ​​are converted to empty text. '' <br><br>
+<b> Parameters: </b> value1 - any type, value2, ..., valueN. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code>
+CONCAT ('Cost equals', [amount], 'rub.') <br>
+CONCAT ([Surname], '', [First Name], '', [Middle Name])
+</code></center>
+
+[FNUMBER]
+0
+Rounds a number to the specified characters, padding with zeros. The number is rounded according to mathematical rules.
+The function is an analog of ROUNDTO, but additionally groups numbers by classes. <br><br>
+<center><code> FNUMBER (number, decimal places) </code></center><br><br>
+<b> Parameters: </b> number, precision - number. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> FNUMBER (2340.69, 2) </code></center><br><br>
+Result: 2 340.70
+
+[TEXT]
+0
+The function calculates the fields and expressions specified directly in the text and returns the resulting text. Fields
+are shown in square brackets, and expressions in braces. <br><br>
+<center><code>TEXT(text)</code></center><br><br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<code> TEXT ('[Client | Name], hereinafter referred to as [Client_Status], represented by {PADEG_APPOINTMENT ([Client | Position of manager], 2)} {PADEG_FIO ([Client | Name of Manager], 0, 2)}, acting on the basis of [Client | Basis], on the one hand, and [Organization | Name], hereinafter referred to as [Organization_Status], represented by [Organization | Manager's position], acting on the basis of [Organization | Basis], on the other hand, concluded this contract as follows: ') </code><br><br>
+Important notes: <br>
+<ol>
+<li> Symbols [and {are recognized respectively as a field and an expression, and the symbol} as the end of an expression. If you just need a character, duplicate it: [[ {{ }}. However, within the expression, the symbol { does not need to be duplicated. Also, there is no need to duplicate the symbol { outside the expression.</li>
+<li> Text can be wrapped. Newline characters in the text will be converted to space. In the field name and in the expression, newline characters are not processed. Therefore, the field name must be on one line, and the expression can be wrapped, but consider the newline characters. </li>
+<li> Field names and expressions inside the text are not checked by the expression editor. You get an error message while evaluating the expression. </li>
+</ol>
+
+[TIMESTAMP]
+5
+The function returns the number of seconds elapsed from 1899-12-30 00:00:00 to the specified date and time. <br><br>
+<center><code> TIMESTAMP (date, time) </code></center><br><br>
+<b> Result: </b> number. <br><br>
+If the first parameter is NULL, the date 1899-12-30 will be substituted. If the second parameter is NULL, then 00:00:00 will be set. If both parameters are NULL, then the result of the function will also be NULL. The function is used to filter queries by date and time.
+
+[MERGEX]
+1
+The function evaluates an expression for each subform or query record and concatenates the results into a single line, separating the resulting values ​​with a separator. <br><br>
+<center><code> MERGEX (form / query name, expression, delimiter) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, expression - text, delimiter - text. <br>
+<b> Result: </b> text. <br><br>
+<b> Example: </b><br>
+<center><code> MERGEX ('Incoming product', '[product|name] + "=" + [price]', ';') </code></center><br><br>
+The expression is evaluated in the context of the form or query specified in the first parameter. The function concatenates all expression results except NULL. Even if there are no records in the form or query, the function will return an empty string: ''. <br><br>
+The function is an extended version of the MERGE function and is capable of concatenating several fields into one line. <br><br>
+It is allowed to pass to the function the name of the current form, including the parent form, but when the function is called, the form must not be in edit mode - otherwise, you will receive an error message.
+
+[TAKE]
+1
+Retrieves the value of a field conditionally from a subform or query. <br><br>
+<center><code> TAKE (form / query name, field name, condition) </code></center><br><br>
+<b> Parameters: </b> form / query name - text, field name - text, condition - text. <br>
+<b> Result: </b> any type. <br><br>
+<b> Example: </b><br>
+<center><code> TAKE ('Contacts', 'Phone', 'RECNO("Contacts")=1') </code></center><br><br>
+The example function returns the phone number of the first record in the Contact subform. <br><br>
+The third parameter is a boolean expression that is evaluated in the context of the form (query) specified in the first parameter. The function returns the first value that satisfies the condition. If the condition is not specified, then the function will return the value of the first record.<br><br>
+It is allowed to pass to the function the name of the current form, including the parent form, but when the function is called, the form must not be in edit mode - otherwise, you will receive an error message.
+
+[CASEOF]
+4
+Returns the result to the right of the "=" sign if the search value matches the value to the left of the "=" sign.<br><br>
+<center><code>CASEOF(Search value, 'Value 1=Result 1;Value 2=Result 2;...;Value N=Result N')</code></center><br><br>
+<b>Parameters:</b> Search value - any type, List of values ​​- text<br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>CASEOF([Month], 'January=01.01.2021;February=01.02.2021;March=01.03.2021')</code></center><br><br>
+A list of values ​​is represented by Value=Result pairs, separated by semicolons. The value and result must not contain the "=" and ";" symbols.<br><br>
+The search is case-independent. If the desired value is not found, then the function returns empty text (i.e. '').
+
+[MONEYTOWORDS]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+Function for declination of the numerical value of a currency into a specified case.<br><br>
+<center><code>MONEYTOWORDS(number, currency, case, format)</code></center><br><br>
+<b>Parameters:</b> number, currency - text, case - number, format - number.</br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>MONEYTOWORDS([amount], 'RUB', 2, 1)</code></center><br><br>
+Acceptable currency values: RUB, USD, EUR.<br><br>
+Acceptable case values: 1 - nominative, ... 6 - prepositional;<br><br>
+When specifying a format from 0 to 3, the result will be returned as follows:<br>
+0 - 123 Russian rubles 32 kopecks;<br>
+1 - 123 (one hundred twenty-three) Russian rubles 32 kopecks;<br>
+2 - (one hundred twenty-three) Russian rubles 32 kopecks;<br>
+3 - one hundred twenty-three Russian rubles 32 kopecks.<br><br>
+According to accounting requirements, kopecks (and any other hundredths of a base currency) are not converted.
+
+[NUMTOWORDS]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+Function to convert a number to its string equivalent (number in words).<br><br>
+<center><code>NUMTOWORDS(number, gender, format)</code></center><br><br>
+<b>Parameters:</b>number, gender - number, format - number.<br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>NUMTOWORDS([sum], 1, 1)</code></center><br><br>
+Gender can take the following values: 0 - neuter, 1 - masculine, 2 - feminine.<br><br>
+The format can take 2 values: 0 - return the fractional part in numbers, 1 - in words.
+
+[NUMPADEG]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+The function of declination of a number in words returned by the NUMTOWORDS, FRACTOWORDS functions into the specified case.<br><br>
+<center><code>NUMPADEG(number in words, case, gender, ordinal, animate)</code></center><br><br>
+<b>Parameters:</b> number in words - text, case - number, gender - number, ordinal - number, animate - number.<br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>NUMPADEG('one hundred twenty-five point five', 2, 1, 0, 0)</code></center><br><br>
+The case takes the following meanings: 1 - nominative, ... 6 - prepositional.<br><br>
+Gender takes the following values: 0 - neuter, 1 - masculine, 2 - feminine.<br><br>
+Ordinal takes the following values: 0 - quantitative, 1 - ordinal (the fractional part is not returned).<br><br>
+Animate takes the following values: 0 - inanimate, 1 - animate.
+
+[FRACTOWORDS]
+9
+<b>Attention! Only Russian language is supported.</b><br>
+Function for converting a number to a string equivalent (number in words).<br><br>
+<center><code>FRACTOWORDS(number)</code></center><br><br>
+<b>Parameters:</b> number.<br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>FRACTOWORDS([amount])</code></center><br><br>
+Unlike the NUMTOWORDS function, the words "integers", "integers" will be specified during the conversion.

@@ -1,0 +1,84 @@
+[1]
+This action moves to the specified form. The action works in all views of the form, except for <b> Table Only </b>. Also, the transition does not work in an open editing form. If you specify a form that is not available to the current user, then the transition is not performed. <br><br>
+Before the transition, the program tries to save the record. In case of input errors, the transition is canceled. <br><br>
+The result of the action (RESULT) will be true in case of a successful transition.
+
+[2]
+The action creates a document according to the specified template and opens it in the application or sends it to print. The template can be selected from the list or specified as an expression. The result of evaluating the expression should be the name of the template file. The program will search for the file in the templates folder. If the result of the expression is an empty string, then the action is not performed. <br><br>
+
+The file can be saved in the path specified in the "Save to file" field. The path is calculated using an expression. The path may be relative. In this case, the folder should be located inside the DataExpress program folder. If you leave this field empty, the file will be saved in the output folder specified in the DataExpress settings. <br><br>
+
+Select action with file: <br>
+<ul>
+<li> No action - the program does not perform any actions with the created file. </li>
+<li> Open in application - the file will be opened in the application associated with this file type or the application specified in the DataExpress settings. </li>
+<li> Send to printer - the file will be immediately sent to the printer by an application that is associated with this file type in the system. </li>
+</ul><br><br>
+
+The program tries to save the record before printing, if the corresponding option is installed. If the input check finds errors, then printing is interrupted. If no errors are found, the record is saved and is again put into edit mode. <br><br>
+
+The result of the action (RESULT) will be true if printing is successful.
+
+[3]
+Mass calculations are used to set a new value in a field in many records. <br><br>
+
+<b> Form. </b> The form in which calculations will be performed. <br><br>
+
+<b> Selection condition. </b> The criteria for selecting records is set. The condition is drawn up according to the same rules as the <b> Selection Condition </b> in the role settings or <b> List Filter </b>. In condition expressions, it is permissible to refer to the fields of the current and parent form. <br><br>
+
+<b> Table. </b> If a table is specified, then calculations occur in it. <br><br>
+
+<b> Field. </b> A field to which a new value is assigned. All types except files and images. <br><br>
+
+<b> Expression. </b> An expression is constructed according to the same rules as field expressions. In the expression it is permissible to refer to the fields of the selected form. The fields of the current and parent form are not accessible. However, this limitation can be circumvented by using variables. If no expression is specified, the current expression is calculated (if one is specified). <br><br>
+
+During calculations, the fields that reference this field are also recalculated.
+When this command is executed, the program loads the form data into its internal structures. Therefore, if you have this form open, then you will not see the changes until you update the data. This command ignores access restrictions and record locking. <br><br>
+
+The result of the action (RESULT) will be true if the operation is successful.
+
+[4]
+This action opens the selected report. <br><br>
+
+The result of the action (RESULT) will be true if the report is successfully opened.
+
+[5]
+The team saves the changes and puts the record back into edit mode. <br><br>
+
+The result of the action (RESULT) will be true if the changes were saved.
+
+[6]
+This command opens the <b> User Monitor </b> form. <br><br>
+
+The result of the action (RESULT) will be true.
+
+[7]
+This command allows you to perform some simple action. For example, call an expression module function that sends SMS or starts some program. Using the BLOCK function, you can perform several actions at once. <br><br>
+
+The result of the action (RESULT) will be equal to the result of evaluating the expression.
+
+[8]
+Clears selected fields. There can be any fields except fields of objects. The command is not valid if the record is not edited. <br><br>
+
+The result of the action (RESULT) will be true if the operation is successful.
+
+[10]
+Shows a message box. <br><br>
+<b> Title </b> - The title of the message box. <br>
+<b> Message </b> - The message itself. <br>
+<b> Expression </b> is the message that is evaluated using the expression. Message must be empty. <br>
+<b> Message Type </b> - determines the type of message box. <br>
+<b> Show buttons </b> - select the buttons that should be in the message box. <br><br>
+
+The action returns the result (RESULT) in the form of the code of the pressed button. Each button has its own code: <br><br>
+OK - 1 <br>
+Cancel - 2 <br>
+Abort - 3 <br>
+Repeat - 4 <br>
+Ignore - 5 <br>
+Yes - 6 <br>
+No - 7 <br>
+All - 8 <br>
+Not for everyone - 9 <br>
+Yes to all - 10 <br>
+Close - 11 <br>

@@ -1,0 +1,87 @@
+object FilterFm: TFilterFm
+  Left = 250
+  Height = 307
+  Top = 178
+  Width = 695
+  BorderIcons = [biSystemMenu]
+  Caption = 'FilterFm'
+  ClientHeight = 307
+  ClientWidth = 695
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 275
+    Width = 683
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    OKButton.ShowHint = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 25
+    Top = 4
+    Width = 695
+    AutoSize = True
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 4
+    ButtonHeight = 25
+    ButtonWidth = 23
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ImageList1
+    List = True
+    ParentShowHint = False
+    ShowCaptions = True
+    ShowHint = True
+    TabOrder = 1
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'Добавить поле'
+      ImageIndex = 0
+    end
+    object ToolButton2: TToolButton
+      Left = 109
+      Top = 0
+      ImageIndex = 1
+    end
+    object ToolButton3: TToolButton
+      Left = 135
+      Height = 25
+      Top = 0
+      Caption = 'ToolButton3'
+      Style = tbsDivider
+    end
+    object ToolButton4: TToolButton
+      Left = 140
+      Top = 0
+      Caption = 'Добавить значение'
+      ImageIndex = 0
+    end
+    object ToolButton5: TToolButton
+      Left = 272
+      Top = 0
+      ImageIndex = 1
+    end
+  end
+  object ImageList1: TImageList
+    Left = 280
+    Top = 72
+  end
+end

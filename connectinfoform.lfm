@@ -1,0 +1,214 @@
+object ConnectInfoFm: TConnectInfoFm
+  Left = 392
+  Height = 336
+  Top = 177
+  Width = 433
+  ActiveControl = ConnectName
+  BorderIcons = [biSystemMenu]
+  Caption = 'Параметры подключения к базе данных'
+  ClientHeight = 336
+  ClientWidth = 433
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.0.0.3'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 55
+    Caption = 'Описание'
+    ParentColor = False
+    ParentFont = False
+  end
+  object ConnectName: TEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 416
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 0
+    Text = 'ConnectName'
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = ConnectName
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 156
+    BorderSpacing.Top = 8
+    Caption = 'Расположение базы данных'
+    ParentColor = False
+    ParentFont = False
+  end
+  object DBPath: TFileNameEdit
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 416
+    OnAcceptFileName = DBPathAcceptFileName
+    FilterIndex = 0
+    HideDirectories = False
+    ButtonWidth = 23
+    NumGlyphs = 1
+    Flat = True
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    MaxLength = 0
+    TabOrder = 1
+    OnEditingDone = DBPathEditingDone
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = DBPath
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 15
+    Top = 102
+    Width = 42
+    BorderSpacing.Top = 8
+    Caption = 'Пароль'
+    ParentColor = False
+  end
+  object DBPwd: TEdit
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 23
+    Top = 118
+    Width = 168
+    BorderSpacing.Top = 1
+    TabOrder = 2
+    OnChange = DBPwdChange
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = DBPwd
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 15
+    Top = 149
+    Width = 95
+    BorderSpacing.Top = 8
+    Caption = 'Папка шаблонов'
+    ParentColor = False
+  end
+  object TemplateDir: TDirectoryEdit
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 23
+    Top = 165
+    Width = 416
+    ShowHidden = False
+    ButtonWidth = 23
+    NumGlyphs = 1
+    Flat = True
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    MaxLength = 0
+    TabOrder = 3
+  end
+  object Label5: TLabel
+    AnchorSideTop.Control = TemplateDir
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 15
+    Top = 196
+    Width = 77
+    BorderSpacing.Top = 8
+    Caption = 'Папка вывода'
+    ParentColor = False
+  end
+  object OutputDir: TDirectoryEdit
+    AnchorSideTop.Control = Label5
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 23
+    Top = 212
+    Width = 416
+    ShowHidden = False
+    ButtonWidth = 23
+    NumGlyphs = 1
+    Flat = True
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    MaxLength = 0
+    TabOrder = 4
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 296
+    Width = 421
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 7
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label6: TLabel
+    AnchorSideTop.Control = OutputDir
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 15
+    Top = 243
+    Width = 102
+    BorderSpacing.Top = 8
+    Caption = 'Имя пользователя'
+    ParentColor = False
+  end
+  object User: TEdit
+    AnchorSideTop.Control = Label6
+    AnchorSideTop.Side = asrBottom
+    Left = 6
+    Height = 23
+    Top = 259
+    Width = 192
+    BorderSpacing.Top = 1
+    TabOrder = 5
+    Text = 'User'
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = OutputDir
+    AnchorSideTop.Side = asrBottom
+    Left = 206
+    Height = 15
+    Top = 243
+    Width = 42
+    BorderSpacing.Top = 8
+    Caption = 'Пароль'
+    ParentColor = False
+  end
+  object Pwd: TEdit
+    AnchorSideTop.Control = Label7
+    AnchorSideTop.Side = asrBottom
+    Left = 206
+    Height = 23
+    Top = 259
+    Width = 160
+    BorderSpacing.Top = 1
+    EchoMode = emPassword
+    PasswordChar = '*'
+    TabOrder = 6
+    Text = 'Pwd'
+  end
+  object Label8: TLabel
+    Left = 8
+    Height = 1
+    Top = 320
+    Width = 1
+    ParentColor = False
+  end
+end

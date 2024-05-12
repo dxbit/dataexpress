@@ -1,0 +1,281 @@
+object IntfFm: TIntfFm
+  Left = 435
+  Height = 551
+  Top = 220
+  Width = 472
+  BorderIcons = [biSystemMenu]
+  Caption = 'Интерфейс'
+  ClientHeight = 551
+  ClientWidth = 472
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object PageControl1: TPageControl
+    Left = 4
+    Height = 421
+    Top = 92
+    Width = 464
+    ActivePage = TabSheet1
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    TabIndex = 0
+    TabOrder = 0
+    OnChange = PageControl1Change
+    object TabSheet1: TTabSheet
+      Caption = 'Меню'
+      ClientHeight = 393
+      ClientWidth = 456
+      object ToolBar1: TToolBar
+        Left = 0
+        Height = 22
+        Top = 4
+        Width = 456
+        AutoSize = True
+        BorderSpacing.Top = 4
+        BorderSpacing.Bottom = 4
+        Caption = 'ToolBar1'
+        EdgeBorders = []
+        Images = Images
+        List = True
+        ShowCaptions = True
+        TabOrder = 0
+        Transparent = True
+        object ToolButton1: TToolButton
+          Left = 1
+          Top = 0
+          AutoSize = True
+          Caption = 'Добавить'
+          ImageIndex = 0
+          OnClick = ToolButton1Click
+        end
+        object ToolButton2: TToolButton
+          Left = 79
+          Top = 0
+          AutoSize = True
+          Caption = 'Переименовать'
+          ImageIndex = 1
+          OnClick = ToolButton2Click
+        end
+        object ToolButton3: TToolButton
+          Left = 192
+          Top = 0
+          AutoSize = True
+          Caption = 'Удалить'
+          ImageIndex = 2
+          OnClick = ToolButton3Click
+        end
+        object ToolButton7: TToolButton
+          Left = 262
+          Top = 0
+          AutoSize = True
+          Caption = 'Вверх'
+          ImageIndex = 3
+          OnClick = ToolButton7Click
+        end
+        object ToolButton8: TToolButton
+          Left = 320
+          Top = 0
+          AutoSize = True
+          Caption = 'Вниз'
+          ImageIndex = 4
+          OnClick = ToolButton8Click
+        end
+      end
+      object Mnu: TTreeViewEx
+        Left = 0
+        Height = 363
+        Top = 30
+        Width = 456
+        Align = alClient
+        Images = Images
+        ReadOnly = True
+        TabOrder = 1
+        OnSelectionChanged = MnuSelectionChanged
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Закладки'
+      ClientHeight = 393
+      ClientWidth = 456
+      object ToolBar2: TToolBar
+        Left = 0
+        Height = 22
+        Top = 4
+        Width = 456
+        AutoSize = True
+        BorderSpacing.Top = 4
+        BorderSpacing.Bottom = 4
+        Caption = 'ToolBar2'
+        EdgeBorders = []
+        Images = Images
+        List = True
+        ShowCaptions = True
+        TabOrder = 0
+        Transparent = True
+        object ToolButton4: TToolButton
+          Left = 1
+          Top = 0
+          AutoSize = True
+          Caption = 'Добавить'
+          ImageIndex = 0
+          OnClick = ToolButton4Click
+        end
+        object ToolButton6: TToolButton
+          Left = 79
+          Top = 0
+          AutoSize = True
+          Caption = 'Удалить'
+          ImageIndex = 2
+          OnClick = ToolButton6Click
+        end
+        object ToolButton9: TToolButton
+          Left = 149
+          Top = 0
+          AutoSize = True
+          Caption = 'Вверх'
+          ImageIndex = 3
+          OnClick = ToolButton9Click
+        end
+        object ToolButton10: TToolButton
+          Left = 207
+          Top = 0
+          AutoSize = True
+          Caption = 'Вниз'
+          ImageIndex = 4
+          OnClick = ToolButton10Click
+        end
+      end
+      object Tabs: TStringGrid
+        Left = 0
+        Height = 363
+        Top = 30
+        Width = 456
+        Align = alClient
+        AlternateColor = 15658734
+        AutoFillColumns = True
+        ColCount = 1
+        Columns = <        
+          item
+            Title.Caption = 'Имя'
+            Width = 438
+          end>
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goSmoothScroll]
+        RowCount = 4
+        TabOrder = 1
+        OnPickListSelect = TabsPickListSelect
+        OnSelectEditor = TabsSelectEditor
+        OnSelection = TabsSelection
+        ColWidths = (
+          438
+        )
+      end
+    end
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 519
+    Width = 460
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 88
+    Top = 0
+    Width = 472
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 88
+    ClientWidth = 472
+    TabOrder = 2
+    object Label1: TLabel
+      Left = 8
+      Height = 15
+      Top = 8
+      Width = 52
+      BorderSpacing.Top = 8
+      Caption = 'Название'
+      ParentColor = False
+    end
+    object Nm: TEdit
+      AnchorSideTop.Control = Label1
+      AnchorSideTop.Side = asrBottom
+      Left = 8
+      Height = 23
+      Top = 24
+      Width = 456
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Top = 1
+      OnChange = NmChange
+      TabOrder = 0
+      Text = 'Nm'
+    end
+    object Dflt: TCheckBox
+      AnchorSideTop.Control = Nm
+      AnchorSideTop.Side = asrBottom
+      Left = 8
+      Height = 19
+      Top = 55
+      Width = 107
+      BorderSpacing.Top = 8
+      Caption = 'По-умолчанию'
+      OnChange = DfltChange
+      TabOrder = 1
+    end
+  end
+  object Images: TImageList
+    Left = 172
+    Top = 172
+  end
+  object Pop: TPopupMenu
+    Images = Images
+    OnPopup = PopPopup
+    Left = 64
+    Top = 198
+    object MenuItem1: TMenuItem
+      Caption = 'Раздел'
+      ImageIndex = 5
+      OnClick = MenuItem1Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Подраздел'
+      ImageIndex = 5
+      OnClick = MenuItem5Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Разделитель'
+      ImageIndex = 6
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Форма'
+      ImageIndex = 7
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Отчет'
+      ImageIndex = 8
+      OnClick = MenuItem4Click
+    end
+  end
+end

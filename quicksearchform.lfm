@@ -1,0 +1,23 @@
+object QuickSearchFrm: TQuickSearchFrm
+  Left = 404
+  Height = 38
+  Top = 269
+  Width = 320
+  BorderStyle = bsNone
+  Caption = 'QuickSearchFrm'
+  ClientHeight = 38
+  ClientWidth = 320
+  OnDeactivate = FormDeactivate
+  OnShow = FormShow
+  LCLVersion = '2.0.12.0'
+  object Edit1: TEdit
+    Left = 0
+    Height = 23
+    Top = 0
+    Width = 320
+    OnChange = Edit1Change
+    OnEnter = Edit1Enter
+    OnKeyDown = Edit1KeyDown
+    TabOrder = 0
+  end
+end

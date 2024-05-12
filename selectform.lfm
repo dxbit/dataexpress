@@ -1,0 +1,47 @@
+object SelectFm: TSelectFm
+  Left = 335
+  Height = 357
+  Top = 186
+  Width = 320
+  BorderIcons = [biSystemMenu]
+  Caption = 'SelectFm'
+  ClientHeight = 357
+  ClientWidth = 320
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object List: TListBox
+    Left = 4
+    Height = 315
+    Top = 4
+    Width = 312
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    ItemHeight = 0
+    OnDblClick = ListDblClick
+    OnSelectionChange = ListSelectionChange
+    TabOrder = 0
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 325
+    Width = 308
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+end

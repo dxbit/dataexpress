@@ -1,0 +1,260 @@
+object MultiRolesFm: TMultiRolesFm
+  Left = 670
+  Height = 443
+  Top = 274
+  Width = 556
+  BorderIcons = [biSystemMenu]
+  Caption = 'MultiRolesFm'
+  ClientHeight = 443
+  ClientWidth = 556
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 411
+    Width = 544
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+  object PageControl1: TPageControl
+    Left = 4
+    Height = 401
+    Top = 4
+    Width = 548
+    ActivePage = TabSheet1
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Доступ'
+      ClientHeight = 373
+      ClientWidth = 540
+      object FormsGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = FormsGridDblClick
+        OnDrawCell = FormsGridDrawCell
+        OnGetCellHint = FormsGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          179
+          179
+          181
+        )
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Отбор'
+      ClientHeight = 373
+      ClientWidth = 540
+      object SelGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        CellHintPriority = chpTruncOnly
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = SelGridDblClick
+        OnGetCellHint = SelGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          174
+          174
+          174
+        )
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Редактирование'
+      ClientHeight = 373
+      ClientWidth = 540
+      object EditGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        CellHintPriority = chpTruncOnly
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = EditGridDblClick
+        OnGetCellHint = EditGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          174
+          174
+          174
+        )
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Удаление'
+      ClientHeight = 373
+      ClientWidth = 540
+      object DelGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        CellHintPriority = chpTruncOnly
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = DelGridDblClick
+        OnGetCellHint = DelGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          174
+          174
+          174
+        )
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'Отбор к объектам'
+      ClientHeight = 373
+      ClientWidth = 540
+      object ObjGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = ObjGridDblClick
+        OnDrawCell = ObjGridDrawCell
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          174
+          174
+          174
+        )
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'Отчеты'
+      ClientHeight = 373
+      ClientWidth = 540
+      object RpGrid: TStringGrid
+        Left = 0
+        Height = 373
+        Top = 0
+        Width = 540
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        ColCount = 3
+        FixedCols = 0
+        FixedRows = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = RpGridDblClick
+        OnDrawCell = RpGridDrawCell
+        OnGetCellHint = RpGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          174
+          174
+          174
+        )
+      end
+    end
+  end
+  object AccessMnu: TPopupMenu
+    Left = 96
+    Top = 225
+    object MenuItem4: TMenuItem
+      Caption = 'Нет доступа'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem1: TMenuItem
+      Tag = 1
+      Caption = 'Только просмотр'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem2: TMenuItem
+      Tag = 2
+      Caption = 'Только редактирование'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem3: TMenuItem
+      Tag = 3
+      Caption = 'Полный доступ'
+      OnClick = AccessMnuClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Компоненты'
+      OnClick = MenuItem8Click
+    end
+  end
+end

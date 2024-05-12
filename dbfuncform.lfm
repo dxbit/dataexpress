@@ -1,0 +1,136 @@
+object DBFuncFm: TDBFuncFm
+  Left = 354
+  Height = 248
+  Top = 191
+  Width = 372
+  BorderIcons = [biSystemMenu]
+  Caption = 'DBFuncFm'
+  ClientHeight = 248
+  ClientWidth = 372
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 48
+    Caption = 'Функция'
+    ParentColor = False
+  end
+  object Func: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 356
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    DropDownCount = 16
+    ItemHeight = 15
+    OnChange = FuncChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Func
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 38
+    BorderSpacing.Top = 8
+    Caption = 'Форма'
+    ParentColor = False
+  end
+  object Form: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 356
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = FormChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = Form
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 29
+    BorderSpacing.Top = 8
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Field: TEditButton
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 118
+    Width = 356
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ButtonWidth = 23
+    Flat = True
+    MaxLength = 0
+    NumGlyphs = 1
+    OnButtonClick = FieldButtonClick
+    PasswordChar = #0
+    TabOrder = 2
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = Field
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 149
+    Width = 41
+    BorderSpacing.Top = 8
+    Caption = 'Фильтр'
+    ParentColor = False
+  end
+  object Filter: TEditButton
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 165
+    Width = 356
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ButtonWidth = 23
+    Flat = True
+    MaxLength = 0
+    NumGlyphs = 1
+    OnButtonClick = FilterButtonClick
+    PasswordChar = #0
+    TabOrder = 3
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 208
+    Width = 360
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 4
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+end

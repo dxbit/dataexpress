@@ -1,0 +1,39 @@
+object ColorFm: TColorFm
+  Left = 412
+  Height = 193
+  Top = 260
+  Width = 302
+  BorderIcons = [biSystemMenu]
+  Caption = 'ColorFm'
+  ClientHeight = 193
+  ClientWidth = 302
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 153
+    Width = 290
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object ColorSampler1: TColorSampler
+    Left = 88
+    Height = 88
+    Top = 32
+    Width = 117
+    Anchors = [akTop, akLeft, akRight]
+    ParentShowHint = False
+    ShowHint = True
+  end
+end

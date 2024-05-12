@@ -1,0 +1,2642 @@
+Variables
+	Application: TApplication
+	MainWindow: TMainFm
+	Self: TdxForm
+Base types
+	Boolean = 1 byte: False..True
+	Byte = 1 byte: 0..255
+	Cardinal = LongWord
+	Char = 1 byte: #0..#255
+	Double = 8 bytes: 5.0E-324..1.7E308
+	Extended = 10 bytes: 1.9E-4932..1.1E4932
+	Int64 = 8 bytes: -2^63..2^63
+	Integer = 4 bytes: -2147483648..2147483647
+	LongInt = 4 bytes: -2147483648..2147483647
+	LongWord = 4 bytes: 0..4294967295
+	PChar = null terminated strings
+	Single = 4 bytes: 1.5E-45..3.4E38
+	ShortInt = 1 byte: -127..128
+	SmallInt = 2 bytes: -32768..32767
+	String = dynamic any strings
+	TStringArray = array of String
+	TVariantArray = array of Variant
+	UnicodeString = UTF-16 strings
+	Variant = any basic type
+	WideChar = 2 bytes
+	WideString = wide strings
+	Word = 2 bytes: 0..65535
+Reserved words
+	array [..] of ..
+	begin .. end
+	break
+	case x of
+	const
+	continue
+	exit
+	for .. to/downto .. do
+	function
+	if .. then .. else ..
+	procedure
+	record .. end
+	repeat .. until
+	set of ..
+	type
+	uses
+	var
+	while .. do
+Constants
+	Colors
+		cl3DDkShadow
+		cl3DLight
+		clActiveBorder
+		clActiveCaption
+		clAppWorkSpace
+		clBackground
+		clBtnFace
+		clBtnHighlight
+		clBtnShadow
+		clBtnText
+		clCaptionText
+		clGrayText
+		clHighlight
+		clHighlightText
+		clInactiveBorder
+		clInactiveCaption
+		clInactiveCaptionText
+		clInfoBk
+		clInfoText
+		clMenu
+		clMenuText
+		clScrollbar
+		clWindow
+		clWindowFrame
+		clWindowText
+		clBlack = $000000
+		clMaroon = $000080
+		clGreen = $008000
+		clOlive = $008080
+		clNavy = $800000
+		clPurple = $800080
+		clTeal = $808000
+		clGray = $808080
+		clSilver = $C0C0C0
+		clRed = $0000FF
+		clLime = $00FF00
+		clYellow = $00FFFF
+		clBlue = $FF0000
+		clFuchsia = $FF00FF
+		clAqua = $FFFF00
+		clLtGray = $C0C0C0
+		clDkGray = $808080
+		clWhite = $FFFFFF
+		clNone = $1FFFFFFF
+		clDefault = $20000000
+		clMoneyGreen = $C0DCC0
+		clSkyBlue = $F0CAA6
+		clCream = $F0FBFF
+		clMedGray = $A4A0A0
+	Cursors
+		crDefault = 0
+		crNone = -1
+		crArrow = -2
+		crCross = -3
+		crIBeam = -4
+		crSizeNESW = -6
+		crSizeNS = -7
+		crSizeNWSE = -8
+		crSizeWE = -9
+		crUpArrow = -10
+		crHourGlass = -11
+		crDrag = -12
+		crNoDrop = -13
+		crHSplit = -14
+		crVSplit = -15
+		crMultiDrag = -16
+		crSQLWait = -17
+		crNo = -18
+		crAppStart = -19
+		crHelp = -20
+		crHandPoint = -21
+	Dates
+		MSecPerDay = 86400000
+		SecsPerDay = 86400
+		DateDelta = 693594
+	File attributes
+		faReadOnly  = $00000001
+		faHidden    = $00000002
+		faSysFile   = $00000004
+		faVolumeId  = $00000008
+		faDirectory = $00000010
+		faArchive   = $00000020
+		faSymLink   = $00000400
+		faAnyFile   = $0000003f
+	File mode
+		fmCreate = $FF00
+		fmOpenRead = 0
+		fmOpenWrite = 1
+		fmOpenReadWrite = 2
+		fmShareCompat = 0
+		fmShareExclusive = $10
+		fmShareDenyWrite = $20
+		fmShareDenyRead = $30
+		fmShareDenyNone = $40
+	Misc
+		LineEnding = #13#10
+	ModalResult
+		mrNone = 0
+		mrOk = 1
+		mrCancel = 2
+		mrAbort = 3
+		mrRetry = 4
+		mrIgnore = 5
+		mrYes = 6
+		mrNo = 7
+		mrAll = 8
+		mrNoToAll = 9
+		mrYesToAll = 10
+		mrClose = 11
+	Popup menu items
+		dxCalcEdit.Button
+			MI_CALCEDIT_CUT = 0
+			MI_CALCEDIT_COPY = 1
+			MI_CALCEDIT_PASTE = 2
+			MI_CALCEDIT_CLEAR = 4
+			MI_CALCEDIT_SETZERO = 5
+		dxDBImage
+			MI_DBIMAGE_OPEN = 0
+			MI_DBIMAGE_LOAD = 1
+			MI_DBIMAGE_SAVE = 2
+			MI_DBIMAGE_CLEAR = 3
+		dxDateEdit.Button
+			MI_DATEEDIT_CUT = 0
+			MI_DATEEDIT_COPY = 1
+			MI_DATEEDIT_PASTE = 2
+			MI_DATEEDIT_CLEAR = 4
+			MI_DATEEDIT_TODAY = 6
+			MI_DATEEDIT_BEGINWEEK = 7
+			MI_DATEEDIT_BEGINMONTH = 8
+			MI_DATEEDIT_BEGINYEAR = 9
+		dxEdit
+			MI_EDIT_CUT = 0
+			MI_EDIT_COPY = 1
+			MI_EDIT_PASTE = 2
+			MI_EDIT_CLEAR = 4
+			MI_EDIT_GOTO = 6
+		dxForm.Grid
+			MI_FORM_APPEND = 0
+			MI_FORM_EDIT = 1
+			MI_FORM_DELETE = 2
+			MI_FORM_DUPLICATE = 4
+			MI_FORM_DUPLICATEALL = 5
+			MI_FORM_FILTER = 7
+			MI_FORM_ADDFILTER = 8
+			MI_FORM_CLEARALLFILTERS = 9
+		dxFile.Button
+			MI_FILE_OPEN = 0
+			MI_FILE_LOAD = 1
+			MI_FILE_SAVE = 2
+			MI_FILE_CLEAR = 3
+			MI_FILE_COPY = 5
+		dxGrid (SubForms)
+			MI_TABLE_APPEND = 0
+			MI_TABLE_EDIT = 1
+			MI_TABLE_DELETE = 2
+			MI_TABLE_DUPLICATE = 4
+			MI_TABLE_SHOPPING = 6
+			MI_TABLE_MOVEUP = 8
+			MI_TABLE_MOVEDOWN = 9
+		dxLookupComboBox.Button
+			MI_LCBX_CUT = 0
+			MI_LCBX_COPY = 1
+			MI_LCBX_PASTE = 2
+			MI_LCBX_CLEAR = 4
+			MI_LCBX_APPEND = 6
+			MI_LCBX_EDIT = 7
+			MI_LCBX_GOTO = 9
+		dxMemo
+			MI_MEMO_CUT = 0
+			MI_MEMO_COPY = 1
+			MI_MEMO_PASTE = 2
+			MI_MEMO_CLEAR = 4
+		dxObjectField
+			MI_OBJECTFIELD_COPY = 0
+		dxQueryGrid
+			MI_QUERY_APPEND = 0
+			MI_QUERY_EDIT = 1
+			MI_QUERY_DELETE = 2
+			MI_QUERY_GOTO = 4
+			MI_QUERY_REFRESH = 6
+		dxTimeEdit.Button
+			MI_TIMEEDIT_CUT = 0
+			MI_TIMEEDIT_COPY = 1
+			MI_TIMEEDIT_PASTE = 2
+			MI_TIMEEDIT_CLEAR = 4
+			MI_TIMEEDIT_8 = 6
+			MI_TIMEEDIT_9 = 7
+			MI_TIMEEDIT_10 = 8
+			MI_TIMEEDIT_11 = 9
+			MI_TIMEEDIT_12 = 10
+			MI_TIMEEDIT_13 = 11
+			MI_TIMEEDIT_14 = 12
+			MI_TIMEEDIT_15 = 13
+			MI_TIMEEDIT_16 = 14
+			MI_TIMEEDIT_17 = 15
+	Stream offset
+		soFromBeginning = 0
+		soFromCurrent = 1
+		soFromEnd = 2
+	Toolbar buttons
+		List window
+			LWBN_APPEND = 0
+			LWBN_EDIT = 1
+			LWBN_DELETE = 2			
+		Main window
+			TBN_MOVEFIRST = 0
+			TBN_MOVEPRIOR = 1
+			TBN_MOVENEXT = 2
+			TBN_MOVELAST = 3
+			TBN_APPEND = 4
+			TBN_EDIT = 5
+			TBN_CANCEL = 6
+			TBN_POST = 7
+			TBN_DELETE = 8
+			TBN_REFRESH = 9
+			TBN_PRINT = 10
+			TBN_FILTER = 11
+			TBN_SEARCH = 12
+			TBN_HELP = 13
+		Report window
+			RWBN_REPORTS = 0
+			RWBN_DATEDETAIL = 1
+			RWBN_MOVEFIRST = 2
+			RWBN_MOVEFRIOR = 3
+			RWBN_MOVENEXT = 4
+			RWBN_MOVELAST = 5
+			RWBN_APPEND = 6
+			RWBN_EDIT = 7
+			RWBN_DELETE = 8
+			RWBN_REFRESH = 9
+			RWBN_EXPORT = 10
+			RWBN_HELP = 11
+	Variants
+		varempty = 0
+		varnull = 1
+		varsmallint = 2
+		varinteger = 3
+		varsingle = 4
+		vardouble = 5
+		vardate = 7
+		varcurrency = 6
+		varolestr = 8
+		vardispatch = 9
+		varerror = 10
+		varboolean = 11
+		varvariant = 12
+		varunknown = 13
+		varshortint = 16
+		varbyte = 17
+		varword = 18
+		varlongword = 19
+		varint64 = 20
+		varstring = $100
+		vartypemask = $fff
+		vararray = $2000
+		varbyref = $4000
+	XML
+		ELEMENT_NODE = 1
+		ATTRIBUTE_NODE = 2
+		TEXT_NODE = 3
+		CDATA_SECTION_NODE = 4
+		ENTITY_REFERENCE_NODE = 5
+		ENTITY_NODE = 6
+		PROCESSING_INSTRUCTION_NODE = 7
+		COMMENT_NODE = 8
+		DOCUMENT_NODE = 9
+		DOCUMENT_TYPE_NODE = 10
+		DOCUMENT_FRAGMENT_NODE = 11
+		NOTATION_NODE = 12
+Events
+	TCloseEvent = procedure (Sender: TObject; var Action: TCloseAction)
+	TCloseQueryEvent = procedure (Sender: TObject; var CanClose: Boolean)
+	TCreateFormEvent = procedure (Sender: TObject; Form: TdxForm)
+	TCreateListWindowEvent = procedure (Sender: TObject; aWindow: TForm)
+	TCreateReportWindowEvent = procedure (Sender: TObject; aWindow: TForm)
+	TDBGridCellHintEvent = procedure (Sender: TObject; Column: TColumn; var AText: String)
+	TDBGridClickEvent = procedure (Column: TColumn)
+	TDataEvent = procedure (Sender: TObject; const ContentLength, CurrentPos: Int64)
+	TDatabaseCloseQueryEvent = procedure (Sender: TObject; var CanClose: Boolean)
+	TDrawColumnCellEvent = procedure (Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState)
+	TDrawItemEvent = procedure (Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState)
+	TDrawPanelEvent = procedure (StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect)
+	TDropFilesEvent = procedure (Sender: TObject; const FileNames: TStringArray)
+	TFatalErrorEvent = procedure (Sender: TObject; const Msg: String; var Accept: Boolean)
+	TFieldChangeEvent = procedure (Sender, Control: TObject; const FieldName: String)
+	THTTPClientErrorEvent = procedure (Sender: TObject; const ErrorMsg: String)
+	THTTPServerErrorHandler = procedure (Sender: TObject; const ErrorMsg: String)
+	THTTPServerRequestHandler = procedure (Sender: TObject; var ARequest: TFPHTTPConnectionRequest; var AResponse : TFPHTTPConnectionResponse)
+	TKGridCellEvent = procedure (Sender: TObject; ACol, ARow: Integer)
+	TKGridCellHintEvent = procedure (Sender: TObject; ACol, ARow: Integer; AShow: Boolean)
+	TKGridDrawCellEvent = procedure (Sender: TObject; ACol, ARow: Integer; R: TRect; State: TKGridDrawState)
+	TKGridMeasureCellEvent = procedure (Sender: TObject; ACol, ARow: Integer; R: TRect; State: TKGridDrawState; Priority: TKGridMeasureCellPriority; var Extent: TPoint)
+	TKGridSelectCellEvent = procedure (Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean)
+	TKeyEvent = procedure (Sender: TObject; var Key: Word; Shift: TShiftState)
+	TKeyPressEvent = procedure (Sender: TObject; var Key: Char)
+	TImageLoadEvent = procedure (Sender: TObject; Status: TImageLoadStatus)
+	TMeasureItemEvent = procedure (Control: TWinControl; Index: Integer; var Height: Integer)
+	TMouseEvent = procedure (Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer)
+	TMouseMoveEvent = procedure (Sender: TObject; Shift: TShiftState; X, Y: Integer)
+	TMouseWheelEvent = procedure (Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean)
+	TMovedEvent = procedure (Sender: TObject; FromIndex, ToIndex: Integer)
+	TNotifyEvent = procedure (Sender: TObject)
+	TParamNotifyEvent = procedure (Sender: TObject; const ParamName: String)
+	TPasswordEvent = procedure (Sender: TObject; Var RepeatRequest: Boolean)
+	TPrepareDbGridCanvasEvent = procedure (Sender: TObject; DataCol: Integer; Column: TColumn; AState: TGridDrawState)
+	TPrintEvent = procedure (Sender: TObject; Action: TPrintAction; const SourceName, FieldName: String; var Value: String; var Accept: Boolean)
+	TRedirectEvent = procedure (Sender: TObject; const ASrc: String; var ADest: String)
+	TReplaceTagEvent = procedure (Sender: TObject; const TagString: String; TagParams: TStringList; var ReplaceText: String)
+	TScrollEvent = procedure (Sender: TObject; ScrollCode: TScrollCode; var ScrollPos: Integer)
+	TStringListCompareEvent = function (Sender: TStringList; const s1, s2: String): Integer
+	TTVAdvancedCustomDrawEvent = procedure (Sender: TCustomTreeView; const ARect: TRect; Stage: TCustomDrawStage; var DefaultDraw: Boolean)
+	TTVAdvancedCustomDrawItemEvent = procedure (Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState; Stage: TCustomDrawStage; var PaintImages, DefaultDraw: Boolean)
+	TTVChangedEvent = procedure (Sender: TObject; Node: TTreeNode)
+	TTVChangingEvent = procedure (Sender: TObject; Node: TTreeNode; var AllowChange: Boolean)
+	TTVCollapsingEvent = procedure (Sender: TObject; Node: TTreeNode; var AllowCollapse: Boolean)
+	TTVCompareEvent = procedure (Sender: TObject; Node1, Node2: TTreeNode; var Compare: Integer)
+	TTVCustomDrawEvent = procedure (Sender: TCustomTreeView; const ARect: TRect; var DefaultDraw: Boolean)
+	TTVCustomDrawItemEvent = procedure (Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState; var DefaultDraw: Boolean)
+	TTVEditedEvent = procedure (Sender: TObject; Node: TTreeNode; var S: string)
+	TTVEditingEndEvent = procedure (Sender: TObject; Node: TTreeNode; Cancel: Boolean)
+	TTVEditingEvent = procedure (Sender: TObject; Node: TTreeNode; var AllowEdit: Boolean)
+	TTVExpandedEvent = procedure (Sender: TObject; Node: TTreeNode)
+	TTVExpandingEvent = procedure (Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean)
+	TTVNodeChangedEvent = procedure (Sender: TObject; Node: TTreeNode; ChangeReason: TTreeNodeChangeReason)
+	TTabChangingEvent = procedure (Sender: TObject; var AllowChange: Boolean)
+	TTreeNodeCompare = function (Node1, Node2: TTreeNode): integer
+	TUtf8KeyPressEvent = procedure (Sender: TObject; var UTF8Key: TUTF8Char)
+	TValidateEvent = procedure (Sender: TObject; var Ok: Boolean)
+Types
+	HACCEL = Cardianl
+	HBITMAP = Integer
+	HMENU = Cardinal
+	HPALETTE = Integer
+	HResult = LongInt
+	HWND = LongInt
+	TAccessStatus = (asOk, asCantAppend, asCantEdit, asCantDelete, asModified, asDeleted, asLocked, asHasRef)
+	TAlign = (alNone, alTop, alBottom, alLeft, alRight, alClient)
+	TAlignment = (taLeftJustify, taRightJustify, taCenter)
+	TAnchorKind = (akTop, akLeft, akRight, akBottom)
+	TAnchors = set of TAnchorKind
+	TAutoAdvance = (aaNone,aaDown,aaRight,aaLeft, aaRightDown, aaLeftDown, aaRightUp, aaLeftUp)
+	TBalloonFlags = (bfNone, bfInfo, bfWarning, bfError)
+	TBevelShape = (bsBox, bsFrame, bsTopLine, bsBottomLine, bsLeftLine, bsRightLine, bsSpacer)
+	TBevelStyle = (bsLowered, bsRaised)
+	TBevelWidth = LongInt
+	TBitBtnKind = (bkCustom, bkOK, bkCancel, bkHelp, bkYes, bkNo, bkClose, bkAbort, bkRetry, bkIgnore, bkAll)
+	TBorderIcon = (biSystemMenu, biMinimize, biMaximize, biHelp)
+	TBorderIcons = set of TBorderIcon
+	TBorderStyle = bsNone..bsSingle
+	TBorderWidth = LongInt
+	TBrushStyle = (bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross)
+	TButtonLayout = (blGlyphLeft, blGlyphRight, blGlyphTop, blGlyphBottom)
+	TCLSID = TGUID
+	TCTabControlOption = (nboShowCloseButtons, nboMultiLine, nboHidePageListPopup, nboKeyboardTabSwitch, nboShowAddTabButton)
+	TCTabControlOptions = set of TCTabControlOption
+	TCellHintPriority = (chpAll, chpAllNoDefault, chpTruncOnly)
+	TCheckBoxState = (cbUnchecked, cbChecked, cbGrayed)
+	TCloseAction = (caNone, caHide, caFree, caMinimize)
+	TColor = Integer
+	TComboBoxAutoCompleteTextOption = (cbactEnabled, cbactEndOfLineComplete, cbactRetainPrefixCase, cbactSearchCaseSensitive, cbactSearchAscending)
+	TComboBoxAutoCompleteText = set of TComboBoxAutoCompleteTextOption
+	TComboBoxStyle = (csDropDown, csSimple, csDropDownList, csOwnerDrawFixed, csOwnerDrawVariable)
+	TCopyFileFlag = (cffOverwriteFile, cffCreateDestDirectory, cffPreserveTime)
+	TCopyFileFlags = set of TCopyFileFlag
+	TCursor = Integer
+	TCustomDrawStage = (cdPrePaint, cdPostPaint, cdPreErase, cdPostErase)
+	TCustomDrawState = set of TCustomDrawStateFlag
+	TCustomDrawStateFlag = (cdsSelected, cdsGrayed, cdsDisabled, cdsChecked, cdsFocused, cdsDefault, cdsHot, cdsMarked, cdsIndeterminate)
+	TDBGridOption = (dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowEditor, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiselect, dgHeaderHotTracking, dgHeaderPushedLook, dgPersistentMultiSelect, dgAutoSizeColumns, dgAnyButtonCanSelect, dgDisableDelete, dgDisableInsert, dgCellHints, dgTruncCellHints, dgCellEllipsis, dgRowHighlight, dgThumbTracking)
+	TDBGridOptions = set of TDBGridOption
+	TDataSetState = (dsInactive, dsBrowse, dsEdit, dsInsert, dsSetKey, dsCalcFields, dsFilter, dsNewValue, dsOldValue, dsCurValue, dsBlockRead, dsInternalCalc, dsOpening)
+	TDataSetState = (dsInactive, dsBrowse, dsEdit, dsInsert, dsOpening) used
+	TDateTime = Double
+	TDuplicates = (dupIgnore, dupAccept, dupError)
+	TEchoMode = (emNormal, emNone, emPassword)
+	TEdgeBorder = (ebLeft, ebTop, ebRight, ebBottom)
+	TEdgeBorders = set of TEdgeBorder
+	TEdgeStyle = (esNone, esRaised, esLowered)
+	TEditCharCase = (ecNormal, ecUpperCase, ecLowerCase)
+	TFieldType = (ftUnknown, ftString, ftSmallint, ftInteger, ftWord, ftBoolean, ftFloat, ftCurrency, ftBCD, ftDate, ftTime, ftDateTime, ftBytes, ftVarBytes, ftAutoInc, ftBlob, ftMemo, ftGraphic, ftFmtMemo, ftParadoxOle, ftDBaseOle, ftTypedBinary, ftCursor, ftFixedChar, ftWideString, ftLargeint, ftADT, ftArray, ftReference, ftDataSet, ftOraBlob, ftOraClob, ftVariant, ftInterface, ftIDispatch, ftGuid, ftTimeStamp, ftFMTBcd)
+	TFieldType = (ftString, ftSmallint, ftInteger, ftFloat, ftDate, ftTime, ftBlob, ftMemo) - Used
+	TFillStyle = (fsSurface, fsBorder)
+	TFontPitch = (fpDefault, fpVariable, fpFixed)
+	TFontStyle = (fsBold, fsItalic, fsUnderline, fsStrikeOut)
+	TFontStyles = set of TFontStyle
+	TFormBorderStyle = (bsNone, bsSingle, bsSizeable, bsDialog, bsToolWindow, bsSizeToolWin)
+	TFormStyle = (fsNormal, fsMDIChild, fsMDIForm, fsStayOnTop, fsSplash, fsSystemStayOnTop)
+	TFormatOption = (foSingleLineArray, foSingleLineObject, foDoNotQuoteMembers, foUseTabchar, foSkipWhiteSpace, foFormatFloat)
+	TFormatOptions = set of TFormatOption
+	TGraphicsDrawEffect = (gdeNormal, gdeDisabled, gdeHighlighted, gdeShadowed, gde1Bit)
+	TGridDrawState = set of (gdSelected, gdFocused, gdFixed, gdHot, gdPushed, gdRowHighlight)
+	THandle = LongInt
+	THitTest = (htAbove, htBelow, htNowhere, htOnItem, htOnButton, htOnIcon, htOnIndent, htOnLabel, htOnRight, htOnStateIcon, htToLeft, htToRight)
+	THitTests = set of THitTest
+	TIFException = (ErNoError, erCannotImport, erInvalidType, ErInternalError, erInvalidHeader, erInvalidOpcode, erInvalidOpcodeParameter, erNoMainProc, erOutOfGlobalVarsRange, erOutOfProcRange, ErOutOfRange, erOutOfStackRange, ErTypeMismatch, erUnexpectedEof, erVersionError, ErDivideByZero, ErMathError,erCouldNotCallProc, erOutofRecordRange, erOutOfMemory, erException, erNullPointerException, erNullVariantError, erInterfaceNotSupported, erCustomError)
+	TIID = TGUID
+	TIniFileOption = (ifoStripComments, ifoStripInvalid, ifoEscapeLineFeeds, ifoCaseSensitive, ifoStripQuotes, ifoFormatSettingsActive)
+	TIniFileOptions = set of TIniFileOption
+	TJSONType = (jtUnknown, jtNumber, jtString, jtBoolean, jtNull, jtArray, jtObject)
+	TKGridDisabledDrawStyle = (ddBright, ddGrayed, ddNormal)
+	TKGridDrawStateMembers = (kgdEdited, kgdFixed, kgdFocused, kgdMouseDown, kgdMouseOver, kgdSelected, kgdSorted, kgdColsSortedUp, kgdColsSortedDown, kgdRowsSortedUp, kgdRowsSortedDown)
+	TKGridDrawState = set of TKGridDrawStateMembers
+	TKGridMeasureCellPriority = (mpColWidth, mpRowHeight, mpCellExtent)
+	TKGridOption = (goAlignLastCol, goAlignLastRow, goAlwaysShowEditor, goEraseBackground, goClippedCells, goColMoving, goColSizing, goColSorting, goDoubleBufferedCells, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeader, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goIndicateSelection, goMouseCanHideCells, goMouseOverCells, goNoSelEditText, goRangeSelect, goRowMoving, goRowSelect, goRowSizing, goRowSorting, goTabs, goThemes, goThemedCells, goVertLine, goVirtualGrid)
+	TKGridOptions = set of TKGridOption
+	TKGridOptionEx = (gxEditorHCenter, gxEditorVCenter, gxEnterAppendsRow, gxEnterWraps, gxFixedCellClickSelect, gxFixedCellClickToggle, gxFixedThemedCells, gxTabAppendsRow, gxTabWraps, gxEditFixedRows, gxEditFixedCols, gxMouseWheelScroll, gxMouseWheelKey)
+	TKGridOptionsEx = set of TKGridOptionEx
+	TKGridRangeSelectStyle = (rsDefault, rsMS_Excel)
+	TKGridScrollMode = (smSmooth, smCell)
+	TKGridSizingStyle = (ssLine, ssUpdate, ssXORLine)
+	TListBoxStyle = (lbStandard, lbOwnerDrawFixed, lbOwnerDrawVariable)
+	TImageLoadStatus = (lsLoading, lsComplete, lsFail)
+	TLocateOption = (loCaseInsensitive, loPartialKey)
+	TLocateOptions = set of TLocateOption
+	TLockMode = (lmNoLock, lmPessimistic)
+	TMonthNameArray = array [1..12] of String
+	TMouseButton = (mbLeft, mbRight, mbMiddle, mbExtra1, mbExtra2)
+	TMsgDlgBtn = (mbYes, mbNo, mbOK, mbCancel, mbAbort, mbRetry, mbIgnore, mbAll, mbNoToAll, mbYesToAll, mbHelp)
+	TMsgDlgButtons = set of TMsgDlgBtn
+	TMsgDlgType = (mtWarning, mtError, mtInformation, mtConfirmation, mtCustom)
+	TMultiSelectStyle = set of TMultiSelectStyles
+	TMultiSelectStyles = (msControlSelect, msShiftSelect, msVisibleOnly, msSiblingOnly)
+	TNodeAttachMode = (naAdd, naAddFirst, naAddChild, naAddChildFirst, naInsert, naInsertBehind)
+	TNodeState = (nsCut, nsDropHilited, nsFocused, nsSelected, nsMultiSelected, nsExpanded, nsHasChildren, nsInTree, nsDeleting, nsBound)
+	TNodeStates = set of TNodeState
+	TOpenOption = (ofReadOnly, ofOverwritePrompt, ofHideReadOnly, ofNoChangeDir, ofShowHelp, ofNoValidate, ofAllowMultiSelect, ofExtensionDifferent, ofPathMustExist, ofFileMustExist, ofCreatePrompt, ofShareAware, ofNoReadOnlyReturn, ofNoTestFileCreate, ofNoNetworkButton, ofNoLongNames, ofOldStyleDialog, ofNoDereferenceLinks, ofEnableIncludeNotify, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden, ofViewDetail, ofAutoPreview)
+	TOpenOptions = set of TOpenOption
+	TOwnerDrawStateType = (odSelected, odGrayed, odDisabled, odChecked, odFocused, odDefault, odHotLight, odInactive, odNoAccel,  odNoFocusRect, odReserved1, odReserved2, odComboBoxEdit, odBackgroundPainted)
+	TOwnerDrawState = set of TOwnerDrawStateType
+	TPanelBevel = (bvNone, bvLowered, bvRaised,bvSpace)
+	TPanelButton = (pbOK, pbCancel, pbClose, pbHelp)
+	TPanelButtons = set of TPanelButton
+	TPenMode = (pmBlack, pmWhite, pmNop, pmNot, pmCopy, pmNotCopy, pmMergePenNot, pmMaskPenNot, pmMergeNotPen, pmMaskNotPen, pmMerge, pmNotMerge, pmMask, pmNotMask, pmXor, pmNotXor)
+	TPenStyle = (psSolid, psDash, psDot, psDashDot, psDashDotDot, psClear, psInsideFrame)
+	TPopupAlignment = (paLeft, paRight, paCenter)
+	TPosition = (poDesigned, poDefault, poDefaultPosOnly, poDefaultSizeOnly, poScreenCenter, poDesktopCenter, poMainFormCenter, poOwnerFormCenter)
+	TPrintAction = (paBeginPrint, paEndPrint, paPrintField, paBeginData, paNextData, paBeforeOpenFile, paAfterOpenFile, paPrintError)
+	TPrintDialogOption = (poPrintToFile, poPageNums, poSelection, poWarning, poHelp, poDisablePrintToFile)
+	TPrintDialogOptions = set of TPrintDialogOption
+	TPrintRange = (prAllPages, prSelection, prPageNums, prCurrentPage)
+	TReplaceFlag = (rfReplaceAll, rfIgnoreCase)
+	TReplaceFlags = set of TReplaceFlag
+	TResizeStyle = (rsLine, rsNone, rsPattern, rsUpdate)
+	TScrollBarInc = SmallInt
+	TScrollBarKind = (sbHorizontal, sbVertical)
+	TScrollCode = (scLineUp, scLineDown, scPageUp, scPageDown, scPosition, scTrack, scTop, scBottom, scEndScroll)
+	TScrollStyle = (ssNone, ssHorizontal, ssVertical, ssBoth)
+	TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle)
+	TShiftStateEnum = (ssShift, ssAlt, ssCtrl, ssLeft, ssRight, ssMiddle, ssDouble, ssMeta, ssSuper, ssHyper, ssAltGr, ssCaps, ssNum,ssScroll,ssTriple,ssQuad, ssExtra1, ssExtra2)
+	TShiftState = set of TShiftStateEnum
+	TShortCut = Word
+	TShowInTaskBar = (stDefault, stAlways, stNever)
+	TSortType = (stNone, stData, stText, stBoth)
+	TStatusPanelBevel = (pbNone, pbLowered, pbRaised)
+	TStatusPanelStyle = (psText, psOwnerDraw)
+	TStringArray = array of String
+	TTabPosition = (tpTop, tpBottom, tpLeft, tpRight)
+	TTextLayout = (tlTop, tlCenter, tlBottom)
+	TToolButtonStyle = (tbsButton, tbsCheck, tbsDropDown, tbsSeparator, tbsDivider)
+	TTrackButton = (tbRightButton, tbLeftButton)
+	TTitleStyle = (tsLazarus, tsStandard, tsNative)
+	TTreeNodeChangeReason = (ncTextChanged, ncDataChanged, ncHeightChanged, ncImageEffect, ncImageIndex, ncParentChanged, ncVisibility, ncOverlayIndex, ncStateIndex, ncSelectedIndex)
+	TTreeViewExpandSignType = (tvestTheme, tvestPlusMinus, tvestArrow)
+	TTreeViewInsertMarkType = (tvimNone, tvimAsFirstChild, tvimAsNextSibling, tvimAsPrevSibling)
+	TTreeViewOption = (tvoAllowMultiselect, tvoAutoExpand, tvoAutoInsertMark, tvoAutoItemHeight, tvoHideSelection, tvoHotTrack, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoShowSeparators, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw)
+	TTreeViewOptions = set of TTreeViewOption
+	TUseGeneratorOption = (ugNotUse, ugAppend, ugApplyUpdates)
+	TUtf8Char = array [0..6] of Char
+	TVarType = Word
+	TVariantArray2d = array of array of Variant
+	TViewType = (vtGridTop, vtGridBottom, vtGridLeft, vtGridRight, vtGridOnly, vtWithoutGrid, vtSimpleForm, vtDefault)
+	TWeekNameArray = array [1..7] of String
+	TWindowState = (wsNormal, wsMinimized, wsMaximized)
+	TXMLReaderFlag = (xrfAllowLowerThanInAttributeValue, xrfAllowSpecialCharsInAttributeValue, xrfAllowSpecialCharsInComments, xrfPreserveWhiteSpace)
+	TXMLReaderFlags = set of TXMLReaderFlag
+	TXMLWriterFlag = (xwfSpecialCharsInAttributeValue, xwfPreserveWhiteSpace)
+	TXMLWriterFlags = set of TXMLWriterFlag
+	TdxFormTreeFieldSource = (tfsForm, tfsObject)
+Records
+	TFormatSettings = record
+		CurrencyFormat: Byte
+		NegCurrFormat: Byte
+		ThousandSeparator: Char
+		DecimalSeparator: Char
+		CurrencyDecimals: Byte
+		DateSeparator: Char
+		TimeSeparator: Char
+		ListSeparator: Char
+		CurrencyString: String
+		ShortDateFormat: String
+		LongDateFormat: String
+		TimeAMString: String
+		TimePMString: String
+		ShortTimeFormat: String
+		LongTimeFormat: String
+		ShortMonthNames: TMonthNameArray
+		LongMonthNames: TMonthNameArray
+		ShortDayNames: TWeekNameArray
+		LongDayNames: TWeekNameArray
+		TwoDigitYearCenturyWindow: Word
+	TGUID = record
+		D1: LongWord
+		D2: Word
+		D3: Word
+		D4: array[0..7] of Byte
+	TKGridCellSpan = record 
+		ColSpan: Integer
+		RowSpan: Integer
+	TKGridRect = record 
+		Col1, Row1, Col2, Row2: Integer
+	TPoint = record 
+		X, Y: LongInt
+	TRect = record
+		Left, Top, Right, Bottom: Integer
+	TTextStyleRec = record 
+		Alignment: Byte (0-left 1-right 2-center)
+		Layout: Byte (0-top 1-center 2-bottom)
+		SingleLine: Boolean
+		Clipping: Boolean
+		ExpandTabs: Boolean
+		ShowPrefix: Boolean
+		WordBreak: Boolean
+		Opaque: Boolean
+		SystemFont: Boolean
+		RightToLeft: Boolean
+		EndEllipsis: Boolean
+Procedures & Functions
+	Arrays
+		function GetArrayLength(var Arr: Array): Longint;
+		procedure SetArrayLength(var Arr: Array; I: Longint)
+	COM & OLE
+		function CreateComObject(const ClassID: TGUID): IUnknown
+		function CreateOleObject(const ClassName: string): IDispatch
+		function GetActiveOleObject(const ClassName: string): IDispatch
+		function IDispatchInvoke(Self: IDispatch; PropertySet: Boolean; const Name: string; Par: array of Variant): Variant
+		procedure OleCheck(Result: HResult)
+		function StringToGUID(const S: string): TGUID
+	Clipboard
+		function Clipboard: TClipboard
+	Conditions
+		function IIF(Condition, V1, V2: Variant): Variant
+		function Nz(V1, V2): Variant
+	Date & Time
+		function AddDay(const AValue: TDateTime; const ANumberOfDays: Integer): TDateTime
+		function AddHour(const AValue: TDateTime; const ANumberOfHours: Int64): TDateTime
+		function AddMinute(const AValue: TDateTime; const ANumberOfMinutes: Int64): TDateTime
+		function AddMonth(const DateTime: TDateTime; NumberOfMonths: integer): TDateTime
+		function AddSecond(const AValue: TDateTime; const ANumberOfSeconds: Int64): TDateTime
+		function AddWeek(const AValue: TDateTime; const ANumberOfWeeks: Integer): TDateTime
+		function AddYear(const AValue: TDateTime; const ANumberOfYears: Integer ): TDateTime
+		function BeginMonth(D: TDateTime): TDateTime
+		function BeginQuarter(D: TDateTime): TDateTime
+		function BeginWeek(D: TDateTime): TDateTime
+		function BeginYear(D: TDateTime): TDateTime
+		function CalcPeriod(D1, D2: TDateTime; Detail: Integer; IsAge: Boolean): String
+		function Date: TDateTime
+		function DateTimeToFileDate(DateTime : TDateTime) : Longint
+		function DayOf(const AValue: TDateTime): Word
+		function DayOfTheWeek(const DateTime: TDateTime): Word
+		function DaysBetween(const ANow, AThen: TDateTime): Integer
+		procedure DecodeDate(const DateTime: TDateTime; var Year, Month, Day: Word)
+		procedure DecodeTime(const DateTime: TDateTime; var Hour, Min, Sec, MSec: Word)
+		function EncodeDate(Year, Month, Day: Word): TDateTime
+		function EncodeTime(Hour, Min, Sec, MSec: Word): TDateTime
+		function EndMonth(D: TDateTime): TDateTime
+		function EndQuarter(D: TDateTime): TDateTime
+		function EndWeek(D: TDateTime): TDateTime
+		function EndYear(D: TDateTime): TDateTime
+		function FileDateToDateTime (Filedate : Longint) :TDateTime
+		function FmtDate(D: TDateTime): String
+		function FormatDateTime(const fmt: string; D: TDateTime): string
+		function GetMonthName(D: TDateTime; Brief: Boolean): String
+		function GetWeekName(D: TDateTime; Brief: Boolean): String
+		function HourOf(const AValue: TDateTime): Word
+		function HoursBetween(const ANow, AThen: TDateTime): Int64
+		function MilliSecondsBetween(const ANow, AThen: TDateTime): Int64
+		function MinuteOf(const AValue: TDateTime): Word
+		function MinutesBetween(const ANow, AThen: TDateTime): Int64
+		function MonthOf(const AValue: TDateTime): Word
+		function MonthsBetween(const ANow, AThen: TDateTime): Integer
+		function Now: TDateTime
+		function QuarterOf(D: TDateTime): Word
+		function SecondOf(const AValue: TDateTime): Word
+		function SecondsBetween(const ANow, AThen: TDateTime): Int64
+		function Time: TDateTime
+		function TryEncodeDate(Year, Month, Day: Word; var Date: TDateTime): Boolean
+		function TryEncodeTime(Hour, Min, Sec, MSec: Word; var Time: TDateTime): Boolean
+		function WeekOf(const AValue: TDateTime): Word
+		function WeeksBetween(const ANow, AThen: TDateTime): Integer
+		function YearOf(const AValue: TDateTime): Word
+		function YearsBetween(const ANow, AThen: TDateTime): Integer
+	Debugging
+		procedure Debug(Value: Variant)
+		procedure DebugFile(const FileName: String; Value: Variant)
+	Dialogs
+		function MessageDlg(const Caption, Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons): LongInt
+		procedure MsgBox(const Caption, Msg: String)
+		function InputBox(const ACaption, APrompt, ADefault: String): String
+		procedure ShowPrintErrors(const Msg: String)
+	Dll
+		function DllGetLastError: LongInt
+		procedure UnloadDll(FileName: string)
+	Encoding
+		function DecodeBase64(const S: String; Strict: Boolean): String
+		function EncodeBase64(const S: String): String
+		function EncodeMD5(const S: String): String
+		function EncodeSHA1(const S: String): String
+		function HMacMD5(const AKey, AMessage: string): string
+		function HMacSHA1(const AKey, AMessage: string): string
+	Exceptions
+		function ExceptionParam: string
+		function ExceptionToString(er: TIFException; Param: string): string
+		function ExceptionType: TIFException
+		procedure RaiseException(Ex: TIFException; Param: string)
+		procedure RaiseLastException
+	Expressions
+		function EvalExpr(const Expr: String; Fm: TdxForm): Variant
+		function ShowExprEditor(const Expr, FormName: String): String
+	File system
+		function ChangeFileExt(const FileName, Extension: string): string
+		function CopyFile(const SrcFilename, DestFilename: string; Flags: TCopyFileFlags): boolean
+		function CreateDir(const NewDir: String): Boolean
+		function DeleteFile(const FileName: String): Boolean
+		function DirectoryExists(const Directory: string): Boolean
+		function ExcludeLeadingPathDelimiter(Const Path: string): string
+		function ExpandFileName(const FileName, BaseDir: string): string
+		function ExtractFileDir(Const FileName : string): string
+		function ExtractFileDrive(const FileName: string): string
+		function ExtractFileExt(const FileName: string): string
+		function ExtractFileName(const FileName: string): string
+		function ExtractFileNameOnly(const AFilename: string): string
+		function ExtractFilePath(const FileName: string): string
+		function FileAge(const FileName: string): Longint
+		function FileExists(const Filename: string): boolean
+		function FileGetAttr(const FileName: String): Longint
+		function FileSetAttr(const Filename: String; Attr: longint): Longint
+		function FileSetDate(const FileName: String; Age: Longint): Longint
+		function FileSize(const FileName: String): Int64
+		procedure FindAllDirectories(AList: TStrings; const SearchPath: String; SearchSubDirs: Boolean)
+		procedure FindAllFiles(AList: TStrings; const SearchPath: String; SearchMask: String; SearchSubDirs: Boolean; DirAttr: Word)
+		function ForceDirectories(const Dir: string): Boolean
+		function GetCurrentDatabase: String
+		function GetCurrentDir: String
+		function GetOutputDir: String
+		function GetTempDir: String
+		function GetTempFileName: String
+		function GetTemplatesDir: String
+		function IncludeTrailingPathDelimiter(Const Path : String) : String
+		function RemoveDir(const Dir: String): Boolean
+		function RenameFile(const OldName, NewName: String): Boolean
+		function ShellExecute(const Operation, FileName, Params, WorkDir: String; ShowCmd: LongInt): Boolean
+	Graphics
+		function ColorToRGB(Color: TColor): Longint
+		function ColorToString(Color: TColor): String
+		function Point(X, Y: Integer): TPoint
+		function RGBToColor(R, G, B: Byte): TColor
+		function Rect(Left, Top, Right, Bottom: Integer): TRect
+		procedure RedGreenBlue(rgb: Cardinal; out Red, Green, Blue: Byte)
+		function Scale96ToScreen(ASize: Integer): Integer
+		function StringToColor(const S: string): TColor
+	JSON
+		function JSONStringToString(const S: String): String
+		function ReadJSONFromFile(const FileName: String) : TJSONData
+		function ReadJSONFromStream(Stream: TStream) : TJSONData
+		function ReadJSONFromString(const JSON: String) : TJSONData
+		function StringToJSONString(const S: String; Strict: Boolean): String
+	Math
+		function Abs(E: Extended): Extended
+		function Cos(E: Extended): Extended
+		function Frac(E: Extended): Extended
+		function Int(E: Extended): Extended
+		function Pi: Extended
+		function Power(base, exponent: Extended): Extended
+		function Random(n: LongInt): LongInt
+		function Round(E: Extended): LongInt
+		function RoundTo(AValue: Extended; Digits: Integer): Extended
+		function SameValue(A, B: Extended; Epsilon: Extended): Boolean
+		function Sin(E: Extended): Extended
+		function Sqrt(E: Extended): Extended
+		function Trunc(E: Extended): LongInt
+	Menus
+		function ShortCut(const Key: Word; const Shift : TShiftState) : TShortCut
+		procedure ShortCutToKey(const ShortCut : TShortCut; var Key: Word; var Shift : TShiftState)
+	Metadata
+		function GetComponentFieldName(C: TComponent): String
+		function GetComponentId(C: TComponent): Integer
+		function GetPropValue(Obj: TObject; const PropName: String): Variant
+		procedure SetPropValue(Obj: TObject; const PropName: String; Value: Variant)
+	Misc
+		function CreateGUIDString: String
+		procedure Dec(Var: Ordinal)
+		procedure Exclude(var S: Set; X: Ordinal)
+		function GetBuildDate: TDateTime
+		function GetFormatSettings: TFormatSettings
+		function High(Var: Ordinal): Int64
+		procedure Inc(Var: Ordinal)
+		procedure Include(var S: Set; X: Ordinal); 
+		function Low(Var: Ordinal): Int64
+		procedure SetFormatSettings(Settings: TFormatSettings)
+		function SizeOf(Identifier): LongInt
+	SQL
+		function SQLSelect(const SQL: String): TdxSQLQuery
+		procedure SQLExecute(const SQL: String)
+	Strings
+		function AnsiLowerCase(S: string): string
+		function AnsiUpperCase(S: string): string
+		function Chr(C: Byte): Char
+		function Copy(S: String; iFrom, iCount: LongInt): String
+		function DateToStr(D: TDateTime): string
+		procedure Delete(var S: String; iFrom, iCount: LongInt)
+		function FloatToStr(E: Extended): string
+		function FillZeros(E: Extended; N: Integer): String
+		function Format(const Fmt: String; Args: array of const): String
+		function FormatFloat(Const Format: String; Value: Extended): String
+		function Int64ToStr(I: Int64): string
+		function IntToHex(I: Int64; Digits: Integer): String
+		function IntToStr(I: Int64): string
+		procedure Insert(InsertStr: String; var TargetStr: String; iPos: LongInt)
+		function Length(S: String): Integer
+		function LowerCase(S: String): String
+		function PadL(S: String; I: LongInt): String
+		function PadR(S: String; I: LongInt): String
+		function PadZ(S: String; I: LongInt): String
+		function Pos(SubStr, S: String): LongInt
+		function Replicate(C: Char; I: LongInt): string
+		procedure SetLength(S: String; NewLength: Integer);
+		procedure SplitStr(const S: String; Delim: Char; SL: TStrings)
+		function StrGet(var S: string; I: Integer): Char
+		procedure StrSet(C: Char; I: Integer; var S: string)
+		function StrToDate(const S: string): TDateTime
+		function StrToDateTime(const S: string): TDateTime
+		function StrToFloat(S: string): Extended
+		function StrToInt(S: string): LongInt
+		function StrToInt64(S: string): Int64
+		function StrToInt64Def(S: string; def: Int64): Int64
+		function StrToIntDef(S: string; def: LongInt): LongInt
+		function StrToTime(const S: String): TDateTime
+		function StringOfChar(C: Char; I: LongInt): string
+		function StringReplace(const S, OldPattern, NewPattern: string;  Flags: TReplaceFlags): string
+		function TimeToStr(Time: TDateTime): string
+		function Trim(S: String): String
+		function TryStrToDate(const S: string; out Value: TDateTime): Boolean
+		function TryStrToDateTime(const S: string; out Value: TDateTime): Boolean
+		function TryStrToFloat(const S: String; out Value: Extended): Boolean
+		function TryStrToInt(const s: string; out i: LongInt) : boolean
+		function TryStrToInt64(const s: string; out i: Int64) : boolean
+		function TryStrToTime(const S: string; out Value: TDateTime): Boolean
+		function UpperCase(S: String): String
+		function WStrGet(var S: String; I: Integer): WideChar
+		procedure WStrSet(C: String; I: Integer; var S: String)
+	Totals
+		function DAvg(DataSet: TObject; const FieldName: String): Extended
+		function DCount(DataSet: TObject): Integer
+		function DMax(DataSet: TObject; const FieldName: String): Variant
+		function DMerge(DataSet: TObject; const FieldName, Delimiter: String): String
+		function DMin(DataSet: TObject; const FieldName: String): Variant
+		function DSum(DataSet: TObject; const FieldName: String): Extended
+	UTF8-strings
+		function RurToWords(Money: Currency): String
+		procedure StringToUtf8Char(const S: String; var Utf8Char: TUtf8Char)
+		function ToWordsRu(Money: Currency): String
+		function UTF16ToUTF8(const S: UnicodeString): String
+		function Utf8CharToString(Utf8Char: TUtf8Char): String
+		function UTF8Copy(const S: String; StartCharIndex, CharCount: LongInt): String
+		function UTF8CompareStr(const S1, S2: string): LongInt
+		function UTF8CompareText(const S1, S2: string): LongInt
+		procedure UTF8Delete(var S: String; StartCharIndex, CharCount: LongInt)
+		function UTF8Length(const S: string): LongInt
+		function UTF8LowerCase(const AInStr: string): String
+		procedure UTF8Insert(const InsertStr: String; var TargetStr: String; StartCharIndex: LongInt)
+		function UTF8Pos(const SearchForText, SearchInText: String; StartPos: LongInt): LongInt
+		function UTF8StringReplace(const S, OldPattern, NewPattern: String; Flags: TReplaceFlags): String
+		function UTF8ToUTF16(const S: String): UnicodeString
+		function Utf8ToWinCP(const S: String): String
+		function UTF8UpperCase(const AInStr: string): String
+		function WinCPToUtf8(const S: String): String
+	User access
+		function GetCurrentRole: String
+		function GetCurrentUser: String
+	Variants
+		function Null: Variant
+		function Unassigned: Variant
+		function VarArrayDimCount(const Arr: Variant): LongInt
+		function VarArrayGet(var Arr: Variant; I: Integer): Variant
+		function VarArrayHighBound(const Arr: Variant; Dim: LongInt): LongInt
+		function VarArrayLowBound(const Arr: Variant; Dim: LongInt): LongInt
+		function VarArrayOf(const Values: array of Variant): Variant
+		procedure VarArraySet(V: Variant; I: Integer; var Arr: Variant)
+		function VarAsType(const V: Variant; aVarType: TVarType): Variant
+		procedure VarCast(var Dest: variant; const Source: variant; VarType: longint)
+		function VarIsEmpty(const V: Variant): Boolean
+		function VarIsNothing(V: Variant): Boolean
+		function VarIsNull(const V: Variant): Boolean
+		function VarToStr(const V: Variant): String
+		function VarType(const V: Variant): TVarType
+	Web
+		function EncodeURLElement(S: String): String
+		function DecodeURLElement(const S: String): String
+	XML
+		function ReadXmlFromFile(const FileName: String; Flags: TXMLReaderFlags): TXmlDocument
+		function ReadXmlFromStream(Stream: TStream; Flags: TXMLReaderFlags): TXmlDocument
+		function ReadXmlFromString(const XmlData: String; Flags: TXMLReaderFlags): TXmlDocument
+		procedure ReadXmlNodeFromString(var AParentNode: TDOMNode; const XmlData: String; Flags: TXMLReaderFlags)
+		procedure WriteXmlToFile(ADoc: TXmlDocument; const FileName: String; Flags: TXMLWriterFlags)
+		procedure WriteXmlToStream(ADoc: TXmlDocument; Stream: TStream; Flags: TXMLWriterFlags)
+		procedure WriteXmlToString(ADoc: TXmlDocument; var XmlData: String; Flags: TXMLWriterFlags)
+		procedure WriteXmlNodeToString(ANode: TDOMNode; var XmlData: String; Flags: TXMLWriterFlags)
+	dxForms
+		procedure GetForms(Forms: TStrings);
+IDispatch = interface(IUnknown)
+IInterface = IUnknown
+IUnknown = interface
+TApplication = class(TComponent)
+	procedure ProcessMessages
+	procedure Terminate
+	property ExeName: String [r]
+	property HintColor: TColor [rw]
+	property HintHidePause: Integer [rw]
+	property HintPause: Integer [rw]
+	property HintShortPause: Integer [rw]
+	property MainForm: TForm [rw]
+	property ShowHint: Boolean [rw]
+	property Terminated: Boolean [r]
+	property Title: String [rw]
+TBevel = class(TGraphicControl)
+	property Shape: TBevelShape [rw]
+	property Style: TBevelStyle [rw]
+TBitBtn = class(TCustomBitBtn)
+	property Glyph: TBitmap [rw]
+	property Kind: TBitBtnKind [rw]
+	property Layout: TButtonLayout [rw]
+	property Margin: Integer [rw]
+	property Spacing: Integer [rw] 
+TBitmap = class(TGraphic)
+	procedure LoadFromStream(Stream: TStream)
+	procedure SaveToStream(Stream: TStream)
+	property Canvas: TCanvas [r]
+	property Handle: HBITMAP [r]
+	property Monochrome: Boolean [rw]
+	property Palette: HPALETTE [rw]
+	property TransparentColor: TColor [rw]
+TBrush = class(TGraphicObject)
+	property Color: TColor [rw]
+	property Style: TBrushStyle [rw]
+TButton = class(TCustomButton)
+TButtonPanel = class(TCustomPanel)
+	property CancelButton: TPanelBitBtn [r]
+	property CloseButton: TPanelBitBtn [r]
+	property HelpButton: TPanelBitBtn [r]
+	property OKButton: TPanelBitBtn [r]
+	property ShowButtons: TPanelButtons [rw]
+	property ShowGlyphs: TPanelButtons [rw]
+	property ShowBevel: Boolean[rw] 
+	property Spacing: Integer [rw]
+#TButtonControl = class(TWinControl)
+TCanvas = class(TPersistent)
+	procedure Arc(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer)
+	procedure Chord(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer)
+	procedure Draw(X, Y: Integer; Graphic: TGraphic)
+	procedure Ellipse(X1, Y1, X2, Y2: Integer)
+	procedure FillRect(const Rect: TRect)
+	procedure FloodFill(X, Y: Integer; Color: TColor; FillStyle: TFillStyle)
+	procedure LineTo(X, Y: Integer)
+	procedure MoveTo(X, Y: Integer)
+	procedure Pie(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer)
+	procedure Rectangle(X1, Y1, X2, Y2: Integer)
+	procedure Refresh
+	procedure RoundRect(X1, Y1, X2, Y2, X3, Y3: Integer)
+	function TextHeight(Text: string): Integer
+	procedure TextRect(ARect: TRect; X, Y: integer; const Text: string; const Style: TTextStyleRec)
+	procedure TextOut(X, Y: Integer; Text: string)
+	function TextWidth(Text: string): Integer
+	property Brush: TBrush [r]
+	property Font: TFont [r]
+	property Handle: Integer [rw]
+	property Pen: TPen [r]  
+	property Pixels[X, Y: Integer]: TColor [rw]
+TCheckBox = class(TCustomCheckBox)
+	property Checked: Boolean [rw]
+TClipboard = class(TPersistent)
+	procedure Clear
+	function HasBitmap: Boolean
+	function HasText: Boolean
+	property AsText: String [rw]
+#TCollection = class(TPersistent)
+	function Add: TCollectionItem
+	procedure BeginUpdate
+	procedure Clear
+	procedure EndUpdate
+	property Count: Integer [r]
+	property Items[Index: Integer]: TCollectionItem [r]
+#TCollectionItem = class(TPersistent)
+	property Collection: TCollection [rw]
+	property Index: Integer [rw]
+TColumn = class(TGridColumn)
+	property DesignIndex: Integer [r]
+	property Field: TField [r]
+	property Visible: Boolean [rw]
+TComboBox = class(TCustomComboBox)
+	property ItemHeight: Integer [rw]
+	property ItemWidth: Integer [rw]
+	property MaxLength: Integer [rw]
+	property OnChange: TNotifyEvent [rw]
+	property OnCloseUp: TNotifyEvent [rw]
+	property OnDrawItem: TDrawItemEvent [rw]
+	property OnDropDown: TNotifyEvent [rw]
+	property OnMeasureItem: TMeasureItemEvent [rw]
+	property OnSelect: TNotifyEvent [rw]
+	property Sorted: Boolean [rw]
+#TCommonDialog = class(TComponent)
+	function Execute: Boolean
+	property Height: Integer [rw]
+	property Title: String [rw]
+	property Width: String [rw]
+#TComponent = class(TPersistent)
+	constructor Create(AOwner: TComponent)
+	function FindComponent(AName: string): TComponent
+	property Owner: TComponent [rw]
+	property Components[Index: Integer]: TComponent [r]
+	property ComponentCount: Integer [r]
+	property ComponentIndex: Integer [rw]
+	property Name: String [rw]
+	property Tag: LongInt [rw] 
+#TControl = class(TComponent)
+	procedure BringToFront
+	function ClientToScreen(Point: TPoint): TPoint
+	function GetTopParent: TControl
+	function HasParent: Boolean
+	procedure Hide
+	procedure Invalidate
+	procedure Refresh
+	function ScreenToClient(Point: TPoint): TPoint
+	procedure SendToBack
+	procedure SetBounds(X,Y,w,h: Integer)
+	procedure Show
+	procedure Update
+	property Anchors: TAnchors [rw]
+	property Align: TAlign [rw]
+	property AutoSize: Boolean [rw]
+	property BorderSpacing: TControlBorderSpacing [rw]
+	property BoundsRect: TRect [rw]
+	property Caption: String [rw]
+	property Color: TColor [rw]
+	property Constraints: TSizeConstraints [r]
+	property ClientHeight: LongInt [rw]
+	property ClientRect: TRect [r]
+	property ClientWidth: LongInt [rw]
+	property Cursor: TCursor [rw]
+	property Enabled: Boolean [rw]
+	property Font: TFont [rw]
+	property Height: Integer [rw]
+	property Hint: String [rw]
+	property Left: Integer [rw]
+	property OnChangeBounds: TNotifyEvent [rw]
+	property OnClick: TNotifyEvent [rw]
+	property OnDblClick: TNotifyEvent [rw]
+	property OnEditingDone: TNotifyEvent [rw]
+	property OnMouseDown: TMouseEvent [rw]
+	property OnMouseEnter: TNotifyEvent [rw]
+	property OnMouseLeave: TNotifyEvent [rw]
+	property OnMouseMove: TMouseMoveEvent [rw]
+	property OnMouseUp: TMouseEvent [rw]
+	property OnMouseWheel: TMouseWheelEvent [rw]
+	property OnResize: TNotifyEvent [rw]
+	property Parent: TWinControl [rw]
+	property ParentColor: Boolean [rw]
+	property ParentFont: Boolean [rw]
+	property PopupMenu: TPopupMenu [rw]
+	property ShowHint: Boolean [rw]
+	property Top: Integer [rw]
+	property Width: Integer [rw]
+	property Visible: Boolean [rw]
+TControlBorderSpacing = class(TPersistent)
+	property Around: Integer [rw]
+	property Bottom: Integer [rw]
+	property InnerBorder: Integer [rw]
+	property Left: Integer [rw]
+	property Right: Integer [rw]
+	property Top: Integer [rw]
+TControlScrollBar = class(TPersistent)
+	property Increment: TScrollBarInc [rw]
+	property Kind: TScrollBarKind [r]
+	property Page: TScrollBarInc [rw]
+	property Position: Integer [rw]
+	property Range: Integer [rw]
+	property ScrollPos: Integer [r]
+	property Smooth: Boolean [rw]
+	property Tracking: Boolean [rw]
+	property Visible: Boolean [rw]  
+TCookie = class(TCollectionItem)
+	procedure Expire
+	property AsString: String [r]    
+	property Domain: string [rw]
+	property Expires: TDateTime [rw]
+	property HttpOnly: Boolean [rw]
+	property Name: string [rw]
+	property Path: string [rw]
+	property Secure: Boolean [rw]
+	property Value: string [rw]
+TCookies = class(TCollection)
+	function  Add: TCookie
+	function CookieByName(AName : String) : TCookie
+	function FindCookie(AName : String): TCookie
+	function IndexOfCookie(AName : String) : Integer
+	property Items[Index: Integer]: TCookie [r] default
+TCsvData = class(TObject)
+	constructor Create
+	procedure LoadFromFile(const AFileName: String; FromANSI: Boolean)
+	procedure LoadFromStream(AStream: TStream; FromANSI: Boolean)
+	procedure SaveToFile(const AFileName: String; ToANSI: Boolean)
+	procedure SaveToStream(AStream: TStream; ToANSI: Boolean)
+	property Cells[Col, Row: Integer]: String [rw] default
+	property ColCount: Integer [rw]
+	property Delimiter: Char [rw]
+	property RowCount: Integer [rw]
+#TCustomBitBtn = class(TCustomButton)
+	procedure LoadGlyphFromFile(const FileName: String)
+	procedure LoadGlyphFromStream(Stream: TStream)
+	procedure LoadGlyphFromStringBase64(const StrBase64: String)
+#TCustomButton = class(TButtonControl)
+	procedure Click
+	property Cancel: Boolean [rw]
+	property Default: Boolean [rw]
+	property ModalResult: LongInt [rw]
+#TCustomDBEditButton = class(TDBEdit)
+	property Button: TSpeedButton [r]
+	property ButtonOnlyWhenFocused: Boolean [rw] 
+	property HideButton: Boolean [rw]
+#TCustomCheckBox = class(TButtonControl)
+	property AllowGrayed: Boolean [rw]
+	property OnChange: TNotifyEvent [rw] 
+	property State: TCheckBoxState [rw]
+#TCustomComboBox = class(TWinControl)
+	procedure Clear
+	procedure SelectAll
+	property AutoComplete: Boolean [rw]
+	property AutoCompleteText: TComboBoxAutoCompleteText [rw]
+	property AutoDropDown: Boolean [rw]
+	property AutoSelect: Boolean [rw]
+	property AutoSelected: Boolean [rw]
+	property ArrowKeysTraverseList: Boolean [rw]
+	property Canvas: TCanvas [r]
+	property DroppedDown: Boolean [rw]
+	property DropDownCount: Integer [rw]
+	property Items: TStrings [rw]
+	property ItemIndex: Integer [rw]
+	property ReadOnly: Boolean [rw]
+	property SelLength: Integer [rw]
+	property SelStart: Integer [rw]
+	property SelText: String [rw]
+	property Style: TComboBoxStyle [rw]
+	property Text: String [rw]
+#TCustomControl = class(TWinControl)
+	property BorderStyle: TBorderStyle [rw]
+	property Canvas: TCanvas [r]
+	property OnPaint: TNotifyEvent [rw]
+#TCustomEdit = class(TWinControl)
+	procedure Clear
+	procedure ClearSelection
+	procedure CopyToClipboard
+	procedure CutToClipboard
+	procedure PasteFromClipboard
+	procedure SelectAll
+	procedure Undo
+	property Alignment: TAlignment [rw]
+	property BorderStyle: TBorderStyle [rw]
+	property CanUndo: Boolean [r]
+	proeprty CaretPos: TPoint [rw]
+	property CharCase: TEditCharCase [rw]
+	property EchoMode: TEchoMode [rw]
+	property HideSelection: Boolean [rw]
+	property MaxLength: Integer [rw]
+	property Modified: Boolean [rw]
+	property NumbersOnly: Boolean [rw]
+	property OnChange: TNotifyEvent [rw]
+	property PasswordChar: Char [rw]
+	property ReadOnly: Boolean [rw]
+	property SelLength: Integer [rw]
+	property SelStart: Integer [rw]
+	property SelText: String [rw]
+	property Text: String [rw]
+	property TextHint: String [rw]
+#TCustomImageList = class(TComponent)
+	function Add(Image, Mask: TBitmap): Integer
+	function AddFromFile(const FileName: String): Integer
+	function AddFromStream(Stream: TStream): Integer
+	function AddFromStringBase64(const StrBase64: String): Integer
+	function AddImage(const ImageName: String): Integer
+	procedure BeginUpdate
+	procedure Clear
+	procedure Delete(AIndex: Integer)
+	procedure EndUpdate
+	procedure GetBitmap(Index: Integer; Image: TBitmap)
+	property Count: Integer [r]
+#TCustomListBox = class(TWinControl)
+	procedure Clear
+	function ItemAtPos(Pos: TPoint; Existing: Boolean): Integer
+	function ItemRect(Index: Integer): TRect
+	property BorderStyle: TBorderStyle [rw]
+	property Canvas: TCanvas [r]
+	property Columns: Integer [rw]
+	property ExtendedSelect: Boolean [rw]
+	property ItemHeight: Integer [rw]
+	property Items: TStrings [rw]
+	property ItemIndex: Integer [rw]
+	property MultiSelect: Boolean [rw]
+	property SelCount: Integer [r]
+	property Selected[Index: Integer]: Boolean [rw]
+	property Sorted: Boolean [rw]
+	property Style: TListBoxStyle [rw]
+	property TopIndex: Integer [rw]
+#TCustomMemo = class(TCustomEdit)
+	property HorzScrollBar: TControlScrollBar [rw]
+	property Lines: TStrings [r]
+	property ScrollBars: TScrollStyle [rw]
+	property VertScrollBar: TControlScrollBar [rw]
+	property WantReturns: Boolean [rw]
+	property WantTabs: Boolean [rw]
+	property WordWrap: Boolean [rw] 
+#TCustomPanel = class(TCustomControl)
+#TCustomTreeView = class(TCustomControl)
+#TDBEdit = class(TCustomEdit)
+	property Field: TField [r]
+#TDBGrid = class(TCustomControl)
+	procedure DefaultDrawColumnCell(const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState)
+	property AlternateColor: TColor [rw]
+	property AutoAdvance: TAutoAdvance [rw]
+	property AutoEdit: Boolean [rw]
+	property AutoFillColumns: Boolean [rw]
+	property BorderColor: TColor [rw]
+	property CellHintPriority: TCellHintPriority [rw]
+	property Columns: TDBGridColumns [r]
+	property DefaultRowHeight: Integer [rw]
+	property ExtendedColSizing: Boolean [rw]
+	property FixedColor: TColor [rw]
+	property FixedCols: Integer [rw]
+	property FixedHotColor: TColor [rw]
+	property Flat: Boolean [rw]
+	property FocusColor: TColor [rw]
+	property FocusRectVisible: Boolean [rw]
+	property GridLineColor: TColor [rw]
+	property GridLineStyle: TPenStyle [rw]
+	property OnCellClick: TDBGridClickEvent [rw]
+	property OnColEnter: TNotifyEvent [rw]
+	property OnColExit: TNotifyEvent [rw]
+	property OnColumnMoved: TMovedEvent [rw]
+	property OnColumnSized: TNotifyEvent [rw]
+	property OnDrawColumnCell: TDrawColumnCellEvent [rw]
+	property OnDrawColumnTitle: TDrawColumnCellEvent [rw]
+	property OnGetCellHint: TDbGridCellHintEvent [rw]
+	property OnPrepareCanvas: TPrepareDbGridCanvasEvent [rw]
+	property Options: TDBGridOptions [rw]
+	property ReadOnly: Boolean [rw]
+	property Scrollbars: TScrollStyle [rw]
+	property SelectedColor: TColor [rw]
+	property SelectedColumn: TColumn [r]
+	property SelectedField: TField [r]
+	property SelectedIndex: Integer [r]
+	property TabAdvance: TAutoAdvance [rw]
+	property TitleFont: TFont [rw]
+	property TitleStyle: TTitleStyle [rw]
+	property UseXORFeatures: Boolean [rw]
+TDBGridColumns = class(TCollection)
+	property Items[Index: Integer]: TColumn [rw]
+TDOMNode = class(TObject)
+	property Attr[Index: LongWord]: TDOMNode [rw]
+	property AttrCount: LongWord [r]
+	property Attrs[Name: String]: String [rw]
+	property ChildNodes: TDOMNodeList [r]
+	property FirstChild: TDOMNode [r]
+	property LastChild: TDOMNode [r]
+	property NextSibling: TDOMNode [r]
+	property NodeName: String [r]
+	property NodeType: Integer [r]
+	property NodeValue: String [rw]
+	property OwnerDocument: TXmlDocument [r]
+	property ParentNode: TDOMNode [r]
+	property PreviousSibling: TDOMNode [r]
+	function AppendChild(NewChild: TDOMNode): TDOMNode
+	function AttrExists(const AName: String): Boolean
+	function CloneNode(Deep: Boolean): TDOMNode
+	function FindNode(const ANodeName: String): TDOMNode
+	function GetLevel: Longint
+	function HasChildNodes: Boolean
+	function InsertBefore(NewChild, RefChild: TDOMNode): TDOMNode
+	function RemoveAttr(const AName: String): TDOMNode
+	function RemoveChild(OldChild: TDOMNode): TDOMNode
+	function ReplaceChild(NewChild, OldChild: TDOMNode): TDOMNode
+TDOMNodeList = class(TObject)
+	property Count: LongWord [r]
+	property Item[Index: LongWord]: TDOMNode [r] default
+TEdit = class(TCustomEdit)
+	property AutoSelect: Boolean [rw]
+TEditWindow = class(TWindow)
+	property Buttons: TButtonPanel [r]
+	property Form: TdxForm [r]
+	property ScrollBox: TScrollBox [r]
+TFPHttpConnectionRequest = class(THttpHeader)
+	property Files: TUploadedFiles [r]
+TFPHttpConnectionResponse = class(THttpHeader)
+	procedure SendContent
+	procedure SendHeaders
+	property Age: String [rw]
+	property Allow: String [rw]
+	property CacheControl: String [rw]
+	property Code: Integer [rw]
+	property CodeText: String [rw]
+	property Content: String [rw]
+	property ContentLocation: String [rw]
+	property ContentMD5: String [rw]
+	property ContentRange: String [rw]
+	property Contents: TStrings [rw]
+	property ContentSent: Boolean [r]
+	property ContentStream: TStream [rw]
+	property Cookies: TCookies [r]
+	property ETag: String [rw]
+	property FirstHeaderLine: String [rw]
+	property FreeContentStream: Boolean [rw]
+	property HeadersSent: Boolean [r]
+	property ProxyAuthenticate: String [rw]
+TField = class(TComponent)
+	procedure Clear
+	procedure FocusControl
+	property Alignment: TAlignment [rw]
+	property AsBoolean: Boolean [rw]
+	property AsCurrency: Currency [rw]
+	property AsDateTime: TDateTime [rw]
+	property AsFloat: Double [rw]
+	property AsInteger: LongInt [rw]
+	property AsString: String [rw]
+	property AsVariant: Variant [rw]
+	property CanModify: Boolean [r]
+	property DataType: TFieldType [r]
+	property FieldName: String [r]
+	property IsNull: Boolean [r]
+	property OldValue: Variant [r]
+	property ReadOnly: Boolean [rw]
+	property State: TDataSetState [r]
+	property Value: Variant [rw]
+#TFileDialog = class(TCommonDialog)
+	property DefaultExt: String [rw]
+	property FileName: String [rw]
+	property Files: TStrings [r]
+	property Filter: String [rw]
+	property FilterIndex: Integer [rw]
+	property InitialDir: String [rw]
+TFileStream = class(TStream)
+	constructor Create(FileName: string; Mode: Word)
+	property Handle: Integer [r]
+TFilterField = class(TObject)
+	property EndValue[Index: Integer]: String [r]
+	property FieldName: String [r]
+	property IsNot: Boolean [rw]
+	property IsNull: Boolean [rw]
+	property Value[Index: Integer]: String [r]
+	property Values: TStringList [r]	
+TFilterObject = class(TObject)
+	function AddField(const FieldName: String): TFilterField
+	procedure Clear
+	procedure DeleteField(F: TFilterField)
+	function FindField(const FieldName: String): TFilterField
+	property Count: Integer [r]
+	property Fields[Index: Integer]: TFilterField [r] default
+TFont = class(TGraphicObject)
+	property Color: TColor [rw]
+	property Handle: Integer [rw]
+	property Height: Integer [rw]
+	property Name: String [rw]
+	property Pitch: TFontPitch [rw]
+	property PixelsPerInch: Integer [rw]
+	property Size: Integer [rw]
+	property Style: TFontStyles [rw] 
+#TForm = class(TScrollingWinControl)
+	constructor CreateNew(AOwner: TComponent)
+	procedure Close
+	function CloseQuery: Boolean
+	procedure Hide
+	procedure Show
+	function ShowModal: Integer
+	property AllowDropFiles: Boolean [rw]
+	property AlphaBlend: Boolean [rw]
+	property AlphaBlendValue: Byte [rw]
+	property Active: Boolean [r]
+	property ActiveControl: TWinControl [rw]
+	property AutoScroll: Boolean [rw]
+	property BorderIcons: TBorderIcons [rw]
+	property BorderStyle: TFormBorderStyle [rw]
+	property FormStyle: TFormStyle [rw]
+	property Icon: TIcon [rw]
+	property KeyPreview: Boolean [rw]
+	property Menu: TMainMenu [rw]
+	property ModalResult: LongInt [rw]
+	property PixelsPerInch: Integer [rw]
+	property Position: TPosition [rw]
+	property ShowInTaskBar: TShowInTaskBar [rw]
+	property OnActivate: TNotifyEvent [rw]
+	property OnClose: TCloseEvent [rw]
+	property OnCloseQuery: TCloseQueryEvent [rw]
+	property OnCreate: TNotifyEvent [rw]
+	property OnDestroy: TNotifyEvent [rw]
+	property OnDeactivate: TNotifyEvent [rw]
+	property OnDropFiles: TDropFilesEvent [rw]
+	property OnHide: TNotifyEvent [rw]
+	property OnShow: TNotifyEvent [rw]
+	property OnWindowStateChange: TNotifyEvent [rw]
+	property WindowState: TWindowState [rw]
+TFormView = class(TCustomPanel)
+	constructor Create(AOwner: TComponent; const FormName: String; ViewType: TViewType)
+	property Form: TdxForm [r]
+	property FormSplitter: TSplitter [r]
+	property Grid: TdxGrid [r]
+	property ScrollBox: TScrollBox [r]
+	property Tree: TdxFormTree [r]
+	property TreeSplitter: TSplitter [r]
+#TGraphic = class(TPersistent)
+	procedure LoadFromFile(const FileName: string)
+	procedure SaveToFile(const FileName: string)
+	property Height: Integer [rw]
+	property Empty: Boolean [r]
+	property Modified: Boolean [rw]
+	property OnChange: TNotifyEvent [rw] 
+	property Width: Integer [rw]
+#TGraphicControl = class(TControl)
+	property Canvas: TCanvas [r]
+#TGraphicObject = class(TPersistent)
+	property OnChange: TNotifyEvent [rw]
+TGridColumn = class(TCollectionItem)
+	property Alignment: TAlignment [rw]
+	property Color: TColor [rw]
+	property DropDownRows: Longint [rw]
+	property Font: TFont [rw]
+	property Grid: TDBGrid [r]
+	property Layout: TTextLayout [rw]
+	property MinSize: Integer [rw]
+	property MaxSize: Integer [rw]
+	property ReadOnly: Boolean [rw]
+	property SizePriority: Integer [rw]
+	property Title: TGridColumnTitle [rw]
+	property Width: Integer [rw]
+TGridColumnTitle = class(TPersistent)
+	property Alignment: TAlignment [rw]
+	property Caption: String [rw]
+	property Color: TColor [rw]
+	property Font: TFont [rw]
+	property Layout: TTextLayout [rw]
+#TGridControl = class(TCustomControl)  
+TGroupBox = class(TCustomControl)
+THttpClient = class(TObject)
+	procedure AddHeader(const AHeader, AValue: String)
+	procedure FormPost(const URL: string; FormData:  TStrings)
+	function GetHeader(const AHeader: String): String
+	function IndexOfHeader(const AHeader: String): Integer
+	procedure Send(const AMethod, AURL: String)
+	procedure StreamFormPost(const AURL: string; FormData: TStrings; const AFieldName, AFileName: string; const AStream: TStream)
+	procedure Terminate
+	property MultiThreaded: Boolean [rw]
+	property AllowRedirect: Boolean [rw]
+	property Connected: Boolean [r]
+	property ConnectionCount: Integer [r]
+	property Content: String [r]
+	property ContentStream: TStream [rw]
+	property Cookies: TStrings [rw]
+	property HTTPversion: String [rw]
+	property IOTimeout: Integer [rw]
+	property KeepConnection: Boolean [rw]
+	property MaxRedirects: Byte [rw]
+	property OnDataReceived: TDataEvent [rw]
+	property OnError: THttpClientErrorEvent [rw]
+	property OnFinish: TNotifyEvent [rw]
+	property OnHeaders: TNotifyEvent [rw]
+	property OnPassword: TPasswordEvent [rw]
+	property OnRedirect: TRedirectEvent [rw]
+	property Password: String [rw]
+	property Proxy: TProxyData [rw]
+	property RequestBody: TStream [rw]
+	property RequestHeaders: TStrings [rw]
+	property ResponseHeaders: TStrings [r]
+	property ResponseStatusCode: Integer [r]
+	property ResponseStatusText: String [r]
+	property ServerHTTPVersion: String [r]
+	property Terminated: Boolean [r]
+	property UserName: String [rw]
+THttpHeader = class(TObject)
+	property Accept: String [rw]
+	property AcceptCharset: String [rw]
+	property AcceptEncoding: String [rw]
+	property AcceptLanguage: String [rw]
+	property Authorization: String [rw]
+	property Connection: String [rw]
+	property Content: String [rw]
+	property ContentEncoding: String [rw]
+	property ContentFields: TStrings [r]
+	property ContentLanguage: String [rw]
+	property ContentLength: Integer [rw]
+	property ContentType: String [rw]
+	property Cookie: String [rw]
+	property CookieFields: TStrings [rw]
+	property CustomHeaders: TStringList [r] 
+	property Date: String [rw]
+	property Expires: String [rw]
+	property From: String [rw]
+	property Host : String [rw]
+	property HttpVersion: String [rw]
+	property HTTPXRequestedWith: String [rw]
+	property IfModifiedSince: String [rw]
+	property LastModified: String [rw]
+	property Location: String [rw]
+	property Method: String [rw]
+	property PathInfo: String [rw]
+	property PathTranslated: String [rw]
+	property Pragma: String [rw]
+	property ProtocolVersion: String [rw]
+	property Query: String [rw]
+	property QueryFields: TStrings [r]
+	property Referer: String [rw]
+	property RemoteAddr: String [rw]
+	property RemoteHost: String [rw]
+	property RetryAfter: String [rw]
+	property ScriptName: String [rw]
+	property Server: String [rw]
+	property ServerPort: Word [rw]
+	property SetCookie: String [rw]
+	property URL: String [rw]
+	property UserAgent: String [rw]
+	property Via: String [rw]
+	property Warning: String [rw]
+	property WWWAuthenticate: String [rw]
+THttpServer = class(TObject)
+	procedure Start
+	property Active: Boolean [r]
+	property IOTimeout: Integer [rw]
+	property Port: Word [rw]
+	property OnError: THTTPServerErrorHandler [rw]
+	property OnRequest: THTTPServerRequestHandler [rw]
+TIcon = class(TGraphic)
+	procedure LoadFromStream(Stream: TStream)
+	procedure LoadFromStringBase64(const StrBase64: String)
+	procedure SaveToStream(Stream: TStream)
+TImageList = class(TCustomImageList)
+	property Height: Integer [rw]
+	property Width: Integer [rw]
+TIniFile = class(TObject)
+	constructor Create(const AFileName: string; AOptions: TIniFileOptions)
+	procedure DeleteKey(const Section, Ident: String)
+	procedure EraseSection(const Section: string)
+	function ReadBinaryStream(const Section, Name: string; Value: TStream): Integer
+	function ReadBool(const Section, Ident: string; Default: Boolean): Boolean
+	function ReadDate(const Section, Ident: string; Default: TDateTime): TDateTime
+	function ReadDateTime(const Section, Ident: string; Default: TDateTime): TDateTime
+	function ReadFloat(const Section, Ident: string; Default: Double): Double
+	function ReadInt64(const Section, Ident: string; Default: Int64): Int64
+	function ReadInteger(const Section, Ident: string; Default: Longint): Longint
+	function ReadString(const Section, Ident, Default: string): string
+	function ReadTime(const Section, Ident: string; Default: TDateTime): TDateTime
+	function SectionExists(const Section: string): Boolean
+	procedure WriteBinaryStream(const Section, Ident: string; Value: TStream)
+	procedure WriteBool(const Section, Ident: string; Value: Boolean)
+	procedure WriteDate(const Section, Ident: string; Value: TDateTime)
+	procedure WriteDateTime(const Section, Ident: string; Value: TDateTime)
+	procedure WriteFloat(const Section, Ident: string; Value: Double)
+	procedure WriteInt64(const Section, Ident: string; Value: Int64)
+	procedure WriteInteger(const Section, Ident: string; Value: Longint)
+	procedure WriteTime(const Section, Ident: string; Value: TDateTime)
+	procedure WriteString(const Section, Ident, Value: String)
+	procedure ReadSection(const Section: string; Strings: TStrings)
+	procedure ReadSectionRaw(const Section: string; Strings: TStrings)
+	procedure ReadSectionValues(const Section: string; Strings: TStrings)
+	procedure ReadSections(Strings: TStrings)
+	procedure UpdateFile
+	function ValueExists(const Section, Ident: string): Boolean
+	property CaseSensitive: Boolean [rw]
+	property CacheUpdates: Boolean [rw]
+	property EscapeLineFeeds: boolean [r]
+	property FileName: string [r]
+	property StripQuotes: Boolean [rw]
+TJSONArray = class(TJSONData)
+	constructor CreateArray(Elements: array of const)
+	function Add(Value: Variant): Integer
+	function AddArray(Arr: TJSONArray): Integer
+	function AddObject(Obj: TJSONObject): Integer
+	procedure Delete(Index : Integer)
+	procedure Exchange(Index1, Index2: Integer)
+	function IndexOf(obj: TJSONData): Integer      
+	procedure Insert(Index: Integer; Value: Variant)
+	procedure InsertArray(Index: Integer; Arr: TJSONArray)
+	procedure InsertObject(Index: Integer; Obj: TJSONObject)
+	procedure Remove(Item : TJSONData)
+TJSONData = class(TObject)
+	procedure Clear
+	function Clone : TJSONData
+	function FindPath(Const APath : String) : TJSONdata
+	function FormatJSON(Options: TFormatOptions; Indentsize: Integer): String
+	function GetPath(Const APath : String) : TJSONdata
+	function JSONType: TJSONType
+	property AsBoolean: Boolean [rw]
+	property AsFloat: Double [rw]
+	property AsInt64: Int64 [rw]
+	property AsInteger: Integer [rw]
+	property AsJSON: String [r]  
+	property AsString: String [rw]
+	property AsUnicodeString: UnicodeString [rw]
+	property Count: Integer [r]
+	property IsNull: Boolean [r]
+	property Items[Index: Integer]: TJSONData [rw] default
+	property Value: variant [rw]
+TJSONObject = class(TJSONData)
+	constructor CreateObject(Elements: array of const)
+	function Add(const AName: String; Value: Variant): Integer
+	function AddArray(const AName: String; Arr: TJSONArray): Integer
+	function AddObject(const AName: String; Obj: TJSONObject): Integer
+	procedure Delete(Index : Integer)
+	function IndexOf(obj: TJSONData): Integer
+	function IndexOfName(const AName: String): Integer
+	procedure Remove(Item : TJSONData)
+	property Elements[Name: String]: TJSONData [rw] default 
+	property Names[Index: Integer]: String [r]
+TKGrid = class(TCustomControl)
+	function CellSelected(ACol, ARow: Integer): Boolean
+	procedure DeleteRow(At: Integer)
+	property Flat: Boolean [rw]
+	property Cells[Col, Row: Integer]: String [rw]
+	property CellSpan[Col, Row: Integer]: TKGridCellSpan [rw]
+	property Col: Integer [rw]
+	property ColCount: Integer [rw]
+	property Colors: TKGridColors [rw]
+	property ColWidths[Index: Integer]: Integer [rw]
+	property DefaultColWidth: Integer [rw]
+	property DefaultRowHeight: Integer [rw]
+	property DisabledDrawStyle: TKGridDisabledDrawStyle [rw]
+	property FixedCols: Integer [rw]
+	property FixedRows: Integer [rw]
+	property GridLineWidth: Integer [rw]
+	property LeftCol: Integer [rw]
+	property MinColWidth: Integer [rw]
+	property MinRowHeight: Integer [rw]
+	property MouseCellHintTime: Cardinal [rw]
+	property Objects[Col, Row]: TObject [rw]
+	property Options: TKGridOptions [rw]
+	property OptionsEx: TKGridOptionsEx [rw]
+	property ParentColor: Boolean [rw]
+	property RangeSelectStyle: TKGridRangeSelectStyle [rw]
+	property Row: Integer [rw]
+	property RowCount: Integer [rw]
+	property RowHeights[Index: Integer]: Integer [rw]
+	property ScrollBars: TScrollStyle [rw]
+	property ScrollModeHorz: TKGridScrollMode [rw]
+	property ScrollModeVert: TKGridScrollMode [rw]
+	property ScrollSpeed: Cardinal [rw]
+	property Selection: TKGridRect [rw]
+	property SelectionCount: Integer [r]
+	property SelectionRect: TRect [r]
+	property Selections[Index: Integer]: TKGridRect [rw]
+	property SizingStyle: TKGridSizingStyle [rw]
+	property TopRow: Integer [rw]
+	property VisibleColCount: Integer [r]
+	property VisibleRowCount: Integer [r]
+	property OnDrawCell: TKGridDrawCellEvent [rw]
+	property OnMeasureCell: TKGridMeasureCellEvent [rw]
+	property OnMouseCellHint: TKGridCellHintEvent [rw]
+	property OnMouseClickCell: TKGridCellEvent [rw]
+	property OnMouseDblClickCell: TKGridCellEvent [rw]
+	property OnMouseEnterCell: TKGridCellEvent [rw]
+	property OnMouseLeaveCell: TKGridCellEvent [rw]
+	property OnSelectCell: TKGridSelectCellEvent [rw]
+	property OnSelectionChanged: TNotifyEvent [rw]
+TKGridColors = class(TPersistent)
+	property BrightRangeBkGnd: Boolean [rw]
+	property CellBkGnd: TColor [rw]
+	property CellLines: TColor [rw]
+	property CellText: TColor [rw]
+	property DragSuggestionBkGnd: TColor [rw]
+	property DragSuggestionLine: TColor [rw]
+	property FixedCellBkGnd: TColor [rw]
+	property FixedCellIndication: TColor [rw]
+	property FixedCellLines: TColor [rw]
+	property FixedCellText: TColor [rw]
+	property FixedThemedCellLines: TColor [rw]
+	property FixedThemedCellHighlight: TColor [rw]
+	property FixedThemedCellShadow: TColor [rw]
+	property FocusedCellBkGnd: TColor [rw]
+	property FocusedCellText: TColor [rw]
+	property FocusedRangeBkGnd: TColor [rw]
+	property FocusedRangeText: TColor [rw]
+	property SelectedCellBkGnd: TColor [rw]
+	property SelectedCellText: TColor [rw]
+	property SelectedRangeBkGnd: TColor [rw]
+	property SelectedRangeText: TColor [rw]
+	property SelectedFixedCellBkGnd: TColor [rw]
+TLabel = class(TGraphicControl)
+	property Alignment: TAlignment [rw]
+	property FocusControl: TWinControl [rw]
+	property Layout: TTextLayout [rw]
+	property ShowAccelChar: Boolean [rw]
+	property Transparent: Boolean [rw]
+	property WordWrap: Boolean [rw]
+TListBox = class(TCustomListBox)
+	property OnMeasureItem: TMeasureItemEvent [rw]
+TListWindow = class(TWindow)
+	constructor Create(const FormName: String; ViewType: TViewType)
+	property Buttons: TButtonPanel [r]
+	property FormView: TFormView [r]  
+	property Toolbar: TToolbar [r]
+TMainFm = class(TForm)
+	function CreatePage(const FormName: String; ViewType: TViewType): TTabSheet
+	procedure DestroyPage(Page: TTabSheet)
+	property FormViews[Index: Integer]: TFormView [r]
+	property OnCreateForm: TCreateFormEvent [rw]
+	property OnCreateListWindow: TCreateListWindowEvent [rw]
+	property OnCreateReportWindow: TCreateReportWindowEvent [rw]
+	property OnDatabaseClose: TNotifyEvent [rw]
+	property OnDatabaseCloseQuery: TDatabaseCloseQueryEvent [rw]
+	property OnDestroyForm: TCreateFormEvent [rw]
+	property OnFatalError: TFatalErrorEvent [rw]
+	property Pages: TPageControl [r]
+	property Params: TParamList [r]
+	property StatusBar: TStatusBar [r]
+	property ToolBar: TToolBar [r]
+TMainMenu = class(TMenu)
+TMaskEditEx = class(TCustomEdit)
+	function MaskTextEmpty: Boolean
+	function ValidateText: Boolean
+	property EditMask: String [rw]
+	property EditText: String [rw]
+	property IsMasked: Boolean [r]
+	property SpaceChar: Char [rw]
+TMemo = class(TCustomMemo)
+TMemoryStream = class(TStream)
+	procedure Clear
+	procedure LoadFromFile(FileName: string)
+	procedure LoadFromStream(Stream: TStream)
+	procedure SaveToFile(FileName: string)
+	procedure SaveToStream(Stream: TStream)
+	procedure SetSize(NewSize: LongInt)
+TMenu = class(TComponent)
+	property Handle: HMENU [r]
+	property Images: TCustomImageList [rw]
+	property Items: TMenuItem [r]
+TMenuItem = class(TComponent)
+	constructor Create(AOwner: TComponent)
+	procedure Add(Item: TMenuItem)
+	procedure Clear
+	procedure Click
+	procedure Delete(Index: Integer)
+	function Find(const ACaption: string): TMenuItem
+	function GetImageList: TCustomImageList
+	function GetParentComponent: TComponent
+	function GetParentMenu: TMenu
+	function HasParent: Boolean
+	function IndexOf(Item: TMenuItem): Integer
+	procedure Insert(Index: Integer; Item: TMenuItem)
+	procedure Remove(Item: TMenuItem)
+	property Bitmap: TBitmap [rw]
+	property Caption: String [rw]
+	property Checked: Boolean [rw]
+	property Count: Integer [r]
+	property Default: Boolean [rw]
+	property Enabled: Boolean [rw]
+	property GroupIndex: Byte [rw]
+	property Handle: HMENU [r]
+	property Hint: String [rw]
+	property ImageIndex: Integer [rw]
+	property Items[Index: Integer]: TMenuItem [r] default
+	property MenuIndex: Integer [rw]
+	property OnClick: TNotifyEvent [rw]
+	property Parent: TMenuItem [r]
+	property RadioItem: Boolean [rw]
+	property ShortCut: TShortCut [rw]
+	property SubMenuImages: TCustomImageList [rw]
+	property Visible: Boolean [rw]
+#TObject = class
+	constructor Create
+	procedure Free
+	property ClassName: String [r]
+TOpenDialog = class(TFileDialog)
+	property Options: TOpenOptions [rw]
+TParamList = class(TObject)
+	procedure Clear
+	function ParamExists(const Name: String): Boolean
+	property Count: Integer [r]
+	property Names[Index: Integer]: String [r]
+	property Objects[Name: String]: TObject [rw]
+	property ObjectFromIndex[Index: Integer]: TObject [rw]
+	property OnGetParam: TParamNotifyEvent [rw]
+	property OnSetParam: TParamNotifyEvent [rw]
+	property Values[Name: String]: Variant [rw] default
+	property ValueFromIndex[Index: Integer]: Variant
+TPageControl = class(TWinControl)
+	function IndexOfPageAt(X, Y: Integer): Integer
+	property ActivePage: TTabSheet [rw]
+	property ActivePageIndex: Integer [rw]
+	property Images: TCustomImageList [rw]
+	property MultiLine: Boolean [rw]
+	property OnChange: TNotifyEvent [rw]
+	property OnChanging: TTabChangingEvent [rw]
+	property OnCloseTabClicked: TNotifyEvent [rw]
+	property Options: TCTabControlOptions [rw]
+	property PageCount: Integer [r]
+	property Pages[Index: Integer]: TTabSheet [r]
+	property ShowTabs: Boolean [rw]
+	property TabIndex: Integer [rw]
+	property TabPosition: TTabPosition [rw]
+TPaintBox = class(TGraphicControl)
+	property OnPaint: TNotifyEvent [rw]
+TPanel = class(TCustomPanel)
+	property Alignment: TAlignment [rw]
+	property BevelInner: TPanelBevel [rw]
+	property BevelOuter: TPanelBevel [rw]
+	property BevelWidth: TBevelWidth [rw]
+TPanelBitBtn = class(TCustomBitBtn)
+	property Glyph: TBitmap [rw]
+TPen = class(TGraphicObject)
+	property Color: TColor [rw]
+	property Mode: TPenMode [rw]
+	property Style: TPenStyle [rw]
+	property Width: Integer [rw] 
+#TPersistent = class(TObject)
+	procedure Assign(Source: TPersistent)
+TPopupMenu = class(TMenu)
+	procedure Popup;
+	procedure PopupXY(X, Y: Integer)
+	property Alignment: TPopupAlignment [rw]
+	property AutoPopup: Boolean [rw]
+	property OnPopup: TNotifyEvent [rw] 
+	property PopupComponent: TComponent [rw]
+	property TrackButton: TTrackButton [rw]
+TPrintDialog = class(TCommonDialog)
+	property Collate: Boolean [rw]
+	property Copies: Integer [rw]
+	property FromPage: Integer [rw]
+	property MinPage: Integer [rw]
+	property MaxPage: Integer [rw]
+	property Options: TPrintDialogOptions [rw]
+	property PrintToFile: Boolean [rw]
+	property PrintRange: TPrintRange [rw]
+	property ToPage: Integer [rw]
+TProxyData = class(TPersistent)
+	property Host: String [rw]
+	property Password: String [rw]
+	property Port: Word [rw]
+	property UserName: String [rw]
+TRadioButton = class(TCustomCheckBox)
+	property Checked: Boolean [rw]
+TReportWindow = class(TWindow)
+	constructor Create
+	function ShowReport(const ReportName: String): Integer
+	property Filter: TCustomControl [r]
+	property FilterSplitter: TSplitter [r]
+	property QGrid: TdxQueryGrid [r]
+	property StatusBar: TStatusBar [r]
+	property ToolBar: TToolBar [r]
+TSaveDialog = class(TOpenDialog)
+TSelectDirectoryDialog = class(TOpenDialog)
+TScrollBar = class(TWinControl)
+	property Kind: TScrollBarKind [rw]
+	property LargeChange: TScrollBarInc [rw]
+	property Max: Integer [rw]
+	property Min: Integer [rw]
+	property OnChange: TNotifyEvent [rw]
+	property OnScroll: TScrollEvent [rw]
+	property PageSize: Integer [rw]
+	property Position: Integer [rw]
+	property SmallChange: TScrollBarInc [rw]
+TScrollBox = class(TScrollingWinControl)
+	property AutoScroll: Boolean [rw]
+#TScrollingWinControl = class(TCustomControl)
+	procedure ScrollBy(DeltaX, DeltaY: Integer)
+	property HorzScrollBar: TControlScrollBar [rw]
+	property VertScrollBar: TControlScrollBar [rw]
+TShape = class(TGraphicControl)
+	property Brush: TBrush [rw]
+	property Pen: TPen [rw]
+	property OnPaint: TNotifyEvent [rw]
+	property Shape: TShapeType [rw]
+TSizeConstraints = class(TPersistent)
+	property MaxHeight: Integer [rw]
+	property MaxWidth: Integer [rw]
+	property MinHeight: Integer [rw]
+	property MinWidth: Integer [rw]
+TSortColumn = class(TObject)
+	property Desc: Boolean [rw]
+	property FieldName: String [rw]
+TSortColumns = class(TObject)
+	function Add(const FieldName: String; Desc: Boolean): TSortColumn
+	procedure Clear
+	function Find(const FieldName: String): TSortColumn
+	procedure Remove(const FieldName: String)
+	property Columns[Index: Integer]: TSortColumn [r] default
+	property Count: Integer [r]
+TSpeedButton = class(TGraphicControl)
+	procedure Click
+	procedure LoadGlyphFromFile(const FileName: String)
+	procedure LoadGlyphFromStream(Stream: TStream)
+	procedure LoadGlyphFromStringBase64(const StrBase64: String)
+	property AllowAllUp: Boolean [rw]
+	property GroupIndex: Integer [rw]
+	property Down: Boolean [rw]
+	property Flat: Boolean [rw]
+	property Glyph: TBitmap [rw]
+	property Layout: TButtonLayout [rw]
+	property Margin: Integer [rw]
+	property Spacing: Integer [rw]
+	property OnPaint: TNotifyEvent [rw]
+	property Transparent: Boolean [rw]
+TSplitter = class(TCustomControl)
+	property AutoSnap: Boolean [rw]
+	property Beveled: Boolean [rw]
+	property MinSize: Integer [rw]
+	property ResizeStyle: TResizeStyle [rw]
+TStatusBar = class(TWinControl)
+	procedure BeginUpdate
+	procedure EndUpdate
+	function GetPanelIndexAt(X, Y: Integer): Integer
+	function SizeGripEnabled: Boolean
+	function UpdatingStatusBar: boolean
+	property AutoHint: Boolean [rw]
+	property Canvas: TCanvas [r]
+	property Panels: TStatusPanels [rw]
+	property SimpleText: String [rw]
+	property SimplePanel: Boolean [rw]
+	property SizeGrip: Boolean [rw]
+	property UseSystemFont: Boolean [rw]
+	property OnDrawPanel: TDrawPanelEvent [rw]
+	property OnHint: TNotifyEvent [rw]
+TStatusPanel = class(TCollectionItem)
+	function StatusBar: TStatusBar
+	property Alignment: TAlignment [rw]
+	property Bevel: TStatusPanelBevel [rw]
+	property Style: TStatusPanelStyle [rw]
+	property Text: String [rw]
+	property Width: Integer [rw]
+TStatusPanels = class(TCollection)
+	function Add: TStatusPanel
+	property Items[Index: Integer]: TStatusPanel [rw] default
+	property StatusBar: TStatusBar [r]
+#TStream = class(TObject)
+	function Read(Buffer: string; Count: LongInt): LongInt
+	function Write(Buffer: string; Count: LongInt): LongInt
+	function Seek(Offset: LongInt; Origin: Word): LongInt
+	procedure ReadBuffer(Buffer: string; Count: LongInt)
+	procedure WriteBuffer(Buffer: string; Count: LongInt)
+	function CopyFrom(Source: TStream; Count: Int64): Int64
+	property Position: Int64 [rw]
+	property Size: Int64 [rw] 
+TStringList = class(TStrings)
+	function Find(S: string; var Index: Integer): Boolean
+	procedure Sort
+	property CaseSensitive: Boolean [rw]
+	property Duplicates: TDuplicates [rw]
+	property OnChange: TNotifyEvent [rw]
+	property OnChanging: TNotifyEvent [rw]
+	property Sorted: Boolean [rw]
+TStringListUTF8 = class(TStringList)
+	property OnCompare: TStringListCompareEvent [rw]
+TStringStream = class(TMemoryStream)
+	constructor Create(AString: string)
+	property DataString: String [r]
+#TStrings = class(TPersistent)
+	function Add(S: string): Integer
+	function AddObject(S: string; AObject: TObject): Integer
+	procedure AddStrings(Strings: TStrings)
+	procedure BeginUpdate
+	procedure Clear
+	procedure Delete(Index: Integer)
+	procedure EndUpdate
+	function Equals(Strings: TStrings): Boolean
+	procedure Exchange(Index1, Index2: Integer)
+	function IndexOf(const S: string): Integer
+	function IndexOfName(Name: string): Integer
+	function IndexOfObject(AObject: TObject): Integer
+	procedure Insert(Index: Integer; S: string)
+	procedure InsertObject(Index: Integer; S: string; AObject: TObject)
+	procedure LoadFromFile(FileName: string);
+	procedure LoadFromStream(Stream: TStream)
+	procedure Move(CurIndex, NewIndex: Integer)
+	procedure SaveToFile(FileName: string)
+	procedure SaveToStream(Stream: TStream)
+	property Capacity: Integer [rw]
+	property Delimiter: Char [rw]
+	property DelimitedText: String [rw]
+	property NameValueSeparator: Char [rw]
+	property QuoteChar: Char [rw]
+	property Count: Integer [r]
+	property Text: String [rw]
+	property CommaText: String [rw]
+	property Strings[Index: Integer]: String [rw] default
+	property StrictDelimiter: Boolean [rw]
+	property Objects[Index: Integer]: TObject [rw]
+	property Names[Index: Integer]: String [r]
+	property Values[Name: String]: String [rw]
+	property ValueFromIndex[Index: Integer]: String [rw]
+TTabSheet = class(TWinControl)
+	property ImageIndex: Integer [rw]
+	property PageControl: TPageControl [rw]
+	property TabIndex: Integer [r]
+	property PageIndex: Integer [rw]
+	property TabVisible: Boolean [rw]
+TTemplate = class(TPersistent)
+	function GetContent: String
+	function HasContent: Boolean
+	procedure ClearTags
+	property EndDelimiter: String [rw]
+	property FileName: String [rw]
+	property OnReplaceTag: TReplaceTagEvent [rw]
+	property ParamEndDelimiter: String [rw]
+	property ParamStartDelimiter: String [rw]
+	property ParamValueSeparator: String [rw]
+	property StartDelimiter: String [rw]
+	property Tags[Name: String]: Variant [rw]
+	property TagByIndex[Index: Integer]: Variant [rw]
+	property TagCount: Integer [r]
+	property Template: String [rw]
+TTimer = class(TComponent)
+	property Enabled: Boolean [rw]
+	property Interval: Cardianl [rw]
+	property OnTimer: TNotifyEvent [rw]
+TToolButton = class(TGraphicControl)
+	procedure Click
+	property AllowAllUp: Boolean [rw]
+	property Down: Boolean [rw]
+	property DropdownMenu: TPopupMenu [rw]
+	property Grouped: Boolean [rw]
+	property ImageIndex: Integer [rw]
+	property Indeterminate: Boolean [rw]
+	property Marked: Boolean [rw]
+	property ShowCaption: Boolean [rw]
+	property Style: TToolButtonStyle [rw]
+	property Wrap: Boolean [rw]
+TToolbar = class(TCustomControl)
+	property ButtonCount: Integer [r]
+	property ButtonHeight: Integer [rw]
+	property ButtonWidth: Integer [rw]
+	property Buttons[Index: Integer]: TToolButton [r]
+	property EdgeBorders: TEdgeBorders [rw]
+	property EdgeInner: TEdgeStyle [rw]
+	property EdgeOuter: TEdgeStyle [rw]
+	property Flat: Boolean [rw]
+	property Images: TCustomImageList [rw]
+	property List: Boolean [rw]
+	property RowCount: Integer [r]
+	property ShowCaptions: Boolean [rw]
+	property Transparent: Boolean [rw]
+	property Wrapable: Boolean [rw]
+TTrayIcon = class(TComponent)
+	procedure ShowBalloonHint
+	property Animate: Boolean [rw]
+	property AnimateInterval: Cardinal [rw]
+	property BalloonFlags: TBalloonFlags [rw]
+	property BalloonHint: String [rw]
+	property BalloonTimeout: Integer [rw]
+	property BalloonTitle: String [rw]
+	property Canvas: TCanvas [r]
+	property Hint: String [rw]
+	property Icon: TIcon [rw]
+	property Icons: TCustomImageList [rw]
+	property OnClick: TNotifyEvent [rw]
+	property OnDblClick: TNotifyEvent [rw]
+	property OnMouseDown: TMouseEvent [rw]
+	property OnMouseMove: TMouseMoveEvent [rw]
+	property OnMouseUp: TMouseEvent [rw]
+	property OnPaint: TNotifyEvent [rw]
+	property PopUpMenu: TPopupMenu [rw]
+	property ShowIcon: Boolean [rw]
+	property Visible: Boolean [rw]
+TTreeNode = class(TPersistent)
+	function AlphaSort: Boolean
+	function Bottom: integer
+	function BottomExpanded: integer
+	function CustomSort(SortProc: TTreeNodeCompare): Boolean
+	function DefaultTreeViewSort(Node1, Node2: TTreeNode): Integer
+	function DisplayExpandSignLeft: integer
+	function DisplayExpandSignRect: TRect
+	function DisplayExpandSignRight: integer
+	function DisplayIconLeft: integer
+	function DisplayRect(TextOnly: Boolean): TRect
+	function DisplayStateIconLeft: integer
+	function DisplayTextLeft: integer
+	function DisplayTextRight: integer
+	function EditText: Boolean
+	function FindNode(const NodeText: string): TTreeNode
+	function GetFirstChild: TTreeNode
+	function GetFirstVisibleChild: TTreeNode
+	function GetLastChild: TTreeNode
+	function GetLastSibling: TTreeNode
+	function GetLastSubChild: TTreeNode
+	function GetLastVisibleChild: TTreeNode
+	function GetNext: TTreeNode
+	function GetNextChild(AValue: TTreeNode): TTreeNode
+	function GetNextExpanded: TTreeNode
+	function GetNextMultiSelected: TTreeNode
+	function GetNextSibling: TTreeNode
+	function GetNextSkipChildren: TTreeNode
+	function GetNextVisible: TTreeNode
+	function GetNextVisibleSibling: TTreeNode
+	function GetParentNodeOfAbsoluteLevel(TheAbsoluteLevel: integer): TTreeNode
+	function GetPrev: TTreeNode
+	function GetPrevChild(AValue: TTreeNode): TTreeNode
+	function GetPrevExpanded: TTreeNode
+	function GetPrevMultiSelected: TTreeNode
+	function GetPrevSibling: TTreeNode
+	function GetPrevVisible: TTreeNode
+	function GetPrevVisibleSibling: TTreeNode
+	function GetTextPath: string
+	function HasAsParent(AValue: TTreeNode): Boolean
+	function IndexOf(AValue: TTreeNode): Integer
+	function IndexOfText(const NodeText: string): Integer
+	procedure Collapse(Recurse: Boolean)
+	procedure Delete
+	procedure DeleteChildren
+	procedure EndEdit(Cancel: Boolean)
+	procedure Expand(Recurse: Boolean)
+	procedure ExpandParents
+	procedure MakeVisible
+	procedure MoveTo(Destination: TTreeNode; Mode: TNodeAttachMode)
+	procedure MultiSelectGroup
+	procedure Update
+	property AbsoluteIndex: Integer [r]
+	property Count: Integer [r]
+	property Cut: Boolean [rw]
+	property Data: TObject [rw]
+	property Deleting: Boolean [r]
+	property Expanded: Boolean [rw]
+	property Focused: Boolean [rw]
+	property Handle: THandle [r]
+	property HasChildren: Boolean [rw]
+	property Height: integer [rw]
+	property ImageIndex: Integer [rw]
+	property Index: Integer [rw]
+	property IsFullHeightVisible: Boolean [r]
+	property IsVisible: Boolean [r]
+	property Items[ItemIndex: Integer]: TTreeNode [rw] default
+	property Level: Integer [r]
+	property MultiSelected: Boolean [rw]
+	property NodeEffect: TGraphicsDrawEffect [rw]
+	property OverlayIndex: Integer [rw]
+	property Owner: TTreeNodes [r]
+	property Parent: TTreeNode [r]
+	property Selected: Boolean [rw]
+	property SelectedIndex: Integer [rw]
+	property StateIndex: Integer [rw]
+	property States: TNodeStates [r]
+	property SubTreeCount: integer [r]
+	property Text: string [rw]
+	property Top: integer [r]
+	property TreeNodes: TTreeNodes [r]
+	property TreeView: TTreeView [r]
+	property Visible: Boolean [rw]
+TTreeNodes = class(TPersistent)
+	function Add(SiblingNode: TTreeNode; const NodeText: string): TTreeNode
+	function AddChild(ParentNode: TTreeNode; const NodeText: string): TTreeNode
+	function AddChildFirst(ParentNode: TTreeNode; const NodeText: string): TTreeNode
+	function AddChildObject(ParentNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function AddChildObjectFirst(ParentNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function AddFirst(SiblingNode: TTreeNode; const NodeText: string): TTreeNode
+	function AddObject(SiblingNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function AddObjectFirst(SiblingNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function FindNodeWithData(const NodeData: TObject): TTreeNode
+	function FindNodeWithText(const NodeText: string): TTreeNode
+	function FindNodeWithTextPath(TextPath: string): TTreeNode
+	function FindTopLvlNode(const NodeText: string): TTreeNode
+	function GetFirstNode: TTreeNode
+	function GetFirstVisibleNode: TTreeNode
+	function GetLastExpandedSubNode: TTreeNode
+	function GetLastNode: TTreeNode
+	function GetLastSubNode: TTreeNode
+	function GetLastVisibleNode: TTreeNode
+	function GetSelections(const AIndex: Integer): TTreeNode
+	function Insert(NextNode: TTreeNode; const NodeText: string): TTreeNode
+	function InsertBehind(PrevNode: TTreeNode; const NodeText: string): TTreeNode
+	function InsertObject(NextNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function InsertObjectBehind(PrevNode: TTreeNode; const NodeText: string; Data: TObject): TTreeNode
+	function IsMultiSelection: boolean
+	procedure BeginUpdate
+	procedure Clear
+	procedure ClearMultiSelection(ClearSelected: boolean)
+	procedure Delete(Node: TTreeNode)
+	procedure EndUpdate
+	procedure SelectionsChanged(ANode: TTreeNode; const AIsSelected: Boolean)
+	procedure SelectOnlyThis(Node: TTreeNode)
+	procedure SortTopLevelNodes(SortProc: TTreeNodeCompare)
+	property Count: Integer [r]
+	property Item[Index: Integer]: TTreeNode [r] default
+	property KeepCollapsedNodes: Boolean [rw]
+	property Owner: TTreeView [r]
+	property SelectionCount: Cardinal [r]
+	property TopLvlCount: integer [r]
+	property TopLvlItems[Index: integer]: TTreeNode [rw]
+TTreeView = class(TCustomTreeView)
+	function AlphaSort: Boolean
+	procedure ClearSelection(KeepPrimary: Boolean)
+	function CustomSort(SortProc: TTreeNodeCompare): Boolean
+	function DefaultTreeViewSort(Node1, Node2: TTreeNode): Integer
+	function GetHitTestInfoAt(X, Y: Integer): THitTests
+	function GetNodeAt(X, Y: Integer): TTreeNode
+	procedure GetInsertMarkAt(X, Y: Integer; out AnInsertMarkNode: TTreeNode; out AnInsertMarkType: TTreeViewInsertMarkType)
+	procedure SetInsertMark(AnInsertMarkNode: TTreeNode; AnInsertMarkType: TTreeViewInsertMarkType)
+	procedure SetInsertMarkAt(X,Y: integer)
+	function IsEditing: Boolean
+	procedure BeginUpdate
+	procedure EndUpdate
+	procedure FullCollapse
+	procedure FullExpand
+	procedure LoadFromFile(const FileName: string)
+	procedure LoadFromStream(Stream: TStream)
+	procedure SaveToFile(const FileName: string)
+	procedure SaveToStream(Stream: TStream)
+	procedure LockSelectionChangeEvent
+	procedure UnlockSelectionChangeEvent
+	function GetFirstMultiSelected: TTreeNode
+	function GetLastMultiSelected: TTreeNode
+	procedure Select(Node: TTreeNode; ShiftState: TShiftState)
+	function SelectionVisible: boolean
+	procedure MakeSelectionVisible
+	procedure ClearInvisibleSelection
+	function StoreCurrentSelection: TStringList
+	procedure ApplyStoredSelection(ASelection: TStringList; FreeList: boolean)
+	procedure MoveToNextNode
+	procedure MoveToPrevNode
+	property AutoExpand: Boolean [rw]
+	property BackgroundColor: TColor [rw]
+	property BorderWidth: Integer [rw]
+	property DefaultItemHeight: Integer [rw]
+	property ExpandSignColor: TColor [rw]
+	property ExpandSignType: TTreeViewExpandSignType [rw]
+	property HideSelection: Boolean [rw]
+	property HotTrack: Boolean [rw]
+	property Images: TCustomImageList [rw]
+	property Indent: Integer [rw]
+	property Items: TTreeNodes [rw]
+	property MultiSelect: Boolean [rw]
+	property MultiSelectStyle: TMultiSelectStyle [rw]
+	property ReadOnly: Boolean [rw]
+	property RightClickSelect: Boolean [rw]
+	property RowSelect: Boolean [rw]
+	property ScrollBars: TScrollStyle [rw]
+	property Selected: TTreeNode [rw]
+	property SelectionColor: TColor [rw]
+	property SelectionCount: Integer [r]
+	property Selections[Index: Integer]: TTreeNode [r]
+	property ShowButtons: Boolean [rw]
+	property ShowLines: Boolean [rw]
+	property ShowRoot: Boolean [rw]
+	property SortType: TSortType [rw]
+	property StateImages: TCustomImageList [rw]
+	property OnAddition: TTVExpandedEvent [rw]
+	property OnAdvancedCustomDraw: TTVAdvancedCustomDrawEvent [rw]
+	property OnAdvancedCustomDrawItem: TTVAdvancedCustomDrawItemEvent [rw]
+	property OnChange: TTVChangedEvent [rw]
+	property OnChanging: TTVChangingEvent [rw]
+	property OnCollapsed: TTVExpandedEvent [rw]
+	property OnCollapsing: TTVCollapsingEvent [rw]
+	property OnCompare: TTVCompareEvent [rw]
+	property OnCustomDraw: TTVCustomDrawEvent [rw]
+	property OnCustomDrawItem: TTVCustomDrawItemEvent [rw]
+	property OnDeletion: TTVExpandedEvent [rw]
+	property OnEdited: TTVEditedEvent [rw]
+	property OnEditing: TTVEditingEvent [rw]
+	property OnEditingEnd: TTVEditingEndEvent [rw]
+	property OnExpanded: TTVExpandedEvent [rw]
+	property OnExpanding: TTVExpandingEvent [rw]
+	property OnNodeChanged: TTVNodeChangedEvent [rw]
+	property OnSelectionChanged: TNotifyEvent [rw]
+	property Options: TTreeViewOptions [rw]
+	property TreeLineColor: TColor [rw]
+	property TreeLinePenStyle: TPenStyle [rw]
+TUploadFile = class(TCollectionItem)
+	property ContentType: String [rw]
+	property Description: String [rw]
+	property Disposition: String [rw]
+	property FieldName: String [rw]
+	property FileName: String [rw]
+	property LocalFileName: String [rw]
+	property Size: Int64 [rw]
+	property Stream: Tstream [r]
+TUploadedFiles = class(TCollection)
+	property Files[Index: Integer]: TUploadFile [r] default
+#TWinControl = class(TControl)
+	function CanFocus: Boolean
+	function ContainsControl(Control: TControl): Boolean
+	function Focused: Boolean
+	procedure PaintTo(DC: LongInt; X,Y: Integer)
+	procedure SetFocus
+	property BorderWidth: Integer [rw]
+	property Brush: TBrush [r]
+	property Controls[Index: Integer]: TControl [r]
+	property ControlCount: Integer [r]
+	property Handle: Integer [r]
+	property OnEnter: TNotifyEvent [rw]
+	property OnExit: TNotifyEvent [rw]
+	property OnKeyDown: TKeyEvent [rw]
+	property OnKeyPress: TKeyPressEvent [rw]
+	property OnKeyUp: TKeyEvent [rw]
+	property OnUtf8KeyPress: TUtf8KeyPressEvent [rw]
+	property Showing: Boolean [r]
+	property TabOrder: Integer [rw]
+	property TabStop: Boolean [rw]
+TWindow = class(TForm)
+	constructor Create
+	property AutoPosition: Boolean [rw]
+	property Params: TParamList [r]
+TXmlDocument = class(TDOMNode)
+	property Root: TDOMNode [r]
+	function CreateCDATA(const Data: String): TDOMNode  
+	function CreateNode(const NodeName: String): TDOMNode
+	function CreateText(const AText: String): TDOMNode
+TdxButton = class(TBitBtn)
+	property ImageName: String [rw]
+TdxCalcEdit = class(TCustomDBEditButton)
+	property CheckExpression: String [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property MaxValue: Double [r]
+	property MinValue: Double [r]
+	property Precision: Integer [r]
+	property Required: Boolean [r]
+TdxCheckBox = class(TCustomCheckBox)
+	property CheckExpression: String [r]
+	property Checked: Boolean [rw]
+	property CheckedText: String [rw]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property Field: TField [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property OnChange: TNotifyEvent [rw]
+	property ReadOnly: Boolean [rw]
+	property UnCheckedText: String [rw]
+TdxComboBox = class(TCustomComboBox)
+	property CheckExpression: String [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property Field: TField [r]
+	property FieldName: String [r]
+	property FieldSize: Integer [r]
+	property Filter: String [rw]
+	property Id: Integer [r]
+	property ItemHeight: Integer [rw]
+	property ItemWidth: Integer [rw]
+	property MaxLength: Integer [rw]
+	property OnChange: TNotifyEvent [rw]
+	property OnCloseUp: TNotifyEvent [rw]
+	property OnDrawItem: TDrawItemEvent [rw]
+	property OnDropDown: TNotifyEvent [rw]
+	property OnMeasureItem: TMeasureItemEvent [rw]
+	property OnSelect: TNotifyEvent [rw]
+	property Sorted: Boolean [rw]
+	property SourceFormName: String [r]
+	property SourceFieldName: String [r]
+TdxCounter = class(TDBEdit)
+	property CheckExpression: String [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property Required: Boolean [r]
+TdxDBImage = class(TdxImage)
+	procedure LoadFromFile(const FileName: String)
+	procedure SaveToFile(const FileName: String)
+	procedure SaveToStream(St: TStream)
+	function WasChanged: Boolean
+	property CheckExpression: String [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property PrintSize: Integer [rw]
+	property ReadOnly: Boolean [rw]
+	property Required: Boolean [r]
+	property ShowThumbnail: Boolean [rw]
+	property SourceFileName: String [r]
+	property StorageFolder: String [r]
+	property StorageType: Integer [r]
+	property StoredFileName: String [r]
+	property ThumbSize: Integer [r]   
+	property OnImageLoad: TImageLoadEvent [rw]
+TdxDateEdit = class(TCustomDBEditButton)
+	property CheckExpression: String [r]
+	property DateNow: Boolean [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property Required: Boolean [r]
+TdxEdit = class(TDBEdit)
+	function MaskTextEmpty: Boolean
+	function ValidateText: Boolean
+	property CheckExpression: String [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property EditMask: String [rw]
+	property Expression: String [r]
+	property FieldName: String [r]
+	property FieldSize: Integer [r]
+	property Id: Integer [r]
+	property Required: Boolean [r]
+TdxFile = class(TCustomDBEditButton)
+	procedure Clear
+	procedure LoadFromFile(const FileName: String)
+	procedure SaveToFile(const FileName: String)
+	procedure SaveToStream(St: TStream)
+	function WasChanged: Boolean
+	property CheckExpression: String [r]
+	property Description: String [rw]
+	property FieldName: String [r]
+	property FieldSize: Integer [r]
+	property Id: Integer [r]
+	property Required: Boolean [r]
+	property SourceFileName: String [r]
+	property StorageFolder: String [r]
+	property StorageType: Integer [r]
+	property StoredFileName: String [r]
+TdxForm = class(TCustomPanel)
+	constructor Create(const FormName: String)
+	function Append: TAccessStatus
+	function BOF: Boolean
+	function CanAppend: TAccessStatus
+	function CanDelete: TAccessStatus
+	function CanEdit: TAccessStatus
+	procedure Cancel
+	procedure Close
+	function ControlsDisabled: Boolean
+	function Delete: TAccessStatus
+	procedure DisableControls
+	procedure DisableScrollEvents
+	function EOF: Boolean
+	function Edit: TAccessStatus
+	procedure EnableControls
+	procedure EnableScrollEvents
+	function FindComponentByFieldName(const FieldName: String): TComponent
+	function GetRecordCaption: String
+	function GetRecordsCaption: String
+	function GotoRecord(RecId: Integer): Boolean;
+	function Insert: TAccessStatus
+	function Locate(const FieldNames: String; FieldValues: array of Variant; Options: TLocateOptions): Boolean;
+	procedure MoveBy(Distance: Integer)
+	procedure MoveFirst
+	procedure MoveLast
+	procedure MoveNext
+	procedure MovePrior
+	procedure MoveTo(RecNo: Integer)
+	procedure Open
+	procedure OpenRecord(RecId: Integer)
+	procedure OpenRecords(const CustomFilter: String; Form: TdxForm; SelectCondition: Boolean)
+	function Opened: Boolean
+	procedure Post
+	function Print(const TemplateName, OutFileName: String; out Errors: String; OpenFile: Boolean): String
+	function RecId: Integer
+	function RecNo: Integer
+	function RecordCount: Integer
+	procedure Refresh
+	function ScrollEventsDisabled: Boolean
+	function Validate: Boolean
+	function WhoEdit(RecId: Integer): String
+	property AsDT[Name: String]: TDateTime [r]
+	property AsF[Name: String]: Extended [r]
+	property AsI[Name: String]: Integer [r]
+	property AsS[Name: String]: String [r]
+	property CustomFilter: String [rw]
+	property CustomFilterForm: TdxForm [rw]
+	property EditWindow: TEditWindow [r]
+	property Field[Name: String]: TField [r]
+	property Fields[Name: String]: Variant [rw] default
+	property Files[Name: String]: TdxFile [r]
+	property Filter: TFilterObject [r]
+	property FormByIndex[Index: Integer]: TdxForm [r]
+	property FormCaption: String [r]
+	property FormCount: Integer [r]
+	property Forms[Name: String]: TdxForm [r]
+	property Grid: TdxGrid [r]
+	property Id: Integer [r]
+	property Images[Name: String]: TdxDBImage [r]
+	property LockMode: TLockMode [rw]
+	property Modified: Boolean [r]
+	property OldValues[Name: String]: Variant [r]
+	property OnAfterCancel: TNotifyEvent [rw]
+	property OnAfterClose: TNotifyEvent [rw]
+	property OnAfterDelete: TNotifyEvent [rw]
+	property OnAfterDuplicate: TNotifyEvent [rw]
+	property OnAfterEdit: TNotifyEvent [rw]
+	property OnAfterInsert: TNotifyEvent [rw]
+	property OnAfterOpen: TNotifyEvent [rw]
+	property OnAfterPost: TNotifyEvent [rw]
+	property OnAfterScroll: TNotifyEvent [rw]
+	property OnBeforeCancel: TNotifyEvent [rw]
+	property OnBeforeClose: TNotifyEvent [rw]
+	property OnBeforeDelete: TNotifyEvent [rw]
+	property OnBeforeDuplicate: TNotifyEvent [rw]
+	property OnBeforeEdit: TNotifyEvent [rw]
+	property OnBeforeInsert: TNotifyEvent [rw]
+	property OnBeforeOpen: TNotifyEvent [rw]
+	property OnBeforePost: TNotifyEvent [rw]
+	property OnBeforeScroll: TNotifyEvent [rw]
+	property OnDestroy: TNotifyEvent [rw]
+	property OnFieldChange: TFieldChangeEvent [rw]
+	property OnPrint: TPrintEvent [rw]
+	property OnStateChange: TNotifyEvent [rw]
+	property OnValidate: TValidateEvent [rw]
+	property PId: Integer [r]
+	property Params: TParamList
+	property ParentForm: TdxForm [r]
+	property QueryByIndex[Index: Integer]: TdxQueryGrid
+	property QueryCount: Integer [r]
+	property Queries[QueryName: String]: TdxQueryGrid
+	property RecordCaption: String [rw]
+	property RecordsCaption: String [rw]
+	property State: TDataSetState [r]
+	property Tree: TdxFormTree [r]
+	property UseSelectCondition: Boolean [rw]
+	property ViewType: TViewType [r]
+TdxFormTree = class(TTreeView)
+	function GetFieldNameByNode(N: TTreeNode): String;
+	function GetFieldValueByNode(N: TTreeNode): Variant;
+	procedure SelectByRecord(RecId: Integer)  
+	procedure UpdateTree
+	property Fields: TdxFormTreeFields [r]
+	property ExpandLevels: Byte [rw]
+	property OnUpdateTree: TNotifyEvent [rw]
+TdxFormTreeField = class(TCollectionItem)
+	property FieldName: String [rw]
+	property FieldSource: TdxFormTreeFieldSource [rw]
+TdxFormTreeFields = class(TCollection)
+	function Add: TdxFormTreeField
+	property Fields[Index: Integer]: TdxFormTreeField [r] default
+TdxGrid = class(TDBGrid)
+	procedure ClearRowsSelection
+	function CurrentRowSelected: Boolean 
+	function FindColumnByFieldName(const FieldName: String): TColumn
+	function FindColumnByTitle(const Title: String): TColumn
+	function GetFieldName(Column: TColumn)
+	procedure MoveToSelectedRow(Index: Integer)
+	property AllowChangeSort: Boolean [rw]
+	property Form: TdxForm [r]
+	property InactiveSelectedColor: TColor [rw]
+	property InactiveSelectedTextColor: TColor [rw]
+	property SelectedRowCount: Integer [r]
+	property SelectedTextColor: TColor [rw]
+	property SortColumns: TSortColumns [r]
+TdxGroupBox = class(TGroupBox)
+TdxImage = class(TGraphicControl)
+	procedure Clear
+	procedure LoadFromFile(const FileName: String)
+	procedure LoadFromStream(St: TStream)
+	procedure LoadFromStringBase64(const StrBase64: String)
+	procedure SaveToFile(const FileName: String)
+	procedure SaveToStream(St: TStream)
+	property Bitmap: TBitmap [rw]
+	property Center: Boolean [rw]
+	property ImageName: String [rw]
+	property KeepSize: Boolean [rw]
+	property OnPaint: TNotifyEvent [rw]
+	property Proportional: Boolean [rw]
+	property Quality: Integer [rw]
+	property Stretch: Boolean [rw]
+TdxLabel = class(TLabel)
+	property FieldName: String [r]
+	property Expression: String [r]
+TdxLookupComboBox = class(TDBEdit)
+	property Button: TSpeedButton [r]
+	property CheckExpression: String [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property FieldName: String [r]
+	property Filter: String [rw]
+	property HideButton: Boolean [rw]
+	property HideList: Boolean [rw]
+	property Id: Integer [r]
+	property KeyValue: Variant [rw]
+	property OnCreateForm: TCreateFormEvent [rw]
+	property OnCreateListWindow: TCreateListwindowEvent [rw]
+	property Required: Boolean [r]
+	property SourceFormName: String [r]
+	property SourceFieldName: String [r]
+TdxMemo = class(TCustomMemo)
+	property Button: TSpeedButton [r]
+	property CheckExpression: String [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property Field: TField [r]
+	property FieldName: String [r]
+	property FieldSize: Integer [r]
+	property Filter: String [rw]
+	property Id: Integer [r]
+	property OnCreateListWindow: TCreateListwindowEvent [rw]
+	property Required: Boolean [r]
+	property SourceFormName: String [r]
+	property SourceFieldName: String [r]
+TdxObjectField = class(TDBEdit)
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property FieldId: Integer [r]  
+	property ObjId: Integer [r]
+TdxPageControl = class(TPageControl)
+TdxPivotGrid = class(TKGrid)
+	property OnBuild: TNotifyEvent [rw]
+TdxQueryGrid = class(TDBGrid)
+	function BOF: Boolean
+	procedure ClearRowsSelection
+	procedure Close
+	function ControlsDisabled: Boolean
+	function CurrentRowSelected: Boolean
+	procedure DisableControls
+	procedure DisableScrollEvents
+	function EOF: Boolean
+	procedure EnableControls
+	procedure EnableScrollEvents
+	function FindColumnByTitle(const Title: String): TColumn
+	function GotoRecord(RecId: Integer): Boolean
+	function Locate(const FieldNames: String; FieldValues: array of Variant; Options: TLocateOptions): Boolean
+	procedure MoveBy(Distance: Integer)
+	procedure MoveFirst
+	procedure MoveLast
+	procedure MoveNext
+	procedure MovePrior
+	procedure MoveTo(RecNo: Integer)
+	procedure MoveToSelectedRow(Index: Integer)
+	function RecId: Integer
+	function RecNo: Integer
+	function RecordCount: Integer
+	procedure Refresh
+	function ScrollEventsDisabled: Boolean
+	property AllowChangeSort: Boolean [rw]
+	property AsDT[Name: String]: TDateTime [r]
+	property AsF[Name: String]: Extended [r]
+	property AsI[Name: String]: Integer [r]
+	property AsS[Name: String]: String [r]
+	property Editable: Boolean [r]
+	property Fields[Name: String]: Variant [r] default
+	property InactiveSelectedColor: TColor [rw]
+	property InactiveSelectedTextColor: TColor [rw]
+	property ManualRefresh: Boolean [rw]
+	property OnAfterClose: TNotifyEvent [rw]
+	property OnAfterOpen: TNotifyEvent [rw]
+	property OnAfterScroll: TNotifyEvent [rw]
+	property OnBeforeClose: TNotiftEvent [rw]
+	property OnBeforeOpen: TNotifyEvent [rw]
+	property OnBeforeScroll: TNotifyEvent [rw]
+	property OnCreateForm: TCreateFormEvent [rw]
+	property OnStateChange: TNotifyEvent [rw]
+	property QueryName: String [r]
+	property SelectedRowCount: Integer [r]
+	property SelectedTextColor: TColor [rw]
+	property SortColumns: TSortColumns [r]
+TdxRecordId = class(TDBEdit)
+	property FieldName: String [r]
+	property Id: Integer [r]
+TdxSQLQuery = class(TObject)
+	constructor Create(const SQL: String)
+	procedure Append
+	procedure ApplyUpdates
+	function BOF: Boolean
+	procedure Cancel
+	procedure CancelUpdates
+	procedure Close
+	procedure Delete
+	function EOF: Boolean
+	procedure Edit
+	function FieldCount: Integer
+	procedure LoadFromStream(const FieldName: String; Stream: TStream)
+	function Locate(const FieldNames: String; FieldValues: array of Variant; Options: TLocateOptions): Boolean
+	procedure MoveBy(Distance: Integer)
+	procedure MoveFirst
+	procedure MoveLast
+	procedure MoveNext
+	procedure MovePrior
+	procedure MoveTo(RecNo: Integer)
+	procedure Open
+	function Opened: Boolean
+	procedure Post
+	procedure SaveToStream(const FieldName: String; Stream: TStream)
+	function RecNo: Integer
+	function RecordCount: Integer
+	property AsDT[Name: String]: TDateTime [rw]
+	property AsF[Name: String]: Extended [rw]
+	property AsI[Name: String]: Integer [rw]
+	property AsS[Name: String]: String [rw]
+	property Field[Index: Integer]: TField [r]
+	property Fields[Name: String]: Variant [rw] default
+	property State: TDataSetState [r]
+	property UseExecuteBlock: Boolean [rw]
+	property UseGenerator: TUseGeneratorOption [rw]
+TdxShape = class(TShape)
+TdxTabSheet = class(TTabSheet)
+TdxTimeEdit = class(TCustomDBEditButton)
+	property CheckExpression: String [r]
+	property CurTime: Boolean [r]
+	property DefaultValue: String [r] 
+	property Editable: Boolean [r]
+	property Expression: String [r]
+	property FieldName: String [r]
+	property Id: Integer [r]
+	property Required: Boolean [r]

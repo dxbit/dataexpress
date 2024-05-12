@@ -1,0 +1,104 @@
+object StyleFm: TStyleFm
+  Left = 379
+  Height = 414
+  Top = 185
+  Width = 320
+  BorderIcons = [biSystemMenu]
+  Caption = 'StyleFm'
+  ClientHeight = 414
+  ClientWidth = 320
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 382
+    Width = 308
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 25
+    Top = 4
+    Width = 320
+    AutoSize = True
+    BorderSpacing.Top = 4
+    ButtonHeight = 25
+    ButtonWidth = 23
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ImageList1
+    List = True
+    ShowCaptions = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 95
+      Top = 0
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      OnClick = ToolButton2Click
+    end
+  end
+  object List: TCheckListBox
+    Left = 4
+    Height = 330
+    Top = 46
+    Width = 312
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ItemHeight = 0
+    PopupMenu = PopupMenu1
+    TabOrder = 2
+  end
+  object StaticText1: TStaticText
+    Left = 4
+    Height = 17
+    Top = 29
+    Width = 312
+    Align = alTop
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    Caption = 'Формы-получатели'
+    TabOrder = 3
+  end
+  object PopupMenu1: TPopupMenu
+    Images = ImageList1
+    Left = 95
+    Top = 127
+    object MenuItem1: TMenuItem
+      Caption = 'New Item1'
+      ImageIndex = 0
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'New Item2'
+      ImageIndex = 1
+      OnClick = MenuItem2Click
+    end
+  end
+  object ImageList1: TImageList
+    Left = 40
+    Top = 72
+  end
+end

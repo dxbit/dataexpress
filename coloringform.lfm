@@ -1,0 +1,90 @@
+object ColoringFm: TColoringFm
+  Left = 381
+  Height = 349
+  Top = 351
+  Width = 538
+  BorderIcons = [biSystemMenu]
+  Caption = 'ColoringFm'
+  ClientHeight = 349
+  ClientWidth = 538
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 317
+    Width = 526
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object DialogGridButtons1: TDialogGridButtons
+    Left = 4
+    Height = 25
+    Top = 4
+    Width = 530
+    Grid = Grid
+    Align = alTop
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+  end
+  object Grid: TDialogGrid
+    Left = 4
+    Height = 282
+    Top = 29
+    Width = 530
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 2
+    Columns = <    
+      item
+        SizePriority = 0
+        Title.Caption = 'Title'
+        Width = 70
+        ColumnType = gctColor
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Title.Caption = 'Title'
+        Width = 459
+        ColumnType = gctExpr
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goCellHints]
+    ParentShowHint = False
+    RangeSelectMode = rsmMulti
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 2
+    OnButtonClick = GridButtonClick
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown, dgcCopy, dgcPaste]
+    OnCommand = GridCommand
+    ColWidths = (
+      70
+      459
+    )
+  end
+end

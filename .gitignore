@@ -1,0 +1,17 @@
+*.bak
+*.dbg
+*.exe
+*.old
+*.log
+readme.txt
+modify.txt
+dataexpress
+dataexpress.cfg
+DEMO_DB.FDB
+lib
+backup
+tools
+/_test64
+/_dist
+logs
+

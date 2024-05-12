@@ -1,0 +1,53 @@
+object ErrorsFm: TErrorsFm
+  Left = 302
+  Height = 265
+  Top = 155
+  Width = 635
+  BorderIcons = [biSystemMenu]
+  Caption = 'ErrorsFm'
+  ClientHeight = 265
+  ClientWidth = 635
+  FormStyle = fsStayOnTop
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Memo1: TMemo
+    Left = 4
+    Height = 223
+    Top = 4
+    Width = 627
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Lines.Strings = (
+      'Memo1'
+    )
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WantReturns = False
+    WordWrap = False
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 233
+    Width = 623
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbClose, pbHelp]
+    ShowBevel = False
+  end
+end

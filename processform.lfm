@@ -1,0 +1,66 @@
+object ProcessFm: TProcessFm
+  Left = 376
+  Height = 202
+  Top = 199
+  Width = 320
+  BorderIcons = [biMinimize, biMaximize]
+  Caption = 'ProcessFm'
+  ClientHeight = 202
+  ClientWidth = 320
+  OnCreate = FormCreate
+  PopupMode = pmAuto
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    Left = 127
+    Height = 15
+    Top = 32
+    Width = 66
+    Caption = 'Processing...'
+    ParentColor = False
+  end
+  object Msg: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 149
+    Height = 15
+    Top = 55
+    Width = 23
+    BorderSpacing.Top = 8
+    Caption = 'Msg'
+    ParentColor = False
+  end
+  object Progress: TProgressBar
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Msg
+    AnchorSideTop.Side = asrBottom
+    Left = 28
+    Height = 20
+    Top = 78
+    Width = 264
+    BorderSpacing.Top = 8
+    TabOrder = 0
+  end
+  object BitBtn1: TBitBtn
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Progress
+    AnchorSideTop.Side = asrBottom
+    Left = 105
+    Height = 30
+    Top = 130
+    Width = 110
+    BorderSpacing.Top = 32
+    DefaultCaption = True
+    Kind = bkAbort
+    ModalResult = 3
+    OnClick = BitBtn1Click
+    TabOrder = 1
+    TabStop = False
+  end
+end

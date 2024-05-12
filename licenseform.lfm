@@ -1,0 +1,29 @@
+object LicenseFm: TLicenseFm
+  Left = 519
+  Height = 426
+  Top = 264
+  Width = 613
+  BorderIcons = [biSystemMenu]
+  Caption = 'Лицензия'
+  ClientHeight = 426
+  ClientWidth = 613
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object Memo1: TMemo
+    Left = 4
+    Height = 418
+    Top = 4
+    Width = 605
+    Align = alClient
+    BorderSpacing.Around = 4
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+  end
+end

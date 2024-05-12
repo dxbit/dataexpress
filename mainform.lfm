@@ -1,0 +1,233 @@
+object MainFm: TMainFm
+  Left = 487
+  Height = 545
+  Top = 238
+  Width = 750
+  Caption = 'MainFm'
+  KeyPreview = True
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnDropFiles = FormDropFiles
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '3.2.0.0'
+  object MainMenu1: TMainMenu
+    Left = 36
+    Top = 142
+    object FileMnu: TMenuItem
+      Caption = 'Файл'
+      object CreateMnu: TMenuItem
+        Caption = 'Создать'
+        OnClick = CreateMnuClick
+      end
+      object OpenMnu: TMenuItem
+        Caption = 'Открыть'
+        OnClick = OpenMnuClick
+      end
+      object ConnectMnu: TMenuItem
+        Caption = 'Подключить'
+        ShortCut = 117
+        OnClick = ConnectMnuClick
+      end
+      object RecentsMnu: TMenuItem
+        Caption = 'Недавние'
+        object MenuItem28: TMenuItem
+          Caption = 'Пусто'
+        end
+      end
+      object RecentsDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object DesignMnu: TMenuItem
+        Caption = 'Дизайнер'
+        ShortCut = 122
+        OnClick = DesignMnuClick
+      end
+      object ReportsMnu: TMenuItem
+        Caption = 'Отчеты'
+        ShortCut = 123
+        OnClick = ReportsMnuClick
+      end
+      object TemplatesMnu: TMenuItem
+        Caption = 'Шаблоны'
+        object TemplatesFolderMnu: TMenuItem
+          Caption = 'Папка шаблонов'
+          OnClick = TemplatesFolderMnuClick
+        end
+        object TemplatesHelperMnu: TMenuItem
+          Caption = 'Мастер шаблонов'
+          OnClick = TemplatesHelperMnuClick
+        end
+      end
+      object GalleryMnu: TMenuItem
+        Caption = 'Изображения'
+        OnClick = GalleryMnuClick
+      end
+      object UsersMnu: TMenuItem
+        Caption = 'Пользователи'
+        OnClick = UsersMnuClick
+      end
+      object ExtMnu: TMenuItem
+        Caption = 'Модули'
+        OnClick = ExtMnuClick
+      end
+      object ExtDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object ExpertMnu: TMenuItem
+        Caption = 'Режим эксперта'
+        OnClick = ExpertMnuClick
+      end
+      object ExpertDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object OptionsMnu: TMenuItem
+        Caption = 'Параметры'
+        OnClick = OptionsMnuClick
+      end
+      object UpdatesMnu: TMenuItem
+        Caption = 'Обновления'
+        OnClick = UpdatesMnuClick
+      end
+      object OptionsDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object ExitMnu: TMenuItem
+        Caption = 'Выход'
+        OnClick = ExitMnuClick
+      end
+    end
+    object DataMnu: TMenuItem
+      Caption = 'Данные'
+    end
+    object ReportMnu: TMenuItem
+      Caption = 'Отчеты'
+    end
+    object ToolsMnu: TMenuItem
+      Caption = 'Сервис'
+      object RecalcMnu: TMenuItem
+        Caption = 'Пересчитать'
+        OnClick = RecalcMnuClick
+      end
+      object SetValueMnu: TMenuItem
+        Caption = 'Установить значение'
+        OnClick = SetValueMnuClick
+      end
+      object DeleteRecsMnu: TMenuItem
+        Caption = 'Удаление записей'
+        OnClick = DeleteRecsMnuClick
+      end
+      object DeleteRecsDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object ExportDataMnu: TMenuItem
+        Caption = 'Экспорт данных'
+        OnClick = ExportDataMnuClick
+      end
+      object ImportDataMnu: TMenuItem
+        Caption = 'Импорт данных'
+        OnClick = ImportDataMnuClick
+      end
+      object ExportPrjMnu: TMenuItem
+        Caption = 'Экспорт проекта'
+        OnClick = ExportPrjMnuClick
+      end
+      object ImportPrjMnu: TMenuItem
+        Caption = 'Импорт проекта'
+        OnClick = ImportPrjMnuClick
+      end
+      object MergePrjMnu: TMenuItem
+        Caption = 'Объединить проекты'
+        OnClick = MergePrjMnuClick
+      end
+      object MergePrjDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object MonitorMnu: TMenuItem
+        Caption = 'Монитор'
+        OnClick = MonitorMnuClick
+      end
+      object FindActionsDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object FindActionsMnu: TMenuItem
+        Caption = 'Поиск действий'
+        OnClick = FindActionsMnuClick
+      end
+      object FindExprMnu: TMenuItem
+        Caption = 'Поиск выражений'
+        OnClick = FindExprMnuClick
+      end
+    end
+    object HelpMnu: TMenuItem
+      Caption = 'Помощь'
+      object UserReferenceMnu: TMenuItem
+        Caption = 'Руководство пользователя'
+        OnClick = UserReferenceMnuClick
+      end
+      object VideoMnu: TMenuItem
+        Caption = 'Видеоуроки'
+        OnClick = VideoMnuClick
+      end
+      object ProgMnu: TMenuItem
+        Caption = 'Программирование в DX'
+        OnClick = ProgMnuClick
+      end
+      object PascalScriptMnu: TMenuItem
+        Caption = 'Справочник Pascal Script'
+        OnClick = PascalScriptMnuClick
+      end
+      object ApiReferenceMnu: TMenuItem
+        Caption = 'Справочник по API'
+        OnClick = ApiReferenceMnuClick
+      end
+      object ArticlesMnu: TMenuItem
+        Caption = 'Статьи'
+        OnClick = ArticlesMnuClick
+      end
+      object ArticlesDivMnu: TMenuItem
+        Caption = '-'
+      end
+      object OpenDemoMnu: TMenuItem
+        Caption = 'Открыть DEMO_DB'
+        OnClick = OpenDemoMnuClick
+      end
+      object MenuItem31: TMenuItem
+        Caption = '-'
+      end
+      object SiteMnu: TMenuItem
+        Caption = 'Сайт программы'
+        OnClick = SiteMnuClick
+      end
+      object ForumMnu: TMenuItem
+        Caption = 'Форум'
+        OnClick = ForumMnuClick
+      end
+      object MenuItem15: TMenuItem
+        Caption = '-'
+      end
+      object AboutMnu: TMenuItem
+        Caption = 'О программе'
+        OnClick = AboutMnuClick
+      end
+    end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = Timer1Timer
+    Left = 161
+    Top = 52
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = Timer2Timer
+    Left = 216
+    Top = 52
+  end
+end

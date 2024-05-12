@@ -1,0 +1,137 @@
+object TotalFm: TTotalFm
+  Left = 485
+  Height = 247
+  Top = 442
+  Width = 306
+  BorderIcons = [biSystemMenu]
+  Caption = 'TotalFm'
+  ClientHeight = 247
+  ClientWidth = 306
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object Label1: TLabel
+    AnchorSideTop.Control = Func
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 46
+    BorderSpacing.Top = 8
+    Caption = 'Таблица'
+    ParentColor = False
+  end
+  object FormList: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 289
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 1
+    OnChange = FormListChange
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = FormList
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 29
+    BorderSpacing.Top = 8
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 48
+    BorderSpacing.Top = 8
+    Caption = 'Функция'
+    ParentColor = False
+  end
+  object Func: TComboBox
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 289
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 0
+    OnChange = FuncChange
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 207
+    Width = 294
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 4
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = Field
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 149
+    Width = 41
+    BorderSpacing.Top = 8
+    Caption = 'Фильтр'
+    ParentColor = False
+  end
+  object Filter: TEditButton
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 165
+    Width = 289
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ButtonWidth = 23
+    Flat = True
+    MaxLength = 0
+    NumGlyphs = 1
+    OnButtonClick = FilterButtonClick
+    PasswordChar = #0
+    TabOrder = 3
+  end
+  object Field: TEditButton
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 118
+    Width = 289
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ButtonWidth = 23
+    Flat = True
+    MaxLength = 0
+    NumGlyphs = 1
+    OnButtonClick = FieldButtonClick
+    PasswordChar = #0
+    TabOrder = 2
+  end
+end

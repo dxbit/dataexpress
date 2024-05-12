@@ -1,0 +1,45 @@
+object OutputFm: TOutputFm
+  Left = 754
+  Height = 323
+  Top = 231
+  Width = 381
+  ActiveControl = Memo
+  Caption = 'OutputFm'
+  ClientHeight = 323
+  ClientWidth = 381
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  ShowInTaskBar = stAlways
+  LCLVersion = '2.0.12.0'
+  object Memo: TMemo
+    Left = 0
+    Height = 323
+    Top = 0
+    Width = 381
+    Align = alClient
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Lines.Strings = (
+      'Memo'
+    )
+    ParentFont = False
+    PopupMenu = PopupMenu1
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 188
+    Top = 170
+    object MenuItem1: TMenuItem
+      Caption = 'Очистить'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Копировать'
+      OnClick = MenuItem2Click
+    end
+  end
+end

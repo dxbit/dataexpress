@@ -1,0 +1,148 @@
+object FontFm: TFontFm
+  Left = 446
+  Height = 240
+  Top = 284
+  Width = 307
+  BorderIcons = [biSystemMenu]
+  Caption = 'FontFm'
+  ClientHeight = 240
+  ClientWidth = 307
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 6
+    Height = 15
+    Top = 8
+    Width = 52
+    Caption = 'Название'
+    ParentColor = False
+  end
+  object ComboBox1: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 23
+    Width = 291
+    Anchors = [akTop, akLeft, akRight]
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 15
+    TabOrder = 0
+  end
+  object ToggleBox1: TToggleBox
+    AnchorSideTop.Control = ComboBox1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 54
+    Width = 26
+    BorderSpacing.Top = 8
+    Caption = 'Ж'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+  end
+  object ToggleBox2: TToggleBox
+    AnchorSideTop.Control = ToggleBox1
+    Left = 40
+    Height = 23
+    Top = 54
+    Width = 26
+    Caption = 'К'
+    Font.Style = [fsItalic]
+    ParentFont = False
+    TabOrder = 2
+  end
+  object ToggleBox3: TToggleBox
+    AnchorSideTop.Control = ToggleBox1
+    Left = 72
+    Height = 23
+    Top = 54
+    Width = 26
+    Caption = 'Ч'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    TabOrder = 3
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = SpinEdit1
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 121
+    Width = 40
+    Caption = 'Размер'
+    ParentColor = False
+  end
+  object SpinEdit1: TSpinEdit
+    AnchorSideTop.Side = asrBottom
+    Left = 63
+    Height = 23
+    Top = 117
+    Width = 58
+    BorderSpacing.Top = 8
+    MaxValue = 1000
+    TabOrder = 5
+  end
+  object ToggleBox4: TToggleBox
+    AnchorSideTop.Control = ToggleBox1
+    Left = 104
+    Height = 23
+    Top = 54
+    Width = 26
+    Caption = 'З'
+    Font.Style = [fsStrikeOut]
+    ParentFont = False
+    TabOrder = 4
+  end
+  object BitBtn3: TBitBtn
+    AnchorSideTop.Control = SpinEdit1
+    AnchorSideTop.Side = asrBottom
+    Left = 219
+    Height = 25
+    Top = 148
+    Width = 80
+    Anchors = [akTop, akRight]
+    BorderSpacing.Top = 8
+    Caption = 'Сброс'
+    OnClick = BitBtn3Click
+    TabOrder = 6
+  end
+  object Label2: TLabel
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 90
+    Width = 26
+    Caption = 'Цвет'
+    ParentColor = False
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 200
+    Width = 295
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 7
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object ColorSampler1: TColorSampler
+    Left = 63
+    Height = 23
+    Top = 88
+    Width = 88
+    ParentShowHint = False
+    ShowHint = True
+  end
+end

@@ -1,0 +1,99 @@
+object QueryColoringFm: TQueryColoringFm
+  Left = 330
+  Height = 311
+  Top = 305
+  Width = 485
+  Caption = 'Раскраска'
+  ClientHeight = 311
+  ClientWidth = 485
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 279
+    Width = 473
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object DialogGridButtons1: TDialogGridButtons
+    Left = 4
+    Height = 25
+    Top = 4
+    Width = 477
+    Grid = Grid
+    Align = alTop
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+  end
+  object Grid: TDialogGrid
+    Left = 4
+    Height = 244
+    Top = 29
+    Width = 477
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 3
+    Columns = <    
+      item
+        SizePriority = 0
+        Title.Caption = 'Цвет'
+        Width = 70
+        ColumnType = gctColor
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Title.Caption = 'Поле'
+        Width = 203
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Title.Caption = 'Выражение'
+        Width = 203
+        ColumnType = gctExpr
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goCellHints]
+    ParentShowHint = False
+    RangeSelectMode = rsmMulti
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 0
+    OnDrawCell = GridDrawCell
+    OnButtonClick = GridButtonClick
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown, dgcCopy, dgcPaste]
+    OnCommand = GridCommand
+    ColWidths = (
+      70
+      203
+      203
+    )
+  end
+end

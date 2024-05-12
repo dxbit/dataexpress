@@ -1,0 +1,705 @@
+object PivotGridFm: TPivotGridFm
+  Left = 384
+  Height = 520
+  Top = 128
+  Width = 749
+  BorderIcons = [biSystemMenu, biMaximize]
+  Caption = 'PivotGridFm'
+  ClientHeight = 520
+  ClientWidth = 749
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 488
+    Width = 737
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Splitter1: TSplitter
+    Left = 295
+    Height = 482
+    Top = 0
+    Width = 5
+    ResizeStyle = rsPattern
+  end
+  object PageControl1: TPageControl
+    Left = 4
+    Height = 478
+    Top = 4
+    Width = 291
+    ActivePage = TabSheet1
+    Align = alLeft
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Поля'
+      ClientHeight = 450
+      ClientWidth = 283
+      object Tree: TTreeViewEx
+        Left = 0
+        Height = 450
+        Top = 0
+        Width = 283
+        Align = alClient
+        PopupMenu = PopupMenu1
+        ReadOnly = True
+        RightClickSelect = True
+        TabOrder = 0
+        OnDblClick = TreeDblClick
+        OnSelectionChanged = TreeSelectionChanged
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Таблица'
+      ClientHeight = 450
+      ClientWidth = 283
+      object ScrollBox1: TScrollBox
+        Left = 0
+        Height = 450
+        Top = 0
+        Width = 283
+        HorzScrollBar.Page = 208
+        VertScrollBar.Page = 446
+        VertScrollBar.Tracking = True
+        Align = alClient
+        ClientHeight = 446
+        ClientWidth = 262
+        TabOrder = 0
+        object ShowTotalX: TCheckBox
+          AnchorSideTop.Control = Label15
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 19
+          Top = 31
+          Width = 150
+          BorderSpacing.Top = 8
+          Caption = 'Показать строку итогов'
+          OnChange = ControlChange
+          TabOrder = 0
+        end
+        object ShowTotalY: TCheckBox
+          AnchorSideTop.Control = ShowTotalX
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 19
+          Top = 52
+          Width = 158
+          BorderSpacing.Top = 2
+          Caption = 'Показать столбец итогов'
+          OnChange = ControlChange
+          TabOrder = 1
+        end
+        object Label1: TLabel
+          AnchorSideTop.Control = TotalCaption
+          Left = 8
+          Height = 15
+          Top = 75
+          Width = 98
+          Caption = 'Заголовок итогов'
+          ParentColor = False
+        end
+        object TotalCaption: TEdit
+          AnchorSideLeft.Control = Label1
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = ShowTotalY
+          AnchorSideTop.Side = asrBottom
+          Left = 114
+          Height = 23
+          Top = 75
+          Width = 141
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Top = 4
+          OnChange = ControlChange
+          TabOrder = 2
+          Text = 'TotalCaption'
+        end
+        object Label2: TLabel
+          AnchorSideTop.Control = TotalWidth
+          Left = 8
+          Height = 15
+          Top = 102
+          Width = 133
+          Caption = 'Ширина столбца итогов'
+          ParentColor = False
+        end
+        object TotalWidth: TSpinEdit
+          AnchorSideLeft.Control = Label2
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = TotalCaption
+          AnchorSideTop.Side = asrBottom
+          Left = 149
+          Height = 23
+          Top = 102
+          Width = 106
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Top = 4
+          MaxValue = 1000
+          OnChange = ControlChange
+          TabOrder = 3
+        end
+        object Flat: TCheckBox
+          AnchorSideTop.Control = Lines
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 19
+          Top = 606
+          Width = 103
+          BorderSpacing.Top = 4
+          Caption = 'Плоский стиль'
+          OnChange = ControlChange
+          TabOrder = 19
+        end
+        object Label3: TLabel
+          AnchorSideTop.Control = TotalWidth
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 15
+          Top = 133
+          Width = 29
+          BorderSpacing.Top = 8
+          Caption = 'Цвет'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label4: TLabel
+          AnchorSideTop.Control = FixClr
+          Left = 8
+          Height = 15
+          Top = 156
+          Width = 58
+          Caption = 'Заголовки'
+          ParentColor = False
+        end
+        object FixClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Label3
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 156
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 8
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 4
+        end
+        object Label5: TLabel
+          AnchorSideTop.Control = Clr
+          Left = 8
+          Height = 15
+          Top = 182
+          Width = 43
+          Caption = 'Данные'
+          ParentColor = False
+        end
+        object Clr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = FixClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 182
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 5
+        end
+        object Label6: TLabel
+          AnchorSideTop.Control = TotalFixClr
+          Left = 8
+          Height = 15
+          Top = 208
+          Width = 55
+          Caption = 'Итоги заг.'
+          ParentColor = False
+        end
+        object TotalFixClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Clr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 208
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 6
+        end
+        object Label7: TLabel
+          AnchorSideTop.Control = CornerClr
+          Left = 8
+          Height = 15
+          Top = 260
+          Width = 26
+          Caption = 'Угол'
+          ParentColor = False
+        end
+        object CornerClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = TotalClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 260
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 8
+        end
+        object Label8: TLabel
+          AnchorSideTop.Control = SelectClr
+          Left = 8
+          Height = 15
+          Top = 286
+          Width = 61
+          Caption = 'Выделение'
+          ParentColor = False
+        end
+        object SelectClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = CornerClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 286
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 9
+        end
+        object Label9: TLabel
+          AnchorSideTop.Control = LineClr
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 15
+          Top = 394
+          Width = 41
+          BorderSpacing.Top = 8
+          Caption = 'Шрифт'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label10: TLabel
+          AnchorSideTop.Control = FixFnt
+          Left = 8
+          Height = 15
+          Top = 417
+          Width = 58
+          Caption = 'Заголовки'
+          ParentColor = False
+        end
+        object Label11: TLabel
+          AnchorSideTop.Control = Fnt
+          Left = 8
+          Height = 15
+          Top = 444
+          Width = 43
+          Caption = 'Данные'
+          ParentColor = False
+        end
+        object Label12: TLabel
+          AnchorSideTop.Control = TotalFixFnt
+          Left = 8
+          Height = 15
+          Top = 498
+          Width = 55
+          Caption = 'Итоги заг.'
+          ParentColor = False
+        end
+        object FixFnt: TEditButton
+          AnchorSideTop.Control = Label9
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 417
+          Width = 167
+          Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 8
+          ButtonCaption = '...'
+          ButtonWidth = 23
+          MaxLength = 0
+          NumGlyphs = 1
+          OnButtonClick = FixFntButtonClick
+          OnKeyPress = FixFntKeyPress
+          PasswordChar = #0
+          TabOrder = 13
+        end
+        object Fnt: TEditButton
+          AnchorSideTop.Control = FixFnt
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 444
+          Width = 167
+          Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ButtonCaption = '...'
+          ButtonWidth = 23
+          MaxLength = 0
+          NumGlyphs = 1
+          OnButtonClick = FntButtonClick
+          OnKeyPress = FixFntKeyPress
+          PasswordChar = #0
+          TabOrder = 14
+        end
+        object TotalFixFnt: TEditButton
+          AnchorSideTop.Control = SelectFnt
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 498
+          Width = 167
+          Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ButtonCaption = '...'
+          ButtonWidth = 23
+          MaxLength = 0
+          NumGlyphs = 1
+          OnButtonClick = TotalFixFntButtonClick
+          OnKeyPress = FixFntKeyPress
+          PasswordChar = #0
+          TabOrder = 16
+        end
+        object Label13: TLabel
+          AnchorSideTop.Control = FixLineClr
+          Left = 8
+          Height = 15
+          Top = 338
+          Width = 58
+          Caption = 'Линии заг.'
+          ParentColor = False
+        end
+        object FixLineClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = IndicatClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 338
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 11
+        end
+        object Label14: TLabel
+          AnchorSideTop.Control = LineClr
+          Left = 8
+          Height = 15
+          Top = 364
+          Width = 36
+          Caption = 'Линии'
+          ParentColor = False
+        end
+        object LineClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = FixLineClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 364
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 12
+        end
+        object Label15: TLabel
+          Left = 8
+          Height = 15
+          Top = 8
+          Width = 78
+          Caption = 'Общие итоги'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label16: TLabel
+          AnchorSideTop.Control = TotalFnt
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 15
+          Top = 556
+          Width = 44
+          BorderSpacing.Top = 8
+          Caption = 'Прочее'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label17: TLabel
+          AnchorSideTop.Control = Lines
+          Left = 8
+          Height = 15
+          Top = 579
+          Width = 36
+          Caption = 'Линии'
+          ParentColor = False
+        end
+        object Lines: TComboBox
+          AnchorSideTop.Control = Label16
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 579
+          Width = 167
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 8
+          ItemHeight = 15
+          OnChange = ControlChange
+          Style = csDropDownList
+          TabOrder = 18
+        end
+        object WordWrap: TCheckBox
+          AnchorSideTop.Control = Flat
+          AnchorSideTop.Side = asrBottom
+          Left = 8
+          Height = 19
+          Top = 627
+          Width = 97
+          BorderSpacing.Top = 2
+          Caption = 'Перенос слов'
+          OnChange = ControlChange
+          TabOrder = 20
+        end
+        object Label18: TLabel
+          AnchorSideTop.Control = IndicatClr
+          Left = 8
+          Height = 15
+          Top = 312
+          Width = 61
+          Caption = 'Индикация'
+          ParentColor = False
+        end
+        object IndicatClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = SelectClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 312
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 10
+        end
+        object Label19: TLabel
+          AnchorSideTop.Control = TotalClr
+          Left = 8
+          Height = 15
+          Top = 234
+          Width = 33
+          Caption = 'Итоги'
+          ParentColor = False
+        end
+        object TotalClr: TColorBox
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = TotalFixClr
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 22
+          Top = 234
+          Width = 167
+          NoneColorColor = clWhite
+          Style = [cbStandardColors, cbExtendedColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ItemHeight = 16
+          OnChange = ControlChange
+          TabOrder = 7
+        end
+        object Label20: TLabel
+          AnchorSideTop.Control = TotalFnt
+          Left = 8
+          Height = 15
+          Top = 525
+          Width = 33
+          Caption = 'Итоги'
+          ParentColor = False
+        end
+        object TotalFnt: TEditButton
+          AnchorSideTop.Control = TotalFixFnt
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 525
+          Width = 167
+          Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ButtonCaption = '...'
+          ButtonWidth = 23
+          MaxLength = 0
+          NumGlyphs = 1
+          OnButtonClick = TotalFntButtonClick
+          OnKeyPress = FixFntKeyPress
+          PasswordChar = #0
+          TabOrder = 17
+        end
+        object Label21: TLabel
+          AnchorSideTop.Control = DataDelim
+          Left = 8
+          Height = 15
+          Top = 650
+          Width = 112
+          Caption = 'Разделитель данных'
+          ParentColor = False
+        end
+        object DataDelim: TEdit
+          AnchorSideLeft.Control = Label21
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = WordWrap
+          AnchorSideTop.Side = asrBottom
+          Left = 128
+          Height = 23
+          Top = 650
+          Width = 127
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Top = 4
+          OnChange = ControlChange
+          TabOrder = 21
+          Text = 'DataDelim'
+        end
+        object Label22: TLabel
+          AnchorSideTop.Control = Indent
+          Left = 8
+          Height = 15
+          Top = 677
+          Width = 82
+          Caption = 'Отступ группы'
+          ParentColor = False
+        end
+        object Indent: TSpinEdit
+          AnchorSideLeft.Control = Label22
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = DataDelim
+          AnchorSideTop.Side = asrBottom
+          Left = 98
+          Height = 23
+          Top = 677
+          Width = 88
+          BorderSpacing.Left = 8
+          BorderSpacing.Top = 4
+          MaxValue = 1000
+          OnChange = ControlChange
+          TabOrder = 22
+        end
+        object Label23: TLabel
+          AnchorSideTop.Control = SelectFnt
+          Left = 8
+          Height = 15
+          Top = 471
+          Width = 61
+          Caption = 'Выделение'
+          ParentColor = False
+        end
+        object SelectFnt: TEditButton
+          AnchorSideTop.Control = Fnt
+          AnchorSideTop.Side = asrBottom
+          Left = 88
+          Height = 23
+          Top = 471
+          Width = 167
+          Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          ButtonCaption = '...'
+          ButtonWidth = 23
+          MaxLength = 0
+          NumGlyphs = 1
+          OnButtonClick = SelectFntButtonClick
+          OnKeyPress = FixFntKeyPress
+          PasswordChar = #0
+          TabOrder = 15
+        end
+      end
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 650
+    Top = 183
+    object MenuItem1: TMenuItem
+      Caption = 'Добавить'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Удалить'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Вверх'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Вниз'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem13: TMenuItem
+      Caption = 'Свойства'
+      Default = True
+      OnClick = MenuItem13Click
+    end
+  end
+end

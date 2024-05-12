@@ -1,0 +1,24 @@
+object ProcessMiniFm: TProcessMiniFm
+  Left = 299
+  Height = 85
+  Top = 145
+  Width = 181
+  BorderIcons = [biMinimize, biMaximize]
+  ClientHeight = 85
+  ClientWidth = 181
+  FormStyle = fsStayOnTop
+  Position = poOwnerFormCenter
+  LCLVersion = '1.7'
+  object Label1: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    Left = 73
+    Height = 15
+    Top = 35
+    Width = 34
+    Caption = 'Label1'
+    ParentColor = False
+  end
+end

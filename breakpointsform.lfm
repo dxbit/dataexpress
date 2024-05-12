@@ -1,0 +1,129 @@
+object BreakpointsFm: TBreakpointsFm
+  Left = 433
+  Height = 312
+  Top = 423
+  Width = 408
+  ActiveControl = Grid
+  BorderIcons = [biSystemMenu, biMaximize]
+  Caption = 'BreakpointsFm'
+  ClientHeight = 312
+  ClientWidth = 408
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 25
+    Top = 4
+    Width = 408
+    AutoSize = True
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 4
+    ButtonHeight = 25
+    ButtonWidth = 23
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = Images
+    List = True
+    ShowCaptions = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Tag = 1
+      Left = 92
+      Top = 0
+      Caption = 'ToolButton2'
+      ImageIndex = 0
+      OnClick = ToolButton2Click
+    end
+    object ToolButton4: TToolButton
+      Left = 183
+      Top = 0
+      Caption = 'ToolButton4'
+      ImageIndex = 1
+      OnClick = ToolButton4Click
+    end
+  end
+  object Grid: TStringGrid
+    Left = 4
+    Height = 241
+    Top = 33
+    Width = 400
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 2
+    Columns = <    
+      item
+        Title.Caption = 'Модуль'
+        Width = 319
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Строка'
+        Width = 80
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll]
+    PopupMenu = PopupMenu1
+    RowCount = 2
+    TabOrder = 1
+    OnDblClick = GridDblClick
+    ColWidths = (
+      319
+      80
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 280
+    Width = 396
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+  object Images: TImageList
+    Left = 123
+    Top = 161
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 228
+    Top = 130
+    object MenuItem1: TMenuItem
+      Caption = 'Удалить'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Удалить все'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Перейти'
+      Default = True
+      OnClick = MenuItem4Click
+    end
+  end
+end

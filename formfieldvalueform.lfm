@@ -1,0 +1,86 @@
+object FormFieldValueFm: TFormFieldValueFm
+  Left = 335
+  Height = 328
+  Top = 241
+  Width = 633
+  BorderIcons = [biSystemMenu]
+  Caption = 'FormFieldValueFm'
+  ClientHeight = 328
+  ClientWidth = 633
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 38
+    Caption = 'Форма'
+    ParentColor = False
+  end
+  object Form: TListBox
+    Left = 8
+    Height = 262
+    Top = 24
+    Width = 200
+    Anchors = [akTop, akLeft, akBottom]
+    ItemHeight = 0
+    OnSelectionChange = FormSelectionChange
+    TabOrder = 0
+  end
+  object Field: TListBox
+    Left = 216
+    Height = 262
+    Top = 24
+    Width = 200
+    Anchors = [akTop, akLeft, akBottom]
+    ItemHeight = 0
+    OnSelectionChange = FieldSelectionChange
+    TabOrder = 1
+  end
+  object Label2: TLabel
+    Left = 216
+    Height = 15
+    Top = 8
+    Width = 29
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Value: TListBox
+    Left = 424
+    Height = 262
+    Top = 24
+    Width = 200
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ItemHeight = 0
+    OnDblClick = ValueDblClick
+    OnSelectionChange = ValueSelectionChange
+    TabOrder = 2
+  end
+  object Label3: TLabel
+    Left = 424
+    Height = 15
+    Top = 8
+    Width = 53
+    Caption = 'Значение'
+    ParentColor = False
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 296
+    Width = 621
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+end

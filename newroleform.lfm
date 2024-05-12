@@ -1,0 +1,229 @@
+object NewRoleFm: TNewRoleFm
+  Left = 390
+  Height = 487
+  Top = 243
+  Width = 406
+  Caption = 'Настройка роли'
+  ClientHeight = 487
+  ClientWidth = 406
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.1.0.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 52
+    Caption = 'Название'
+    ParentColor = False
+  end
+  object Edit1: TEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 390
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    OnChange = Edit1Change
+    TabOrder = 0
+    Text = 'Edit1'
+  end
+  object PageControl1: TPageControl
+    AnchorSideTop.Control = Intfs
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 350
+    Top = 102
+    Width = 392
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 8
+    TabIndex = 0
+    TabOrder = 2
+    object TabSheet1: TTabSheet
+      Caption = 'Доступ к формам'
+      ClientHeight = 322
+      ClientWidth = 384
+      object FRGrid: TStringGrid
+        Left = 0
+        Height = 322
+        Top = 0
+        Width = 384
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        ColCount = 7
+        Columns = <        
+          item
+            ReadOnly = True
+            Title.Caption = 'Форма'
+            Width = 143
+          end        
+          item
+            ReadOnly = True
+            SizePriority = 0
+            Title.Caption = 'Д'
+            Width = 40
+          end        
+          item
+            ReadOnly = True
+            SizePriority = 0
+            Title.Caption = 'УО'
+            Width = 40
+          end        
+          item
+            ReadOnly = True
+            SizePriority = 0
+            Title.Caption = 'УР'
+            Width = 40
+          end        
+          item
+            ReadOnly = True
+            SizePriority = 0
+            Title.Caption = 'УУ'
+            Width = 40
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'Об'
+            Width = 40
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'Поля'
+            Width = 40
+          end>
+        FixedCols = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = FRGridDblClick
+        OnDrawCell = FRGridDrawCell
+        OnGetCellHint = FRGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          143
+          40
+          40
+          40
+          40
+          40
+          40
+        )
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Доступ к отчетам'
+      ClientHeight = 322
+      ClientWidth = 384
+      object RRGrid: TStringGrid
+        Left = 0
+        Height = 322
+        Top = 0
+        Width = 384
+        Align = alClient
+        AlternateColor = 15921906
+        AutoFillColumns = True
+        ColCount = 2
+        Columns = <        
+          item
+            ReadOnly = True
+            Title.Caption = 'Отчет'
+            Width = 343
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'Д'
+            Width = 40
+          end>
+        FixedCols = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints]
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = RRGridDblClick
+        OnDrawCell = RRGridDrawCell
+        OnGetCellHint = RRGridGetCellHint
+        OnKeyDown = GridKeyDown
+        ColWidths = (
+          343
+          40
+        )
+      end
+    end
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 455
+    Width = 394
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Edit1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 62
+    BorderSpacing.Top = 8
+    Caption = 'Интерфейс'
+    ParentColor = False
+  end
+  object Intfs: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 390
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = IntfsChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object AccessMnu: TPopupMenu
+    left = 68
+    top = 197
+    object MenuItem4: TMenuItem
+      Caption = 'Нет доступа'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem1: TMenuItem
+      Tag = 1
+      Caption = 'Только просмотр'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem2: TMenuItem
+      Tag = 2
+      Caption = 'Только редактирование'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem3: TMenuItem
+      Tag = 3
+      Caption = 'Полный доступ'
+      OnClick = AccessMnuClick
+    end
+  end
+end

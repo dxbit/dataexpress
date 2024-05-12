@@ -1,0 +1,184 @@
+object ExtTemplateFm: TExtTemplateFm
+  Left = 302
+  Height = 393
+  Top = 150
+  Width = 369
+  Caption = 'ExtTemplateFm'
+  ClientHeight = 393
+  ClientWidth = 369
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 93
+    Caption = 'Тип расширения'
+    ParentColor = False
+  end
+  object ExtKindCbx: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = ExtKindCbxChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = ExtKindCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 52
+    BorderSpacing.Top = 8
+    Caption = 'Название'
+    ParentColor = False
+  end
+  object NameEd: TEdit
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = NameEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 39
+    BorderSpacing.Top = 8
+    Caption = 'Группа'
+    ParentColor = False
+  end
+  object GroupEd: TEdit
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 118
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 2
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = GroupEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 149
+    Width = 76
+    BorderSpacing.Top = 8
+    Caption = 'Имя функции'
+    ParentColor = False
+  end
+  object FuncNameEd: TEdit
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 165
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 3
+  end
+  object Label5: TLabel
+    AnchorSideTop.Control = FuncNameEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 196
+    Width = 161
+    BorderSpacing.Top = 8
+    Caption = 'Имя пользовательского типа'
+    ParentColor = False
+  end
+  object TypeNameEd: TEdit
+    AnchorSideTop.Control = Label5
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 212
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 4
+  end
+  object Label6: TLabel
+    AnchorSideTop.Control = TypeNameEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 243
+    Width = 233
+    BorderSpacing.Top = 8
+    Caption = 'Имя переменной пользовательского типа'
+    ParentColor = False
+  end
+  object VarNameEd: TEdit
+    AnchorSideTop.Control = Label6
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 259
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 5
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = VarNameEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 290
+    Width = 73
+    BorderSpacing.Top = 8
+    Caption = 'Имя массива'
+    ParentColor = False
+  end
+  object ArrNameEd: TEdit
+    AnchorSideTop.Control = Label7
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 306
+    Width = 352
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 6
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 353
+    Width = 357
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 7
+    ShowButtons = [pbOK, pbCancel]
+  end
+end

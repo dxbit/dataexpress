@@ -1,0 +1,474 @@
+object SettingsFm: TSettingsFm
+  Left = 452
+  Height = 359
+  Top = 188
+  Width = 461
+  BorderIcons = [biSystemMenu]
+  Caption = 'SettingsFm'
+  ClientHeight = 359
+  ClientWidth = 461
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 327
+    Width = 449
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Pages: TPageControl
+    Left = 4
+    Height = 317
+    Top = 4
+    Width = 453
+    ActivePage = IntfTab
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    TabIndex = 0
+    TabOrder = 1
+    object IntfTab: TTabSheet
+      Caption = 'Интерфейс'
+      ClientHeight = 289
+      ClientWidth = 445
+      object Label1: TLabel
+        AnchorSideTop.Control = ComboBox1
+        AnchorSideTop.Side = asrCenter
+        Left = 8
+        Height = 15
+        Top = 12
+        Width = 27
+        Caption = 'Язык'
+        ParentColor = False
+      end
+      object ComboBox1: TComboBox
+        AnchorSideLeft.Control = Label1
+        AnchorSideLeft.Side = asrBottom
+        Left = 43
+        Height = 23
+        Top = 8
+        Width = 213
+        BorderSpacing.Left = 8
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 0
+      end
+      object InfoLangBn: TSpeedButton
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ComboBox1
+        AnchorSideTop.Side = asrCenter
+        AnchorSideBottom.Control = ComboBox1
+        AnchorSideBottom.Side = asrCenter
+        Left = 258
+        Height = 22
+        Top = 8
+        Width = 23
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 2
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          2000000000000004000064000000640000000000000000000000000000000000
+          0000000000000000001500000031000000400303034B0A0A0A53060606510000
+          0049000000400000003100000012000000000000000000000000000000000000
+          00000000001B0000003E61606075D6D6D5E1F0EEEDFCFEFEFDFFFEFEFEFFF0EE
+          EDFCD6D5D5E0606060730000003E000000170000000000000000000000000000
+          00100000003EC5C5C4CBF6F0EEFFC79E8AFFA05938FF94451FFF94451FFFA05A
+          38FFC79F8BFFF6F1EFFFBAB9B9BE0000003E0000000E00000000000000000000
+          0038C6C5C5CDE1CCC2FFA45935FF9B4B24FFEDECEBFFEDECEBFFEDECEBFFEDEC
+          EBFF94451FFFA35F3FFFDEC9BFFFC4C3C3CA0000003800000000000000127E7D
+          7D85F4ECE8FFAB5E38FFA35028FFA14E27FFA45732FFEDECEBFFEDECEBFF9E52
+          2EFF964720FF95451FFF9D5431FFF2EBE8FF797978810000001100000032D7D5
+          D4E3CE9C85FFAA562DFFA8542CFFA6532AFFA45129FFEDECEBFFEDECEBFF9E4C
+          25FF9C4B24FF994922FF974721FFC2957FFFD4D2D1E0000000310606064DF9F8
+          F7FEB6633CFFB05A31FFAD582FFFAB572EFFA9552DFFEDECEBFFEDECEBFFA350
+          28FFA14F27FF9F4D26FF9D4C24FFA15530FFF7F6F5FE000000481616165DFDFB
+          FAFFB75F35FFB55E34FFB35C33FFB15B31FFAF5930FFEDECEBFFEDECEBFFA854
+          2CFFA6532BFFA45129FFA25028FFA04E26FFFEFEFEFF060606511818185FFDFA
+          F9FFBC6339FFBA6237FFB86036FFB65F35FFC5896CFFEDECEBFFEDECEBFFAE58
+          2FFFAC572EFFAA552DFFA7542BFFA5522AFFFEFDFDFF0A0A0A530A0A0A53FEFE
+          FEFFC2673CFFC0663BFFBE643AFFBB6338FFEDECEBFFEDECEBFFE9E3DFFFB25B
+          32FFB15B31FFAF5930FFAD582FFFAB562DFFFFFFFFFF0303034F00000037E1DF
+          DEEBD99A7DFFC56A3EFFC3683DFFC1673CFFBF653AFFBD6339FFBA6238FFB860
+          36FFB65F35FFB45D34FFB25C32FFCA9176FFDEDCDBE900000035000000179595
+          9595F5E7E0FFCA6D42FFC86C40FFC66B3FFFC4693EFFEAE3E0FFEAE3DFFFC375
+          50FFBC6338FFBA6137FFB86036FFF1E5DFFF9291919100000016000000000000
+          0031D9D7D6E1ECCCBDFFCB6F43FFCB6E42FFC96D41FFEAE4E0FFEDECEBFFC879
+          53FFC1673CFFBF653AFFE7C9BBFFD7D5D3DF0000003000000000000000000000
+          00120303034ED9D7D6E1F3E2DAFFDA9575FFCC6F43FFD07E58FFCF7D57FFC86C
+          41FFD59373FFF1E1D9FFD8D5D4DF000000300000001100000000000000000000
+          00000000001200000031A5A4A4A1EDEBEAF7FDFAF8FFF6EAE5FFF6EAE5FFFDFA
+          F9FFEDEBEAF7A5A5A5A100000030000000110000000000000000000000000000
+          000000000000000000000000001F0000003F393939667C7B7B9B7C7B7B9B3636
+          35640000003F0000001F00000000000000000000000000000000
+        }
+        OnClick = InfoLangBnClick
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object Label5: TLabel
+        AnchorSideTop.Control = ComboBox1
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 39
+        Width = 120
+        BorderSpacing.Top = 8
+        Caption = 'Действие при запуске'
+        ParentColor = False
+      end
+      object StartupAction: TComboBox
+        AnchorSideTop.Control = Label5
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 55
+        Width = 427
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 1
+      end
+      object ConfirmExit: TCheckBox
+        AnchorSideTop.Control = StartupAction
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 19
+        Top = 86
+        Width = 163
+        BorderSpacing.Top = 8
+        Caption = 'Подтверждать при выходе'
+        TabOrder = 2
+      end
+      object Label6: TLabel
+        AnchorSideTop.Control = ConfirmExit
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 113
+        Width = 102
+        BorderSpacing.Top = 8
+        Caption = 'Тема оформления'
+        ParentColor = False
+      end
+      object UseTheme: TComboBox
+        AnchorSideTop.Control = Label6
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 129
+        Width = 427
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 3
+      end
+    end
+    object TplTab: TTabSheet
+      Caption = 'Шаблоны'
+      ClientHeight = 289
+      ClientWidth = 445
+      object Label2: TLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 8
+        Width = 98
+        BorderSpacing.Top = 8
+        Caption = 'Путь к шаблонам'
+        ParentColor = False
+      end
+      object TemplateDir: TDirectoryEdit
+        AnchorSideTop.Control = Label2
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 24
+        Width = 426
+        ShowHidden = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Flat = True
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        MaxLength = 0
+        TabOrder = 0
+      end
+      object Label4: TLabel
+        AnchorSideTop.Control = TemplateDir
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 55
+        Width = 77
+        BorderSpacing.Top = 8
+        Caption = 'Папка вывода'
+        ParentColor = False
+      end
+      object OutputDir: TDirectoryEdit
+        AnchorSideTop.Control = Label4
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 71
+        Width = 426
+        ShowHidden = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Flat = True
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        MaxLength = 0
+        TabOrder = 1
+      end
+      object Label3: TLabel
+        AnchorSideTop.Control = OutputDir
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 102
+        Width = 113
+        BorderSpacing.Top = 8
+        Caption = 'Открыть шаблоны в'
+        ParentColor = False
+      end
+      object ListView1: TListView
+        AnchorSideTop.Control = Label3
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 158
+        Top = 118
+        Width = 426
+        Anchors = [akTop, akLeft, akRight]
+        AutoWidthLastColumn = True
+        BorderSpacing.Top = 1
+        Columns = <        
+          item
+            Caption = 'Тип'
+          end        
+          item
+            Caption = 'Описание'
+            Width = 150
+          end        
+          item
+            Caption = 'Приложение'
+            Width = 222
+          end>
+        PopupMenu = PopupMenu1
+        ReadOnly = True
+        RowSelect = True
+        TabOrder = 2
+        ViewStyle = vsReport
+      end
+    end
+    object UpdTab: TTabSheet
+      Caption = 'Обновление'
+      ClientHeight = 289
+      ClientWidth = 445
+      object CheckUpdates: TCheckBox
+        Left = 8
+        Height = 19
+        Top = 8
+        Width = 147
+        Caption = 'Проверять обновление'
+        TabOrder = 0
+      end
+      object Label7: TLabel
+        AnchorSideTop.Control = CheckUpdates
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 35
+        Width = 176
+        BorderSpacing.Top = 8
+        Caption = 'Путь к базе данных обновления'
+        ParentColor = False
+      end
+      object UpdatesDBPath: TEdit
+        AnchorSideTop.Control = Label7
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 51
+        Width = 428
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        TabOrder = 1
+      end
+      object Label8: TLabel
+        AnchorSideTop.Control = UpdatesDBPath
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 82
+        Width = 87
+        BorderSpacing.Top = 8
+        Caption = 'Пароль SYSDBA'
+        ParentColor = False
+      end
+      object UpdatesDBPwd: TEdit
+        AnchorSideTop.Control = Label8
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 98
+        Width = 144
+        BorderSpacing.Top = 1
+        EchoMode = emPassword
+        PasswordChar = '*'
+        TabOrder = 2
+      end
+    end
+    object DesignTab: TTabSheet
+      Caption = 'Дизайнер'
+      ClientHeight = 289
+      ClientWidth = 445
+      ParentFont = False
+      object ShowGridChk: TCheckBox
+        Left = 8
+        Height = 19
+        Top = 8
+        Width = 115
+        Caption = 'Показывать сетку'
+        TabOrder = 0
+      end
+      object Label9: TLabel
+        AnchorSideTop.Control = GridXSpin
+        AnchorSideTop.Side = asrCenter
+        Left = 24
+        Height = 15
+        Top = 39
+        Width = 83
+        Caption = 'Размер X сетки'
+        ParentColor = False
+      end
+      object GridXSpin: TSpinEdit
+        AnchorSideLeft.Control = Label9
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ShowGridChk
+        AnchorSideTop.Side = asrBottom
+        Left = 115
+        Height = 23
+        Top = 35
+        Width = 64
+        BorderSpacing.Left = 8
+        BorderSpacing.Top = 8
+        TabOrder = 1
+      end
+      object Label10: TLabel
+        AnchorSideTop.Control = GridYSpin
+        AnchorSideTop.Side = asrCenter
+        Left = 24
+        Height = 15
+        Top = 78
+        Width = 83
+        Caption = 'Размер Y сетки'
+        ParentColor = False
+      end
+      object GridYSpin: TSpinEdit
+        AnchorSideLeft.Control = GridXSpin
+        AnchorSideTop.Control = GridXSpin
+        AnchorSideTop.Side = asrBottom
+        Left = 115
+        Height = 23
+        Top = 74
+        Width = 64
+        BorderSpacing.Top = 16
+        TabOrder = 2
+      end
+      object GridColorBox: TColorBox
+        AnchorSideLeft.Control = Label11
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = GridXSpin
+        Left = 245
+        Height = 22
+        Top = 35
+        Width = 141
+        NoneColorColor = clNone
+        Style = [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames]
+        BorderSpacing.Left = 8
+        DropDownCount = 16
+        ItemHeight = 16
+        TabOrder = 3
+      end
+      object Label11: TLabel
+        AnchorSideLeft.Control = GridXSpin
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = GridColorBox
+        AnchorSideTop.Side = asrCenter
+        Left = 211
+        Height = 15
+        Top = 39
+        Width = 26
+        BorderSpacing.Left = 32
+        Caption = 'Цвет'
+        ParentColor = False
+      end
+    end
+    object OtherTab: TTabSheet
+      Caption = 'Прочее'
+      ClientHeight = 289
+      ClientWidth = 445
+      object Caching: TCheckBox
+        Left = 16
+        Height = 19
+        Top = 24
+        Width = 156
+        Caption = 'Кэшировать метаданные'
+        TabOrder = 0
+      end
+      object SupportDXDB: TCheckBox
+        AnchorSideTop.Control = Caching
+        AnchorSideTop.Side = asrBottom
+        Left = 16
+        Height = 19
+        Top = 75
+        Width = 232
+        BorderSpacing.Top = 32
+        Caption = 'Поддержка новых баз данных (*.DXDB)'
+        TabOrder = 1
+      end
+      object ErrLogging: TCheckBox
+        AnchorSideTop.Control = SupportDXDB
+        AnchorSideTop.Side = asrBottom
+        Left = 16
+        Height = 19
+        Top = 126
+        Width = 139
+        BorderSpacing.Top = 32
+        Caption = 'Логирование ошибок'
+        TabOrder = 2
+      end
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 344
+    Top = 256
+    object MenuItem1: TMenuItem
+      Caption = 'Выбрать'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Очистить'
+      OnClick = MenuItem2Click
+    end
+  end
+end

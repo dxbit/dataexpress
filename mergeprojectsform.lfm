@@ -1,0 +1,369 @@
+object MergeProjectsFm: TMergeProjectsFm
+  Left = 298
+  Height = 462
+  Top = 167
+  Width = 651
+  BorderIcons = [biSystemMenu]
+  Caption = 'Объединение проектов'
+  ClientHeight = 462
+  ClientWidth = 651
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 430
+    Width = 639
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object PageControl1: TPageControl
+    Left = 4
+    Height = 420
+    Top = 4
+    Width = 643
+    ActivePage = TabSheet1
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Формы'
+      ClientHeight = 392
+      ClientWidth = 635
+      object FormList: TCheckListBox
+        Left = 0
+        Height = 392
+        Top = 0
+        Width = 256
+        Align = alLeft
+        ItemHeight = 0
+        TabOrder = 0
+        OnClick = FormListClick
+      end
+      object Splitter1: TSplitter
+        Left = 256
+        Height = 392
+        Top = 0
+        Width = 5
+      end
+      object Panel1: TPanel
+        Left = 261
+        Height = 392
+        Top = 0
+        Width = 374
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 392
+        ClientWidth = 374
+        TabOrder = 2
+        object Panel2: TPanel
+          Left = 0
+          Height = 142
+          Top = 133
+          Width = 374
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 142
+          ClientWidth = 374
+          TabOrder = 1
+          object DepForms: TCheckListBox
+            Left = 0
+            Height = 124
+            Top = 18
+            Width = 374
+            Align = alClient
+            ItemHeight = 0
+            Sorted = True
+            TabOrder = 0
+            OnClickCheck = DepFormsClickCheck
+          end
+          object StaticText2: TStaticText
+            Left = 0
+            Height = 18
+            Top = 0
+            Width = 374
+            Align = alTop
+            Alignment = taCenter
+            AutoSize = True
+            BorderStyle = sbsSunken
+            Caption = 'Зависимые формы'
+            Color = 13036541
+            ParentFont = False
+            ParentColor = False
+            TabOrder = 1
+            Transparent = False
+          end
+        end
+        object Panel3: TPanel
+          Left = 0
+          Height = 112
+          Top = 280
+          Width = 374
+          Align = alBottom
+          BevelOuter = bvNone
+          ClientHeight = 112
+          ClientWidth = 374
+          TabOrder = 4
+          object DepReps: TCheckListBox
+            Left = 0
+            Height = 94
+            Top = 18
+            Width = 374
+            Align = alClient
+            ItemHeight = 0
+            Sorted = True
+            TabOrder = 0
+            OnClickCheck = DepRepsClickCheck
+          end
+          object StaticText3: TStaticText
+            Left = 0
+            Height = 18
+            Top = 0
+            Width = 374
+            Align = alTop
+            Alignment = taCenter
+            AutoSize = True
+            BorderStyle = sbsSunken
+            Caption = 'Зависимые отчеты'
+            Color = 13036541
+            ParentFont = False
+            ParentColor = False
+            TabOrder = 1
+            Transparent = False
+          end
+        end
+        object Panel4: TPanel
+          Left = 0
+          Height = 128
+          Top = 0
+          Width = 374
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 128
+          ClientWidth = 374
+          TabOrder = 0
+          object SrcForms: TCheckListBox
+            Left = 0
+            Height = 110
+            Top = 18
+            Width = 374
+            Align = alClient
+            ItemHeight = 0
+            Sorted = True
+            TabOrder = 0
+            OnClickCheck = SrcFormsClickCheck
+          end
+          object StaticText1: TStaticText
+            Left = 0
+            Height = 18
+            Top = 0
+            Width = 374
+            Align = alTop
+            Alignment = taCenter
+            AutoSize = True
+            BorderStyle = sbsSunken
+            Caption = 'Форма зависит от'
+            Color = 13036541
+            ParentFont = False
+            ParentColor = False
+            TabOrder = 1
+            Transparent = False
+          end
+        end
+        object Splitter3: TSplitter
+          Cursor = crVSplit
+          Left = 0
+          Height = 5
+          Top = 128
+          Width = 374
+          Align = alTop
+          ResizeAnchor = akTop
+        end
+        object Splitter4: TSplitter
+          Cursor = crVSplit
+          Left = 0
+          Height = 5
+          Top = 275
+          Width = 374
+          Align = alBottom
+          ResizeAnchor = akBottom
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Отчеты'
+      ClientHeight = 392
+      ClientWidth = 635
+      object RepList: TCheckListBox
+        Left = 0
+        Height = 392
+        Top = 0
+        Width = 256
+        Align = alLeft
+        ItemHeight = 0
+        TabOrder = 0
+        OnClick = RepListClick
+        OnClickCheck = RepListClickCheck
+      end
+      object Splitter2: TSplitter
+        Left = 256
+        Height = 392
+        Top = 0
+        Width = 5
+      end
+      object Panel5: TPanel
+        Left = 261
+        Height = 392
+        Top = 0
+        Width = 374
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 392
+        ClientWidth = 374
+        TabOrder = 2
+        object Panel6: TPanel
+          Left = 0
+          Height = 392
+          Top = 0
+          Width = 374
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 392
+          ClientWidth = 374
+          TabOrder = 0
+          object DepSources: TCheckListBox
+            Left = 0
+            Height = 374
+            Top = 18
+            Width = 374
+            Align = alClient
+            ItemHeight = 0
+            Sorted = True
+            TabOrder = 0
+            OnClickCheck = DepSourcesClickCheck
+          end
+          object StaticText4: TStaticText
+            Left = 0
+            Height = 18
+            Top = 0
+            Width = 374
+            Align = alTop
+            Alignment = taCenter
+            AutoSize = True
+            BorderStyle = sbsSunken
+            Caption = 'Отчет зависит от'
+            Color = 13036541
+            ParentFont = False
+            ParentColor = False
+            TabOrder = 1
+            Transparent = False
+          end
+        end
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Модули'
+      ClientHeight = 392
+      ClientWidth = 635
+      object Panel7: TPanel
+        Left = 0
+        Height = 194
+        Top = 0
+        Width = 635
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 194
+        ClientWidth = 635
+        TabOrder = 0
+        object ExtModules: TCheckListBox
+          Left = 0
+          Height = 176
+          Top = 18
+          Width = 635
+          Align = alClient
+          ItemHeight = 0
+          Sorted = True
+          TabOrder = 0
+        end
+        object StaticText5: TStaticText
+          Left = 0
+          Height = 18
+          Top = 0
+          Width = 635
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = True
+          BorderStyle = sbsSunken
+          Caption = 'Модули расширений'
+          Color = 13036541
+          ParentFont = False
+          ParentColor = False
+          TabOrder = 1
+          Transparent = False
+        end
+      end
+      object Splitter5: TSplitter
+        Cursor = crVSplit
+        Left = 0
+        Height = 5
+        Top = 194
+        Width = 635
+        Align = alTop
+        ResizeAnchor = akTop
+      end
+      object Panel8: TPanel
+        Left = 0
+        Height = 193
+        Top = 199
+        Width = 635
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 193
+        ClientWidth = 635
+        TabOrder = 2
+        object UserModules: TCheckListBox
+          Left = 0
+          Height = 175
+          Top = 18
+          Width = 635
+          Align = alClient
+          ItemHeight = 0
+          Sorted = True
+          TabOrder = 0
+        end
+        object StaticText6: TStaticText
+          Left = 0
+          Height = 18
+          Top = 0
+          Width = 635
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = True
+          BorderStyle = sbsSunken
+          Caption = 'Пользовательские модули'
+          Color = 13036541
+          ParentFont = False
+          ParentColor = False
+          TabOrder = 1
+          Transparent = False
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,97 @@
+object CtrlRightsFm: TCtrlRightsFm
+  Left = 371
+  Height = 455
+  Top = 279
+  Width = 470
+  BorderIcons = [biSystemMenu]
+  Caption = 'Доступ к компонентам'
+  ClientHeight = 455
+  ClientWidth = 470
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Grid: TStringGrid
+    Left = 4
+    Height = 413
+    Top = 4
+    Width = 462
+    Align = alClient
+    AlternateColor = 15921906
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    ColCount = 3
+    Columns = <    
+      item
+        ReadOnly = True
+        Title.Caption = 'Компонент'
+        Width = 321
+      end    
+      item
+        ReadOnly = True
+        SizePriority = 0
+        Title.Caption = 'Тип'
+        Width = 100
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Пр.'
+        Width = 40
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    OnDblClick = GridDblClick
+    OnDrawCell = GridDrawCell
+    OnGetCellHint = GridGetCellHint
+    OnKeyDown = GridKeyDown
+    ColWidths = (
+      321
+      100
+      40
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 423
+    Width = 458
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+  object AccessMnu: TPopupMenu
+    OnPopup = AccessMnuPopup
+    Left = 86
+    Top = 112
+    object MenuItem1: TMenuItem
+      Caption = 'Нет доступа'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem2: TMenuItem
+      Tag = 1
+      Caption = 'Только просмотр'
+      OnClick = AccessMnuClick
+    end
+    object MenuItem3: TMenuItem
+      Tag = 2
+      Caption = 'Редактирование'
+      OnClick = AccessMnuClick
+    end
+  end
+end

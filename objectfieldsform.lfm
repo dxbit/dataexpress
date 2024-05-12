@@ -1,0 +1,69 @@
+object ObjFieldsFm: TObjFieldsFm
+  Left = 325
+  Height = 275
+  Top = 393
+  Width = 445
+  BorderIcons = [biSystemMenu]
+  Caption = 'ObjFieldsFm'
+  ClientHeight = 275
+  ClientWidth = 445
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '3.0.0.3'
+  object Label1: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    Left = 221
+    Height = 15
+    Top = 165
+    Width = 3
+    Caption = ' '
+    ParentColor = False
+  end
+  object ObjList: TListBox
+    AnchorSideRight.Control = Label1
+    Left = 8
+    Height = 226
+    Top = 8
+    Width = 209
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Right = 4
+    ItemHeight = 0
+    TabOrder = 0
+    OnSelectionChange = ObjListSelectionChange
+  end
+  object Fields: TListBox
+    AnchorSideLeft.Control = Label1
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 225
+    Height = 226
+    Top = 8
+    Width = 212
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 8
+    ItemHeight = 0
+    TabOrder = 1
+    OnDblClick = FieldsDblClick
+    OnSelectionChange = FieldsSelectionChange
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 243
+    Width = 433
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+end

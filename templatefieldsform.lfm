@@ -1,0 +1,411 @@
+object TemplateFieldsFm: TTemplateFieldsFm
+  Left = 589
+  Height = 520
+  Top = 315
+  Width = 312
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Мастер шаблонов'
+  ClientHeight = 520
+  ClientWidth = 312
+  FormStyle = fsSystemStayOnTop
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  ShowInTaskBar = stAlways
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 488
+    Width = 300
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbClose, pbHelp]
+    ShowBevel = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 22
+    Top = 0
+    Width = 312
+    AutoSize = True
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ToolImages
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 24
+      Top = 0
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      OnClick = ToolButton2Click
+    end
+    object ToolButton3: TToolButton
+      Left = 47
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 2
+      OnClick = ToolButton3Click
+    end
+  end
+  object Pg: TPageControl
+    Left = 0
+    Height = 460
+    Top = 22
+    Width = 312
+    ActivePage = TabSheet1
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 2
+    OnChange = PgChange
+    Options = [nboDoChangeOnSetIndex]
+    object TabSheet1: TTabSheet
+      Caption = 'Формы'
+      ClientHeight = 432
+      ClientWidth = 304
+      object Panel1: TPanel
+        Left = 0
+        Height = 170
+        Top = 0
+        Width = 304
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 170
+        ClientWidth = 304
+        TabOrder = 0
+        object Label1: TLabel
+          Left = 0
+          Height = 15
+          Top = 4
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 4
+          Caption = 'Текущая форма'
+          ParentColor = False
+        end
+        object Label2: TLabel
+          Left = 0
+          Height = 15
+          Top = 47
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 4
+          Caption = 'Источники данных'
+          ParentColor = False
+        end
+        object FormCbx: TComboBox
+          Left = 0
+          Height = 23
+          Top = 20
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 1
+          DropDownCount = 16
+          ItemHeight = 15
+          Style = csDropDownList
+          TabOrder = 0
+          OnSelect = FormCbxSelect
+        end
+        object Sources: TTreeViewEx
+          Left = 0
+          Height = 107
+          Top = 63
+          Width = 304
+          Align = alClient
+          BorderSpacing.Top = 1
+          Images = SrcImages
+          ReadOnly = True
+          TabOrder = 1
+          OnCompare = SourcesCompare
+          OnSelectionChanged = SourcesSelectionChanged
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        end
+      end
+      object Splitter1: TSplitter
+        Cursor = crVSplit
+        Left = 0
+        Height = 5
+        Top = 170
+        Width = 304
+        Align = alTop
+        ResizeAnchor = akTop
+        ResizeStyle = rsPattern
+      end
+      object Panel2: TPanel
+        Left = 0
+        Height = 257
+        Top = 175
+        Width = 304
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 257
+        ClientWidth = 304
+        TabOrder = 2
+        object Filter: TTreeFilterEdit
+          Left = 0
+          Height = 23
+          Top = 15
+          Width = 304
+          CharCase = ecNormal
+          ButtonWidth = 23
+          Align = alTop
+          BorderSpacing.Bottom = 1
+          NumGlyphs = 1
+          MaxLength = 0
+          Spacing = 2
+          TabOrder = 0
+          FilteredTreeview = Fields
+        end
+        object Label3: TLabel
+          Left = 0
+          Height = 15
+          Top = 0
+          Width = 304
+          Align = alTop
+          Caption = 'Поля'
+          ParentColor = False
+        end
+        object Fields: TTreeViewEx
+          Left = 0
+          Height = 218
+          Top = 39
+          Width = 304
+          Align = alClient
+          Images = FieldsImages
+          PopupMenu = PopupMenu1
+          ReadOnly = True
+          RightClickSelect = True
+          TabOrder = 1
+          OnCompare = FieldsCompare
+          OnDblClick = FieldsDblClick
+          OnMouseDown = FieldsMouseDown
+          OnMouseMove = FieldsMouseMove
+          OnSelectionChanged = FieldsSelectionChanged
+          OnUTF8KeyPress = FieldsUTF8KeyPress
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Отчеты'
+      ClientHeight = 432
+      ClientWidth = 304
+      object Panel3: TPanel
+        Left = 0
+        Height = 170
+        Top = 0
+        Width = 304
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 170
+        ClientWidth = 304
+        TabOrder = 0
+        object Label4: TLabel
+          Left = 0
+          Height = 15
+          Top = 4
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 4
+          Caption = 'Текущий отчет'
+          ParentColor = False
+        end
+        object Label5: TLabel
+          Left = 0
+          Height = 15
+          Top = 47
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 4
+          Caption = 'Источники данных'
+          ParentColor = False
+        end
+        object RpCbx: TComboBox
+          Left = 0
+          Height = 23
+          Top = 20
+          Width = 304
+          Align = alTop
+          BorderSpacing.Top = 1
+          DropDownCount = 16
+          ItemHeight = 15
+          Style = csDropDownList
+          TabOrder = 0
+          OnSelect = RpCbxSelect
+        end
+        object RpSources: TTreeViewEx
+          Left = 0
+          Height = 107
+          Top = 63
+          Width = 304
+          Align = alClient
+          BorderSpacing.Top = 1
+          Images = SrcImages
+          ReadOnly = True
+          TabOrder = 1
+          OnCompare = SourcesCompare
+          OnSelectionChanged = RpSourcesSelectionChanged
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        end
+      end
+      object Splitter2: TSplitter
+        Cursor = crVSplit
+        Left = 0
+        Height = 5
+        Top = 170
+        Width = 304
+        Align = alTop
+        ResizeAnchor = akTop
+        ResizeStyle = rsPattern
+      end
+      object Panel4: TPanel
+        Left = 0
+        Height = 257
+        Top = 175
+        Width = 304
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 257
+        ClientWidth = 304
+        TabOrder = 2
+        object RpFilter: TTreeFilterEdit
+          Left = 0
+          Height = 23
+          Top = 15
+          Width = 304
+          CharCase = ecNormal
+          ButtonWidth = 23
+          Align = alTop
+          BorderSpacing.Bottom = 1
+          NumGlyphs = 1
+          MaxLength = 0
+          Spacing = 2
+          TabOrder = 0
+          FilteredTreeview = RpFields
+        end
+        object Label6: TLabel
+          Left = 0
+          Height = 15
+          Top = 0
+          Width = 304
+          Align = alTop
+          Caption = 'Поля'
+          ParentColor = False
+        end
+        object RpFields: TTreeViewEx
+          Left = 0
+          Height = 218
+          Top = 39
+          Width = 304
+          Align = alClient
+          Images = FieldsImages
+          PopupMenu = PopupMenu1
+          ReadOnly = True
+          RightClickSelect = True
+          TabOrder = 1
+          OnCompare = FieldsCompare
+          OnDblClick = FieldsDblClick
+          OnMouseDown = FieldsMouseDown
+          OnMouseMove = FieldsMouseMove
+          OnSelectionChanged = FieldsSelectionChanged
+          OnUTF8KeyPress = RpFieldsUTF8KeyPress
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
+        end
+      end
+    end
+  end
+  object MsgPan: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    Left = 33
+    Height = 54
+    Top = 233
+    Width = 247
+    Anchors = [akTop, akLeft, akRight]
+    BevelInner = bvLowered
+    ClientHeight = 54
+    ClientWidth = 247
+    Constraints.MaxWidth = 250
+    TabOrder = 3
+    object Msg: TLabel
+      Left = 2
+      Height = 50
+      Top = 2
+      Width = 243
+      Align = alClient
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Msg'
+      Font.Color = clRed
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      WordWrap = True
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 91
+    Top = 310
+    object MenuItem1: TMenuItem
+      Caption = 'Копировать'
+      Default = True
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Копировать тег grid'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Копировать тег form'
+      OnClick = MenuItem3Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Копировать тег group'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Копировать тег end'
+      OnClick = MenuItem4Click
+    end
+  end
+  object ToolImages: TImageList
+    Left = 186
+    Top = 254
+  end
+  object SrcImages: TImageList
+    Left = 190
+    Top = 308
+  end
+  object FieldsImages: TImageList
+    Left = 197
+    Top = 369
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = Timer1Timer
+    Left = 216
+    Top = 104
+  end
+end

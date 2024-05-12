@@ -1,0 +1,111 @@
+object ChartFm: TChartFm
+  Left = 397
+  Height = 550
+  Top = 285
+  Width = 950
+  BorderIcons = [biSystemMenu]
+  Caption = 'Диаграмма'
+  ClientHeight = 550
+  ClientWidth = 950
+  Font.Color = clBlack
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object Panel1: TPanel
+    Left = 4
+    Height = 512
+    Top = 0
+    Width = 320
+    Align = alLeft
+    BorderSpacing.Left = 4
+    BevelOuter = bvNone
+    ClientHeight = 512
+    ClientWidth = 320
+    TabOrder = 0
+    object Panel2: TPanel
+      Left = 0
+      Height = 50
+      Top = 0
+      Width = 320
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 50
+      ClientWidth = 320
+      TabOrder = 0
+      object Label1: TLabel
+        Left = 0
+        Height = 15
+        Top = 4
+        Width = 316
+        Align = alTop
+        BorderSpacing.Top = 4
+        BorderSpacing.Right = 4
+        Caption = 'Тип диаграммы'
+        ParentColor = False
+      end
+      object ChartKind: TComboBox
+        Left = 0
+        Height = 23
+        Top = 20
+        Width = 316
+        Align = alClient
+        BorderSpacing.Top = 1
+        BorderSpacing.Right = 4
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 0
+        OnChange = ChartKindChange
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 324
+    Height = 512
+    Top = 0
+    Width = 5
+    ResizeStyle = rsPattern
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 518
+    Width = 938
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 122
+    Top = 217
+    object MenuItem1: TMenuItem
+      Caption = 'Добавить ряд'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Удалить ряд'
+      OnClick = MenuItem2Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Вверх'
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Вниз'
+      OnClick = MenuItem4Click
+    end
+  end
+end

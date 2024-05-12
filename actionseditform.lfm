@@ -1,0 +1,321 @@
+object ActionsEditFm: TActionsEditFm
+  Left = 481
+  Height = 578
+  Top = 234
+  Width = 885
+  BorderIcons = [biSystemMenu]
+  Caption = 'Редактор действий'
+  ClientHeight = 578
+  ClientWidth = 885
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnResize = FormResize
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Panel2: TPanel
+    Left = 621
+    Height = 536
+    Top = 4
+    Width = 260
+    Align = alRight
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    BorderSpacing.Bottom = 4
+    BevelOuter = bvNone
+    BorderStyle = bsSingle
+    ClientHeight = 532
+    ClientWidth = 256
+    TabOrder = 3
+    object Help: TIpHtmlPanel
+      Left = 0
+      Height = 476
+      Top = 56
+      Width = 256
+      Align = alClient
+      ALinkColor = clBlue
+      FixedTypeface = 'Courier New'
+      DefaultTypeFace = 'Verdana'
+      DefaultFontSize = 10
+      FlagErrors = False
+      PrintSettings.MarginLeft = 0.5
+      PrintSettings.MarginTop = 0.5
+      PrintSettings.MarginRight = 0.5
+      PrintSettings.MarginBottom = 0.5
+      PrintSettings.Preview.Left = 320
+      PrintSettings.Preview.Top = 256
+      PrintSettings.Preview.Width = 960
+      PrintSettings.Preview.Height = 768
+      TabOrder = 0
+      VLinkColor = clBlue
+    end
+    object Panel5: TPanel
+      Left = 0
+      Height = 56
+      Top = 0
+      Width = 256
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 56
+      ClientWidth = 256
+      Color = 11462907
+      ParentColor = False
+      ParentShowHint = False
+      TabOrder = 1
+      object Image1: TImage
+        Left = 8
+        Height = 24
+        Top = 8
+        Width = 24
+        AutoSize = True
+        Picture.Data = {
+          1754506F727461626C654E6574776F726B477261706869633503000089504E47
+          0D0A1A0A0000000D494844520000001800000018080600000197700D6E000000
+          097048597300005C4600005C4601149443410000000974455874436F6D6D656E
+          740000892A8D06000002D249444154789C7D55BF8B1351104ED204529FF1FC51
+          1941119133E41FC8FD17B9C6267D2E64EBE34010526C6154387F9D45D26869AC
+          531C1C0716426CB4D6348210D8807A7AC9385FF69BE4E5ED260B93ECCE9BF966
+          DEBC6FE665442453AFD7B3F89FBF6C3D168164A059F9D0D5606EA69AA2C44F66
+          BE323917D1D56D339BAA454965CCEF2E7E5AAA18020C0FFF33E6D19365908A4A
+          3EE328F654CAF66DCA2CE1DAFA7E60D9770CFFDDD7798C4875A3C54EAE3F13B9
+          711407D785313C26F8B8FB2A56AA04AA0B2DC6C0496299AEA304FE89CAAECA6D
+          D44765A6B2EF671B31879E55D4932CAAA45284714DA5A0CABE195CD3C4EFBC5C
+          56CEAA87B4F05356A9AAB2E1A2DE3B5E8DB270E04B13A20B39953F5E3A879B36
+          5D54F98E454742D766C5814E655667CFC896EA80D2B184014BBACB1247090796
+          EC80A56D83702445095140C48503F3EEA2D66BCEA0E79E155E46448E60F0E84C
+          168FE304D00EA22DCAE51EDAA58EC83F4D626779167D1C2E0E190E63D7C1B81B
+          7E5C8930645AAD4404C8FD37897D34C006941C0E21FA12BC3683DF1722A5A304
+          2D266E592DCAA1870C9AE48C3AAE439E34A8A49CFCC06D6F7F31F478045E1537
+          72C923629842461F30F441D706E0567A741EA46D2925910A6D85BEF975E46ED2
+          A8C902E75864BFFFFCA2C3269786E11E02B639C171133CF0C16AEF455E7F1679
+          FB4524D0D976F949225840AC6D6285D60B6546AD12BCE183FFFC15B3F7E1A9C8
+          830FCB5EB9F93C495006A912734ED496B503030CD3CA71E5A9C8A9B6E5E46F0C
+          FEE947DC639EDDD029F9D85AA7C6680506E8A705B8AA01BE45B1EC1CAF3D933E
+          C10BC49C373306CE08E380018A363A5C01E8C54CE45CDBF0D68B5470F81419A0
+          43CCACCB79DC3A5D06C1304B5C2A00767BDC1D72F071A66764BDE1731A8B538C
+          571BD85BF19DDEE6D98C9D710B5D897E59FA4C2DC98D9DCC811F71E89F70F0DB
+          7D6A1740C0B5196DF7D3B03676A9931DA8BC4750BB92CAF5946BC997FF740D89
+          0E850CC2450000000049454E44AE426082
+        }
+      end
+      object Title: TLabel
+        Left = 40
+        Height = 18
+        Top = 10
+        Width = 38
+        Caption = 'Title'
+        Font.CharSet = RUSSIAN_CHARSET
+        Font.Color = clGray
+        Font.Height = -16
+        Font.Name = 'Verdana'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Grp: TLabel
+        Left = 40
+        Height = 13
+        Top = 32
+        Width = 130
+        Caption = 'DEMO -> Подсветка'
+        Font.Color = 6250335
+        Font.Height = -11
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowAccelChar = False
+        ShowHint = True
+      end
+      object Link: TLabel
+        AnchorSideLeft.Control = Grp
+        AnchorSideLeft.Side = asrBottom
+        Cursor = crHandPoint
+        Left = 178
+        Height = 13
+        Top = 32
+        Width = 12
+        BorderSpacing.Left = 8
+        Caption = '...'
+        Font.Color = 6250335
+        Font.Height = -11
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowAccelChar = False
+        ShowHint = True
+        OnClick = LinkClick
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 616
+    Height = 540
+    Top = 0
+    Width = 5
+    Align = alRight
+    ResizeAnchor = akRight
+    ResizeStyle = rsPattern
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 546
+    Width = 873
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 5
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object ScrollBox1: TScrollBox
+    Left = 269
+    Height = 536
+    Top = 4
+    Width = 347
+    HorzScrollBar.Increment = 1
+    HorzScrollBar.Page = 1
+    HorzScrollBar.Smooth = True
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Increment = 27
+    VertScrollBar.Page = 275
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Align = alClient
+    BorderSpacing.Top = 4
+    ClientHeight = 532
+    ClientWidth = 343
+    Constraints.MinWidth = 50
+    TabOrder = 1
+    object Params: TLabel
+      AnchorSideLeft.Control = ScrollBox1
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Control = ScrollBox1
+      AnchorSideTop.Side = asrCenter
+      Left = 138
+      Height = 18
+      Top = 257
+      Width = 67
+      Caption = 'Params'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = clGray
+      Font.Height = -16
+      Font.Name = 'Verdana'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+  object Splitter2: TSplitter
+    Left = 264
+    Height = 540
+    Top = 0
+    Width = 5
+    ResizeStyle = rsPattern
+  end
+  object Tree: TTreeViewEx
+    Left = 4
+    Height = 536
+    Top = 4
+    Width = 260
+    Align = alLeft
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    Font.Height = -12
+    Font.Name = 'Courier New'
+    HideSelection = False
+    Images = ImageList1
+    MultiSelect = True
+    ParentFont = False
+    PopupMenu = PopupMenu1
+    ReadOnly = True
+    RightClickSelect = True
+    RowSelect = True
+    TabOrder = 0
+    OnCustomDrawItem = TreeCustomDrawItem
+    OnDblClick = TreeDblClick
+    OnDragDrop = TreeDragDrop
+    OnDragOver = TreeDragOver
+    OnEnter = TreeEnter
+    OnExit = TreeExit
+    OnKeyPress = TreeKeyPress
+    OnMouseDown = TreeMouseDown
+    OnSelectionChanged = TreeSelectionChanged
+    Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand]
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 194
+    Top = 130
+    object MenuItem1: TMenuItem
+      Caption = 'Действие'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Если'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Иначе Если'
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Иначе'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Комментарий'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem12: TMenuItem
+      Caption = 'Отключено'
+      OnClick = MenuItem12Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Вырезать'
+      OnClick = MenuItem8Click
+    end
+    object MenuItem9: TMenuItem
+      Caption = 'Копировать'
+      OnClick = MenuItem9Click
+    end
+    object MenuItem10: TMenuItem
+      Caption = 'Вставить'
+      OnClick = MenuItem10Click
+    end
+    object MenuItem11: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'Удалить'
+      ShortCut = 46
+      OnClick = MenuItem7Click
+    end
+  end
+  object ImageList1: TImageList
+    Left = 82
+    Top = 79
+  end
+end

@@ -1,0 +1,1560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <AutoCreateForms Value="False"/>
+      <Title Value="DataExpress"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+        <TextName Value="DataExpress"/>
+        <TextDesc Value="DataExpress"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <i18n>
+      <EnableI18N Value="True" LFM="False"/>
+      <OutDir Value="_test\languages\en"/>
+    </i18n>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MajorVersionNr Value="24"/>
+      <MinorVersionNr Value="3"/>
+      <RevisionNr Value="27"/>
+      <Language Value="0419"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.3.26"/>
+    </VersionInfo>
+    <BuildModes Count="4">
+      <Item1 Name="Win32" Default="True"/>
+      <Item2 Name="Win32 HeapTrc">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="_test\dataexpress"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="i386"/>
+            <TargetOS Value="win32"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+              <UseHeaptrc Value="True"/>
+              <StripSymbols Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-dHeapTrc"/>
+            <ExecuteAfter>
+              <Command Value="copy.bat"/>
+            </ExecuteAfter>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Linux64 QT">
+        <MacroValues Count="1">
+          <Macro1 Name="LCLWidgetType" Value="qt5"/>
+        </MacroValues>
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="_test\dataexpress"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+          </Linking>
+          <Other>
+            <ExecuteAfter>
+              <Command Value="copy.bat"/>
+            </ExecuteAfter>
+          </Other>
+        </CompilerOptions>
+      </Item3>
+      <Item4 Name="Win64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="_test64\dataexpress"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <ExecuteAfter>
+              <Command Value="copy.bat"/>
+            </ExecuteAfter>
+          </Other>
+        </CompilerOptions>
+      </Item4>
+      <SharedMatrixOptions Count="1">
+        <Item1 ID="456997182528" Modes="Linux64 QT" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
+      </SharedMatrixOptions>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages Count="13">
+      <Item1>
+        <PackageName Value="laz.virtualtreeview_package"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="PascalScriptFCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="SynEdit"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="dxcomponents"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="TAChartLazarusPkg"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="tachartbgra"/>
+      </Item6>
+      <Item7>
+        <PackageName Value="SynEditDsgn"/>
+      </Item7>
+      <Item8>
+        <PackageName Value="jvRuntimeDesign"/>
+      </Item8>
+      <Item9>
+        <PackageName Value="TurboPowerIProDsgn"/>
+      </Item9>
+      <Item10>
+        <PackageName Value="KControlsLaz"/>
+      </Item10>
+      <Item11>
+        <PackageName Value="DataControlsEx"/>
+      </Item11>
+      <Item12>
+        <PackageName Value="BGRABitmapPack"/>
+      </Item12>
+      <Item13>
+        <PackageName Value="LCL"/>
+      </Item13>
+    </RequiredPackages>
+    <Units Count="204">
+      <Unit0>
+        <Filename Value="DataExpress.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="aboutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AboutForm"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="actioncontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionControls"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="actionexpressions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionExpressions"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="actionpans.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionPans"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="actionseditform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ActionsEditFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ActionsEditForm"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="addfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AddFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AddFieldsForm"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="anchorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AnchorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AnchorsForm"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="appimagelists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppImageLists"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="appsettings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppSettings"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="apputils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppUtils"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="breakpointsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="BreakpointsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="BreakpointsForm"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="calcerrsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcErrsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CalcErrsForm"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="calcfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CalcFieldsForm"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="chartform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ChartForm"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="checkprintoutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CheckPrintOutFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CheckPrintOutForm"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="checktreeview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CheckTreeView"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="classestree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ClassesTree"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="colorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ColorFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ColorForm"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="coloringform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ColoringFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ColoringForm"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="compilerdecls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CompilerDecls"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="componenttree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ComponentTree"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="connectinfoform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ConnectInfoFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ConnectInfoForm"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="connectionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ConnectsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ConnectionsForm"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="counterform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CounterFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CounterForm"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="crossapi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CrossApi"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="crypt.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="csvfiles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CSVFiles"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="ctrlrightsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CtrlRightsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CtrlRightsForm"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="datasetprocessor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DatasetProcessor"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="dbengine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DbEngine"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="dbfuncform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DBFuncFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DBFuncForm"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="debugscriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DebugScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DebugScriptForm"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="deleterecsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DeleteRecsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DeleteRecsForm"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="designerframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DesignFr"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="DesignerFrame"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="dsproclists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DSProcLists"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="dxactions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxActions"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="dxcharts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXCharts"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="dxctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxCtrls"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="dxfiles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="dxFiles"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="dximages.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="dxImages"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="dxmains.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXMains"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="dxreports.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXReports"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="dxsqlquery.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxSQLQuery"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="dxusers.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXUsers"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="editform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EditForm"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="editmaskform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="EditMaskFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EditMaskForm"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="erroricon.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ErrorIcon"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="errorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ErrorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ErrorsForm"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="exportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExportForm"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="expressions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Expressions"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="exprform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExprFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExprForm"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="exprfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExprFuncs"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="exprhighlighter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExprHighlighter"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="exttemplateform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExtTemplateFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExtTemplateForm"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="filltableform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FillTableFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FillTableForm"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="filtercontrol.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FilterControl"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="filterform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FilterFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FilterForm"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="findactionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindActionsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindActionsForm"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="findexprform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindExprFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindExprForm"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="findform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindForm"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="findscriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindScriptForm"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="fixedlistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FixedListFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FixedListForm"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="fontform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FontFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FontForm"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="formdesigner.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormDesigner"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="formfieldvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFieldValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormFieldValueForm"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="formfiltersform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFiltersFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormFiltersForm"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="formmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormManager"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="formresizer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormResizer"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="formstree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormsTree"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="formview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormView"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="funcsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FuncsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FuncsForm"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="gridbuttonsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GridButtonsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GridButtonsForm"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="gridcolsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GridColsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GridColsForm"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="gtkthememanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GtkThemeManager"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="helpmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="HelpManager"/>
+      </Unit75>
+      <Unit76>
+        <Filename Value="helptextform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HelpTextFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HelpTextForm"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="helpviewform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HelpViewFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HelpViewForm"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="hierarchyform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HierarchyFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HierarchyForm"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="hintform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HintFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HintForm"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="httpclient.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="HttpClient"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="imagemanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ImageManager"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="imageprocessprintform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImgProcessPrintFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImageProcessPrintForm"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="imagepropsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImagePropsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit83>
+      <Unit84>
+        <Filename Value="imagesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImagesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImagesForm"/>
+      </Unit84>
+      <Unit85>
+        <Filename Value="importerrorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImportErrorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImportErrorsForm"/>
+      </Unit85>
+      <Unit86>
+        <Filename Value="importform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImportForm"/>
+      </Unit86>
+      <Unit87>
+        <Filename Value="inputform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="InputFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="InputForm"/>
+      </Unit87>
+      <Unit88>
+        <Filename Value="insertvaluesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="InsertValuesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="InsertValuesForm"/>
+      </Unit88>
+      <Unit89>
+        <Filename Value="intfform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="IntfFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="IntfForm"/>
+      </Unit89>
+      <Unit90>
+        <Filename Value="labeltextform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LabelTextFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LabelTextForm"/>
+      </Unit90>
+      <Unit91>
+        <Filename Value="langmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="LangManager"/>
+      </Unit91>
+      <Unit92>
+        <Filename Value="lcbxlistsourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LCbxListSourceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LCbxListSourceForm"/>
+      </Unit92>
+      <Unit93>
+        <Filename Value="licenseform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LicenseFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LicenseForm"/>
+      </Unit93>
+      <Unit94>
+        <Filename Value="listform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ListForm"/>
+      </Unit94>
+      <Unit95>
+        <Filename Value="lists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Lists"/>
+      </Unit95>
+      <Unit96>
+        <Filename Value="listsourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ListSourceFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ListSourceForm"/>
+      </Unit96>
+      <Unit97>
+        <Filename Value="loginform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LoginFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LoginForm"/>
+      </Unit97>
+      <Unit98>
+        <Filename Value="mainform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainForm"/>
+      </Unit98>
+      <Unit99>
+        <Filename Value="mainframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainFr"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="MainFrame"/>
+      </Unit99>
+      <Unit100>
+        <Filename Value="memosourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MemoSourceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MemoSourceForm"/>
+      </Unit100>
+      <Unit101>
+        <Filename Value="mergeprojectsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MergeProjectsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MergeProjectsForm"/>
+      </Unit101>
+      <Unit102>
+        <Filename Value="modulesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ModulesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ModulesForm"/>
+      </Unit102>
+      <Unit103>
+        <Filename Value="monitorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MonitorFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MonitorForm"/>
+      </Unit103>
+      <Unit104>
+        <Filename Value="multictrlrightsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MultiCtrlRightsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultiCtrlRightsForm"/>
+      </Unit104>
+      <Unit105>
+        <Filename Value="multirolesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MultiRolesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultiRolesForm"/>
+      </Unit105>
+      <Unit106>
+        <Filename Value="myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyClasses"/>
+      </Unit106>
+      <Unit107>
+        <Filename Value="myctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyCtrls"/>
+      </Unit107>
+      <Unit108>
+        <Filename Value="mydialogs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyDialogs"/>
+      </Unit108>
+      <Unit109>
+        <Filename Value="myfpsqlparser.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit109>
+      <Unit110>
+        <Filename Value="mytypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyTypes"/>
+      </Unit110>
+      <Unit111>
+        <Filename Value="newgridform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GrdFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="NewGridForm"/>
+      </Unit111>
+      <Unit112>
+        <Filename Value="newroleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="NewRoleForm"/>
+      </Unit112>
+      <Unit113>
+        <Filename Value="objectfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ObjFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ObjectFieldsForm"/>
+      </Unit113>
+      <Unit114>
+        <Filename Value="outputform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="OutputFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="OutputForm"/>
+      </Unit114>
+      <Unit115>
+        <Filename Value="padeg.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit115>
+      <Unit116>
+        <Filename Value="pivotfieldform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PivotFieldFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PivotFieldForm"/>
+      </Unit116>
+      <Unit117>
+        <Filename Value="pivotgrid.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PivotGrid"/>
+      </Unit117>
+      <Unit118>
+        <Filename Value="pivotgridform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PivotGridFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PivotGridForm"/>
+      </Unit118>
+      <Unit119>
+        <Filename Value="precisionform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrecFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PrecisionForm"/>
+      </Unit119>
+      <Unit120>
+        <Filename Value="printchartform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrintChartFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PrintChartForm"/>
+      </Unit120>
+      <Unit121>
+        <Filename Value="processform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProcessFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProcessForm"/>
+      </Unit121>
+      <Unit122>
+        <Filename Value="processminiform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProcessMiniFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProcessMiniForm"/>
+      </Unit122>
+      <Unit123>
+        <Filename Value="progressform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProgressFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProgressForm"/>
+      </Unit123>
+      <Unit124>
+        <Filename Value="propdialogs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropDialogs"/>
+      </Unit124>
+      <Unit125>
+        <Filename Value="propgrids.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropGrids"/>
+      </Unit125>
+      <Unit126>
+        <Filename Value="propsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropsForm"/>
+      </Unit126>
+      <Unit127>
+        <Filename Value="propsmenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropsMenus"/>
+      </Unit127>
+      <Unit128>
+        <Filename Value="querycalcform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryCalcForm"/>
+      </Unit128>
+      <Unit129>
+        <Filename Value="querycoloringform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QueryColoringFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryColoringForm"/>
+      </Unit129>
+      <Unit130>
+        <Filename Value="queryfieldvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QueryFieldValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryFieldValueForm"/>
+      </Unit130>
+      <Unit131>
+        <Filename Value="quicksearchform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QuickSearchFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QuickSearchForm"/>
+      </Unit131>
+      <Unit132>
+        <Filename Value="rangeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RangeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RangeForm"/>
+      </Unit132>
+      <Unit133>
+        <Filename Value="recalcform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RecalcFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RecalcForm"/>
+      </Unit133>
+      <Unit134>
+        <Filename Value="reportexportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportExportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportExportForm"/>
+      </Unit134>
+      <Unit135>
+        <Filename Value="reportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportForm"/>
+      </Unit135>
+      <Unit136>
+        <Filename Value="reportmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ReportManager"/>
+      </Unit136>
+      <Unit137>
+        <Filename Value="reportsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportsForm"/>
+      </Unit137>
+      <Unit138>
+        <Filename Value="reportwindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ReportWindow"/>
+      </Unit138>
+      <Unit139>
+        <Filename Value="rpstyleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RpStyleFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RpStyleForm"/>
+      </Unit139>
+      <Unit140>
+        <Filename Value="rundecls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RunDecls"/>
+      </Unit140>
+      <Unit141>
+        <Filename Value="saxbasereader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SAXBaseReader"/>
+      </Unit141>
+      <Unit142>
+        <Filename Value="scriptedit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptEdit"/>
+      </Unit142>
+      <Unit143>
+        <Filename Value="scriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ScriptForm"/>
+      </Unit143>
+      <Unit144>
+        <Filename Value="scriptfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptFuncs"/>
+      </Unit144>
+      <Unit145>
+        <Filename Value="scriptmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptManager"/>
+      </Unit145>
+      <Unit146>
+        <Filename Value="searchreplaceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SearchReplaceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SearchReplaceForm"/>
+      </Unit146>
+      <Unit147>
+        <Filename Value="selectactionform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SelectActionFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SelectActionForm"/>
+      </Unit147>
+      <Unit148>
+        <Filename Value="selectform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SelectFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SelectForm"/>
+      </Unit148>
+      <Unit149>
+        <Filename Value="settingsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SettingsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SettingsForm"/>
+      </Unit149>
+      <Unit150>
+        <Filename Value="setvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SetValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SetValueForm"/>
+      </Unit150>
+      <Unit151>
+        <Filename Value="shapeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShapeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ShapeForm"/>
+      </Unit151>
+      <Unit152>
+        <Filename Value="shoppingform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShoppingFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ShoppingForm"/>
+      </Unit152>
+      <Unit153>
+        <Filename Value="sqlform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SqlFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SqlForm"/>
+      </Unit153>
+      <Unit154>
+        <Filename Value="sqlgen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SqlGen"/>
+      </Unit154>
+      <Unit155>
+        <Filename Value="storagetypeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StorageTypeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StorageTypeForm"/>
+      </Unit155>
+      <Unit156>
+        <Filename Value="strconsts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StrConsts"/>
+      </Unit156>
+      <Unit157>
+        <Filename Value="stringsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StringsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StringsForm"/>
+      </Unit157>
+      <Unit158>
+        <Filename Value="styleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StyleFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StyleForm"/>
+      </Unit158>
+      <Unit159>
+        <Filename Value="summarytree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SummaryTree"/>
+      </Unit159>
+      <Unit160>
+        <Filename Value="taborderform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TabOrderFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TabOrderForm"/>
+      </Unit160>
+      <Unit161>
+        <Filename Value="templatefieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TemplateFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TemplateFieldsForm"/>
+      </Unit161>
+      <Unit162>
+        <Filename Value="thumbform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ThumbFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ThumbForm"/>
+      </Unit162>
+      <Unit163>
+        <Filename Value="timeedit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimeEdit"/>
+      </Unit163>
+      <Unit164>
+        <Filename Value="totalform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TotalFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TotalForm"/>
+      </Unit164>
+      <Unit165>
+        <Filename Value="totalsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TotalsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TotalsForm"/>
+      </Unit165>
+      <Unit166>
+        <Filename Value="towordsfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ToWordsFuncs"/>
+      </Unit166>
+      <Unit167>
+        <Filename Value="treeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TreeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TreeForm"/>
+      </Unit167>
+      <Unit168>
+        <Filename Value="treeviewex.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TreeViewEx"/>
+      </Unit168>
+      <Unit169>
+        <Filename Value="upsc_mybuttons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyButtons"/>
+      </Unit169>
+      <Unit170>
+        <Filename Value="upsc_myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyClasses"/>
+      </Unit170>
+      <Unit171>
+        <Filename Value="upsc_mycontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyControls"/>
+      </Unit171>
+      <Unit172>
+        <Filename Value="upsc_mydateutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_mydateutils"/>
+      </Unit172>
+      <Unit173>
+        <Filename Value="upsc_myextctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyExtctrls"/>
+      </Unit173>
+      <Unit174>
+        <Filename Value="upsc_myforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyForms"/>
+      </Unit174>
+      <Unit175>
+        <Filename Value="upsc_mygraphics.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyGraphics"/>
+      </Unit175>
+      <Unit176>
+        <Filename Value="upsc_mymenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyMenus"/>
+      </Unit176>
+      <Unit177>
+        <Filename Value="upsc_mystd.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyStd"/>
+      </Unit177>
+      <Unit178>
+        <Filename Value="upsc_mystdctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyStdCtrls"/>
+      </Unit178>
+      <Unit179>
+        <Filename Value="upsr_mybuttons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyButtons"/>
+      </Unit179>
+      <Unit180>
+        <Filename Value="upsr_myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyClasses"/>
+      </Unit180>
+      <Unit181>
+        <Filename Value="upsr_mycontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyControls"/>
+      </Unit181>
+      <Unit182>
+        <Filename Value="upsr_mydateutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_mydateutils"/>
+      </Unit182>
+      <Unit183>
+        <Filename Value="upsr_myextctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyExtctrls"/>
+      </Unit183>
+      <Unit184>
+        <Filename Value="upsr_myforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyForms"/>
+      </Unit184>
+      <Unit185>
+        <Filename Value="upsr_mygraphics.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyGraphics"/>
+      </Unit185>
+      <Unit186>
+        <Filename Value="upsr_mymenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyMenus"/>
+      </Unit186>
+      <Unit187>
+        <Filename Value="upsr_mystd.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyStd"/>
+      </Unit187>
+      <Unit188>
+        <Filename Value="upsr_mystdctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyStdCtrls"/>
+      </Unit188>
+      <Unit189>
+        <Filename Value="userform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UserFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UserForm"/>
+      </Unit189>
+      <Unit190>
+        <Filename Value="usersform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UsersFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UsersForm"/>
+      </Unit190>
+      <Unit191>
+        <Filename Value="visibleformsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="VisibleFormsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="VisibleFormsForm"/>
+      </Unit191>
+      <Unit192>
+        <Filename Value="warningform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="WarnFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="WarningForm"/>
+      </Unit192>
+      <Unit193>
+        <Filename Value="webserver.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WebServer"/>
+      </Unit193>
+      <Unit194>
+        <Filename Value="xmlreport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="XmlReport"/>
+      </Unit194>
+      <Unit195>
+        <Filename Value="modulestree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ModulesTree"/>
+      </Unit195>
+      <Unit196>
+        <Filename Value="treepanel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TreePanel"/>
+      </Unit196>
+      <Unit197>
+        <Filename Value="metamanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MetaManager"/>
+      </Unit197>
+      <Unit198>
+        <Filename Value="updatemanform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UpdateManFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UpdateManForm"/>
+      </Unit198>
+      <Unit199>
+        <Filename Value="msgform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MsgFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MsgForm"/>
+      </Unit199>
+      <Unit200>
+        <Filename Value="updateoptionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UpdateOptionsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UpdateOptionsForm"/>
+      </Unit200>
+      <Unit201>
+        <Filename Value="updatemanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UpdateManager"/>
+      </Unit201>
+      <Unit202>
+        <Filename Value="myzipper.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyZipper"/>
+      </Unit202>
+      <Unit203>
+        <Filename Value="mylogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyLogger"/>
+      </Unit203>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="_test\dataexpress"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <TargetCPU Value="i386"/>
+      <TargetOS Value="win32"/>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf2"/>
+        <UseExternalDbgSyms Value="True"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <ExecuteAfter>
+        <Command Value="copy.bat"/>
+      </ExecuteAfter>
+    </Other>
+  </CompilerOptions>
+</CONFIG>

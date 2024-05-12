@@ -1,0 +1,132 @@
+object MemoSourceFm: TMemoSourceFm
+  Left = 462
+  Height = 249
+  Top = 262
+  Width = 372
+  BorderIcons = [biSystemMenu]
+  Caption = 'Вставка из списка'
+  ClientHeight = 249
+  ClientWidth = 372
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 38
+    Caption = 'Форма'
+    ParentColor = False
+  end
+  object Frm: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 355
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    DropDownCount = 16
+    ItemHeight = 15
+    OnChange = FrmChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Frm
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 29
+    BorderSpacing.Top = 8
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Field: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 355
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    DropDownCount = 16
+    ItemHeight = 15
+    OnChange = FieldChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = Delim
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 149
+    Width = 193
+    BorderSpacing.Top = 8
+    Caption = 'При наличии дерева в окне списка'
+    ParentColor = False
+  end
+  object UpdateTree: TComboBox
+    AnchorSideTop.Control = Label7
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 165
+    Width = 355
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    ItemIndex = 0
+    Items.Strings = (
+      'Обновить дерево только при первом открытии окна'
+      'Обновлять дерево каждый раз при открытии окна'
+    )
+    Style = csDropDownList
+    TabOrder = 3
+    Text = 'Обновить дерево только при первом открытии окна'
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 209
+    Width = 360
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 4
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = Field
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 68
+    BorderSpacing.Top = 8
+    Caption = 'Разделитель'
+    ParentColor = False
+  end
+  object Delim: TEdit
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 118
+    Width = 104
+    BorderSpacing.Top = 1
+    TabOrder = 2
+  end
+end

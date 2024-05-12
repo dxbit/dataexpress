@@ -1,0 +1,264 @@
+object LCbxListSourceFm: TLCbxListSourceFm
+  Left = 412
+  Height = 448
+  Top = 348
+  Width = 427
+  BorderIcons = [biSystemMenu]
+  Caption = 'Источник списка'
+  ClientHeight = 448
+  ClientWidth = 427
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 38
+    Caption = 'Форма'
+    ParentColor = False
+  end
+  object Frm: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 410
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    DropDownCount = 16
+    ItemHeight = 15
+    OnChange = FrmChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Frm
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 29
+    BorderSpacing.Top = 8
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Field: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 410
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    DropDownCount = 16
+    ItemHeight = 15
+    OnChange = FieldChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = Field
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 176
+    BorderSpacing.Top = 8
+    Caption = 'Дополнительные поля в списке'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = ListWidth
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 234
+    Width = 86
+    Caption = 'Ширина списка'
+    ParentColor = False
+  end
+  object ListWidth: TSpinEdit
+    AnchorSideLeft.Control = Label4
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Fields
+    AnchorSideTop.Side = asrBottom
+    Left = 126
+    Height = 23
+    Top = 230
+    Width = 66
+    BorderSpacing.Left = 32
+    BorderSpacing.Top = 8
+    MaxValue = 4000
+    TabOrder = 3
+  end
+  object Label5: TLabel
+    AnchorSideTop.Control = RowCnt
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 265
+    Width = 83
+    Caption = 'Строк в списке'
+    ParentColor = False
+  end
+  object RowCnt: TSpinEdit
+    AnchorSideLeft.Control = ListWidth
+    AnchorSideTop.Control = ListWidth
+    AnchorSideTop.Side = asrBottom
+    Left = 126
+    Height = 23
+    Top = 261
+    Width = 66
+    BorderSpacing.Top = 8
+    MinValue = 1
+    TabOrder = 4
+    Value = 1
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 408
+    Width = 415
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 8
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Fields: TDialogGrid
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 104
+    Top = 118
+    Width = 410
+    AlternateColor = 15658734
+    Anchors = [akTop, akLeft, akRight]
+    AutoAdvance = aaNone
+    AutoFillColumns = True
+    BorderSpacing.Top = 1
+    ColCount = 3
+    Columns = <    
+      item
+        Title.Caption = 'Поле'
+        Width = 169
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Ширина столбца'
+        Width = 120
+        ColumnType = gctInteger
+        MinValue = 0
+        MaxValue = 2000
+        Increment = 10
+      end    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        SizePriority = 0
+        Title.Caption = 'Включить в поиск'
+        Width = 120
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
+    ParentShowHint = False
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 2
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = FieldsCommand
+    ColWidths = (
+      169
+      120
+      120
+    )
+  end
+  object HideList: TCheckBox
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = RowCnt
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 292
+    Width = 103
+    BorderSpacing.Left = 16
+    BorderSpacing.Top = 8
+    Caption = 'Скрыть список'
+    TabOrder = 5
+  end
+  object HideButton: TCheckBox
+    AnchorSideTop.Control = HideList
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 319
+    Width = 103
+    BorderSpacing.Top = 8
+    Caption = 'Скрыть кнопку'
+    OnChange = HideButtonChange
+    TabOrder = 6
+  end
+  object Label6: TLabel
+    AnchorSideLeft.Control = ListWidth
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ListWidth
+    AnchorSideTop.Side = asrCenter
+    Left = 196
+    Height = 15
+    Top = 234
+    Width = 13
+    BorderSpacing.Left = 4
+    Caption = 'px'
+    ParentColor = False
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = HideButton
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 346
+    Width = 193
+    BorderSpacing.Top = 8
+    Caption = 'При наличии дерева в окне списка'
+    ParentColor = False
+  end
+  object UpdateTree: TComboBox
+    AnchorSideTop.Control = Label7
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 362
+    Width = 410
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    ItemIndex = 0
+    Items.Strings = (
+      'Обновить дерево только при первом открытии окна'
+      'Обновлять дерево каждый раз при открытии окна'
+    )
+    Style = csDropDownList
+    TabOrder = 7
+    Text = 'Обновить дерево только при первом открытии окна'
+  end
+end

@@ -1,0 +1,6450 @@
+﻿msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: myfpsqlparser.serrasteriskonlyincount
+msgctxt "myfpsqlparser.serrasteriskonlyincount"
+msgid "* allowed only in COUNT aggregate"
+msgstr ""
+
+#: myfpsqlparser.serrcannotaltergenerator
+msgctxt "myfpsqlparser.serrcannotaltergenerator"
+msgid "Alter generator statement unknown"
+msgstr ""
+
+#: myfpsqlparser.serrcommaorbraceexpected
+msgctxt "myfpsqlparser.serrcommaorbraceexpected"
+msgid "Expected , or )."
+msgstr ""
+
+#: myfpsqlparser.serrdomainnotallowed
+msgctxt "myfpsqlparser.serrdomainnotallowed"
+msgid "Domain name not allowed in type definition."
+msgstr ""
+
+#: myfpsqlparser.serrexpectedchar
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrexpectedchar"
+msgid "Expected CHAR or CHARACTER, got \"%s\""
+msgstr ""
+
+#: myfpsqlparser.serrexpecteddbobject
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrexpecteddbobject"
+msgid "Expected database object type. Got: '%s'"
+msgstr ""
+
+#: myfpsqlparser.serrhavingwithoutgroupby
+msgctxt "myfpsqlparser.serrhavingwithoutgroupby"
+msgid "HAVING without GROUP BY clause not allowed"
+msgstr ""
+
+#: myfpsqlparser.serrintegerexpected
+msgctxt "myfpsqlparser.serrintegerexpected"
+msgid "Integer expression expected"
+msgstr ""
+
+#: myfpsqlparser.serrinvalidextract
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrinvalidextract"
+msgid "Invalid element for extract: %s"
+msgstr ""
+
+#: myfpsqlparser.serrinvalidliteral
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrinvalidliteral"
+msgid "Invalid literal: \"%s\""
+msgstr ""
+
+#: myfpsqlparser.serrinvaliduseofcollate
+msgctxt "myfpsqlparser.serrinvaliduseofcollate"
+msgid "Invalid use of COLLATE"
+msgstr ""
+
+#: myfpsqlparser.serrnoaggregateallowed
+msgctxt "myfpsqlparser.serrnoaggregateallowed"
+msgid "Aggregate function not allowed."
+msgstr ""
+
+#: myfpsqlparser.serrnoasteriskinsingleton
+msgctxt "myfpsqlparser.serrnoasteriskinsingleton"
+msgid "* not allowed in singleton select"
+msgstr ""
+
+#: myfpsqlparser.serrouterwithout
+msgctxt "myfpsqlparser.serrouterwithout"
+msgid "OUTER without preceding LEFT, RIGHT or FULL"
+msgstr ""
+
+#: myfpsqlparser.serrtokenmismatch
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrtokenmismatch"
+msgid "Unexpected token: '%s', expected: '%s'"
+msgstr ""
+
+#: myfpsqlparser.serrunexpectedtoken
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrunexpectedtoken"
+msgid "Unexpected token: %s"
+msgstr ""
+
+#: myfpsqlparser.serrunexpectedtokenof
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrunexpectedtokenof"
+msgid "Unexpected token: %s, expected one of %s"
+msgstr ""
+
+#: myfpsqlparser.serrunionfieldcountmatch
+#, object-pascal-format
+msgctxt "myfpsqlparser.serrunionfieldcountmatch"
+msgid "Field count mismatch in select union : %d <> %d"
+msgstr ""
+
+#: myfpsqlparser.serrunknownbooleanop
+msgctxt "myfpsqlparser.serrunknownbooleanop"
+msgid "Unknown boolean operation"
+msgstr ""
+
+#: myfpsqlparser.serrunknowncomparison
+msgctxt "myfpsqlparser.serrunknowncomparison"
+msgid "unknown Comparison operation"
+msgstr ""
+
+#: myfpsqlparser.serrunmatchedbrace
+msgctxt "myfpsqlparser.serrunmatchedbrace"
+msgid "Expected )."
+msgstr ""
+
+#: myfpsqlparser.serrupperoneargument
+msgctxt "myfpsqlparser.serrupperoneargument"
+msgid "Only one argument for UPPER allowed"
+msgstr ""
+
+#: myfpsqlparser.serrvaryingnotallowed
+msgctxt "myfpsqlparser.serrvaryingnotallowed"
+msgid "VARYING not allowed at this point."
+msgstr ""
+
+#: strconsts.rsabort
+msgid "Abort"
+msgstr "Прервать"
+
+#: strconsts.rsabortoperation
+msgid "Abort operation?"
+msgstr "Прервать операцию?"
+
+#: strconsts.rsabout
+msgid "About"
+msgstr "О программе"
+
+#: strconsts.rsaboutlang
+msgid "About language"
+msgstr "О переводе"
+
+#: strconsts.rsaboutlangmsg
+#, object-pascal-format
+msgid "Author: %s/Version: %s/Description: %s"
+msgstr "Автор: %s/Версия: %s/Описание: %s"
+
+#: strconsts.rsacceptselectionhint
+msgid "Accept selection <Enter>"
+msgstr "Выбрать <Enter>"
+
+#: strconsts.rsaccess
+msgid "Access"
+msgstr "Доступ"
+
+#: strconsts.rsaccesstocmp
+msgid "Access to components"
+msgstr "Доступ к компонентам"
+
+#: strconsts.rsaccesstofields
+msgid "Access to fields"
+msgstr "Доступ к полям"
+
+#: strconsts.rsaccesstoforms
+msgid "Access to forms"
+msgstr "Доступ к формам"
+
+#: strconsts.rsaccesstoreports
+msgid "Access to reports"
+msgstr "Доступ к отчетам"
+
+#: strconsts.rsaction
+msgid "Action"
+msgstr "Действие"
+
+#: strconsts.rsactioncheck
+msgid "Action check"
+msgstr "Проверка действия"
+
+#: strconsts.rsactionexecerror
+#, object-pascal-format
+msgid "An error occurred while executing action [%s].%s"
+msgstr "Во время выполнения действия [%s] произошла ошибка.%s"
+
+#: strconsts.rsactionfuncrequires
+#, object-pascal-format
+msgid "The function requires the following component: %s."
+msgstr "Функция требует следующие компоненты: %s."
+
+#: strconsts.rsactionnotfoundmsg
+#, object-pascal-format
+msgid "Could not find an action with the ID %s. Make sure that the corresponding extension is added."
+msgstr "Не удалось найти действие с ID %s. Проверьте, что соответствующее расширение было добавлено."
+
+#: strconsts.rsactionnotselected
+msgid "Action not selected"
+msgstr "Действие не выбрано"
+
+#: strconsts.rsactiontype
+msgid "Action type"
+msgstr "Тип действия"
+
+#: strconsts.rsactiveusers
+msgid "Active users"
+msgstr "Активные пользователи"
+
+#: strconsts.rsactiveusersindb
+msgid "There are active users in the database. Log into single mode is not possible."
+msgstr "В базе есть активные пользователи. Вход в монопольном режиме невозможен."
+
+#: strconsts.rsadd
+msgctxt "strconsts.rsadd"
+msgid "Add"
+msgstr "Добавить"
+
+#: strconsts.rsadddevel
+msgid "Add a user-developer"
+msgstr "Добавьте пользователя-разработчика"
+
+#: strconsts.rsaddextmodule
+msgid "Add extensions module"
+msgstr "Добавить модуль расширений"
+
+#: strconsts.rsaddextwebmodule
+msgid "Add extensions web module"
+msgstr "Добавить веб-модуль расширений"
+
+#: strconsts.rsaddfield
+msgid "Add field"
+msgstr "Добавить поле"
+
+#: strconsts.rsaddfields
+msgid "Add fields"
+msgstr "Добавить поля"
+
+#: strconsts.rsaddform
+msgid "Add form"
+msgstr "Добавить форму"
+
+#: strconsts.rsaddformmodule
+msgid "Add form module"
+msgstr "Добавить модуль формы"
+
+#: strconsts.rsaddformwebmodule
+msgid "Add form web module"
+msgstr "Добавить веб-модуль формы"
+
+#: strconsts.rsaddgroup
+msgid "Add group"
+msgstr "Добавить группу"
+
+#: strconsts.rsaddimage
+msgid "Add image"
+msgstr "Добавить изображение"
+
+#: strconsts.rsaddition
+msgid "Addition"
+msgstr "Сложение"
+
+#: strconsts.rsadditionalfieldsinlist
+msgid "Additional fields in the list"
+msgstr "Дополнительные поля в списке"
+
+#: strconsts.rsaddlangfilter
+msgid "DataExpress language files (*.lng)|*.lng"
+msgstr "Файлы перевода DataExpress (*.lng)|*.lng"
+
+#: strconsts.rsaddtoexisting
+msgid "Add to existing"
+msgstr "Добавлять к существующим"
+
+#: strconsts.rsaddtofilter
+msgid "Add to filter"
+msgstr "Добавить в фильтр"
+
+#: strconsts.rsaddusermodule
+msgid "Add user module"
+msgstr "Добавить модуль пользователя"
+
+#: strconsts.rsaddvalue
+msgid "Add value"
+msgstr "Добавить значение"
+
+#: strconsts.rsaddwebmainmodule
+msgid "Add WebMain module"
+msgstr "Добавить модуль WebMain"
+
+#: strconsts.rsadjustbycompwidth
+msgid "Adjust by component width"
+msgstr "Установить по ширине компонента"
+
+#: strconsts.rsafterimporterrsmsg
+msgid "When importing, errors occurred. The following rows were not imported:"
+msgstr "При импорте произошли ошибки. Следующие строки не были импортированы:"
+
+#: strconsts.rsagreement
+msgid "Agreement"
+msgstr "Соглашение"
+
+#: strconsts.rsaligncenter
+msgid "Align Center"
+msgstr "Выровнять по центру"
+
+#: strconsts.rsalignment
+msgid "Alignment"
+msgstr "Выравнивание"
+
+#: strconsts.rsalignmentbottom
+msgctxt "strconsts.rsalignmentbottom"
+msgid "Bottom"
+msgstr "По нижнему краю"
+
+#: strconsts.rsalignmentleft
+msgid "Left align"
+msgstr "По левому краю"
+
+#: strconsts.rsalignmentright
+msgid "Right align"
+msgstr "По правому краю"
+
+#: strconsts.rsalignmenttop
+msgctxt "strconsts.rsalignmenttop"
+msgid "Top"
+msgstr "По верхнему краю"
+
+#: strconsts.rsall
+msgctxt "strconsts.rsall"
+msgid "All"
+msgstr "Все"
+
+#: strconsts.rsallactionslist
+msgid "[All actions]"
+msgstr "[Все действия]"
+
+#: strconsts.rsallexpressions
+msgid "All expressions"
+msgstr "Все выражения"
+
+#: strconsts.rsallextmodulesflt
+msgid "All extensions|*.epas;*.wepas|"
+msgstr "Все расширения|*.epas;*.wepas|"
+
+#: strconsts.rsallfieldslist
+msgid "[All fields]"
+msgstr "[Все поля]"
+
+#: strconsts.rsallfilesfilter
+msgid "All files (*.*)|*.*"
+msgstr "Все файлы (*.*)|*.*"
+
+#: strconsts.rsallfilesflt
+msgid "All files|*.*"
+msgstr "Все файлы|*.*"
+
+#: strconsts.rsallfunctions
+msgid "All functions"
+msgstr "Все функции"
+
+#: strconsts.rsallmodulesflt
+msgid "All modules|*.pas;*.epas;*.wepas|"
+msgstr "Все модули|*.pas;*.epas;*.wepas|"
+
+#: strconsts.rsallmoduleslist
+msgid "[All modules]"
+msgstr "[Все модули]"
+
+#: strconsts.rsallowchangesort
+msgid "Allow change sort"
+msgstr "Разрешить менять сортировку"
+
+#: strconsts.rsallowcolumnsmove
+msgid "Allow columns move"
+msgstr "Разрешить перемещать столбцы"
+
+#: strconsts.rsallowmultiauth
+msgid "Allow multiple authorization"
+msgstr "Разрешить множественную авторизацию"
+
+#: strconsts.rsallowsingleusermode
+msgid "Allow single-user mode"
+msgstr "Разрешить монопольный режим"
+
+#: strconsts.rsalltypeslist
+msgid "[All types]"
+msgstr "[Все типы]"
+
+#: strconsts.rsallvalues
+msgid "All values"
+msgstr "Все значения"
+
+#: strconsts.rsaltcellbkgnd
+msgid "Alt. cell background"
+msgstr "Альт. фон ячейки"
+
+#: strconsts.rsalternatecolor
+msgid "Alternate color"
+msgstr "Альтернативный цвет"
+
+#: strconsts.rsanchors
+msgid "Anchors"
+msgstr "Якоря"
+
+#: strconsts.rsanintfwithsamenameexists
+msgid "An interface with this name exists."
+msgstr "Интерфейс с таким названием существует."
+
+#: strconsts.rsapireference
+msgid "API reference"
+msgstr "Справочник по API"
+
+#: strconsts.rsappdescript
+msgid "Databases constructor"
+msgstr "Конструктор баз данных"
+
+#: strconsts.rsappdescription
+msgid "Description"
+msgstr "Описание"
+
+#: strconsts.rsappend
+msgid "Append"
+msgstr "Добавить"
+
+#: strconsts.rsappendconnect
+msgid "Append connection"
+msgstr "Добавить подключение"
+
+#: strconsts.rsappendconnecttoexistdb
+msgid "Append a connection to an existing database"
+msgstr "Добавить подключение к существующей базе данных"
+
+#: strconsts.rsappendcurrentdb
+msgid "Append current database"
+msgstr "Добавить текущую базу данных"
+
+#: strconsts.rsappendfield
+msgid "Append field"
+msgstr "Добавить поле"
+
+#: strconsts.rsappendsource
+msgid "Append source"
+msgstr "Добавить источник"
+
+#: strconsts.rsappfolder
+msgid "Application folder"
+msgstr "Папка приложения"
+
+#: strconsts.rsapplicationsfilter
+msgid "Applications (*.exe)|*.exe|Batch files (*.bat, *.cmd)|*.bat;*.cmd|All files (*.*)|*.*"
+msgstr "Приложения (*.exe)|*.exe|Пакетные файлы (*.bat, *.cmd)|*.bat;*.cmd|Все файлы (*.*)|*.*"
+
+#: strconsts.rsapplicationsfilterunix
+msgid "Applications|*"
+msgstr "Приложения|*"
+
+#: strconsts.rsapplicationsfilterwine
+msgid "Scripts (*.sh)|*.sh|All files (*.*)|*.*"
+msgstr "Скрипты (*.sh)|*.sh|Все файлы (*.*)|*.*"
+
+#: strconsts.rsapplyfilter
+msgid "Apply filter <Ctrl-Enter>"
+msgstr "Применить фильтр <Ctrl-Enter>"
+
+#: strconsts.rsapplyselcondtoobj
+msgid "Apply condition of selection to objects"
+msgstr "Применить условие отбора к объектам"
+
+#: strconsts.rsapplyselection
+msgid "Apply selection"
+msgstr "Применить отбор"
+
+#: strconsts.rsappname
+msgctxt "strconsts.rsappname"
+msgid "DataExpress"
+msgstr ""
+
+#: strconsts.rsapppath
+msgid "Path"
+msgstr "Путь"
+
+#: strconsts.rsapptype
+msgctxt "strconsts.rsapptype"
+msgid "Type"
+msgstr "Тип"
+
+#: strconsts.rsarea
+msgid "Area"
+msgstr "С областями"
+
+#: strconsts.rsarealines
+msgid "Area lines"
+msgstr "Линии области"
+
+#: strconsts.rsargexpected
+msgid "Argument expected."
+msgstr "Ожидается аргумент."
+
+#: strconsts.rsarolewiththisnameexists
+msgid "A role with this name exists."
+msgstr "Роль с таким названием существует."
+
+#: strconsts.rsaround
+msgid "Around"
+msgstr "Вокруг"
+
+#: strconsts.rsarrayname
+msgid "Array name"
+msgstr "Имя массива"
+
+#: strconsts.rsarticles
+msgid "Articles"
+msgstr "Статьи"
+
+#: strconsts.rsaspectratio
+msgid "Aspect Ratio"
+msgstr "Сохранять пропорции"
+
+#: strconsts.rsauserwiththisnameexists
+msgid "A user with this name exists."
+msgstr "Пользователь с таким именем существует."
+
+#: strconsts.rsauthor
+msgid "Author"
+msgstr "Автор"
+
+#: strconsts.rsauto
+msgctxt "strconsts.rsauto"
+msgid "Auto"
+msgstr "Авто"
+
+#: strconsts.rsautotaborder
+msgctxt "strconsts.rsautotaborder"
+msgid "Set tab order automatically"
+msgstr "Установить порядок перехода автоматически"
+
+#: strconsts.rsaverage
+msgid "Average"
+msgstr "Среднее"
+
+#: strconsts.rsaxisline
+msgid "Axis line"
+msgstr "Линия оси"
+
+#: strconsts.rsbackcolor
+msgid "Back color"
+msgstr "Цвет фона"
+
+#: strconsts.rsbackground
+msgid "Background"
+msgstr "Фон"
+
+#: strconsts.rsbalance
+msgid "Balance"
+msgstr "Баланс"
+
+#: strconsts.rsbeginmonth
+msgid "Beginning of month"
+msgstr "Начало месяца"
+
+#: strconsts.rsbeginvalue
+msgid "Begin value"
+msgstr "Начальное значение"
+
+#: strconsts.rsbeginweek
+msgid "Beginning of week"
+msgstr "Начало недели"
+
+#: strconsts.rsbeginyear
+msgid "Beginning of year"
+msgstr "Начало года"
+
+#: strconsts.rsbold
+msgid "Bold <Ctrl-B>"
+msgstr "Жирный <Ctrl-B>"
+
+#: strconsts.rsboolean
+msgid "Boolean"
+msgstr "Логическое"
+
+#: strconsts.rsbottomcenter
+msgid "Bottom center"
+msgstr "Внизу"
+
+#: strconsts.rsbottomleft
+msgid "Bottom left"
+msgstr "Внизу слева"
+
+#: strconsts.rsbottomright
+msgid "Bottom right"
+msgstr "Внизу справа"
+
+#: strconsts.rsbottomside
+msgid "Bottom side"
+msgstr "Нижняя сторона"
+
+#: strconsts.rsbreakpoints
+msgid "Breakpoints"
+msgstr "Точки остановки"
+
+#: strconsts.rsbringtofront
+msgid "Bring to front"
+msgstr "Наверх"
+
+#: strconsts.rsbuildarea
+msgid "Build area"
+msgstr "Область построения"
+
+#: strconsts.rsbuiltinactions
+msgid "Built-in actions"
+msgstr "Встроенные действия"
+
+#: strconsts.rsbutton
+msgid "Button"
+msgstr "Кнопка"
+
+#: strconsts.rsbuttonaction
+msgid "Button action"
+msgstr "Действие кнопки"
+
+#: strconsts.rsbuttonactions
+msgid "Button actions"
+msgstr "Действия кнопки"
+
+#: strconsts.rsbuttons
+msgid "Buttons"
+msgstr "Кнопки"
+
+#: strconsts.rsbycenter
+msgid "By center"
+msgstr "По центру"
+
+#: strconsts.rscachemetadata
+msgid "Cache metadata"
+msgstr "Кэшировать метаданные"
+
+#: strconsts.rscalcaggfuncerror
+msgid "The current record is being edited. Calling the function will implicitly save the record without checking the data entry."
+msgstr "Текущая запись редактируется. Вызов функции приведет к неявному сохранению записи без проверки ввода данных."
+
+#: strconsts.rscalcfield
+#, object-pascal-format
+msgid "Calculation field: %s"
+msgstr "Вычисляемое поле: %s"
+
+#: strconsts.rscalcfieldnameexists
+msgid "A calculation field with the same field name already exists."
+msgstr "Вычисляемое поле с таким именем уже существует."
+
+#: strconsts.rscalcfields
+msgid "Calculated fields"
+msgstr "Вычисляемые поля"
+
+#: strconsts.rscalcfieldsqlnameexists
+msgid "A calculation field with the same SQL field name already exists."
+msgstr "Вычисляемое поле с таким SQL-именем уже существует."
+
+#: strconsts.rscalclabelcaptionexists
+msgid "A calculation label with same caption already exists."
+msgstr "Вычисляемая надпись с таким текстом уже существует."
+
+#: strconsts.rscalclabelcaptionexists2
+msgid "This property is not available, because a calculation label same caption already exists."
+msgstr "Это свойство недоступно, т. к. вычисляемая надпись с таким текстом уже существует."
+
+#: strconsts.rscalclabels
+msgid "Calculation labels"
+msgstr "Вычисляемые надписи"
+
+#: strconsts.rscalcwhenprint
+msgid "Calculations when printing"
+msgstr "Вычисления при печати"
+
+#: strconsts.rscallfunction
+msgid "Call function"
+msgstr "Вызвать функцию"
+
+#: strconsts.rscalloutangle
+msgid "Callout angle"
+msgstr "Угол выноски"
+
+#: strconsts.rscancel
+msgctxt "strconsts.rscancel"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: strconsts.rscanceladdfieldsmsg
+msgid "Are you sure you want to cancel adding fields?"
+msgstr "Вы точно хотите отменить добавление полей?"
+
+#: strconsts.rscancelchange
+msgid "Cancel changes"
+msgstr "Отменить изменения"
+
+#: strconsts.rscancelchangeshint
+msgid "Cancel changes <Shift-Esc>"
+msgstr "Отменить изменения <Shift-Esc>"
+
+#: strconsts.rscancelchangesmsg
+msgid "Are you sure want to cancel the changes?"
+msgstr "Вы точно хотите отменить изменения?"
+
+#: strconsts.rscanceledbyuser
+msgid "Canceled by user."
+msgstr "Прервано пользователем."
+
+#: strconsts.rscancelselectionhint
+msgid "Cancel selection <Esc>"
+msgstr "Отменить выбор <Esc>"
+
+#: strconsts.rscannotchangelistsourcemsg
+#, object-pascal-format
+msgid "Can not change source because object fields are used in query/report [%s]."
+msgstr "Нельзя изменить источник, потому что поля объекта используются в запросе/отчете [%s]."
+
+#: strconsts.rscannotcleandir
+#, object-pascal-format
+msgid "Can not clean temporary directory %s"
+msgstr "Не удалось очистить временную папку %s"
+
+#: strconsts.rscannotcreatetempdir
+#, object-pascal-format
+msgid "Can not create temporary directory %s"
+msgstr "Не удалось создать временную папку %s"
+
+#: strconsts.rscannotdeletefile
+msgid "Can not delete the file."
+msgstr "Не могу удалить файл."
+
+#: strconsts.rscannotgetvalue
+msgid "[Can not get value]"
+msgstr "[Не удается получить значение]"
+
+#: strconsts.rscannotusegroupdateandfunc
+msgid "Cannot use both function and grouping by date."
+msgstr "Нельзя одновременно использовать функцию и группировку по дате."
+
+#: strconsts.rscanrenamelabelmsg
+msgid "You can rename the label to open the expression editor."
+msgstr "Можно переименовать надпись, чтобы открыть редактор выражений."
+
+#: strconsts.rscantcopyfile
+#, object-pascal-format
+msgid "Can not copy file %s."
+msgstr "Не могу скопировать файл %s."
+
+#: strconsts.rscantcopyfiletostoragefolder
+#, object-pascal-format
+msgid "Can not copy file from %s to %s."
+msgstr "Не могу скопировать файл из %s в %s."
+
+#: strconsts.rscantdelcurconnect
+msgid "You can not delete the current connection."
+msgstr "Вы не можете удалить текущее подключение."
+
+#: strconsts.rscantdeleterecord
+#, object-pascal-format
+msgid "On that record referenced %s can not be deleted."
+msgstr "На запись ссылается %s - не могу удалить."
+
+#: strconsts.rscantdelfieldmsg
+#, object-pascal-format
+msgid "Can not delete field [%s], because it used in %s."
+msgstr "Не могу удалить поле [%s], потому что оно используется в %s."
+
+#: strconsts.rscantdelformmsg
+#, object-pascal-format
+msgid "Can not delete form [%s], because it used in %s."
+msgstr "Не могу удалить форму [%s], потому что она используется в %s."
+
+#: strconsts.rscantdelformmsgqry
+#, object-pascal-format
+msgid "queries:%s"
+msgstr "запросах:%s"
+
+#: strconsts.rscantdelformmsgrpt
+#, object-pascal-format
+msgid "reports:%s"
+msgstr "отчетах:%s"
+
+#: strconsts.rscantdelrec
+msgid "You can not delete this record. Access denied."
+msgstr "Вы не можете удалить эту запись. Доступ закрыт."
+
+#: strconsts.rscantdownloadhelpindex
+#, object-pascal-format
+msgid "Can not download help index. Check the connection to the Internet. Error message: %s"
+msgstr "Не удается скачать указатель справки. Проверьте подключение к Интернет. Сообщение об ошибке: %s"
+
+#: strconsts.rscanthiderpfieldmsg
+msgid "You can not hide this field because it is used in actions."
+msgstr "Нельзя скрыть это поле, потому что оно используется в действиях."
+
+#: strconsts.rscantmakeunlimitedmemo
+#, object-pascal-format
+msgid "You cannot make a memo unlimited, since it is used in the following components:%sThese components can not be used unlimited memo."
+msgstr "Нельзя сделать заметку неограниченной, т. к. она используется в следующих компонентах:%sВ этих компонентах нельзя использовать неограниченные заметки."
+
+#: strconsts.rscantmovegroupexists
+msgid "Can not move a group. This group already exists."
+msgstr "Нельзя переместить группу. Такая группа уже есть."
+
+#: strconsts.rscantrenamereportmsg
+msgid "You can not rename the report because the program can not rename it in related actions. This operation only works in designer mode."
+msgstr "Не удается переименовать отчет, потому что программа не может его переименовать в связанных действиях. Эта операция работает только в режиме дизайнера."
+
+#: strconsts.rscantrenamerpfieldmsg
+msgid "The field was renamed, but the program can not rename it in linked actions, because this operation only works in designer mode. Incorrect field names can lead to errors in the work actions. Unfortunately, you can not save selection settings with new field names in user mode."
+msgstr "Было переименовано поле, но программа не может переименовать его в связанных действиях, потому что эта операция работает только в режиме дизайнера. Некорректные имена полей могут привести к ошибкам в работе действий. К сожалению, нельзя сохранить настройки отбора с новыми именами полей в режиме пользователя."
+
+#: strconsts.rscantreplacememo
+msgid "You cannot replace an unlimited memo with another component."
+msgstr "Нельзя заменить бесконечную заметку на другой компонент."
+
+#: strconsts.rscaption
+msgctxt "strconsts.rscaption"
+msgid "Caption"
+msgstr "Надпись"
+
+#: strconsts.rscaptionsubtotal
+msgid "Caption subtotal"
+msgstr "Надпись промежуточного итога"
+
+#: strconsts.rscasesensitive
+msgid "Case sensitive"
+msgstr "Учитывать регистр"
+
+#: strconsts.rscategories
+msgid "Categories"
+msgstr "Категории"
+
+#: strconsts.rscategoryaxis
+msgid "Category axis"
+msgstr "Ось категорий"
+
+#: strconsts.rscellbkgnd
+msgid "Cell background"
+msgstr "Фон ячейки"
+
+#: strconsts.rscellrequired
+#, object-pascal-format
+msgid "Cell [%s] is required."
+msgstr "Ячейка [%s] обязательна для заполнения."
+
+#: strconsts.rscellsize
+msgid "Cell size"
+msgstr "Размер ячейки"
+
+#: strconsts.rscenter
+msgid "Center"
+msgstr "По центру"
+
+#: strconsts.rscenterleft
+msgid "Center left"
+msgstr "Слева"
+
+#: strconsts.rscenterright
+msgid "Center right"
+msgstr "Справа"
+
+#: strconsts.rscentertext
+msgid "Center text"
+msgstr "Текст в центре"
+
+#: strconsts.rschangeconnectorgroup
+msgid "Change connection settings or group name"
+msgstr "Изменить параметры подключения или имя группы"
+
+#: strconsts.rschangecounter
+msgid "Change counter"
+msgstr "Изменить счетчик"
+
+#: strconsts.rschangeobjsourceactionsmsg
+msgid "You have changed the source data object. If the above actions are used object field, the action may not work properly."
+msgstr "Вы изменили источник данных объекта. Если в выше перечисленных действиях используются поля объекта, то действия могут работать некорректно."
+
+#: strconsts.rschangeprohibiteddetails
+msgid "The database project was modified by another instance of the program. Changing the database design together will lead to errors and data loss! You should reconnect to the database to get the latest project changes."
+msgstr "Проект базы данных был изменен другим экземпляром программы. Совместное изменение проекта базы данных приведет к ошибкам и потере данных! Вам следует заново подключиться к базе данных, чтобы получить последние изменения проекта."
+
+#: strconsts.rschangeprojectprohibited
+msgid "Project changes are prohibited!"
+msgstr "Изменение проекта запрещено!"
+
+#: strconsts.rschangepwd
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: strconsts.rscharforblanks
+msgid "Character for blanks"
+msgstr "Символ пробела"
+
+#: strconsts.rscharlbrexpext
+msgid "Expected left brace {."
+msgstr "Ожидается левая фигурная скобка {"
+
+#: strconsts.rscharrbrexpect
+msgid "Expected right brace }."
+msgstr "Ожидается правая фигурная скобка }"
+
+#: strconsts.rschart
+msgid "Chart"
+msgstr "Диаграмма"
+
+#: strconsts.rschartnotfound
+#, object-pascal-format
+msgid "Chart not found: %s"
+msgstr "Диаграмма не найдена: %s"
+
+#: strconsts.rscharttype
+msgid "Chart type"
+msgstr "Тип диаграммы"
+
+#: strconsts.rscheckall
+msgid "Check all"
+msgstr "Отметить все"
+
+#: strconsts.rscheckbox
+msgid "Checkbox"
+msgstr "Флажок"
+
+#: strconsts.rscheckboxdbfiles
+msgid "Check database files"
+msgstr "Отметить файлы БД"
+
+#: strconsts.rscheckemptyobjmsg
+msgid "Records with an empty object are detected. When the \"Required\" property is set, these entries may not be visible."
+msgstr "Обнаружены записи с пустым объектом. При установленном свойстве \"Обязательное\" эти записи могут быть не видны."
+
+#: strconsts.rscheckexpr
+msgctxt "strconsts.rscheckexpr"
+msgid "Check"
+msgstr "Провека"
+
+#: strconsts.rscheckingdata
+msgid "Checking data..."
+msgstr "Проверка данных..."
+
+#: strconsts.rscheckresizefieldserror
+msgctxt "strconsts.rscheckresizefieldserror"
+msgid "Failed to save project. Unable to resize the following fields:"
+msgstr "Невозможно сохранить проект. Не удается изменить размер следующих полей:"
+
+#: strconsts.rscheckunique
+msgid "Check unique"
+msgstr "Контроль уникальности"
+
+#: strconsts.rscheckupdates
+msgid "Check updates"
+msgstr "Проверка обновлений"
+
+#: strconsts.rscheckvalue
+msgid "Check value"
+msgstr "Проверка значения"
+
+#: strconsts.rschocolate
+msgid "Chocolate"
+msgstr "Плитка"
+
+#: strconsts.rscid
+msgctxt "strconsts.rscid"
+msgid "CID"
+msgstr ""
+
+#: strconsts.rscircle
+msgid "Circle"
+msgstr "Круг"
+
+#: strconsts.rscircularlinkbetweenfieldquery
+#, object-pascal-format
+msgid "A circular link between the field %s and the query [%s] was found."
+msgstr "Обнаружена циклическая связь между полем %s и запросом [%s]."
+
+#: strconsts.rscircularrefmodules
+#, object-pascal-format
+msgid "Detected circular reference between modules %s and %s."
+msgstr "Обнаружена циклическая ссылка между модулями %s и %s."
+
+#: strconsts.rsclear
+msgctxt "strconsts.rsclear"
+msgid "Clear"
+msgstr "Очистить"
+
+#: strconsts.rsclearallvalues
+msgid "Clear all values"
+msgstr "Очистить все значения"
+
+#: strconsts.rsclearallvaluesmsg
+msgid "Are you sure you want to clear all values?"
+msgstr "Вы точно хотите очистить все значения?"
+
+#: strconsts.rsclearfields
+msgid "Clear fields"
+msgstr "Очистить поля"
+
+#: strconsts.rsclearfilter
+msgid "Clear all filters"
+msgstr "Очистить все фильтры"
+
+#: strconsts.rsclearhistory
+msgid "Clear history"
+msgstr "Очистить историю"
+
+#: strconsts.rsclearhistorymsg
+msgid "You want to clear the history of recently opened databases. Continue?"
+msgstr "Вы собираетесь очистить историю недавно открытых баз данных. Продолжить?"
+
+#: strconsts.rsclearimage
+msgctxt "strconsts.rsclearimage"
+msgid "Clear"
+msgstr "Очистить"
+
+#: strconsts.rsclearselection
+msgid "Clear selection"
+msgstr "Снять выделение"
+
+#: strconsts.rsclearsettingsmsg
+msgid "Are you sure you want to reset all settings?"
+msgstr "Вы точно хотите сбросить все установки?"
+
+#: strconsts.rscleartable
+msgid "Clear table"
+msgstr "Очистить таблицу"
+
+#: strconsts.rscleartablebeforefill
+msgid "Clear table before filling"
+msgstr "Очищать таблицу перед заполнением"
+
+#: strconsts.rscleartablemsg
+msgid "Are you sure you want to clear the entire table?"
+msgstr "Вы точно хотите очистить всю таблицу?"
+
+#: strconsts.rsclearvalue
+msgid "Clear value"
+msgstr "Очистить значение"
+
+#: strconsts.rsclicktoloadimage
+msgid "Click to load image"
+msgstr "Щелкните для загрузки изображения"
+
+#: strconsts.rsclose
+msgid "Close"
+msgstr "Закрыть"
+
+#: strconsts.rscloseeditwindowhint
+msgctxt "strconsts.rscloseeditwindowhint"
+msgid "Close window <Shift-Esc>"
+msgstr "Закрыть окно <Shift-Esc>"
+
+#: strconsts.rscloselistwindowhint
+msgid "Close window <Esc>"
+msgstr "Закрыть окно <Esc>"
+
+#: strconsts.rscmptype
+msgctxt "strconsts.rscmptype"
+msgid "Type"
+msgstr "Тип"
+
+#: strconsts.rscmpusedinactions
+#, object-pascal-format
+msgid "%s [%s] is used in actions:%s%s"
+msgstr "%s [%s] используется в действиях:%s%s"
+
+#: strconsts.rscodefolding
+msgid "Code folding"
+msgstr "Сворачивание кода"
+
+#: strconsts.rscollapseall
+msgid "Collapse all"
+msgstr "Свернуть все"
+
+#: strconsts.rscolor
+msgid "Color"
+msgstr "Цвет"
+
+#: strconsts.rscoloring
+msgid "Coloring"
+msgstr "Раскраска"
+
+#: strconsts.rscolumn
+msgid "Column"
+msgstr "Столбец"
+
+#: strconsts.rscolumncolor
+msgid "Column color"
+msgstr "Цвет столбца"
+
+#: strconsts.rscolumnfont
+msgid "Column font"
+msgstr "Шрифт столбца"
+
+#: strconsts.rscolumns
+msgid "Columns"
+msgstr "Столбцы"
+
+#: strconsts.rscolumnwidth
+msgid "Column width"
+msgstr "Ширина столбца"
+
+#: strconsts.rscolumnwidthtotal
+msgid "Column width total"
+msgstr "Ширина столбца итога"
+
+#: strconsts.rscommaexpected
+msgid "Comma expected."
+msgstr "Ожидается запятая."
+
+#: strconsts.rscomment
+msgid "Comment"
+msgstr "Комментарий"
+
+#: strconsts.rscommonparams
+msgid "Common parameters"
+msgstr "Общие параметры"
+
+#: strconsts.rscompareandeditroles
+msgid "Compare and edit selected roles"
+msgstr "Сравнение и редактирование выбранных ролей"
+
+#: strconsts.rscompilationsuccess
+msgid "Compilation is successful."
+msgstr "Компиляция успешно завершена."
+
+#: strconsts.rscompile
+msgid "Compile"
+msgstr "Компилировать"
+
+#: strconsts.rscompileerrormsg
+msgid "During script compilation errors have been detected. If you see this window after updating the application, then most likely there are changes in the application that make your script incompatible. To solve the problem, contact the developer of the module in which the error occurred."
+msgstr "Во время компиляции скриптов были найдены ошибки. Если вы видите это окно после обновления приложения, то скорее всего в приложении произошли изменения, делающие ваш скрипт несовместимым. Для решения проблемы обратитесь к разработчику модуля, в котором произошла ошибка."
+
+#: strconsts.rscompilermsgs
+msgid "Compiler messages"
+msgstr "Сообщения компилятора"
+
+#: strconsts.rscomponent
+msgid "Component"
+msgstr "Компонент"
+
+#: strconsts.rscomponentfieldnameexists
+msgid "A component with the same field name already exists."
+msgstr "Компонент с таким именем поля уже существует."
+
+#: strconsts.rscomponentname
+msgid "Component name"
+msgstr "Имя компонента"
+
+#: strconsts.rscomponentnameempty
+msgid "Component name is empty."
+msgstr "Имя компонента пустое."
+
+#: strconsts.rscomponentnotfound
+#, object-pascal-format
+msgid "Component [%s] not found."
+msgstr "Компонент [%s] не найден."
+
+#: strconsts.rscomponentnotfounderror
+msgid "Component not found. Unable to determine component type."
+msgstr "Компонент не найден. Невозможно определить тип компонента."
+
+#: strconsts.rscomponents
+msgid "Components"
+msgstr "Компоненты"
+
+#: strconsts.rscomponentwithfieldnamenotfound
+#, object-pascal-format
+msgid "Component with the specified field name [%s] not found."
+msgstr "Компонент с указанным именем поля [%s] не найден."
+
+#: strconsts.rscondition
+msgid "Condition"
+msgstr "Условие"
+
+#: strconsts.rsconfirmation
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+#: strconsts.rsconfirmationmsg
+msgid "Confirmation message"
+msgstr "Подтверждающее сообщение"
+
+#: strconsts.rsconfirmautosavemsg
+msgid "Save changes?"
+msgstr "Сохранить изменения?"
+
+#: strconsts.rsconfirmautosaverec
+msgid "Confirm autosave record"
+msgstr "Подтверждение автосохранения записи"
+
+#: strconsts.rsconfirmcancelediting
+msgid "Confirm cancel editing"
+msgstr "Подтверждение отмены редактирования"
+
+#: strconsts.rsconfirmcanceleditmsg
+msgid "Cancel changes?"
+msgstr "Отменить изменения?"
+
+#: strconsts.rsconfirmdelete
+msgid "Confirm delete."
+msgstr "Подтвердите удаление."
+
+#: strconsts.rsconfirmdelete2
+msgid "One or more tables contain data. Are you sure you want to delete this record?"
+msgstr "Одна или более таблиц содержит данные. Вы точно хотите удалить эту запись?"
+
+#: strconsts.rsconfirmdeletegroup
+msgid "Do you want to delete group?"
+msgstr "Вы хотите удалить группу?"
+
+#: strconsts.rsconfirmdeleteimage
+msgid "Are you sure you want to delete the image?"
+msgstr "Вы точно хотите удалить изображение?"
+
+#: strconsts.rsconfirmexit
+msgid "Confirm when application exit"
+msgstr "Подтверждать при выходе из программы"
+
+#: strconsts.rsconfirmsavemsg
+msgid "Continue saving changes?"
+msgstr "Продолжить сохранение изменений?"
+
+#: strconsts.rsconfirmsaverec
+msgid "Confirm save record"
+msgstr "Подтверждение сохранения записи"
+
+#: strconsts.rsconnect
+msgid "Connect"
+msgstr "Подключиться"
+
+#: strconsts.rsconnectalreadyexists
+#, object-pascal-format
+msgid "One or more connections with the same database location and user name were found: %s Do you want to add a new connection anyway?"
+msgstr "Найдено одно или более подключений с такими же расположением базы данных и именем пользователя: %s Все равно добавить новое подключение?"
+
+#: strconsts.rsconnectionalreadyadded
+#, object-pascal-format
+msgid "Connection [%s] has been already added."
+msgstr "Подключение [%s] уже добавлено. "
+
+#: strconsts.rsconnectionerror
+msgid "Connection error"
+msgstr "Ошибка соединения"
+
+#: strconsts.rsconnectionstreefilter
+msgid "Filter by connection name or database location"
+msgstr "Фильтр по имени подключения или расположению базы данных"
+
+#: strconsts.rsconnectname
+msgid "Connection name"
+msgstr "Имя подключения"
+
+#: strconsts.rsconnectnamecopy
+#, object-pascal-format
+msgid "%s - copy"
+msgstr "%s - копия"
+
+#: strconsts.rsconnectnameexists
+msgid "This connection name already exists."
+msgstr "Такое имя подключения уже существует."
+
+#: strconsts.rsconnectnameinvalidchars
+msgid "You can not use character | in connection name"
+msgstr "Нельзя использовать символ | в имени подключения"
+
+#: strconsts.rsconnectnotfound
+#, object-pascal-format
+msgid "Connection [%s] not found."
+msgstr "Подключение [%s] не найдено."
+
+#: strconsts.rsconnectsavealreadyexists
+#, object-pascal-format
+msgid "One or more connections with the same database location and user name were found: %s Do you want to save this connection anyway?"
+msgstr "Найдено одно или более подключений с такими же расположением базы данных и именем пользователя: %s Все равно сохранить это подключение?"
+
+#: strconsts.rsconnectsettings
+msgid "Connection settings"
+msgstr "Параметры подключения"
+
+#: strconsts.rsconnecttodb
+msgid "Connect to database"
+msgstr "Подключиться к базе данных"
+
+#: strconsts.rsconnecttodb2
+msgid "Connect to database..."
+msgstr "Подключение к базе данных..."
+
+#: strconsts.rscontainedinlist
+msgid "Contained in the list"
+msgstr "Содержится в списке"
+
+#: strconsts.rscontainingtext
+msgid "Containing text"
+msgstr "Содержит текст"
+
+#: strconsts.rscontent
+msgid "Content"
+msgstr "Содержимое"
+
+#: strconsts.rscontents
+msgid "Contents"
+msgstr "Содержание"
+
+#: strconsts.rscontinue
+msgid "Continue"
+msgstr "Продолжить"
+
+#: strconsts.rscontinueimportmsg
+msgid "To continue importing anyway, click [Continue]. The rows containing errors will not be imported."
+msgstr "Для продолжения импорта нажмите [Продолжить]. Строки, содержащие ошибки, не будут импортированы."
+
+#: strconsts.rscontinuemergeprojects
+msgid "Continue to merge projects?"
+msgstr "Продолжить объединение проектов?"
+
+#: strconsts.rscontinuerunbn
+msgid "Continue running <F9>"
+msgstr "Продолжить выполнение <F9>"
+
+#: strconsts.rscontinuetodelete
+msgid "Continue to delete?"
+msgstr "Продолжить удаление?"
+
+#: strconsts.rscopy
+msgid "Copy"
+msgstr "Копировать"
+
+#: strconsts.rscopycells
+msgid "Copy cells"
+msgstr "Копировать ячейки"
+
+#: strconsts.rscopyconnect
+msgid "Copy connection"
+msgstr "Копировать подключение"
+
+#: strconsts.rscopyformstyle
+msgid "Copy form style"
+msgstr "Копировать стиль формы"
+
+#: strconsts.rscopyreportstyle
+msgctxt "strconsts.rscopyreportstyle"
+msgid "Copy style"
+msgstr "Копировать стиль"
+
+#: strconsts.rscopyrighttext
+msgid "Copyright © 2015-2024 Pavel Duborkin"
+msgstr "Copyright © 2015-2024 Павел Дуборкин"
+
+#: strconsts.rscopystyle
+msgctxt "strconsts.rscopystyle"
+msgid "Copy style"
+msgstr "Копировать стиль"
+
+#: strconsts.rscopytagend
+msgid "Copy tag end"
+msgstr "Копировать тег end"
+
+#: strconsts.rscopytagform
+msgid "Copy tag form"
+msgstr "Копировать тег form"
+
+#: strconsts.rscopytaggrid
+msgid "Copy tag grid"
+msgstr "Копировать тег grid"
+
+#: strconsts.rscopytaggroup
+msgid "Copy tag group"
+msgstr "Копировать тег group"
+
+#: strconsts.rscopytopastescript
+msgid "Copy to paste in the script"
+msgstr "Копировать для вставки в скрипт"
+
+#: strconsts.rscopyurltoclipboard
+msgid "Copy URL to clipboard"
+msgstr "Копировать ссылку в буфер обмена"
+
+#: strconsts.rscorner
+msgid "Corner"
+msgstr "Угол"
+
+#: strconsts.rscouldnotcreatefolder
+#, object-pascal-format
+msgid "Could not create folder: %s"
+msgstr "Не могу создать папку: %s"
+
+#: strconsts.rscouldnotfindformrp
+msgid "Could not find form or report."
+msgstr "Не удалось найти форму или отчет."
+
+#: strconsts.rscount
+msgid "Count"
+msgstr "Количество"
+
+#: strconsts.rscounter
+msgid "Counter"
+msgstr "Счетчик"
+
+#: strconsts.rscountfieldname
+msgctxt "strconsts.rscountfieldname"
+msgid "Total"
+msgstr "Итог"
+
+#: strconsts.rscreate
+msgid "Create"
+msgstr "Создать"
+
+#: strconsts.rscreatedialogtitle
+msgid "Create new database"
+msgstr "Создать новую базу данных"
+
+#: strconsts.rscreateformmodulemsg
+#, object-pascal-format
+msgid "The form module [%s] has not yet been created. Create a module?"
+msgstr "Модуль формы [%s] ещё не был создан. Создать модуль?"
+
+#: strconsts.rscross
+msgid "Cross"
+msgstr "Клетка"
+
+#: strconsts.rscurrentconnectsettingschanged
+msgid "The settings for the current connection have been changed. Reconnect to make the changes take effect."
+msgstr "Параметры текущего подключения были изменены. Переподключитесь, чтобы изменения вступили в силу."
+
+#: strconsts.rscurrentform
+msgid "Current form"
+msgstr "Текущая форма"
+
+#: strconsts.rscurrentreport
+msgid "Current report"
+msgstr "Текущий отчет"
+
+#: strconsts.rscurrenttime
+msgid "Current time"
+msgstr "Текущее время"
+
+#: strconsts.rscursorpos
+msgid "Cursor position"
+msgstr "Позиция курсора"
+
+#: strconsts.rscut
+msgid "Cut"
+msgstr "Вырезать"
+
+#: strconsts.rsdash
+msgid "Dash"
+msgstr "Штрих"
+
+#: strconsts.rsdashdot
+msgid "Dash dot"
+msgstr "Точка тире"
+
+#: strconsts.rsdashdotdot
+msgid "Dash dot dot"
+msgstr "Точка точка тире"
+
+#: strconsts.rsdataarea
+msgctxt "strconsts.rsdataarea"
+msgid "Data"
+msgstr "Данные"
+
+#: strconsts.rsdatabaseconnectlost
+msgctxt "strconsts.rsdatabaseconnectlost"
+msgid "Unable to establish a connection to the database. Make sure that the database server is available and run the application again."
+msgstr "Не удается установить связь с базой данных. Убедитесь в доступности сервера баз данных и запустите приложение снова."
+
+#: strconsts.rsdatadelimiter
+msgid "Data delimiter"
+msgstr "Разделитель данных"
+
+#: strconsts.rsdataimporterror
+msgid "An error occured when importing data."
+msgstr "При импорте данных произошла ошибка."
+
+#: strconsts.rsdatamenu
+msgctxt "strconsts.rsdatamenu"
+msgid "Data"
+msgstr "Данные"
+
+#: strconsts.rsdatasource
+msgid "Data source"
+msgstr "Источник данных"
+
+#: strconsts.rsdatasources
+msgid "Data sources"
+msgstr "Источники данных"
+
+#: strconsts.rsdatatype
+msgid "Data type"
+msgstr "Тип данных"
+
+#: strconsts.rsdate
+msgid "Date"
+msgstr "Дата"
+
+#: strconsts.rsdatefieldnotfound
+msgid "Date field not found."
+msgstr "Поле даты не найдено."
+
+#: strconsts.rsdatefieldshoulbevisible
+msgid "Date field should be visible."
+msgstr "Поле даты должно быть видимым."
+
+#: strconsts.rsdbavgfunc
+msgid "DBAVG - calculate average value"
+msgstr "DBAVG - вычислить среднее значение"
+
+#: strconsts.rsdbcountdfunc
+msgid "DBCOUNTD - count of distinct"
+msgstr "DBCOUNTD - количество различных"
+
+#: strconsts.rsdbcountfunc
+msgid "DBCOUNT - count"
+msgstr "DBCOUNT - посчитать"
+
+#: strconsts.rsdbfunction
+msgid "DB-function"
+msgstr "DB-функция"
+
+#: strconsts.rsdbgetbyidfunc
+msgid "DBGETBYID - get field value by id of record"
+msgstr "DBGETBYID - получить значение поля по ID записи"
+
+#: strconsts.rsdbgetfunc
+msgid "DBGET - get field value"
+msgstr "DBGET - получить значение поля"
+
+#: strconsts.rsdbgetidfunc
+msgid "DBGETID - get id of record"
+msgstr "DBGETID - получить ID записи"
+
+#: strconsts.rsdbinsinglemode
+msgid "The database is into single-user mode. Log is not possible."
+msgstr "База данных находится в монопольном режиме. Вход невозможен."
+
+#: strconsts.rsdblclickchange
+msgid "Double-click to change"
+msgstr "Двойной клик для изменения"
+
+#: strconsts.rsdblocation
+msgid "Database location"
+msgstr "Расположение базы данных"
+
+#: strconsts.rsdbmaxfunc
+msgid "DBMAX - maximum value"
+msgstr "DBMAX - максимальное значение"
+
+#: strconsts.rsdbmergeallfunc
+msgid "DBMERGEALL - merge all values"
+msgstr "DBMERGEALL - соединить все значения"
+
+#: strconsts.rsdbmergefunc
+msgid "DBMERGE - merge distinct values"
+msgstr "DBMERGE - соединить различные значения"
+
+#: strconsts.rsdbminfunc
+msgid "DBMIN - minimum value"
+msgstr "DBMIN - минимальное значение"
+
+#: strconsts.rsdbnotfound
+#, object-pascal-format
+msgid "Database %s not found."
+msgstr "База данных %s не найдена."
+
+#: strconsts.rsdbnotsupport
+msgid "Database is not supported by this version of DataExpress. Save the database in the DataExpress version dated 02.11.2018 and try again."
+msgstr "База данных не поддерживается этой версией DataExpress. Сохраните базу данных в версии DataExpress от 02.11.2018 и попробуйте снова."
+
+#: strconsts.rsdbpath
+msgid "Database path"
+msgstr "Путь к базе данных"
+
+#: strconsts.rsdbsumfieldnotnumeric
+#, object-pascal-format
+msgid "Field [%s] is incompatible with the function. The function works only with fields of the \"Number\" type."
+msgstr "Поле [%s] несовместимо с функцией. Функция работает только с полями типа \"Число\"."
+
+#: strconsts.rsdbsumfunc
+msgid "DBSUM - calculate sum"
+msgstr "DBSUM - вычислить сумму"
+
+#: strconsts.rsddday
+msgid "Day"
+msgstr "День"
+
+#: strconsts.rsddhalfyear
+msgid "Half-Year"
+msgstr "Полугодие"
+
+#: strconsts.rsddmonth
+msgid "Month"
+msgstr "Месяц"
+
+#: strconsts.rsddquarter
+msgid "Quarter"
+msgstr "Квартал"
+
+#: strconsts.rsddweek
+msgid "Week"
+msgstr "Неделя"
+
+#: strconsts.rsddyear
+msgid "Year"
+msgstr "Год"
+
+#: strconsts.rsdebugformcaption
+#, object-pascal-format
+msgid "Debug: %s [%s]"
+msgstr "Отладка: %s [%s]"
+
+#: strconsts.rsdefault
+msgid "Default"
+msgstr "По умолчанию"
+
+#: strconsts.rsdefaultimage
+msgid "Default image"
+msgstr "Изображение по умолчанию"
+
+#: strconsts.rsdefaultintf
+msgid " (Default)"
+msgstr " (по умолчанию)"
+
+#: strconsts.rsdefaultpwd
+msgid "Default password"
+msgstr "Пароль по умолчанию"
+
+#: strconsts.rsdefaultrpcolcaption
+msgctxt "strconsts.rsdefaultrpcolcaption"
+msgid "Field"
+msgstr "Поле"
+
+#: strconsts.rsdefaulttitle
+msgid "Default title"
+msgstr "Заголовок по умолчанию"
+
+#: strconsts.rsdefaultvalue
+msgid "Default value"
+msgstr "Значение по умолчанию"
+
+#: strconsts.rsdelcond
+msgid "Delete condition"
+msgstr "Условие удаления"
+
+#: strconsts.rsdelete
+msgctxt "strconsts.rsdelete"
+msgid "Delete"
+msgstr "Удалить"
+
+#: strconsts.rsdeleteall
+msgid "Delete all"
+msgstr "Удалить все"
+
+#: strconsts.rsdeleteallbreakpointsmsg
+msgid "Are you sure you want to remove all breakpoints?"
+msgstr "Вы точно хотите удалить все точки останова?"
+
+#: strconsts.rsdeletebreakpointmsg
+msgid "Are you sure you want to remove the breakpoint?"
+msgstr "Вы точно хотите удалить точку останова?"
+
+#: strconsts.rsdeletecomponents
+msgctxt "strconsts.rsdeletecomponents"
+msgid "Delete"
+msgstr "Удалить"
+
+#: strconsts.rsdeleteconnectinfofromlist
+msgid "Delete connection information from list?"
+msgstr "Удалить информацию о подключении из списка?"
+
+#: strconsts.rsdeleteconnectoremptygroup
+msgid "Delete connection or empty group"
+msgstr "Удалить подключение или пустую группу"
+
+#: strconsts.rsdeleteextmoduleconfirm
+msgid "Some expressions and actions may stop working. Do you really want to delete this module?"
+msgstr "Некоторые выражения и действия могут перестать работать. Вы точно хотите удалить этот модуль?"
+
+#: strconsts.rsdeleteextmodulenote
+msgid "Note: the changes will take effect the next time you connect to the database."
+msgstr "Примечение: изменения вступят в силу при следующем подключении к базе данных."
+
+#: strconsts.rsdeletefield
+msgid "Delete field"
+msgstr "Удалить поле"
+
+#: strconsts.rsdeletefieldmsg
+msgid "Are you sure you want to delete the field?"
+msgstr "Вы точно хотите удалить поле?"
+
+#: strconsts.rsdeleteform
+msgid "Delete form"
+msgstr "Удалить форму"
+
+#: strconsts.rsdeletegroup
+msgid "Delete group"
+msgstr "Удалить группу"
+
+#: strconsts.rsdeletelimitedmsg
+#, object-pascal-format
+msgid "Access to the table [%s] is limited. Deleting is not possible."
+msgstr "Доступ к таблице [%s] ограничен. Удаление невозможно."
+
+#: strconsts.rsdeleterecordmsg
+msgid "Are you sure you want to delete the record?"
+msgstr "Вы точно хотите удалить запись?"
+
+#: strconsts.rsdeleterecords
+msgid "Delete records"
+msgstr "Удаление записей"
+
+#: strconsts.rsdeleterecserror
+msgid "An error occured when deleting records."
+msgstr "При удалении записей произошла ошибка."
+
+#: strconsts.rsdeletesource
+msgid "Delete source"
+msgstr "Удалить источник"
+
+#: strconsts.rsdeletevalue
+msgid "Delete value"
+msgstr "Удалить значение"
+
+#: strconsts.rsdeleting
+msgid "Deleting"
+msgstr "Удаление"
+
+#: strconsts.rsdeletingallbreakpoints
+msgid "Deleting all breakpoints"
+msgstr "Удалить все точки остановки"
+
+#: strconsts.rsdeletingbreakpoint
+msgid "Deleting breakpoint"
+msgstr "Удалить точку остановки"
+
+#: strconsts.rsdelimiter
+msgid "Delimiter"
+msgstr "Разделитель"
+
+#: strconsts.rsdelrecsconfirm
+msgid "I confirm deletion"
+msgstr "Я подтверждаю удаление"
+
+#: strconsts.rsdelrecsmsg
+#, object-pascal-format
+msgid "Warning!%sDo you want to delete all records selected current filters. The data will be deleted forever.%sAre you sure?"
+msgstr "Внимание!%sВы хотите удалить все записи, выбранные текущим фильтром. Данные будут удалены навсегда.%sВы уверены?"
+
+#: strconsts.rsdensityperc
+msgid "Density, %"
+msgstr "Плотность, %"
+
+#: strconsts.rsdepth
+msgid "Depth"
+msgstr "Объем"
+
+#: strconsts.rsdesigner
+msgid "Designer"
+msgstr "Дизайнер"
+
+#: strconsts.rsdestfldnotsel
+msgid "Destination field not selected."
+msgstr "Поле целевой таблицы не выбрано."
+
+#: strconsts.rsdestination
+msgid "Destination"
+msgstr "Назначение"
+
+#: strconsts.rsdestinationforms
+msgid "Destination forms"
+msgstr "Формы-получатели"
+
+#: strconsts.rsdestinationqueries
+msgid "Destination queries"
+msgstr "Запросы-получатели"
+
+#: strconsts.rsdestinationreports
+msgid "Destination reports"
+msgstr "Отчеты-получатели"
+
+#: strconsts.rsdesttable
+msgid "Destination table"
+msgstr "Целевая таблица"
+
+#: strconsts.rsdesttblnotsel
+msgid "Destination table not selected."
+msgstr "Целевая таблица не выбрана."
+
+#: strconsts.rsdetailingperiod
+msgid "Detailing period"
+msgstr "Детализация периода"
+
+#: strconsts.rsdeveloper
+msgctxt "strconsts.rsdeveloper"
+msgid "Developer"
+msgstr "Разработчик"
+
+#: strconsts.rsdiagonaltoleft
+msgid "Diagonal to left lines"
+msgstr "Диагональные линии влево"
+
+#: strconsts.rsdiagonaltoright
+msgid "Diagonal to right lines"
+msgstr "Диагональные линии вправо"
+
+#: strconsts.rsdialogfilter
+msgctxt "strconsts.rsdialogfilter"
+msgid "DataExpress databases (*.fdb)|*.fdb;*.FDB|All files (*.*)|*.*"
+msgstr "Базы данных DataExpress (*.fdb)|*.fdb;*.FDB|Все файлы (*.*)|*.*"
+
+#: strconsts.rsdialogfilterallbases
+msgid "All DataExpress databases (*.dxdb, *.fdb)|*.dxdb;*.DXDB;*.fdb;*.FDB|"
+msgstr "Все базы данных DataExpress (*.dxdb, *.fdb)|*.dxdb;*.DXDB;*.fdb;*.FDB|"
+
+#: strconsts.rsdialogfilterdxdb
+msgid "New DataExpress databases (*.dxdb)|*.dxdb;*.DXDB|"
+msgstr "Новые базы данных DataExpress (*.dxdb)|*.dxdb;*.DXDB|"
+
+#: strconsts.rsdiamond
+msgid "Diamond"
+msgstr "Ромб"
+
+#: strconsts.rsdisabled
+msgid "Disabled"
+msgstr "Отключено"
+
+#: strconsts.rsdisabletabstopmsg
+msgid "Disable Tab stop in non-editable fields"
+msgstr "Отключить переход по Tab в нередактируемых полях"
+
+#: strconsts.rsdisabletabstopmsg2
+msgid "Disable Tab stop in non-editable fields?"
+msgstr "Отключить переход по Tab в нередактируемых полях?"
+
+#: strconsts.rsdisplay
+msgid "Display"
+msgstr "Отображать"
+
+#: strconsts.rsdistance
+msgid "Distance"
+msgstr "Отступ"
+
+#: strconsts.rsdistancetoaxis
+msgid "Distance to axis"
+msgstr "Отступ от оси"
+
+#: strconsts.rsdistinctcount
+msgid "Distinct count"
+msgstr "Количество уникальных"
+
+#: strconsts.rsdivision
+msgid "Division"
+msgstr "Деление"
+
+#: strconsts.rsdivzero
+msgid "Division by zero."
+msgstr "Деление на нуль."
+
+#: strconsts.rsdonate
+msgid "Donate"
+msgstr "Поддержать проект"
+
+#: strconsts.rsdonotshowinuserlist
+msgid "Do not show in user list"
+msgstr "Не показывать в списке пользователей"
+
+#: strconsts.rsdonotstretch
+msgid "Shrink only (no stretch)"
+msgstr "Только сжатие (не растягивать)"
+
+#: strconsts.rsdot
+msgid "Dot"
+msgstr "Точка"
+
+#: strconsts.rsdownload
+msgid "Download"
+msgstr "Скачать"
+
+#: strconsts.rsdownloadupdatesmsg
+msgid "Download updates..."
+msgstr "Загрузка обновлений..."
+
+#: strconsts.rsdragdropextensionsaftermsg
+msgid "The following extensions have been imported into the database:"
+msgstr "Следующие расширения были импортированы в базу данных:"
+
+#: strconsts.rsdragdropextensionsmsg
+#, object-pascal-format
+msgid "The following extensions will be imported into the database:%sContinue?"
+msgstr "Следующие расширения будут импортированы в базу данных:%sПродолжить?"
+
+#: strconsts.rsdropfilesnotsupport
+#, object-pascal-format
+msgid "The following files are not supported and have not been processed:%sOnly extension modules *.epas are supported."
+msgstr "Следующие файлы не поддерживаются и не были обработаны:%sПоддерживаются только модули расширений *.epas."
+
+#: strconsts.rsdsgnbackimage
+msgid "Background image"
+msgstr "Фоновое изображение"
+
+#: strconsts.rsdsgnfile
+msgctxt "strconsts.rsdsgnfile"
+msgid "File"
+msgstr "Файл"
+
+#: strconsts.rsduplicate
+msgid "Duplicate"
+msgstr "Дублировать"
+
+#: strconsts.rsduplicateall
+msgid "Duplicate all"
+msgstr "Дублировать все"
+
+#: strconsts.rsduplicatecomponentname
+msgid "A component name already exists."
+msgstr "Имя компонента уже существует."
+
+#: strconsts.rsduplicatefield
+msgid "Duplicate field"
+msgstr "Дублирование поля"
+
+#: strconsts.rsduplicatefieldname
+msgid "Duplicate field name."
+msgstr "Дублирование имени поля."
+
+#: strconsts.rsduplicatesqlfieldname
+msgid "Duplicate SQL field name."
+msgstr "Дублирование SQL-имени поля"
+
+#: strconsts.rsdxsite
+msgid "DataExpress website"
+msgstr "Сайт DataExpress"
+
+#: strconsts.rsdxupdateavailablemsg
+msgid "DataExpress update is available. Do you want to start the update?"
+msgstr "Доступно обновление DataExpress. Вы хотите начать обновление?"
+
+#: strconsts.rsedges
+msgid "Edges"
+msgstr "Края"
+
+#: strconsts.rsedit
+msgctxt "strconsts.rsedit"
+msgid "Edit"
+msgstr "Изменить"
+
+#: strconsts.rseditable
+msgid "Editable"
+msgstr "Разрешить редактирование"
+
+#: strconsts.rseditablerecs
+msgid "Editable records"
+msgstr "Редактируемые записи"
+
+#: strconsts.rseditcond
+msgid "Edit condition"
+msgstr "Условие редактирования"
+
+#: strconsts.rsediting
+msgid "Editing"
+msgstr "Редактирование"
+
+#: strconsts.rseditingcaption
+#, object-pascal-format
+msgid "%s (Editing)"
+msgstr "%s (Редактирование)"
+
+#: strconsts.rseditmask
+msgid "Edit mask"
+msgstr "Маска ввода"
+
+#: strconsts.rseditroles
+msgid "Compare and edit roles"
+msgstr "Сравнение и редактирование ролей"
+
+#: strconsts.rseffects
+msgid "Effects"
+msgstr "Эффекты"
+
+#: strconsts.rselapsedtime
+msgid "Elapsed time"
+msgstr "Прошло времени"
+
+#: strconsts.rselementsnum
+#, object-pascal-format
+msgid "%d elements"
+msgstr "%d элементов"
+
+#: strconsts.rselemnotfoundstr
+msgid "Element not found."
+msgstr "Элемент не найден."
+
+#: strconsts.rsellipse
+msgid "Ellipse"
+msgstr "Эллипс"
+
+#: strconsts.rsellipsisincell
+msgid "Ellipsis in cell"
+msgstr "Многоточие в ячейке"
+
+#: strconsts.rselsecondition
+msgid "Else"
+msgstr "Иначе"
+
+#: strconsts.rselseif
+msgid "Else If"
+msgstr "Иначе Если"
+
+#: strconsts.rselseifcondition
+#, object-pascal-format
+msgid "Else If %s"
+msgstr "Иначе Если %s"
+
+#: strconsts.rsempty
+msgid "Empty"
+msgstr "Пусто"
+
+#: strconsts.rsemptygroupsnotsaved
+#, object-pascal-format
+msgid "After exiting the designer empty groups are not saved: %sContinue?"
+msgstr "После выхода из дизайнера пустые группы не будут сохранены: %sПродолжить?"
+
+#: strconsts.rsemptysquarebracketsdetected
+msgid "Empty square brackets detected"
+msgstr "Обнаружены пустые квадратные скобки"
+
+#: strconsts.rsencoding
+msgid "Encoding"
+msgstr "Кодировка"
+
+#: strconsts.rsendingsreserved
+msgid "Endings _not, _null, _text, _begin, _end in field names are reserved by the report printing subsystem."
+msgstr "Окончания _not, _null, _text, _begin, _end в именах полей зарезервированы подсистемой печати отчетов."
+
+#: strconsts.rsendlineexpected
+msgid "Expected end of line."
+msgstr "Ожидается конец строки."
+
+#: strconsts.rsendwthbegin
+msgid "End tag without begin tag."
+msgstr "Тег End без начального тега."
+
+#: strconsts.rsenterarrayname
+msgid "Enter array name."
+msgstr "Введите имя массива."
+
+#: strconsts.rsentercaption
+msgctxt "strconsts.rsentercaption"
+msgid "Enter caption"
+msgstr "Введите надпись"
+
+#: strconsts.rsentercolumntitle
+msgid "Enter column title"
+msgstr "Введите заголовок столбца"
+
+#: strconsts.rsenterconnectname
+msgid "Enter connection name."
+msgstr "Введите имя подключения."
+
+#: strconsts.rsenterdblocation
+msgid "Enter database location."
+msgstr "Введите расположение базы данных."
+
+#: strconsts.rsenterdelimiter
+msgid "Enter delimiter."
+msgstr "Введите разделитель."
+
+#: strconsts.rsenterexpr
+msgid "Enter expression"
+msgstr "Введите выражение"
+
+#: strconsts.rsenterextname
+msgid "Enter extension name."
+msgstr "Введите название расширения."
+
+#: strconsts.rsenterfieldname
+msgid "Enter field name"
+msgstr "Введите имя поля"
+
+#: strconsts.rsenterfieldsize
+msgid "Enter field size"
+msgstr "Введите размер поля"
+
+#: strconsts.rsenterfiltername
+msgid "Enter filter name"
+msgstr "Введите название фильтра"
+
+#: strconsts.rsenterformname
+msgid "Enter form name"
+msgstr "Введите имя формы"
+
+#: strconsts.rsenterfuncname
+msgid "Enter function name."
+msgstr "Введите имя функции."
+
+#: strconsts.rsentergroupname
+msgid "Enter group name"
+msgstr "Введите название группы"
+
+#: strconsts.rsenterimagename
+msgid "Enter image name"
+msgstr "Введите имя изображения"
+
+#: strconsts.rsenterminmax
+msgid "Enter minimal and maximal value"
+msgstr "Введите минимальное и максимальное значения"
+
+#: strconsts.rsentername
+msgid "Enter name"
+msgstr "Введите имя"
+
+#: strconsts.rsenterprecisionnum
+msgid "Enter precision of number"
+msgstr "Введите точность числа"
+
+#: strconsts.rsenterpwd
+msgid "Enter password"
+msgstr "Введите пароль"
+
+#: strconsts.rsenterqueryname
+msgid "Enter query name"
+msgstr "Введите имя отчета"
+
+#: strconsts.rsentersearchtext
+msgid "Enter search text"
+msgstr "Введите искомый текст"
+
+#: strconsts.rsentertext
+msgid "Enter text"
+msgstr "Введите текст"
+
+#: strconsts.rsentertypename
+msgid "Enter type name."
+msgstr "Введите имя типа."
+
+#: strconsts.rsenterusername
+msgid "Enter username"
+msgstr "Введите имя пользователя"
+
+#: strconsts.rsentervalue
+msgid "Enter value"
+msgstr "Введите значение"
+
+#: strconsts.rsentervarname
+msgid "Enter variable name."
+msgstr "Введите имя переменной."
+
+#: strconsts.rsentirescope
+msgid "Entire scope"
+msgstr "Во всем тексте"
+
+#: strconsts.rsequal
+msgctxt "strconsts.rsequal"
+msgid "Equal"
+msgstr "Равно"
+
+#: strconsts.rserrconnect
+#, object-pascal-format
+msgid "Can not connect to database: %s.%s"
+msgstr "Не могу подключиться к базе данных: %s.%s"
+
+#: strconsts.rserrconnectupdatesdb
+#, object-pascal-format
+msgid "Can not connect to updates database: %s."
+msgstr "Не удалось подключиться к базе обновлений: %s"
+
+#: strconsts.rserrcreate
+#, object-pascal-format
+msgid "Can not create database: %s.%s"
+msgstr "Не удалось создать базу данных: %s.%s"
+
+#: strconsts.rserrcreateupdatesdb
+#, object-pascal-format
+msgid "Can not create updates database: %s."
+msgstr "Не удалось создать базу обновлений: %s."
+
+#: strconsts.rserrdelrecs
+msgid "Some records have not been deleted."
+msgstr "Некоторые записи не были удалены."
+
+#: strconsts.rserroccurredintag
+msgid "The error occurred in the following tag: "
+msgstr "Ошибка возникла в следующем теге: "
+
+#: strconsts.rserror
+msgid "Error"
+msgstr "Ошибка"
+
+#: strconsts.rserrorcalcfield
+#, object-pascal-format
+msgid "Error in calculated field [%s]: "
+msgstr "Ошибка в вычисляемом поле [%s]: "
+
+#: strconsts.rserrorcheckdb
+#, object-pascal-format
+msgid "Error occured when checking database.%s"
+msgstr "Произошла ошибка во время проверки базы данных.%s"
+
+#: strconsts.rserrorcloseapp
+msgid "An error occurred while closing the application."
+msgstr "Во время закрытия приложения произошла ошибка."
+
+#: strconsts.rserrorclosedbmsg
+msgid "An error occurred while closing the database."
+msgstr "Во время закрытия базы данных произошла ошибка."
+
+#: strconsts.rserrorcreatingtab
+#, object-pascal-format
+msgid "An error occurred while creating tab [%s].%s"
+msgstr "При создании закладки [%s] возникла ошибка.%s"
+
+#: strconsts.rserrordetails
+msgid "Error details:"
+msgstr "Подробности ошибки:"
+
+#: strconsts.rserrorexpr
+msgid "Expression: "
+msgstr "Выражение: "
+
+#: strconsts.rserrorinexprfix
+#, object-pascal-format
+msgid "The expression contains an error:%sYou want to fix it?"
+msgstr "Выражение содержит ошибку:%sВы хотите ее исправить?"
+
+#: strconsts.rserrorinfield
+#, object-pascal-format
+msgid "Error in field [%s]: %s"
+msgstr "Ошибка в поле [%s]: %s"
+
+#: strconsts.rserrorinfillfilter
+#, object-pascal-format
+msgid "Error in the filter source table. Object is %s"
+msgstr "Ошибка в фильтре таблицы-источника. Объект %s"
+
+#: strconsts.rserrorloadlib
+#, object-pascal-format
+msgid "Error while loading library %s. Error message: %s"
+msgstr "Ошибка при загрузке библиотеки %s. Сообщение об ошибке: %s"
+
+#: strconsts.rserrorloadmeta
+#, object-pascal-format
+msgid "Error occured when loading metadata.%s "
+msgstr "Произошла ошибка при загрузке метаданных.%s"
+
+#: strconsts.rserrorlogging
+msgid "Error logging"
+msgstr "Логирование ошибок"
+
+#: strconsts.rserrormessage
+#, object-pascal-format
+msgid "Error message: %s"
+msgstr "Сообщение об ошибке: %s"
+
+#: strconsts.rserrormsg
+msgid "Error: "
+msgstr "Ошибка: "
+
+#: strconsts.rserrorreadingcfg
+#, object-pascal-format
+msgctxt "strconsts.rserrorreadingcfg"
+msgid "Unable to read settings from dataexpress.cfg file. Maybe the file is being used by another process. Error message:%s"
+msgstr "Не удается прочитать настройки из файла dataexpress.cfg. Возможно файл используется другим процессом. Сообщение об ошибке:%s"
+
+#: strconsts.rserrorreadingformmetadata
+#, object-pascal-format
+msgid "Error reading form metadata: %sPerhaps you are trying to open a database created in a newer version of the application. Make sure you are using the latest version of the application."
+msgstr "Ошибка чтения метаданных формы: %sВозможно вы пытаетесь открыть базу данных, созданную в новой версии приложения. Убедитесь, что вы используете последнюю версию приложения."
+
+#: strconsts.rserrorrundb
+#, object-pascal-format
+msgid "An error occurred while the database was running.%sPress Shift key while opening the database to enter the Designer."
+msgstr "Во время запуска базы данных произошла ошибка.%sНажмите клавишу Shift во время открытия базы данных, чтобы войти в дизайнер."
+
+#: strconsts.rserrorselcond
+#, object-pascal-format
+msgid "An error was found in the selection condition: %sIn this regard, the selection condition will be ignored."
+msgstr "В условии отбора найдена ошибка: %sВ связи с этим условие отбора будет проигнорировано."
+
+#: strconsts.rserrorsinexpr
+msgid "Errors in expressions"
+msgstr "Ошибки в выражениях"
+
+#: strconsts.rserrorsoccured
+msgid "Errors occured."
+msgstr "Возникли ошибки."
+
+#: strconsts.rserrorwhenimportmodule
+msgid "An error occured when importing module."
+msgstr "Произошла ошибка во время импорта модуля."
+
+#: strconsts.rserrorwhiledisconnect
+msgid "An error occurred while disconnecting from the database."
+msgstr "Во время отключения от базы данных произошла ошибка."
+
+#: strconsts.rserrorwhiledragdropfiles
+msgid "An error occurred while dragging and dropping files."
+msgstr "Во время перетаскивания файлов произошла ошибка."
+
+#: strconsts.rserrorwritingcfg
+#, object-pascal-format
+msgctxt "strconsts.rserrorwritingcfg"
+msgid "Unable to write settings to dataexpress.cfg file. Maybe the file is being used by another process. Error message:%s"
+msgstr "Не удается записать настройки в файл dataexpress.cfg. Возможно файл используется другим процессом. Сообщение об ошибке:%s"
+
+#: strconsts.rsexample
+msgid "Example"
+msgstr "Пример"
+
+#: strconsts.rsexampleconnectname
+msgid "Example: My Database"
+msgstr "Пример: Моя база данных"
+
+#: strconsts.rsexampledblocation
+msgid "Example: computer_name:d:\\mybases\\mydb.fdb or 10.20.11.15:/home/user/base.fdb or e:\\localdb\\db.fdb"
+msgstr "Пример: имя_компьютера:d:\\mybases\\mydb.fdb or 10.20.11.15:/home/user/base.fdb or e:\\localdb\\db.fdb"
+
+#: strconsts.rsexceptionclass
+#, object-pascal-format
+msgid "Exception class: %s"
+msgstr "Класс исключения: %s"
+
+#: strconsts.rsexchgoldnewrow
+msgid "You are trying to exchange the old and new rows. You must first save the record. Continue?"
+msgstr "Вы пытаетесь поменять старую и новую строки. Сначала Вы должны сохранить запись. Продолжить?"
+
+#: strconsts.rsexecactionfailedmsg
+#, object-pascal-format
+msgid "Execute action %s failed in the extension module %s. Try to find and remove the module that causes the error."
+msgstr "Сбой выполнения действия %s в модуле расширения %s. Попробуйте найти и удалить модуль, вызывающий ошибку."
+
+#: strconsts.rsexeccond
+msgid "Execution condition"
+msgstr "Условие выполнения"
+
+#: strconsts.rsexecutesql
+msgid "Execute SQL <F9>"
+msgstr "Выполнить SQL <F9>"
+
+#: strconsts.rsexit
+msgid "Exit"
+msgstr "Выход"
+
+#: strconsts.rsexitmsg
+msgid "You are sure to exit"
+msgstr "Вы уверены, что хотите выйти?"
+
+#: strconsts.rsexpandall
+msgid "Expand all"
+msgstr "Раскрыть все"
+
+#: strconsts.rsexpandlevels
+msgid "Expand levels"
+msgstr "Раскрыть уровни"
+
+#: strconsts.rsexpectedclosingbracketorop
+msgid "Expected closing bracket or operation."
+msgstr "Ожидается закрывающая скобка или операция."
+
+#: strconsts.rsexpectedoperationorbracket
+msgid "Expected operation or detected excess closing bracket."
+msgstr "Ожидается операция или обнаружена лишняя закрывающая скобка."
+
+#: strconsts.rsexpertmode
+msgid "Expert mode"
+msgstr "Режим эксперта"
+
+#: strconsts.rsexportcantcreatefile
+#, object-pascal-format
+msgid "Can not create file: %s. The export operation will be aborted."
+msgstr "Не могу создать файл: %s. Операция экспорта будет прервана."
+
+#: strconsts.rsexportcantcreatefolder
+#, object-pascal-format
+msgid "Can not create folder: %s. The export operation will be aborted."
+msgstr "Не могу создать папку: %s. Операция экспорта будет прервана."
+
+#: strconsts.rsexportdata
+msgid "Export data"
+msgstr "Экспорт данных"
+
+#: strconsts.rsexportdataerror
+msgid "An error occured when exporting data."
+msgstr "При экспорте данных произошла ошибка."
+
+#: strconsts.rsexportmodule
+msgid "Export module"
+msgstr "Экспорт модуля"
+
+#: strconsts.rsexportprjok
+msgid "Export of project was successfull."
+msgstr "Экспорт проекта успешно завершен."
+
+#: strconsts.rsexportproject
+msgid "Export Project"
+msgstr "Экспорт проекта"
+
+#: strconsts.rsexportprojecterror
+msgid "An error occured when exporting project."
+msgstr "При экспорте проекта произошла ошибка."
+
+#: strconsts.rsexportsuccess
+#, object-pascal-format
+msgid "Data has been successfully exported to a file %s."
+msgstr "Данные успешно экспортированы в файл %s."
+
+#: strconsts.rsexprcheck
+msgid "Check expression <F5/F9>"
+msgstr "Проверка выражения <F5/F9>"
+
+#: strconsts.rsexprcheck2
+msgid "Check expression"
+msgstr "Проверка выражения"
+
+#: strconsts.rsexprcontainserror
+msgid "An error was detected in the expression. Unable to determine the type of expression."
+msgstr "Обнаружена ошибка в выражении. Невозможно определить тип выражения."
+
+#: strconsts.rsexprempty
+msgid "Expression is empty"
+msgstr "Выражение пустое"
+
+#: strconsts.rsexpression
+msgid "Expression"
+msgstr "Выражение"
+
+#: strconsts.rsexprnotlogical
+msgid "The expression in the attribute \"Expr\" is not a logical expression."
+msgstr "Выражение в атрибуте \"Expr\" не является логическим выражением."
+
+#: strconsts.rsextension
+msgid "Extension"
+msgstr "Расширение"
+
+#: strconsts.rsextensionkind
+msgid "Extension kind"
+msgstr "Тип расширения"
+
+#: strconsts.rsextensionname
+msgid "Extension name"
+msgstr "Название расширения"
+
+#: strconsts.rsextensions
+msgid "Extensions"
+msgstr "Расширения"
+
+#: strconsts.rsextensionsmodule
+msgid "Extensions module"
+msgstr "Модуль расширений"
+
+#: strconsts.rsextensionsmodules
+msgid "Extensions modules"
+msgstr "Модули расширений"
+
+#: strconsts.rsextmodulefailedmsg
+#, object-pascal-format
+msgid "Call function %s failed in the extension module %s. Try to find and remove the module that causes the error."
+msgstr "Сбой вызова функции %s в модуле расширения %s. Попробуйте найти и удалить модуль, вызывающий ошибку."
+
+#: strconsts.rsextmodulesflt
+msgid "Extensions modules (*.epas)|*.epas|"
+msgstr "Модули расширений (*.epas)|*.epas|"
+
+#: strconsts.rsextralistwidth
+msgid "Extra list width"
+msgstr "Расширить список на"
+
+#: strconsts.rsfailedtocreatedb
+#, object-pascal-format
+msgid "Failed to create database.%s"
+msgstr "Не удалось создать базу данных.%s"
+
+#: strconsts.rsfailedtoloadimage
+msgid "Failed to load image."
+msgstr "Не удалось загрузить изображение."
+
+#: strconsts.rsfailedtosaveimage
+msgid "Failed to save image."
+msgstr "Не удалось сохранить изображение."
+
+#: strconsts.rsfailedtowritedata
+msgid "Failed to write data to the database. You can try again."
+msgstr "Не удалось записать данные в базу данных. Вы можете повторить попытку."
+
+#: strconsts.rsfatalerror
+msgid "Unexpected exception"
+msgstr "Неожиданное исключение"
+
+#: strconsts.rsfatalerrormsg
+#, object-pascal-format
+msgid "Oops! Sorry for the inconvenience. An unexpected exception.%sDo you want to continue running the program?"
+msgstr "Опа! Извините за неудобства. Неожиданное исключение.%sХотите продолжить выполнение программы?"
+
+#: strconsts.rsfatalerrormsgdesign
+#, object-pascal-format
+msgid "Oops! Sorry for the inconvenience. An unexpected exception.%s"
+msgstr "Опа! Извините за неудобства. Неожиданное исключение.%s"
+
+#: strconsts.rsfblibnotunloadmsg
+#, object-pascal-format
+msgid "Library %s was not unloaded. To work correctly, restart the application."
+msgstr "Библиотека %s не была выгружена. Для корректной работы перезапустите приложение."
+
+#: strconsts.rsfield
+msgctxt "strconsts.rsfield"
+msgid "Field"
+msgstr "Поле"
+
+#: strconsts.rsfieldcantparam
+msgid "Field can not be a parameter."
+msgstr "Поле не может быть параметром."
+
+#: strconsts.rsfielddatedetailcantparam
+msgid "A field can not be a parameter, because it is used in grouping by date."
+msgstr "Поле не может быть параметром, потому что испольуется в группировке по дате."
+
+#: strconsts.rsfieldisrequired
+#, object-pascal-format
+msgid "Field [%s] is required."
+msgstr "Поле [%s] является обязательным."
+
+#: strconsts.rsfieldname
+msgid "Field name"
+msgstr "Имя поля"
+
+#: strconsts.rsfieldnameempty
+msgctxt "strconsts.rsfieldnameempty"
+msgid "Field name is empty."
+msgstr "Не указано имя поля."
+
+#: strconsts.rsfieldnameexists
+msgctxt "strconsts.rsfieldnameexists"
+msgid "Field with same name already exists."
+msgstr "Поле с таким именем уже существует."
+
+#: strconsts.rsfieldnotdate
+#, object-pascal-format
+msgid "Field [%s] not date."
+msgstr "Поле [%s] не является датой."
+
+#: strconsts.rsfieldnotfound
+#, object-pascal-format
+msgid "Field not found: %s"
+msgstr "Поле не найдено: %s"
+
+#: strconsts.rsfieldnotfounderror
+msgid "Field not found. Unable to determine field type."
+msgstr "Поле не найдено. Невозможно определить тип поля."
+
+#: strconsts.rsfieldnotobject
+#, object-pascal-format
+msgid "Field [%s] not is objects."
+msgstr "Поле [%s] не является объектом."
+
+#: strconsts.rsfieldnotsel
+msgid "Field not selected."
+msgstr "Поле не выбрано."
+
+#: strconsts.rsfieldprops
+#, object-pascal-format
+msgid "Field properties: %s"
+msgstr "Свойства поля: %s"
+
+#: strconsts.rsfields
+msgid "Fields"
+msgstr "Поля"
+
+#: strconsts.rsfieldshouldbenum
+msgid "Field type must be \"Number\"."
+msgstr "Тип поля должен быть \"Число\"."
+
+#: strconsts.rsfieldshouldbevisibleorparam
+msgid "Field should be visible or parameter."
+msgstr "Поле должно быть видимым или параметром."
+
+#: strconsts.rsfieldsize
+msgid "Field size"
+msgstr "Размер поля"
+
+#: strconsts.rsfieldsizemustnotexceed
+msgid "Field size must not exceed 1000 characters."
+msgstr "Размер поля не должен превышать 1000 символов."
+
+#: strconsts.rsfieldsizemustrange
+msgid "Field size must be in range from 1 to 2000 characters."
+msgstr "Размер поля должен быть в пределах от 1 до 2000 символов."
+
+#: strconsts.rsfieldsizerangemsg
+msgid "Value should be in the range from 1 to 2000."
+msgstr "Значение должно быть в пределах от 1 до 2000."
+
+#: strconsts.rsfieldsnotselected
+msgid "Select any fields"
+msgstr "Выберите какие-нибудь поля"
+
+#: strconsts.rsfieldtype
+msgid "Field type"
+msgstr "Тип поля"
+
+#: strconsts.rsfieldwithoutclosingbracket
+#, object-pascal-format
+msgid "Field [%s without a closing bracket ]."
+msgstr "Поле [%s без закрывающей скобки ]."
+
+#: strconsts.rsfile
+msgctxt "strconsts.rsfile"
+msgid "File"
+msgstr "Файл"
+
+#: strconsts.rsfileaction
+msgid "File action"
+msgstr "Действие с файлом"
+
+#: strconsts.rsfilefieldnotfound
+#, object-pascal-format
+msgid "File field [%s] not found."
+msgstr "Поле файла [%s] не найдено."
+
+#: strconsts.rsfilefilter
+#, object-pascal-format
+msgid "Files %s|*.%s|All files (*.*)|*.*"
+msgstr "Файлы %s|*.%s|Все файлы (*.*)|*.*"
+
+#: strconsts.rsfilename
+msgid "Filename"
+msgstr "Имя файла"
+
+#: strconsts.rsfilenameempty
+msgid "Enter filename"
+msgstr "Введите имя файла"
+
+#: strconsts.rsfilenametoolong
+msgid "File name too long (> 150)."
+msgstr "Имя файла слишком длинное (> 150)."
+
+#: strconsts.rsfilenotexists
+#, object-pascal-format
+msgid "File %s not exists."
+msgstr "Файл %s не найден."
+
+#: strconsts.rsfilenotvaliddatabase
+msgid "The file is not a valid Firebird database."
+msgstr "Файл не является корректной базой данных Firebird."
+
+#: strconsts.rsfilepathtoolong
+msgid "File path too long (> 255)."
+msgstr "Путь слишком длинный (>255)."
+
+#: strconsts.rsfillcolor
+msgid "Fill color"
+msgstr "Цвет заливки"
+
+#: strconsts.rsfilling
+msgid "Filling"
+msgstr "Заливка"
+
+#: strconsts.rsfilltable
+msgid "Fill table"
+msgstr "Заполнить таблицу"
+
+#: strconsts.rsfilltablefilter
+msgid "Fill table filter"
+msgstr "Фильтр заполнить таблицу"
+
+#: strconsts.rsfilter
+msgctxt "strconsts.rsfilter"
+msgid "Filter"
+msgstr "Фильтр"
+
+#: strconsts.rsfilterbnhint
+msgctxt "strconsts.rsfilterbnhint"
+msgid "Filter <F7>"
+msgstr "Фильтр <F7>"
+
+#: strconsts.rsfilterbytotals
+msgid "Filter by totals"
+msgstr "Фильтр по итогам"
+
+#: strconsts.rsfiltername
+msgid "Filter name"
+msgstr "Название фильтра"
+
+#: strconsts.rsfilterpresets
+msgid "Filter presets"
+msgstr "Предустановки фильтра"
+
+#: strconsts.rsfiltershint
+msgid "The first filter used by default."
+msgstr "Первый фильтр используется по умолчанию."
+
+#: strconsts.rsfind
+msgid "Find"
+msgstr "Найти"
+
+#: strconsts.rsfindactions
+msgid "Find actions"
+msgstr "Поиск действий"
+
+#: strconsts.rsfindcomponent
+msgid "Find component"
+msgstr "Найти компонент"
+
+#: strconsts.rsfindexpressions
+msgid "Find expressions"
+msgstr "Поиск выражений"
+
+#: strconsts.rsfindfield
+msgid "Find field"
+msgstr "Найти поле"
+
+#: strconsts.rsfindfieldorexpr
+msgid "Find field or expression"
+msgstr "Найти поле или выражение"
+
+#: strconsts.rsfindform
+msgid "Find form"
+msgstr "Найти форму"
+
+#: strconsts.rsfindinmodules
+msgid "Find in modules"
+msgstr "Поиск в модулях"
+
+#: strconsts.rsfindinsyntaxpanel
+msgid "Find in syntax-panel"
+msgstr "Найти в синтаксис-панели"
+
+#: strconsts.rsfindlost
+msgid "Find lost"
+msgstr "Поиск пропавших"
+
+#: strconsts.rsfindmodule
+msgid "Find module"
+msgstr "Найти модуль"
+
+#: strconsts.rsfindnode
+msgid "Find node"
+msgstr "Найти узел"
+
+#: strconsts.rsfindprevious
+msgid "Find previous"
+msgstr "Найти предыдущее"
+
+#: strconsts.rsfindreplace
+msgid "Find / Replace"
+msgstr "Найти / Заменить"
+
+#: strconsts.rsflat
+msgid "Flat"
+msgstr "Плоский"
+
+#: strconsts.rsflatbuttons
+msgid "Flat buttons"
+msgstr "Плоские кнопки"
+
+#: strconsts.rsfloatfieldoutrange
+#, object-pascal-format
+msgid "The value [%s] of field [%s] out of range."
+msgstr "Значение [%s] поля [%s] вне допустимого диапазона."
+
+#: strconsts.rsfloatoutrange
+#, object-pascal-format
+msgid "The value [%s] out of range."
+msgstr "Значение [%s] вне допустимого диапазона."
+
+#: strconsts.rsfmtdatemonth
+msgctxt "strconsts.rsfmtdatemonth"
+msgid "January February March April May June July August September October November December"
+msgstr "января февраля марта апреля мая июня июля августа сентября октября ноября декабря"
+
+#: strconsts.rsfoldallcode
+msgid "Fold all code"
+msgstr "Свернуть весь код"
+
+#: strconsts.rsfont
+msgid "Font"
+msgstr "Шрифт"
+
+#: strconsts.rsfontbold
+msgctxt "strconsts.rsfontbold"
+msgid "B"
+msgstr "Ж"
+
+#: strconsts.rsfontitalic
+msgctxt "strconsts.rsfontitalic"
+msgid "I"
+msgstr "К"
+
+#: strconsts.rsfontname
+msgid "Font name"
+msgstr "Имя шрифта"
+
+#: strconsts.rsfontsize
+msgid "Font size"
+msgstr "Размер шрифта"
+
+#: strconsts.rsfontstrikeout
+msgctxt "strconsts.rsfontstrikeout"
+msgid "S"
+msgstr "З"
+
+#: strconsts.rsfontunderline
+msgctxt "strconsts.rsfontunderline"
+msgid "U"
+msgstr "Ч"
+
+#: strconsts.rsfoot
+msgid "Foot"
+msgstr "Подвал"
+
+#: strconsts.rsforallaction
+msgid "For all action"
+msgstr "Действие для всех"
+
+#: strconsts.rsform
+msgid "Form"
+msgstr "Форма"
+
+#: strconsts.rsformaction
+msgid "Form action"
+msgstr "Действие формы"
+
+#: strconsts.rsformactions
+msgid "Form actions"
+msgstr "Действия формы"
+
+#: strconsts.rsformat
+msgid "Format"
+msgstr "Формат"
+
+#: strconsts.rsformcomponentnameexists
+msgid "A form with the same component name already exists."
+msgstr "Форма с таким именем компонента уже существует."
+
+#: strconsts.rsformfield
+msgid "Form field"
+msgstr "Поле формы"
+
+#: strconsts.rsformfieldnotsel
+msgid "Form field not selected."
+msgstr "Поле формы не выбрано."
+
+#: strconsts.rsformlinkto
+msgid "Form link to"
+msgstr "Форма ссылается на"
+
+#: strconsts.rsformmodule
+msgid "Form module"
+msgstr "Модуль формы"
+
+#: strconsts.rsformmodulesflt
+msgid "Form modules (*.fpas)|*.fpas|"
+msgstr "Модули форм (*.fpas)|*.fpas|"
+
+#: strconsts.rsformname
+msgid "Form name"
+msgstr "Имя формы"
+
+#: strconsts.rsformnameexists
+msgid "A form with the same name already exists."
+msgstr "Форма с таким именем уже существует."
+
+#: strconsts.rsformnotavail
+msgid "In this expression forms is not available."
+msgstr "В этом выражении формы недоступны."
+
+#: strconsts.rsformnotfound
+#, object-pascal-format
+msgid "Form not found: %s"
+msgstr "Форма не найдена: %s"
+
+#: strconsts.rsformnotfoundstr
+msgid "Form not found."
+msgstr "Форма не найдена."
+
+#: strconsts.rsformnotsel
+msgid "Form not selected."
+msgstr "Форма не выбрана."
+
+#: strconsts.rsformqrynotfound
+#, object-pascal-format
+msgid "Form or query not found: %s"
+msgstr "Форма или запрос не найден: %s"
+
+#: strconsts.rsforms
+msgid "Forms"
+msgstr "Формы"
+
+#: strconsts.rsformslinktoselfm
+msgid "Forms link to selected form"
+msgstr "Формы, ссылающиеся на выбранную форму"
+
+#: strconsts.rsformsmodules
+msgid "Forms modules"
+msgstr "Модули форм"
+
+#: strconsts.rsformwebmodule
+msgid "Form web module"
+msgstr "Веб-модуль формы"
+
+#: strconsts.rsformwebmodules
+msgid "Form web modules"
+msgstr "Веб-модули форм"
+
+#: strconsts.rsforum
+msgid "Forum"
+msgstr "Форум"
+
+#: strconsts.rsfpboolopexpect
+msgid "Boolean operation expected."
+msgstr "Ожидается логическая операция."
+
+#: strconsts.rsfpcmpopexpect
+msgid "Comparsion operation expected."
+msgstr "Ожидается операция сравнения."
+
+#: strconsts.rsfpexprnotparsed
+msgid "Expression not parsed."
+msgstr "Выражение не распознано."
+
+#: strconsts.rsfpsrcfldexcept
+msgid "Source field expected."
+msgstr "Ожидается поле источника."
+
+#: strconsts.rsfpsrcfldisempty
+msgid "Source field name is empty."
+msgstr "Имя поля источника пустое."
+
+#: strconsts.rsfpsrcfldnotfound
+#, object-pascal-format
+msgid "Source field [%s] not found."
+msgstr "Поле источника [%s] не найдено."
+
+#: strconsts.rsfpsrcfldnotfoundin
+#, object-pascal-format
+msgid "Source field [%s] not found in [%s]."
+msgstr "Поле источника [%s] не найдено в [%s]."
+
+#: strconsts.rsfpsrcfldobjfieldnotvalid
+#, object-pascal-format
+msgid "It is not valid to use the object field (component) [%s] as a source field."
+msgstr "Недопустимо использовать поле объекта (компонент) [%s] как поле источника."
+
+#: strconsts.rsframe
+msgid "Frame"
+msgstr "Рамка"
+
+#: strconsts.rsfrombegin
+msgid "From the beginning"
+msgstr "С начала"
+
+#: strconsts.rsfromcursor
+msgid "From cursor"
+msgstr "От курсора"
+
+#: strconsts.rsfullaccess
+msgid "Full access"
+msgstr "Полный доступ"
+
+#: strconsts.rsfullstar
+msgid "Full star"
+msgstr "Шестиугольная"
+
+#: strconsts.rsfuncnotfound2
+#, object-pascal-format
+msgid "Function not found: %s"
+msgstr "Функция не найдена: %s"
+
+#: strconsts.rsfuncnotfoundinmodule
+#, object-pascal-format
+msgid "Function [%s] not found in module [%s]."
+msgstr "Функция [%s] не найдена в модуле [%s]."
+
+#: strconsts.rsfuncnotsel
+msgctxt "strconsts.rsfuncnotsel"
+msgid "Function not selected."
+msgstr "Функция не выбрана."
+
+#: strconsts.rsfunction
+msgid "Function"
+msgstr "Функция"
+
+#: strconsts.rsfunctionget
+msgid "Function GET"
+msgstr "Функция GET"
+
+#: strconsts.rsfunctionname
+msgid "Function name"
+msgstr "Имя функции"
+
+#: strconsts.rsfunctions
+msgid "Functions"
+msgstr "Функции"
+
+#: strconsts.rsfunctionsbn
+msgid "Functions. Show help by function under cursor <F2>"
+msgstr "Функции. Показать справку по функции под курсором <F2>"
+
+#: strconsts.rsgallery
+msgid "Gallery"
+msgstr "Галерея"
+
+#: strconsts.rsgeneralview
+msgid "General view"
+msgstr "Общий вид"
+
+#: strconsts.rsgetchangescounterror
+msgid "Unable to determine the number of changes to the database tables."
+msgstr "Не удалось определить количество изменений таблиц базы данных."
+
+#: strconsts.rsgetvalue
+msgid "Get value under cursor"
+msgstr "Получить значение под курсором"
+
+#: strconsts.rsglow
+msgid "Glow"
+msgstr "Свечение"
+
+#: strconsts.rsglyph
+msgid "Glyph"
+msgstr "Значок"
+
+#: strconsts.rsgoto
+msgid "Go to"
+msgstr "Переход"
+
+#: strconsts.rsgotoform
+msgid "Go to form"
+msgstr "Перейти к форме"
+
+#: strconsts.rsgotohelp
+msgid "Go to Help"
+msgstr "Перейти к справке"
+
+#: strconsts.rsgotonextitem
+msgid "Go to next item"
+msgstr "Перейти к следующему элементу"
+
+#: strconsts.rsgotourl
+msgid "Go to URL"
+msgstr "Перейти по ссылке"
+
+#: strconsts.rsgrandtotal
+msgid "Grand total"
+msgstr "Общий итог"
+
+#: strconsts.rsgraph
+msgid "Graph"
+msgstr "График"
+
+#: strconsts.rsgreat
+msgid "Great"
+msgstr "Больше"
+
+#: strconsts.rsgreatorequal
+msgid "Great or equal"
+msgstr "Больше или равно"
+
+#: strconsts.rsgrid
+msgid "Grid"
+msgstr "Сетка"
+
+#: strconsts.rsgridbottom
+msgid "Grid bottom"
+msgstr "Таблица внизу"
+
+#: strconsts.rsgridcolor
+msgid "Grid color"
+msgstr "Цвет сетки"
+
+#: strconsts.rsgridleft
+msgid "Grid left"
+msgstr "Таблица слева"
+
+#: strconsts.rsgridlines
+msgid "Grid lines"
+msgstr "Линии сетки"
+
+#: strconsts.rsgridonly
+msgid "Grid only"
+msgstr "Только таблица"
+
+#: strconsts.rsgridright
+msgid "Grid right"
+msgstr "Таблица справа"
+
+#: strconsts.rsgridsizex
+msgid "Grid size X"
+msgstr "Размер X сетки"
+
+#: strconsts.rsgridsizey
+msgid "Grid size Y"
+msgstr "Размер Y сетки"
+
+#: strconsts.rsgridtop
+msgid "Grid top"
+msgstr "Таблица вверху"
+
+#: strconsts.rsgroup
+msgid "Group"
+msgstr "Группа"
+
+#: strconsts.rsgroupbydate
+msgid "Group by date"
+msgstr "Группировка по дате"
+
+#: strconsts.rsgroupdigits
+msgctxt "strconsts.rsgroupdigits"
+msgid "Group digits"
+msgstr "Группировать цифры"
+
+#: strconsts.rsgroupfield
+msgid "Group field"
+msgstr "Поле группы"
+
+#: strconsts.rsgroupingtype
+msgid "Grouping type"
+msgstr "Тип группировки"
+
+#: strconsts.rsgroupname
+msgid "Group name"
+msgstr "Название группы"
+
+#: strconsts.rsgroupnameinvalidchars
+msgid "You can not use characters \\ and | in the group name."
+msgstr "Нельзя использовать символы \\ и | в имени группы."
+
+#: strconsts.rsgroupnameisrequired
+msgid "Group name is required."
+msgstr "Название группы обязательное."
+
+#: strconsts.rsheader
+msgid "Header"
+msgstr "Заголовок"
+
+#: strconsts.rsheadercolor
+msgid "Header color"
+msgstr "Цвет заголовка"
+
+#: strconsts.rsheaderfont
+msgid "Header font"
+msgstr "Шрифт заголовка"
+
+#: strconsts.rsheaderlines
+msgid "Header lines"
+msgstr "Линии заг."
+
+#: strconsts.rsheaders
+msgid "Headers"
+msgstr "Заголовки"
+
+#: strconsts.rsheadertotal
+msgid "Header total"
+msgstr "Итог заг."
+
+#: strconsts.rsheight
+msgid "Height"
+msgstr "Высота"
+
+#: strconsts.rshelp
+msgid "Help"
+msgstr "Помощь"
+
+#: strconsts.rshelptext
+msgid "Help text"
+msgstr "Справочный текст"
+
+#: strconsts.rshelptopicnotavailable
+msgid "Sorry, the help topic is not yet available. Try again later."
+msgstr "Извините, раздел справки недоступен. Попробуйте еще раз позднее."
+
+#: strconsts.rshexagon
+msgid "Hexagon"
+msgstr "Шестиугольник"
+
+#: strconsts.rshh
+msgid "HH"
+msgstr "ЧЧ"
+
+#: strconsts.rshhmm
+msgid "HH:MM"
+msgstr "ЧЧ:ММ"
+
+#: strconsts.rshhmmss
+msgid "HH:MM:SS"
+msgstr "ЧЧ:ММ:СС"
+
+#: strconsts.rshideancestors
+msgid "Hide ancestors"
+msgstr "Скрыть предков"
+
+#: strconsts.rshidebaseclasses
+msgid "Hide base classes"
+msgstr "Скрыть базовые классы"
+
+#: strconsts.rshidebutton
+msgid "Hide button"
+msgstr "Скрыть кнопку"
+
+#: strconsts.rshidecolumn
+msgid "Hide column"
+msgstr "Скрыть столбец"
+
+#: strconsts.rshidecontexthelp
+msgid "Hide context help"
+msgstr "Скрыть контекстную справку"
+
+#: strconsts.rshidelist
+msgid "Hide list"
+msgstr "Скрыть список"
+
+#: strconsts.rshidenighbour
+msgid "Hide nighbour"
+msgstr "Скрыть соседа"
+
+#: strconsts.rshidewhenlostfocus
+msgid "Hide when lost focus"
+msgstr "Скрывать при потере фокуса"
+
+#: strconsts.rshierarchy
+msgid "Hierarchy"
+msgstr "Иерархия"
+
+#: strconsts.rshierarchycantreferchild
+msgid "A hierarchy element can not reference its child element."
+msgstr "Элемент иерархии не может ссылаться на свой дочерний элемент."
+
+#: strconsts.rshierarchycantreferitself
+msgid "The hierarchy element can not refer to itself."
+msgstr "Элемент иерархии не может ссылаться на самого себя."
+
+#: strconsts.rshighlightcurline
+msgid "Highlight current line"
+msgstr "Подсветка текущей строки"
+
+#: strconsts.rshint
+msgid "Hint"
+msgstr "Подсказка"
+
+#: strconsts.rshintoutputdefaultfolder
+msgid "Default folder (user temporary folder)"
+msgstr "Папка по умолчанию (временная папка пользователя)"
+
+#: strconsts.rshinttemplatedefaultfolder
+msgid "Default folder (<application folder>\\templates)"
+msgstr "Папка по умолчанию (<папка приложения>\\templates)"
+
+#: strconsts.rshomepage
+msgid "Homepage"
+msgstr "Домашняя страница"
+
+#: strconsts.rshorizontalbars
+msgid "Horizontal bars"
+msgstr "Линейчатая"
+
+#: strconsts.rshorizontalgrid
+msgid "Horizontal grid"
+msgstr "Горизонтальная сетка"
+
+#: strconsts.rshorizontallines
+msgid "Horizontal lines"
+msgstr "Горизонтальные линии"
+
+#: strconsts.rshorz
+msgctxt "strconsts.rshorz"
+msgid "Horizontal"
+msgstr "По горизонтали"
+
+#: strconsts.rshorzcenter
+msgid "Horz center"
+msgstr "По центру горизонтали"
+
+#: strconsts.rsid
+msgid "ID"
+msgstr ""
+
+#: strconsts.rsidcurrentrec
+msgid "ID current record"
+msgstr "ID текущей записи"
+
+#: strconsts.rsidentnotsamenames
+msgid "The names of functions, types and variables must not be the same."
+msgstr "Имена функций, типов и переменных не должны совпадать."
+
+#: strconsts.rsidentvalidnamemsg
+msgid "Function, type, and variable names can only contain the characters A-Z, a-z, 0-9, _ and must not start with a digit."
+msgstr "Имена функций, типов и переменных должны содержать только символы A-Z, a-z, 0-9, _ и не должны начинаться с цифры."
+
+#: strconsts.rsif
+msgid "If"
+msgstr "Если"
+
+#: strconsts.rsifatindex
+#, object-pascal-format
+msgid "[if] at %d."
+msgstr "[if] номер %d."
+
+#: strconsts.rsifcondition
+#, object-pascal-format
+msgid "If %s"
+msgstr "Если %s"
+
+#: strconsts.rsifgridatindex
+#, object-pascal-format
+msgid "[ifgrid] at %d, [if] at %d."
+msgstr "[ifgrid] номер %d, [if] номер %d."
+
+#: strconsts.rsignore
+msgid "Ignore"
+msgstr "Игнорировать"
+
+#: strconsts.rsiifnulldetect
+msgid " A null is detected. Verify that all operands of the logical expression have a specific values (not empty). To ensure a certain value, use function NZ or an additional null check. See also function NULL."
+msgstr "Обнаружено значение null. Проверьте, чтобы все операнды логического выражения имели определенное значение (не пустые). Для обеспечения определенного значения используйте функцию NZ или дополнительную проверку на null. Смотрите также функцию NULL."
+
+#: strconsts.rsiifparamnotlogic
+msgid "The type of the result of evaluating a logical expression is not a logical type (true or false)."
+msgstr "Тип результата вычисления логического выражения не является логическим типом (истина или ложь)."
+
+#: strconsts.rsiknow
+msgid "I know what I do"
+msgstr "Я знаю, что делаю"
+
+#: strconsts.rsillegalboolop
+msgid "Illegal boolean operation."
+msgstr "Недопустимая логическая операция."
+
+#: strconsts.rsillegaldateop
+msgid "Illegal date/time operation."
+msgstr "Недопустимая операция с датой / временем."
+
+#: strconsts.rsillegalnumop
+msgid "Illegal numeric operation."
+msgstr "Недопустимая операция с числами."
+
+#: strconsts.rsillegalstrop
+msgid "Illegal string operation."
+msgstr "Недопустимая операция с текстом."
+
+#: strconsts.rsimage
+msgid "Image"
+msgstr "Изображение"
+
+#: strconsts.rsimagealreadyexists
+msgid "The image with same name already exists."
+msgstr "Изображение с таким именем уже существует."
+
+#: strconsts.rsimagefieldnotfound
+#, object-pascal-format
+msgid "Image field [%s] not found."
+msgstr "Поле изображения [%s] не найдено."
+
+#: strconsts.rsimageprops
+msgid "Image properties"
+msgstr "Свойства изображения"
+
+#: strconsts.rsimages
+msgid "Images"
+msgstr "Изображения"
+
+#: strconsts.rsimageusedinact
+msgid "Image used in actions:"
+msgstr "Изображение используется в действиях:"
+
+#: strconsts.rsimageusedincmp
+msgid "Image used in components:"
+msgstr "Изображение используется в компонентах:"
+
+#: strconsts.rsimgprocessprint
+msgid "Processing when printing"
+msgstr "Обработка при печати"
+
+#: strconsts.rsimpincorrectcheck
+#, object-pascal-format
+msgid "Incorrect check: %s"
+msgstr "Некорректный флажок: %s"
+
+#: strconsts.rsimpincorrectcounter
+#, object-pascal-format
+msgid "Incorrect counter value: %s"
+msgstr "Некорректное значение счетчика: %s"
+
+#: strconsts.rsimpincorrectdate
+#, object-pascal-format
+msgid "Incorrect date: %s"
+msgstr "Некорректная дата: %s"
+
+#: strconsts.rsimpincorrectnumber
+#, object-pascal-format
+msgid "Incorrect number: %s"
+msgstr "Некорректное число: %s"
+
+#: strconsts.rsimpincorrecttime
+#, object-pascal-format
+msgid "Incorrect time: %s"
+msgstr "Некорректное время: %s"
+
+#: strconsts.rsimportallfieldslostmsg
+msgid "We could not find any matching fields in the database. Make sure that the field names in the first line are correct and that the file's encoding is correct."
+msgstr "Не удалось найти ни одного совпадающего поля в базе данных. Убедитесь, что кодировка файла и имена полей в первой строке корректные."
+
+#: strconsts.rsimportanyway
+msgid "Do you want to import anyway?"
+msgstr "Вы все равно хотите импортировать?"
+
+#: strconsts.rsimportcheckerrormsg
+msgid "During the verification of the input data, the following errors were found:"
+msgstr "В ходе проверки данных были обнаружены следующие ошибки:"
+
+#: strconsts.rsimportdata
+msgid "Import data"
+msgstr "Импорт данных"
+
+#: strconsts.rsimporterrorrow
+#, object-pascal-format
+msgid "Row %d: %s"
+msgstr "Строка %d: %s"
+
+#: strconsts.rsimportexportdatafilter
+msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*"
+msgstr "Файлы CSV (*.csv)|*.csv|Все файлы (*.*)|*.*"
+
+#: strconsts.rsimportexportprjfilter
+msgid "DataExpress Project (*.dxp)|*.dxp|All files (*.*)|*.*"
+msgstr "Проект DataExpress (*.dxp)|*.dxp|Все файлы (*.*)|*.*"
+
+#: strconsts.rsimportfieldslostmsg
+#, object-pascal-format
+msgid "The following fields are not found in the database: %s. Make sure the field names are correct."
+msgstr "Следующие поля не были найдены в базе данных: %s. Убедитесь, что имена полей указаны верно."
+
+#: strconsts.rsimportmodule
+msgid "Import module"
+msgstr "Импорт модуля"
+
+#: strconsts.rsimportmodules
+msgid "Import modules"
+msgstr "Импорт модулей"
+
+#: strconsts.rsimportprjok
+msgid "Import of project was successfull."
+msgstr "Импорт проекта успешно завершен."
+
+#: strconsts.rsimportproject
+msgid "Import Project"
+msgstr "Импорт проекта"
+
+#: strconsts.rsimportprojecterror
+msgid "An error occured when importing project."
+msgstr "При импорте проекта произошла ошибка."
+
+#: strconsts.rsimportsucess
+#, object-pascal-format
+msgid "%d records were imported sucessfully."
+msgstr "%d записей импортировано успешно."
+
+#: strconsts.rsimportunsupportedfieldsmsg
+#, object-pascal-format
+msgid "The following fields found have an unsupported field type: %s."
+msgstr "Следующие найденные поля имеют неподдерживаемый тип поля: %s."
+
+#: strconsts.rsinactiveselected
+msgid "Inactive selected"
+msgstr "Неактивное выделение"
+
+#: strconsts.rsinactiveselectedtext
+msgid "Inactive selected text"
+msgstr "Текст неактив. выделения"
+
+#: strconsts.rsincludeinsearch
+msgid "Include in search"
+msgstr "Включить в поиск"
+
+#: strconsts.rsincoming
+msgid "Incoming"
+msgstr "Приход"
+
+#: strconsts.rsincompatibleargoffunc
+#, object-pascal-format
+msgid "Incompatible argument #%d of function %s. Got %s expected %s."
+msgstr "Несовместимый аргумент № %d функции %s. Получено %s, ожидается %s."
+
+#: strconsts.rsincompatiblefields
+msgid "Incompatible fields."
+msgstr "Несовместимые поля."
+
+#: strconsts.rsincompatibletypes
+msgid "Incompatible types."
+msgstr "Несовместимые типы."
+
+#: strconsts.rsincompatibletypessrcfieldandexpr
+#, object-pascal-format
+msgid "The result of the expression is not compatible with the source field. Got %s, expected %s."
+msgstr "Результат выражения не совместим с полем источника. Получено %s, ожидается %s."
+
+#: strconsts.rsincompatiblevalueforfield
+msgid "The result of evaluating the expression is incompatible with the field. For example, you can not write text into a numeric field."
+msgstr "Результат вычисления выражения несовместим с полем. Например, нельзя записать текст в числовое поле."
+
+#: strconsts.rsincorrectaccess
+msgid "Incorrect access"
+msgstr "Некорректные права доступа"
+
+#: strconsts.rsindent
+msgid "Indent"
+msgstr "Отступ"
+
+#: strconsts.rsindication
+msgid "Indication"
+msgstr "Индикация"
+
+#: strconsts.rsindicator
+msgid "Indicator"
+msgstr "Индикатор"
+
+#: strconsts.rsinformation
+msgid "Information"
+msgstr "Информация"
+
+#: strconsts.rsinitfieldserror
+msgid "Cannot initialize fields."
+msgstr "Не удалось инициализировать поля."
+
+#: strconsts.rsinnerlength
+msgid "Inner length"
+msgstr "Длина внутренняя"
+
+#: strconsts.rsinput
+msgid "Input"
+msgstr "Вводить"
+
+#: strconsts.rsinselected
+msgid "In selected"
+msgstr "В выделенном"
+
+#: strconsts.rsinsert
+msgctxt "strconsts.rsinsert"
+msgid "Insert"
+msgstr "Вставить"
+
+#: strconsts.rsinsertaction
+msgid "Insert action..."
+msgstr "Вставить действие..."
+
+#: strconsts.rsinserteventhandler
+msgid "Insert event handler"
+msgstr "Вставить обработчик события"
+
+#: strconsts.rsinsertformfield
+msgid "Insert form field"
+msgstr "Вставить поле формы"
+
+#: strconsts.rsinserting
+msgid "INS"
+msgstr "ВСТ"
+
+#: strconsts.rsinsertmore
+msgid "Insert..."
+msgstr "Вставить..."
+
+#: strconsts.rsinsertqueryfield
+msgid "Insert query field"
+msgstr "Вставить поле запроса"
+
+#: strconsts.rsinsertsourcefield
+msgid "Insert source field"
+msgstr "Вставить поле источника"
+
+#: strconsts.rsinserttotalfunc
+msgid "Insert total function"
+msgstr "Вставить итоговую функцию"
+
+#: strconsts.rsinsertvalues
+msgid "Insert values"
+msgstr "Вставить значения"
+
+#: strconsts.rsinside
+msgid "Inside"
+msgstr "Внутри"
+
+#: strconsts.rsinterface
+msgid "Interface"
+msgstr "Интерфейс"
+
+#: strconsts.rsinterfaces
+msgid "Interfaces"
+msgstr "Интерфейсы"
+
+#: strconsts.rsintervals
+msgid "Intervals"
+msgstr "Интервалы"
+
+#: strconsts.rsinvalidcharinfieldname
+msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / ="
+msgstr "Нельзя использовать в именах полей следующие символы: ' \" | ! < > [ ] { } / ="
+
+#: strconsts.rsinvalidcharinformname
+msgid "You can not use the following characters in the names of forms, queries and reports: ' \" | ! < > [ ] { } / \\ ? : *"
+msgstr "Нельзя использовать в именах форм, запросов и отчетов следующие символы: ' \" | ! < > [ ] { } / \\ ? : *"
+
+#: strconsts.rsinvalidcharinimagename
+msgctxt "strconsts.rsinvalidcharinimagename"
+msgid "You can not use the following characters in the names of images: \\ / : * ? \" < > |"
+msgstr "Нельзя использовать в именах изображений следующие символы: \\ / : * ? \" < > |"
+
+#: strconsts.rsinvalidcharinmodulename
+msgctxt "strconsts.rsinvalidcharinmodulename"
+msgid "You can not use the following characters in the names of modules: \\ / : * ? \" < > |"
+msgstr "Нельзя использовать в именах модулей следующие символы: \\ / : * ? \" < > |"
+
+#: strconsts.rsinvalidcmpname
+msgid "Invalid component name."
+msgstr "Неверное имя компонента."
+
+#: strconsts.rsinvalidcmpop
+msgid "Invalid comparison operation."
+msgstr "Недопустимая операция сравнения."
+
+#: strconsts.rsinvalidmethotcall
+#, object-pascal-format
+msgid "Invalid method call child form: %s"
+msgstr "Недопустимый вызов метода подчиненной формы: %s"
+
+#: strconsts.rsinvalidnumber
+#, object-pascal-format
+msgid "Invalid number: %s"
+msgstr "Некорректное число: %s"
+
+#: strconsts.rsinvalidnumberargsfunc
+#, object-pascal-format
+msgctxt "strconsts.rsinvalidnumberargsfunc"
+msgid "Invalid number arguments of function %s. Got %d expected %d."
+msgstr "Неверное количество аргументов функции %s. Получено %d, ожидается %d."
+
+#: strconsts.rsinvalidopfortype
+#, object-pascal-format
+msgid "Operation %s is not valid for %s type."
+msgstr "Операция %s недопустима для типа %s."
+
+#: strconsts.rsinvalidopfortypeexpected
+#, object-pascal-format
+msgid "Operation %s is not valid for %s type. Expected %s."
+msgstr "Операция %s недопустима для типа %s. Ожидается %s."
+
+#: strconsts.rsinvalidrange
+msgid "Invalid range."
+msgstr "Недопустимый диапазон."
+
+#: strconsts.rsinvalidusernamepwd
+msgid "Invalid username or password."
+msgstr "Неверное имя пользователя или пароль."
+
+#: strconsts.rsinvalidusetagform
+#, object-pascal-format
+msgid "Tags {form|%s} and {form|%s} are in the same paragraph. Using more than one tag \"form\" in the same paragraph is invalid. "
+msgstr "Теги {form|%s} и {form|%s} находятся в одном абзаце. Использование более одного тега \"form\" в том же абзаце недопустимо."
+
+#: strconsts.rsinvalidusetaggrid
+#, object-pascal-format
+msgid "Tags {grid|%s} and {grid|%s} are in the same table row. Using more than one tag \"grid\" in the same table row is invalid."
+msgstr "Теги {grid|%s} и {grid|%s} находятся в одной строке таблицы. Использование более одного тега \"grid\" в той же строке таблицы недопустимо."
+
+#: strconsts.rsinvalidusinggrouptag
+msgid "Using more than one tag \"group\" in the same paragraph or the same row of the table is invalid."
+msgstr "Использование более одного тега \"group\" в том же абзаце или той же строке таблицы недопустимо."
+
+#: strconsts.rsip
+msgid "IP"
+msgstr ""
+
+#: strconsts.rsipaddress
+msgid "IP address"
+msgstr "IP адрес"
+
+#: strconsts.rsitalic
+msgid "Italic <Ctrl-I>"
+msgstr "Наклонный <Ctrl-I>"
+
+#: strconsts.rslabel
+msgid "Label"
+msgstr "Надпись"
+
+#: strconsts.rslabelempty
+msgid "The label can not be empty or filled with spaces."
+msgstr "Надпись не может быть пустой или заполнена пробелами"
+
+#: strconsts.rslanguage
+msgid "Language"
+msgstr "Язык"
+
+#: strconsts.rslasterrormsg
+msgid "The last time there was a critical error. Continue database connection?"
+msgstr "В прошлый раз произошла критическая ошибка. Продолжить подключение к базе данных?"
+
+#: strconsts.rslayout
+msgid "Layout"
+msgstr "Расположение"
+
+#: strconsts.rslayoutbottom
+msgctxt "strconsts.rslayoutbottom"
+msgid "Bottom"
+msgstr "Внизу"
+
+#: strconsts.rslayouttop
+msgctxt "strconsts.rslayouttop"
+msgid "Top"
+msgstr "Вверху"
+
+#: strconsts.rslbltext
+msgid "Label text"
+msgstr "Текст"
+
+#: strconsts.rsleft
+msgid "Left"
+msgstr "Слева"
+
+#: strconsts.rsleftjustify
+msgid "Left justify"
+msgstr "По левому краю"
+
+#: strconsts.rsleftside
+msgid "Left side"
+msgstr "Левая сторона"
+
+#: strconsts.rslegend
+msgid "Legend"
+msgstr "Легенда"
+
+#: strconsts.rslength
+msgid "Length"
+msgstr "Длина"
+
+#: strconsts.rsless
+msgid "Less"
+msgstr "Меньше"
+
+#: strconsts.rslessorequal
+msgid "Less or equal"
+msgstr "Меньше или равно"
+
+#: strconsts.rslevelcount
+msgid "Level count"
+msgstr "Количество уровней"
+
+#: strconsts.rslicenseagreement
+msgid "License agreement"
+msgstr "Лицензионное соглашение"
+
+#: strconsts.rslicensedapache
+msgid "Licensed under the Apache License, Version 2.0"
+msgstr "Лицензировано по лицензии Apache, версия 2.0"
+
+#: strconsts.rslimit64kmsg
+#, object-pascal-format
+msgid "The total size of the fields on the form [%s] exceeds 65535 bytes and is %d bytes. The total size of the fields should be reduced by %d bytes (%n chars). To do this, reduce the size of text fields or delete unnecessary fields."
+msgstr "Общий размер полей в форме [%s] превышает 65535 байт и составляет %d байт. Общий размер полей должен быть уменьшен на %d байт (%n символов). Для этого уменьшите размер текстовых полей или удалите лишние поля."
+
+#: strconsts.rslimit64kobjmsg
+#, object-pascal-format
+msgid "The total size of the fields, with the objects and object fields, on the form [%s] exceeds 65535 bytes and is %d bytes. The total size of the fields should be reduced by %d bytes (%n chars). To do this, delete some fields of objects, reduce the size of fields associated with objects or fields of objects, reduce the size of form fields."
+msgstr "Общий размер полей, с учетом объектов и полей объектов, в форме [%s] превышает 65535 байт и составляет %d байт. Общий размер полей должен быть уменьшен на %d байт (%n символов). Для этого удалите некоторые поля объектов, уменьшите размер полей, связанных с объектами и полями объектов, уменьшите размер полей формы."
+
+#: strconsts.rslimit64koldmsg
+#, object-pascal-format
+msgid "The total size of the fields on the form [%s] exceeds 65535 bytes and is %d bytes. The total size of the fields should be reduced by %d bytes (%n chars). To do this, delete the newly added or unnecessary fields. Reducing the size of text fields in this case does not help."
+msgstr "Общий размер полей в форме [%s] превышает 65535 байт и составляет %d байт. Общий размер полей должен быть уменьшен на %d байт (%n символов). Для этого удалите только что добавленные или ненужные поля. Уменьшение размера текстовых полей в данном случае не поможет."
+
+#: strconsts.rslimitedaccess
+msgid "Limited access"
+msgstr "Ограниченный доступ"
+
+#: strconsts.rsline
+msgid "Line"
+msgstr "Линия"
+
+#: strconsts.rslinecolor
+msgid "Line color"
+msgstr "Цвет линии"
+
+#: strconsts.rslinecomment
+msgid "Single line comment"
+msgstr "Комментарии в одну строку"
+
+#: strconsts.rslines
+msgid "Lines"
+msgstr "Линии"
+
+#: strconsts.rslinesnum
+#, object-pascal-format
+msgid "%d lines"
+msgstr "%d строк"
+
+#: strconsts.rslinestyle
+msgid "Line style"
+msgstr "Стиль линии"
+
+#: strconsts.rslinewidth
+msgid "Line width"
+msgstr "Ширина линии"
+
+#: strconsts.rslinkedobject
+msgid "Linked object"
+msgstr "Связанный объект"
+
+#: strconsts.rslinklines
+msgid "Link lines"
+msgstr "Линия связи"
+
+#: strconsts.rslinksetup
+msgid "Link setup"
+msgstr "Настройка связи"
+
+#: strconsts.rslinktoform
+msgid "Link to form"
+msgstr "Связь с формой"
+
+#: strconsts.rslist
+msgid "List"
+msgstr "Список"
+
+#: strconsts.rslistfilter
+msgid "List filter"
+msgstr "Фильтр списка"
+
+#: strconsts.rslistsource
+msgid "List Source"
+msgstr "Источник списка"
+
+#: strconsts.rsloaddataerrormsg
+#, object-pascal-format
+msgid "Could not load script code.%sError message: %sModule name: %sModule kind: %s"
+msgstr "Не удалось загрузить код скрипта.%sСообщение об ошибке: %sМодуль: %sТип модуля: %s"
+
+#: strconsts.rsloadfile
+msgid "Load file"
+msgstr "Загрузить файл"
+
+#: strconsts.rsloadimage
+msgid "Load image"
+msgstr "Загрузить изображение"
+
+#: strconsts.rsloadimagebase64errormsg
+#, object-pascal-format
+msgid "Could not load the image from the extension module. Make sure the image is valid format. Error message: %s"
+msgstr "Не удалось загрузить изображение из модуля расширения. Убедитесь, что изображение в правильном формате. Сообщение об ошибке: %s"
+
+#: strconsts.rsloading
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: strconsts.rsloadingdata
+msgid "Loading data..."
+msgstr "Загрузка данных..."
+
+#: strconsts.rslogicaland
+msgid "Logical AND"
+msgstr "Логическое И"
+
+#: strconsts.rslogicalexpr
+msgid "Logical expression"
+msgstr "Логическое выражение"
+
+#: strconsts.rslogicalor
+msgid "Logical OR"
+msgstr "Логическое ИЛИ"
+
+#: strconsts.rslogintime
+msgid "Login time"
+msgstr "Время входа"
+
+#: strconsts.rslook
+msgid "Look"
+msgstr "Посмотреть"
+
+#: strconsts.rsloopdetectcalcfield
+#, object-pascal-format
+msgid "%s (calc field %s)"
+msgstr "%s (вычисляемое поле %s)"
+
+#: strconsts.rsloopdetected
+#, object-pascal-format
+msgid "Loop detected in the calculation chain: %s"
+msgstr "Обнаружено зацикливание в цепочке вычислений: %s"
+
+#: strconsts.rsloopdetectedcalc
+msgid "Loop detected in calculations."
+msgstr "Обнаружено зацикливание в вычислениях."
+
+#: strconsts.rsloopdetectoutputfilter
+#, object-pascal-format
+msgid "%s (output filter)"
+msgstr "%s (выходной фильтр)"
+
+#: strconsts.rsloopdetectsourcefilter
+#, object-pascal-format
+msgid "%s (source filter %d)"
+msgstr "%s (фильтр источника %d)"
+
+#: strconsts.rsloopdetectsql
+#, object-pascal-format
+msgid "%s (SQL expression)"
+msgstr "%s (SQL выражение)"
+
+#: strconsts.rslooplinkdetect
+#, object-pascal-format
+msgid "Found a circular dependency between queries: %s"
+msgstr "Обнаружена циклическая зависимость между запросами: %s"
+
+#: strconsts.rsmacaddress
+msgid "MAC address"
+msgstr "MAC адрес"
+
+#: strconsts.rsmanualrefresh
+msgid "Manual refresh"
+msgstr "Обновлять вручную"
+
+#: strconsts.rsmargin
+msgid "Margin"
+msgstr "Отступ"
+
+#: strconsts.rsmarginbottom
+msgid "Margin bottom"
+msgstr "Нижнее"
+
+#: strconsts.rsmarginleft
+msgid "Margin left"
+msgstr "Левое"
+
+#: strconsts.rsmarginright
+msgid "Margin right"
+msgstr "Правое"
+
+#: strconsts.rsmargins
+msgid "Margins"
+msgstr "Поля"
+
+#: strconsts.rsmarginsexternal
+msgid "Margins external"
+msgstr "Поля внешние"
+
+#: strconsts.rsmarginsleftright
+msgid "Margins left/right"
+msgstr "Поля слева/справа"
+
+#: strconsts.rsmarginstopbottom
+msgid "Margins top/bottom"
+msgstr "Поля сверху/снизу"
+
+#: strconsts.rsmargintop
+msgid "Margin top"
+msgstr "Верхнее"
+
+#: strconsts.rsmark
+msgid "Mark"
+msgstr "Подпись"
+
+#: strconsts.rsmarkandvalue
+msgid "Mark and value"
+msgstr "Подпись и значение"
+
+#: strconsts.rsmarks
+msgid "Marks"
+msgstr "Подписи"
+
+#: strconsts.rsmarksofdata
+msgid "Marks of data"
+msgstr "Подписи данных"
+
+#: strconsts.rsmaskerrormsg
+msgid "The entered value does not match the mask"
+msgstr "Введенное значение не соответствует маске"
+
+#: strconsts.rsmasscalc
+msgid "Mass calculation"
+msgstr "Массовые вычисления"
+
+#: strconsts.rsmaxheight
+msgid "Max height"
+msgstr "Растянуть"
+
+#: strconsts.rsmaximizeeditor
+msgid "Maximize editor <F12>"
+msgstr "Максимизировать редактор <F12>"
+
+#: strconsts.rsmaximum
+msgid "Maximum"
+msgstr "Максимум"
+
+#: strconsts.rsmaxlength
+msgid "Max length"
+msgstr "Макс. длина"
+
+#: strconsts.rsmaxwidth
+msgid "Max width"
+msgstr "Расширить"
+
+#: strconsts.rsmemo
+msgid "Memo"
+msgstr "Заметка"
+
+#: strconsts.rsmenu
+msgid "Menu"
+msgstr "Меню"
+
+#: strconsts.rsmerge
+msgid "Merge"
+msgstr "Соединить"
+
+#: strconsts.rsmergeall
+msgid "Merge All"
+msgstr "Соединить все"
+
+#: strconsts.rsmergeprjbeforerenamemsg
+msgid "Some components will be renamed because the project already have such names."
+msgstr "Некоторые компоненты будут переименованы, т. к. в проекте уже есть такие имена."
+
+#: strconsts.rsmergeprjok
+msgid "Merge projects was successfull."
+msgstr "Объединение проектов успешно завершено."
+
+#: strconsts.rsmergeprjrenamemsg
+msgid "Some components have been renamed because the project already have such names."
+msgstr "Некоторые компоненты были переименованы, т. к. в проекте уже есть такие имена."
+
+#: strconsts.rsmergeprojects
+msgid "Merge projects"
+msgstr "Объединение проектов"
+
+#: strconsts.rsmergeprojectserror
+msgid "An error occured when merging projects."
+msgstr "При объединении проектов произошла ошибка."
+
+#: strconsts.rsmessage
+msgid "Message"
+msgstr "Сообщение"
+
+#: strconsts.rsminheight
+msgid "Min height"
+msgstr "Сжать"
+
+#: strconsts.rsminimum
+msgid "Minimum"
+msgstr "Минимум"
+
+#: strconsts.rsminlength
+msgid "Min length"
+msgstr "Мин. длина"
+
+#: strconsts.rsminwidth
+msgid "Min width"
+msgstr "Сузить"
+
+#: strconsts.rsmodified
+msgid "Modified"
+msgstr "Изменен"
+
+#: strconsts.rsmodifiedstate
+msgid "(modified)"
+msgstr "(изменено)"
+
+#: strconsts.rsmodule
+msgid "Module"
+msgstr "Модуль"
+
+#: strconsts.rsmodulealreadyexists
+#, object-pascal-format
+msgid "The module named \"%s\" already exists."
+msgstr "Модуль с именем \"%s\" уже существует."
+
+#: strconsts.rsmodulename
+msgid "Module name"
+msgstr "Имя модуля"
+
+#: strconsts.rsmodulenamereserved
+#, object-pascal-format
+msgid "Module name \"%s\" is reserved."
+msgstr "Название модуля \"%s\" зарезервировано."
+
+#: strconsts.rsmodulescontainsamefeatures
+#, object-pascal-format
+msgid "Modules \"%s\" and \"%s\" contain the same features."
+msgstr "Модули \"%s\" и \"%s\" содержат одинаковые возможности."
+
+#: strconsts.rsmodulewebmainexists
+msgid "Module \"WebMain\" already exists."
+msgstr "Модуль \"WebMain\" уже существует."
+
+#: strconsts.rsmonthnames
+msgctxt "strconsts.rsmonthnames"
+msgid "January February March April May June July August September October November December"
+msgstr "Январь Февраль Март Апрель Май Июнь Июль Август Сентябрь Октябрь Ноябрь Декабрь"
+
+#: strconsts.rsmonthnamesbrief
+msgid "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+msgstr "Янв Фев Мар Апр Май Июн Июл Авг Сен Окт Ноя Дек"
+
+#: strconsts.rsmoreprops
+msgid "More properties"
+msgstr "Еще свойства"
+
+#: strconsts.rsmovecomponents
+msgid "Move"
+msgstr "Переместить"
+
+#: strconsts.rsmovedown
+msgid "Move down"
+msgstr "Вниз"
+
+#: strconsts.rsmovefirst
+msgid "Move first"
+msgstr "Первая запись"
+
+#: strconsts.rsmovelast
+msgid "Move last"
+msgstr "Последняя запись"
+
+#: strconsts.rsmoveleft
+msgid "Move left"
+msgstr "Переместить влево"
+
+#: strconsts.rsmovenext
+msgid "Move next"
+msgstr "Следующая запись"
+
+#: strconsts.rsmoveprevious
+msgid "Move previous"
+msgstr "Предыдущая запись"
+
+#: strconsts.rsmoveright
+msgid "Move right"
+msgstr "Переместить вправо"
+
+#: strconsts.rsmoveup
+msgid "Move up"
+msgstr "Вверх"
+
+#: strconsts.rsmovewhenscroll
+msgid "Move when scroll"
+msgstr "Перемещение при прокрутке"
+
+#: strconsts.rsmsgtype
+msgid "Message type"
+msgstr "Тип сообщения"
+
+#: strconsts.rsmsgwhenupdatefound
+msgid "Message when an update is found"
+msgstr "Сообщение при обнаружении обновления"
+
+#: strconsts.rsmultilinecomment
+msgid "Multiline comment"
+msgstr "Комментарии в несколько строк"
+
+#: strconsts.rsmultilinelabelsnotallow
+msgid "Multiline labels not allow."
+msgstr "Многострочные надписи не допускаются."
+
+#: strconsts.rsmultiplereccaption
+msgid "Multiple records caption"
+msgstr "Заголовок множества записей"
+
+#: strconsts.rsmultiplication
+msgid "Multiplication"
+msgstr "Умножение"
+
+#: strconsts.rsmyactionormyfunc
+msgid "My action or MyFunction"
+msgstr "Мое действие или MyFunction"
+
+#: strconsts.rsmygroupmysubgroup
+msgid "My group/My subgroup"
+msgstr "Моя группа/Моя погруппа"
+
+#: strconsts.rsname
+msgid "Name"
+msgstr "Имя"
+
+#: strconsts.rsnamenotfoundinhelpindex
+#, object-pascal-format
+msgid "[%s] not found in help index."
+msgstr "[%s] не найден в указателе справки."
+
+#: strconsts.rsnewdb
+msgid "New"
+msgstr "Новая"
+
+#: strconsts.rsnewdbdetectmsg
+msgid "The database was created in a newer version of the program. Some features may not be available or work incorrectly. It is recommended to update the program to the latest version."
+msgstr "База данных была создана в более новой версии программы. Некоторые возможности могут быть недоступны или работать некорректно. Рекомендуется обновить программу до последней версии."
+
+#: strconsts.rsnewlangapply
+msgid "The selected language will be applied after the application is restarted."
+msgstr "Выбранный язык будет применен после перезапуска приложения."
+
+#: strconsts.rsnewline
+msgid "New line <Ctrl-Space>"
+msgstr "Новая строка <Ctrl-Пробел>"
+
+#: strconsts.rsnewmodule
+msgid "New module"
+msgstr "Новый модуль"
+
+#: strconsts.rsnewrecordcaption
+#, object-pascal-format
+msgid "%s (New record)"
+msgstr "%s (Новая запись)"
+
+#: strconsts.rsnewreport
+msgid "New report"
+msgstr "Новый отчет"
+
+#: strconsts.rsnewsection
+msgid "New section"
+msgstr "Новый раздел"
+
+#: strconsts.rsnewthemelangapply
+msgid "The selected language or theme will be applied after the application is restarted."
+msgstr "Выбранный язык или тема будут применены после перезапуска приложения."
+
+#: strconsts.rsnext
+msgctxt "strconsts.rsnext"
+msgid "Next"
+msgstr "Далее"
+
+#: strconsts.rsno
+msgctxt "strconsts.rsno"
+msgid "No"
+msgstr "Нет"
+
+#: strconsts.rsnoaccess
+msgid "No access"
+msgstr "Нет доступа"
+
+#: strconsts.rsnoaction
+msgid "No action"
+msgstr "Нет действия"
+
+#: strconsts.rsnocontexthelp
+msgid "No context help for this element."
+msgstr "Нет контекстной справки для этого элемента."
+
+#: strconsts.rsnodatasourcespecif
+msgid "No data source is specified."
+msgstr "Не указан источник данных."
+
+#: strconsts.rsnodatatoimport
+msgid "No data to import. The file is empty."
+msgstr "Нет данных для импорта. Файл пуст."
+
+#: strconsts.rsnoformsavailable
+msgid "No forms available."
+msgstr "Нет доступных форм."
+
+#: strconsts.rsnone
+msgid "None"
+msgstr "Нет"
+
+#: strconsts.rsnot
+msgid "Not"
+msgstr "Не"
+
+#: strconsts.rsnotallfieldssel
+msgid "Not all fields are selected."
+msgstr "Не все поля выбраны."
+
+#: strconsts.rsnotavailablesubform
+msgid "Not available for child form."
+msgstr "Не доступно для дочерних форм."
+
+#: strconsts.rsnotcontainedinlist
+msgid "Not contained in the list"
+msgstr "Не содержится в списке"
+
+#: strconsts.rsnotcontainingtext
+msgid "Not containing text"
+msgstr "Не содержит текст"
+
+#: strconsts.rsnotequal
+msgid "Not equal"
+msgstr "Не равно"
+
+#: strconsts.rsnothing
+msgid "Nothing"
+msgstr "Нет"
+
+#: strconsts.rsnothingfound
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: strconsts.rsnothumbnail
+msgid "No thumbnail"
+msgstr "Нет миниатюры"
+
+#: strconsts.rsnotlosechanges
+msgid "On a note. In order not to lose the done changes, make the project export (menu Tools - Project Export). After successfully connecting to the database, import the project (Tools - Import Project) to restore the changes made."
+msgstr "На заметку. Чтобы не потерять проделанные изменения, сделайте экспорт проекта (меню Сервис - Экспорт проекта). После успешного подключения к базе данных, импортируйте проект (Сервис - Импорт проекта) для восстановления проделанных изменений."
+
+#: strconsts.rsnotoall
+msgid "No to all"
+msgstr "Нет для всех"
+
+#: strconsts.rsnotobjfield
+msgid "Field is not object"
+msgstr "Поле не является объектом"
+
+#: strconsts.rsnovisiblefiels
+msgid "No visible fields"
+msgstr "Нет видимых полей"
+
+#: strconsts.rsnow
+msgid "Current date"
+msgstr "Текущая дата"
+
+#: strconsts.rsnull
+msgid "Null"
+msgstr "Пусто"
+
+#: strconsts.rsnulltozero
+msgid "Null to 0"
+msgstr "Null в 0"
+
+#: strconsts.rsnumber
+msgid "Number"
+msgstr "Число"
+
+#: strconsts.rsnumberofdigitsafterpoint
+msgid "Number of digits after the decimal point"
+msgstr "Количество знаков после запятой"
+
+#: strconsts.rsnumberortext
+msgid "Number or Text"
+msgstr "Число или Текст"
+
+#: strconsts.rsnumberoutofrange
+#, object-pascal-format
+msgid "Number out of range: %s"
+msgstr "Число за пределами диапазона: %s"
+
+#: strconsts.rsobject
+msgctxt "strconsts.rsobject"
+msgid "Object"
+msgstr "Объект"
+
+#: strconsts.rsobjectbuttonhint
+msgid "Select <Shift-Enter>"
+msgstr "Выбрать <Shift-Enter>"
+
+#: strconsts.rsobjectfieldnotfound
+#, object-pascal-format
+msgid "Object field not found: %s"
+msgstr "Поле объекта не найдено: %s"
+
+#: strconsts.rsobjectfieldnotsel
+msgid "Object field not selected"
+msgstr "Поле объекта не выбрано"
+
+#: strconsts.rsobjectfields
+msgid "Object fields"
+msgstr "Поля объекта"
+
+#: strconsts.rsobjectinform
+msgid "Object in form"
+msgstr "Объект на форме"
+
+#: strconsts.rsobjectmustselfordatasource
+msgid "An object must be selected for this data source."
+msgstr "Для этого источника данных требуется объект"
+
+#: strconsts.rsobjectnothavelinkform
+#, object-pascal-format
+msgid "The object [%s] does not have an linked form."
+msgstr "Объект [%s] не имеет связанной формы."
+
+#: strconsts.rsobjectnotsel
+msgid "Object not selected."
+msgstr "Объект не выбран."
+
+#: strconsts.rsobjfield
+msgid "Object field"
+msgstr "Поле объекта"
+
+#: strconsts.rsobjfieldnotusedbunique
+#, object-pascal-format
+msgid "You cannot use the field of object [%s]."
+msgstr "Нелья использовать поле объекта [%s]."
+
+#: strconsts.rsoffsetx
+msgid "Offset X"
+msgstr "Смещение X"
+
+#: strconsts.rsoffsety
+msgid "Offset Y"
+msgstr "Смещение Y"
+
+#: strconsts.rsok
+msgctxt "strconsts.rsok"
+msgid "OK"
+msgstr "ОК"
+
+#: strconsts.rsoldmodule
+msgid "Old module"
+msgstr "Старый модуль"
+
+#: strconsts.rsonereccaption
+msgid "One record caption"
+msgstr "Заголовок одной записи"
+
+#: strconsts.rsonlydevelcanenterdesigner
+msgid "Only the developer can enter the designer."
+msgstr "Только разработчик может войти в дизайнер."
+
+#: strconsts.rsonlyedit
+msgid "Only editing"
+msgstr "Только редактирование"
+
+#: strconsts.rsonlylist
+msgid "Only values from the list"
+msgstr "Только значения из списка"
+
+#: strconsts.rsonlytextfieldcanbeparamwithmergefunc
+#, object-pascal-format
+msgid "Only the text field can be a parameter with function [%s]."
+msgstr "Только текстовые поля могут быть параметрами с функцией [%s]"
+
+#: strconsts.rsonlyview
+msgid "Only viewing"
+msgstr "Только просмотр"
+
+#: strconsts.rsoodocument
+msgid "OpenOffice Document"
+msgstr "Документ OpenOffice"
+
+#: strconsts.rsoospreadsheet
+msgid "OpenOffice Spreadsheet"
+msgstr "Электронная таблица OpenOffice"
+
+#: strconsts.rsopen
+msgctxt "strconsts.rsopen"
+msgid "Open"
+msgstr "Открыть"
+
+#: strconsts.rsopenconnectlist
+msgid "Open connection list"
+msgstr "Открыть список подключений"
+
+#: strconsts.rsopendatabase
+msgid "Open database"
+msgstr "Открыть базу данных"
+
+#: strconsts.rsopendb
+msgctxt "strconsts.rsopendb"
+msgid "Open"
+msgstr "Открыть"
+
+#: strconsts.rsopendemodb
+msgid "Open demo database"
+msgstr "Открыть демо-базу"
+
+#: strconsts.rsopenfile
+msgid "Open file"
+msgstr "Открыть"
+
+#: strconsts.rsopenfilelocation
+msgid "Open file location"
+msgstr "Открыть расположение файла"
+
+#: strconsts.rsopenhomepage
+msgid "Open homepage"
+msgstr "Открыть домашнюю страницу"
+
+#: strconsts.rsopenlastdb
+msgid "Open the last database"
+msgstr "Открыть последнюю базу данных"
+
+#: strconsts.rsopenpicturesfilter
+msgid "All pictures (*.bmp, *.gif, *.ico, *.jpg, *.jpeg, *.jfif, *.png, *.tif, *.xpm)|*.bmp;*.gif;*.ico;*.jpg;*.jpeg;*.jfif;*.png;*.tif;*.xpm"
+msgstr "Все изображения  (*.bmp, *.gif, *.ico, *.jpg, *.jpeg, *.jfif, *.png, *.tif, *.xpm)|*.bmp;*.gif;*.ico;*.jpg;*.jpeg;*.jfif;*.png;*.tif;*.xpm"
+
+#: strconsts.rsopenreport
+msgid "Open report"
+msgstr "Открыть отчет"
+
+#: strconsts.rsopentemplate
+msgid "Open template with"
+msgstr "Открыть шаблон в"
+
+#: strconsts.rsopentemplatefile
+msgid "Open template"
+msgstr "Открыть шаблон"
+
+#: strconsts.rsopentemplatesfolder
+msgid "Open templates folder"
+msgstr "Открыть папку шаблонов"
+
+#: strconsts.rsopenwithapp
+msgid "Open with application"
+msgstr "Открыть в приложении"
+
+#: strconsts.rsoperandexpected
+msgid "Operand expected."
+msgstr "Ожидается операнд."
+
+#: strconsts.rsopnotvalidfordifoperands
+#, object-pascal-format
+msgid "Operation %s is not valid for operands of different types: %s and %s. Operands must be of the same type."
+msgstr "Операция %s недопустима для операндов разных типов: %s и %s. Операнды должны быть одного типа."
+
+#: strconsts.rsoptions
+msgid "Options"
+msgstr "Опции"
+
+#: strconsts.rsorderedlist
+msgid "Ordered list"
+msgstr "Нумерованный список"
+
+#: strconsts.rsordervisiblecolumns
+msgid "Order and visibility of columns"
+msgstr "Порядок и видимость столбцов"
+
+#: strconsts.rsordervisibleforms
+msgid "The order and visibility of forms in tabs"
+msgstr "Порядок и видимость форм в закладках"
+
+#: strconsts.rsorexpression
+msgid "or Expression"
+msgstr "или Выражение"
+
+#: strconsts.rsorientation
+msgid "Orientation"
+msgstr "Поворот"
+
+#: strconsts.rsoriginalsize
+msgid "Original size"
+msgstr "Оригинальный размер"
+
+#: strconsts.rsother
+msgid "Other"
+msgstr "Прочее"
+
+#: strconsts.rsoutcoming
+msgid "Outcoming"
+msgstr "Расход"
+
+#: strconsts.rsoutput
+msgid "Output"
+msgstr "Вывод"
+
+#: strconsts.rsoutputfilter
+msgid "Output filter"
+msgstr "Выходной фильтр"
+
+#: strconsts.rsoutputfolder
+msgid "Output folder"
+msgstr "Папка вывода"
+
+#: strconsts.rsoutside
+msgctxt "strconsts.rsoutside"
+msgid "Outside"
+msgstr "Снаружи"
+
+#: strconsts.rsoverlappolicy
+msgid "Overlap policy"
+msgstr "Политика перекрытия"
+
+#: strconsts.rspadzeros
+msgid "Pad fractional part with zeros"
+msgstr "Дополнять нулями дробную часть"
+
+#: strconsts.rspage
+msgid "Page"
+msgstr "Закладка"
+
+#: strconsts.rspages
+msgid "Pages"
+msgstr "Закладки"
+
+#: strconsts.rspangram1
+msgid "Jackdaws love my big sphinx of quartz."
+msgstr "Мюзикл-буфф \"Огнедышащий простужается ночью\" (в 12345 сценах и 67890 эпизодах)."
+
+#: strconsts.rspangram2
+msgid "The quick brown fox jumps over the lazy dog 1234567890 times."
+msgstr "Бегом марш! У месторождения кварцующихся фей без слёз хочется электрическую пыль."
+
+#: strconsts.rspangram3
+msgid "Pack my box with five dozen liquor jugs."
+msgstr "Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств."
+
+#: strconsts.rspangram4
+msgid "The jay, pig, fox, zebra and my wolves quack!"
+msgstr ""
+
+#: strconsts.rsparameter
+msgid "Parameter"
+msgstr "Параметр"
+
+#: strconsts.rsparamexists
+msgid "Report parameter with same name already exists."
+msgstr "Параметр отчета с таким именем уже существует."
+
+#: strconsts.rsparamrequired
+#, object-pascal-format
+msgid "Parameter [%s] is required."
+msgstr "Параметр [%s] является обязательным для заполнения."
+
+#: strconsts.rsparentfield
+msgid "Parent field"
+msgstr "Поле предка"
+
+#: strconsts.rsparentform
+msgid "-- Parent form --"
+msgstr "-- Родительская форма --"
+
+#: strconsts.rsparseextmoduleserrors
+#, object-pascal-format
+msgid "During the analysis modules extensions detected errors:%sSome actions and functions may not be found. To find the errors, open Script Editor and run the compilation."
+msgstr "В процессе анализа модулей расширений были найдены ошибки:%sНекоторые действия и функции могут не работать. Чтобы найти ошибки, откройте редактор скриптов и выполните компиляцию."
+
+#: strconsts.rspascalscriptreference
+msgid "Pascal Script reference"
+msgstr "Справочник Pascal Script"
+
+#: strconsts.rspassportid
+msgid "Passport ID"
+msgstr "Номер паспорта"
+
+#: strconsts.rspassportseries
+msgid "Passport series"
+msgstr "Серия паспорта"
+
+#: strconsts.rspassword
+msgid "Password"
+msgstr "Пароль"
+
+#: strconsts.rspaste
+msgid "Paste"
+msgstr "Вставить"
+
+#: strconsts.rspastecells
+msgid "Paste cells"
+msgstr "Вставить ячейки"
+
+#: strconsts.rspasteexttemplate
+msgid "Paste extension template"
+msgstr "Вставить шаблон расширения"
+
+#: strconsts.rspastefromscript
+msgid "Paste from script"
+msgstr "Вставить из скрипта"
+
+#: strconsts.rspasteguid
+msgid "Paste GUID"
+msgstr "Вставить GUID"
+
+#: strconsts.rspasteimageasbase64
+msgid "Paste image as base64"
+msgstr "Вставить изображение как base64"
+
+#: strconsts.rspasteimgerror
+#, object-pascal-format
+msgid "An error occurred while pasting image: %s"
+msgstr "При вставке изображения возникла ошибка: %s"
+
+#: strconsts.rspastespecial
+msgid "Paste special"
+msgstr "Специальная вставка"
+
+#: strconsts.rspaused
+msgid "Paused"
+msgstr "Пауза"
+
+#: strconsts.rsperiod
+msgid "Period"
+msgstr "Период"
+
+#: strconsts.rsperiodfrom
+msgctxt "strconsts.rsperiodfrom"
+msgid "from "
+msgstr "с "
+
+#: strconsts.rsperiodto
+msgctxt "strconsts.rsperiodto"
+msgid " to "
+msgstr " по "
+
+#: strconsts.rsphonenumber
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: strconsts.rspickfromlistwindow
+msgid "Pick from list window"
+msgstr "Выбрать из окна списка"
+
+#: strconsts.rspickup
+msgid "Pick up"
+msgstr "Подбор"
+
+#: strconsts.rspickupbnhint
+msgid "Quickly adding fields to selection"
+msgstr "Быстрое добавление полей в отбор"
+
+#: strconsts.rspie
+msgid "Pie"
+msgstr "Круговая"
+
+#: strconsts.rspivotgridnotfound
+#, object-pascal-format
+msgid "Pivot grid not found: %s"
+msgstr "Сводная таблица не найдена: %s"
+
+#: strconsts.rspivottable
+msgid "Pivot table"
+msgstr "Сводная таблица"
+
+#: strconsts.rspngfiles
+msgid "PNG files (*.png)|*.png"
+msgstr "Файлы PNG (*.png)|*.png"
+
+#: strconsts.rspoint
+msgid "Point"
+msgstr "Точка"
+
+#: strconsts.rspoints
+msgid "Points"
+msgstr "Точки"
+
+#: strconsts.rsposition
+msgid "Position"
+msgstr "Положение"
+
+#: strconsts.rsprecisionmustnotexceed
+msgid "Precision must not exceed 10 digits."
+msgstr "Точность не должна превышать 10 цифр."
+
+#: strconsts.rsprecission
+msgid "Precission"
+msgstr "Точность"
+
+#: strconsts.rspreparingtowork
+msgid "Preparing to work..."
+msgstr "Подготовка к работе..."
+
+#: strconsts.rspreview
+msgid "Preview <F9>"
+msgstr "Предварительный просмотр <F9>"
+
+#: strconsts.rsprevious
+msgid "Previous"
+msgstr "Назад"
+
+#: strconsts.rsprice
+msgid "Price"
+msgstr "Цена"
+
+#: strconsts.rspricefldnotsel
+msgid "Price field not selected."
+msgstr "Поле цены не выбрано."
+
+#: strconsts.rsprint
+msgid "Print"
+msgstr "Печать"
+
+#: strconsts.rsprintaborted
+msgid "Print aborted."
+msgstr "Печать прервана."
+
+#: strconsts.rsprintchart
+msgid "Print chart"
+msgstr "Печать диаграммы"
+
+#: strconsts.rsprinterrors
+msgid "Print errors"
+msgstr "Ошибки печати"
+
+#: strconsts.rsprintfieldexists
+msgid "Field with same name already exists in calculations when printing."
+msgstr "Поле с таким именем уже существует в вычислениях при печати."
+
+#: strconsts.rsprintout
+msgid "Printout"
+msgstr "Вывод на печать"
+
+#: strconsts.rsprnerror
+msgid "An error occurred during printing."
+msgstr "В процессе печати возникла ошибка."
+
+#: strconsts.rsproblemsolution
+msgid "To program this feature to work, you need to enter and exit the designer."
+msgstr "Чтобы эта функция заработала, надо войти и выйти из дизайнера."
+
+#: strconsts.rsprocessing
+msgctxt "strconsts.rsprocessing"
+msgid "Processing..."
+msgstr "Обработка..."
+
+#: strconsts.rsprogindx
+msgid "Programming in DX"
+msgstr "Программирование в DX"
+
+#: strconsts.rspromptbeforefill
+msgid "Prompt before filling"
+msgstr "Запрашивать перед заполнением"
+
+#: strconsts.rspromptfilltable
+msgid "Do you want to fill the table?"
+msgstr "Вы хотите заполнить таблицу?"
+
+#: strconsts.rsproperties
+msgid "Properties"
+msgstr "Свойства"
+
+#: strconsts.rsproperty
+msgid "Property"
+msgstr "Свойство"
+
+#: strconsts.rspwdsysdba
+msgid "Password SYSDBA"
+msgstr "Пароль SYSDBA"
+
+#: strconsts.rsqttyfldnotsel
+msgid "Quantity field not selected."
+msgstr "Поле количества не выбрано."
+
+#: strconsts.rsquantity
+msgid "Quantity"
+msgstr "Количество"
+
+#: strconsts.rsqueries
+msgid "Queries"
+msgstr "Запросы"
+
+#: strconsts.rsquery
+msgid "Query"
+msgstr "Запрос"
+
+#: strconsts.rsqueryfield
+msgid "Query field"
+msgstr "Поле запроса"
+
+#: strconsts.rsqueryfieldnameexists
+msgctxt "strconsts.rsqueryfieldnameexists"
+msgid "A field with the same name already exists."
+msgstr "Поле с таким именем уже существует."
+
+#: strconsts.rsqueryfieldnotsel
+msgid "Query field not selected."
+msgstr "Поле запроса не выбрано."
+
+#: strconsts.rsquerygrid
+msgid "Query grid"
+msgstr "Таблица"
+
+#: strconsts.rsqueryname
+msgid "Query name"
+msgstr "Имя запроса"
+
+#: strconsts.rsquerynotfound
+#, object-pascal-format
+msgid "Query not found: %s"
+msgstr "Запрос не найден: %s"
+
+#: strconsts.rsrange
+msgid "Range"
+msgstr "Диапазон"
+
+#: strconsts.rsrangefrom
+msgctxt "strconsts.rsrangefrom"
+msgid "from "
+msgstr "от "
+
+#: strconsts.rsrangemsg
+#, object-pascal-format
+msgid "[%s] should be in the range from %s to %s."
+msgstr "[%s] должно быть в пределах от %s до %s."
+
+#: strconsts.rsrangemsg2
+#, object-pascal-format
+msgid "Value should be in the range from %s to %s."
+msgstr "Значение должно быть в пределах от %s до %s."
+
+#: strconsts.rsrangeto
+msgctxt "strconsts.rsrangeto"
+msgid " to "
+msgstr " до "
+
+#: strconsts.rsreadmetadataerror
+#, object-pascal-format
+msgid "The metadata of the forms was read with errors or unrecognized. Some features of the database may not work or work incorrectly. Maybe the database was created in a newer version of the application. Please make sure you are using the latest version of DateExpress.%s"
+msgstr "Метаданные форм были прочитаны с ошибками или нераспознаны. Некоторые возможности базы данных могут не работать или работать неправильно. Возможно база данных была создана в более новой версии приложения. Пожалуйста, убедитесь, что вы используете последнюю версию DataExpress.%s"
+
+#: strconsts.rsreadonly
+msgid "Read-only"
+msgstr "Только чтение"
+
+#: strconsts.rsrecalculate
+msgid "Recalculate"
+msgstr "Пересчитать"
+
+#: strconsts.rsrecalculateerror
+msgid "An error occured when recalculating."
+msgstr "При пересчете произошла ошибка."
+
+#: strconsts.rsrecchangesdetect
+msgid "Record changes detected. Refresh data?"
+msgstr "Обнаружены изменения в записи. Обновить данные?"
+
+#: strconsts.rsreceditanotheruser
+msgid "This record is already being edited by another user."
+msgstr "Эта запись редактируется другим пользователем."
+
+#: strconsts.rsrecedituser
+#, object-pascal-format
+msgid "This record is already being edited by the user \"%s\". The record will be opened in view mode."
+msgstr "Эта запись уже редактируется пользователем \"%s\". Запись будет открыта в режиме просмотра."
+
+#: strconsts.rsrecents
+msgid "Recents"
+msgstr "Недавние"
+
+#: strconsts.rsrechasbeendeleted
+msgid "Record has been deleted."
+msgstr "Запись была удалена."
+
+#: strconsts.rsrechasbeendeletedrefresh
+msgid "Record has been deleted. Refresh data?"
+msgstr "Запись была удалена. Обновить данные?"
+
+#: strconsts.rsrecordid
+msgid "Record ID"
+msgstr "ID записи"
+
+#: strconsts.rsrecords
+msgid "records"
+msgstr "записей"
+
+#: strconsts.rsrecsizelimit
+msgid "Total record size exceeded 65535 bytes. Reduce the size of text fields, including in linked forms, or remove unnecessary fields."
+msgstr "Общий размер записи превышает 65535 байт. Уменьшите размер текстовых полей, включая связанные формы, или удалите ненужные поля."
+
+#: strconsts.rsrectangle
+msgid "Rectangle"
+msgstr "Прямоугольник"
+
+#: strconsts.rsredo
+msgid "Redo"
+msgstr "Вернуть"
+
+#: strconsts.rsreduceto
+msgid "Reduce to"
+msgstr "Уменьшать до"
+
+#: strconsts.rsreference
+msgctxt "strconsts.rsreference"
+msgid "Reference"
+msgstr "Справочник"
+
+#: strconsts.rsrefresh
+msgid "Refresh"
+msgstr "Обновить"
+
+#: strconsts.rsrefreshtreeeveryshow
+msgid "Refresh the tree every time the window is shown"
+msgstr "Обновлять дерево каждый раз при показе окна"
+
+#: strconsts.rsrefreshtreefirstshow
+msgid "Refresh the tree only at the first show window"
+msgstr "Обновить дерево только при первом показе окна"
+
+#: strconsts.rsremovefromgroup
+msgid "Remove from group"
+msgstr "Убрать из группы"
+
+#: strconsts.rsrename
+msgid "Rename"
+msgstr "Переименовать"
+
+#: strconsts.rsrenamegroup
+msgid "Rename group"
+msgstr "Переименовать группу"
+
+#: strconsts.rsrenameimage
+msgid "Rename image"
+msgstr "Переименовать изображение"
+
+#: strconsts.rsrenamemodule
+msgid "Rename module"
+msgstr "Переименовать модуль"
+
+#: strconsts.rsrenamereport
+msgid "Rename report"
+msgstr "Переименовать отчет"
+
+#: strconsts.rsrenamesection
+msgid "Rename section"
+msgstr "Переименовать раздел"
+
+#: strconsts.rsreplace
+msgid "Replace"
+msgstr "Заменить"
+
+#: strconsts.rsreplaceactionmsg
+msgid "Do you want to replace the action?"
+msgstr "Вы хотите заменить действие?"
+
+#: strconsts.rsreplaceall
+msgid "Replace All"
+msgstr "Заменить все"
+
+#: strconsts.rsreplaceallmsg
+msgid "Do you really want to replace all?"
+msgstr "Вы точно хотите заменить все?"
+
+#: strconsts.rsreplacedby
+msgid "Replaced by"
+msgstr "Заменить на"
+
+#: strconsts.rsreplaceoldmodulenewmodule
+msgid "Do you want to replace an old module with a new module?"
+msgstr "Вы хотите заменить старый модуль на новый модуль?"
+
+#: strconsts.rsreplacing
+msgid "REPL"
+msgstr "ЗАМ"
+
+#: strconsts.rsreport
+msgid "Report"
+msgstr "Отчет"
+
+#: strconsts.rsreportcomponentfieldnameexists
+msgid "Component of report window with same field name already exists."
+msgstr "Компонент окна отчета с таким именем поля уже существует."
+
+#: strconsts.rsreportexport
+msgid "Report export"
+msgstr "Экспорт отчета"
+
+#: strconsts.rsreportexportfilename
+msgid "Filename (optional)"
+msgstr "Имя файла (необязательно)"
+
+#: strconsts.rsreportname
+msgid "Report name"
+msgstr "Имя отчета"
+
+#: strconsts.rsreportnameexists
+msgid "A report or query with the same name already exists."
+msgstr "Отчет или запрос с таким именем уже существует."
+
+#: strconsts.rsreportnotfound
+#, object-pascal-format
+msgid "Report not found: %s"
+msgstr "Отчет не найден: %s"
+
+#: strconsts.rsreportnotsel
+msgid "Report not selected"
+msgstr "Отчет не выбран"
+
+#: strconsts.rsreportrefersto
+msgid "Report refers to"
+msgstr "Отчет ссылается на"
+
+#: strconsts.rsreports
+msgid "Reports"
+msgstr "Отчеты"
+
+#: strconsts.rsreportslinktofm
+msgid "Reports that link to selected form"
+msgstr "Отчеты, ссылающиеся на выбранную форму"
+
+#: strconsts.rsreportwindow
+msgid "Report window"
+msgstr "Окно отчета"
+
+#: strconsts.rsrequired
+msgid "Required"
+msgstr "Обязательное"
+
+#: strconsts.rsreset
+msgid "Reset"
+msgstr "Сброс"
+
+#: strconsts.rsresetfontmsg
+msgid "Are you sure you want to reset the font settings?"
+msgstr "Вы точно хотие сбросить настройки шрифта?"
+
+#: strconsts.rsresetfonttodefault
+msgid "Reset font to default"
+msgstr "Сбросить шрифт в значение по умолчанию"
+
+#: strconsts.rsresetsettings
+msgid "Reset settings"
+msgstr "Сбросить настройки"
+
+#: strconsts.rsresetsettingsmsg
+msgid "Reset all grid settings?"
+msgstr "Сбросить все настройки таблицы?"
+
+#: strconsts.rsresizefieldserror
+#, object-pascal-format
+msgctxt "strconsts.rsresizefieldserror"
+msgid "Unable to resize fields.%sResize following fields has been canceled:%s"
+msgstr "Не удалось изменить размер полей.%sИзменение размера следующих полей было отменено:%s"
+
+#: strconsts.rsrestoredefcolor
+msgid "Restore default color"
+msgstr "Восстановить цвет по умолчанию"
+
+#: strconsts.rsretry
+msgid "Retry"
+msgstr "Повторить"
+
+#: strconsts.rsreturntoprevitem
+msgid "Return to previous item <Backspace>"
+msgstr "Вернуться к предыдущему элементу <Backspace>"
+
+#: strconsts.rsright
+msgid "Right"
+msgstr "Справа"
+
+#: strconsts.rsrightjustify
+msgid "Right justify"
+msgstr "По правому краю"
+
+#: strconsts.rsrightside
+msgid "Right side"
+msgstr "Правая сторона"
+
+#: strconsts.rsrole
+msgid "Role"
+msgstr "Роль"
+
+#: strconsts.rsrolenotsel
+msgid "Role not selected."
+msgstr "Роль не выбрана."
+
+#: strconsts.rsroles
+msgid "Roles"
+msgstr "Роли"
+
+#: strconsts.rsroleused
+#, object-pascal-format
+msgid "This role used by user %s"
+msgstr "Эта роль используется пользователем %s"
+
+#: strconsts.rsrotatelabels
+msgid "Rotate labels"
+msgstr "Поворачивать подписи"
+
+#: strconsts.rsroundrect
+msgid "Round rectangle"
+msgstr "Круглые углы"
+
+#: strconsts.rsroundside
+msgid "Round side"
+msgstr "Круглые стороны"
+
+#: strconsts.rsrowcountinlist
+msgid "Number of visible lines in the list"
+msgstr "Видимых строк в списке"
+
+#: strconsts.rsrowheight
+msgid "Row height"
+msgstr "Высота строки"
+
+#: strconsts.rsrown
+#, object-pascal-format
+msgid "Row %d, Col %s: "
+msgstr "Строка %d Столбец %s: "
+
+#: strconsts.rsrownum
+msgid "Row Num"
+msgstr "№ строки"
+
+#: strconsts.rsrows
+msgid "Rows"
+msgstr "Строки"
+
+#: strconsts.rsrowselect
+msgid "Row select"
+msgstr "Выделять строку"
+
+#: strconsts.rsrpparamschanged
+msgid "Report parameters have been changed. Need to refresh the report. Continue?"
+msgstr "Параметры отчета были изменены. Необходимо обновить отчет. Продолжить?"
+
+#: strconsts.rsrunning
+msgid "Running"
+msgstr "Выполнение"
+
+#: strconsts.rssamplemasks
+msgid "Sample masks"
+msgstr "Примеры масок"
+
+#: strconsts.rssave
+msgid "Save"
+msgstr "Сохранить"
+
+#: strconsts.rssavechanges
+msgid "Save changes"
+msgstr "Сохранить изменения"
+
+#: strconsts.rssavechangesbeforeimportmsg
+msgid "The database structure was changed. Save changes before import project."
+msgstr "Структура базы данных была изменена. Сохраните изменения перед импортом проекта."
+
+#: strconsts.rssavechangesbeforetestmsg
+msgid "The database structure was changed. Save changes and continue testing?"
+msgstr "Структура базы данных была изменена. Сохранить изменения и продолжить тестирование?"
+
+#: strconsts.rssavechangeshint
+msgid "Save changes <Ctrl-Enter>"
+msgstr "Сохранить изменения <Ctrl-Enter>"
+
+#: strconsts.rssavedbsettingserror
+msgid "An error occured when saving database settings."
+msgstr "При сохранении настроек базы данных возникла ошибка."
+
+#: strconsts.rssavefile
+msgid "Save file"
+msgstr "Сохранить файл"
+
+#: strconsts.rssaveformsagain
+msgid "Now the form metadata will be saved again."
+msgstr "Сейчас метаданные форм будут сохранены еще раз."
+
+#: strconsts.rssaveformserror
+msgid "Failed to save forms."
+msgstr "Не удалось сохранить формы."
+
+#: strconsts.rssaveformsok
+msgid "Forms metadata saved successfully."
+msgstr "Метаданные форм сохранены успешно."
+
+#: strconsts.rssaveimage
+msgid "Save image"
+msgstr "Сохранить изображение"
+
+#: strconsts.rssaveliteralchars
+msgid "Save literal characters"
+msgstr "Сохранять литералы"
+
+#: strconsts.rssavemoduleserror
+msgid "An error occured when saving modules."
+msgstr "При сохранении модулей произошла ошибка."
+
+#: strconsts.rssavepicturesfilter
+msgid "All pictures (*.bmp, *.jpg, *.png, *.tif)|*.bmp;*.jpg;*.png;*.tif"
+msgstr "Все изображения (*.bmp, *.jpg, *.png, *.tif)|*.bmp;*.jpg;*.png;*.tif"
+
+#: strconsts.rssaveproject
+msgid "Save project"
+msgstr "Сохранить проект"
+
+#: strconsts.rssaveprojecterror
+msgctxt "strconsts.rssaveprojecterror"
+msgid "Failed to save project."
+msgstr "Не удалось сохранить проект."
+
+#: strconsts.rssaveprojectprohibited
+msgid "Saving the project is prohibited!"
+msgstr "Сохранение проекта запрещено!"
+
+#: strconsts.rssaverecmsg
+msgid "You must first save the record. Continue?"
+msgstr "Сначала Вы должны сохранить запись. Продолжить?"
+
+#: strconsts.rssaverecord
+msgid "Save record"
+msgstr "Сохранить запись"
+
+#: strconsts.rssaverecordbeforeprint
+msgid "Save record before print"
+msgstr "Сохранить запись перед печатью"
+
+#: strconsts.rssavereportserror
+msgid "An error occured when saving reports."
+msgstr "При сохранении отчетов произошла ошибка."
+
+#: strconsts.rssavesize
+msgid "Save size"
+msgstr "Сохранять размер"
+
+#: strconsts.rssavetofile
+msgid "Save to file"
+msgstr "Сохранить в файл"
+
+#: strconsts.rssavetooutputfolder
+msgid "Save to output folder"
+msgstr "Сохранить в папке вывода"
+
+#: strconsts.rssaveuserserror
+msgid "An error occured when saving users."
+msgstr "При сохранении пользователей произошла ошибка."
+
+#: strconsts.rssaveyourchanges
+msgid "Save your changes before exiting?"
+msgstr "Сохранить изменения перед выходом?"
+
+#: strconsts.rsscript
+msgid "Script"
+msgstr "Скрипт"
+
+#: strconsts.rsscripteditor
+msgid "Script Editor"
+msgstr "Редактор скриптов"
+
+#: strconsts.rsscripteditorbn
+msgid "Script Editor <F4>"
+msgstr "Редактор скриптов <F4>"
+
+#: strconsts.rsscripterror
+msgid "Script error"
+msgstr "Ошибка в скрипте"
+
+#: strconsts.rsscripterrormsg
+#, object-pascal-format
+msgid "%sException class: %sModule name: %sModule kind: %sProcedure name: %s"
+msgstr "%sКласс исключения: %sМодуль: %sТип модуля: %sПроцедура: %s"
+
+#: strconsts.rsscripterroroccurred
+#, object-pascal-format
+msgid "An error occurred while executing the script.%s"
+msgstr "Во время выполнения скрипта произошла ошибка.%s"
+
+#: strconsts.rssearch
+msgid "Search"
+msgstr "Поиск"
+
+#: strconsts.rssearchallfields
+msgid "Search all fields"
+msgstr "Искать во всех полях"
+
+#: strconsts.rssearcharea
+msgid "Search area"
+msgstr "Область поиска"
+
+#: strconsts.rssearchbn
+msgid "Search <F3>"
+msgstr "Поиск <F3>"
+
+#: strconsts.rssearchedtext
+msgid "Searched text"
+msgstr "Искомый текст"
+
+#: strconsts.rssearchinif
+msgid "Search in IF"
+msgstr "Искать в ЕСЛИ"
+
+#: strconsts.rssearchoptions
+msgid "Search options"
+msgstr "Опции поиска"
+
+#: strconsts.rssearchresult
+msgid "Search result"
+msgstr "Результат поиска"
+
+#: strconsts.rssearchsettings
+msgid "Search settings"
+msgstr "Настройки поиска"
+
+#: strconsts.rssearchtext
+msgid "Search text"
+msgstr "Искать текст"
+
+#: strconsts.rssearchtextnotfound
+#, object-pascal-format
+msgid "Search text \"%s\" was not found."
+msgstr "Искомый текст \"%s\" не найден"
+
+#: strconsts.rssection
+msgid "Section"
+msgstr "Раздел"
+
+#: strconsts.rsselcond
+msgid "Selection condition"
+msgstr "Условие отбора"
+
+#: strconsts.rsselect
+msgid "Select"
+msgstr "Выбрать"
+
+#: strconsts.rsselectaction
+msgid "Select action"
+msgstr "Выберите действие"
+
+#: strconsts.rsselectall
+msgid "Select all"
+msgstr "Выбрать все"
+
+#: strconsts.rsselectapplication
+msgid "Select application"
+msgstr "Выбрать приложение"
+
+#: strconsts.rsselectcolor
+msgid "Select color"
+msgstr "Выбрать цвет"
+
+#: strconsts.rsselectcomponents
+msgid "Select components"
+msgstr "Выделить компоненты"
+
+#: strconsts.rsselected
+msgid "Selected"
+msgstr "Выделение"
+
+#: strconsts.rsselectedcolor
+msgid "Selected color"
+msgstr "Цвет выделения"
+
+#: strconsts.rsselectedcomponentcount
+#, object-pascal-format
+msgid "Components: %d"
+msgstr "Компоненты: %d"
+
+#: strconsts.rsselectedfield
+msgid "Selected field"
+msgstr "Выбранное поле"
+
+#: strconsts.rsselectedtext
+msgid "Selected text"
+msgstr "Выделенный текст"
+
+#: strconsts.rsselectfields
+msgid "Select fields"
+msgstr "Выбрать поля"
+
+#: strconsts.rsselectfieldtype
+msgctxt "strconsts.rsselectfieldtype"
+msgid "Select field type"
+msgstr "Выберите тип поля"
+
+#: strconsts.rsselectfile
+msgid "Select file"
+msgstr "Выбрать файл"
+
+#: strconsts.rsselectform
+msgid "Select form"
+msgstr "Выбор формы"
+
+#: strconsts.rsselectformfield
+msgid "Select form field"
+msgstr "Выберите поле формы"
+
+#: strconsts.rsselectfromgallery
+msgid "Select from gallery"
+msgstr "Выбрать из галереи"
+
+#: strconsts.rsselection
+msgctxt "strconsts.rsselection"
+msgid "Selection"
+msgstr "Отбор"
+
+#: strconsts.rsselectionset
+msgid "Selection settings"
+msgstr "Настройка отбора"
+
+#: strconsts.rsselectlang
+msgid "Select language"
+msgstr "Выберите язык"
+
+#: strconsts.rsselectquery
+msgid "Select query"
+msgstr "Выбор запроса"
+
+#: strconsts.rsselectqueryfield
+msgid "Select query field"
+msgstr "Выберите поле запроса"
+
+#: strconsts.rsselectreport
+msgid "Select report"
+msgstr "Выбрать отчет"
+
+#: strconsts.rsselectsourcefield
+msgid "Select source field"
+msgstr "Выберите поле источника"
+
+#: strconsts.rsselectsourcetype
+msgid "Select type"
+msgstr "Выберите тип"
+
+#: strconsts.rssendtoback
+msgid "Send to back"
+msgstr "Вниз"
+
+#: strconsts.rssenttoprinter
+msgid "Sent to printer"
+msgstr "Отправить на принтер"
+
+#: strconsts.rsseries
+msgid "Series"
+msgstr "Ряды"
+
+#: strconsts.rsseriesnum
+#, object-pascal-format
+msgid "Series %d"
+msgstr "Ряд %d"
+
+#: strconsts.rssetcurrentform
+msgid "Set current form"
+msgstr "Установить текущую форму"
+
+#: strconsts.rssettings
+msgid "Settings"
+msgstr "Настройки"
+
+#: strconsts.rssettozero
+msgid "Set to zero"
+msgstr "Обнулить"
+
+#: strconsts.rssetvalue
+msgid "Set value"
+msgstr "Установить значение"
+
+#: strconsts.rsshadow
+msgid "Shadow"
+msgstr "Тень"
+
+#: strconsts.rsshape
+msgid "Shape"
+msgstr "Фигура"
+
+#: strconsts.rsshapetype
+msgid "Shape type"
+msgstr "Тип фигуры"
+
+#: strconsts.rsshopping
+msgid "Shopping"
+msgstr "Шопинг"
+
+#: strconsts.rsshowbutton
+msgid "Show button"
+msgstr "Показать кнопку"
+
+#: strconsts.rsshowbuttons
+msgid "Show buttons"
+msgstr "Показать кнопки"
+
+#: strconsts.rsshowcolumntotal
+msgid "Show column total"
+msgstr "Показать столбец итогов"
+
+#: strconsts.rsshowgrandtotal
+msgid "Show grand total"
+msgstr "Показывать общий итог"
+
+#: strconsts.rsshowgrid
+msgid "Show grid"
+msgstr "Показывать сетку"
+
+#: strconsts.rsshowhelphint
+msgid "Show help <F1>"
+msgstr "Показать справку <F1>"
+
+#: strconsts.rsshowhints
+msgid "Show hints"
+msgstr "Показывать подсказки"
+
+#: strconsts.rsshowmessage
+msgid "Show message"
+msgstr "Показать сообщение"
+
+#: strconsts.rsshowoldfieldnamebeforerename
+msgid "The message shows the old name of the field before renaming, which is still stored in the related actions."
+msgstr "В сообщение показано старое имя поля до переименования, которое все еще сохраняется в связанных действиях."
+
+#: strconsts.rsshowonlyfirstrecords
+msgid "Show only the first"
+msgstr "Показать только первые"
+
+#: strconsts.rsshowrowdeletebutton
+msgid "Show row delete button (web)"
+msgstr "Кнопка удаления строки (веб)"
+
+#: strconsts.rsshowrowtotal
+msgid "Show row total"
+msgstr "Показать строку итогов"
+
+#: strconsts.rsshowscrollbars
+msgid "Show scroll bars"
+msgstr "Показывать полосы прокрутки"
+
+#: strconsts.rsshowsubtotal
+msgid "Show subtotal"
+msgstr "Показать промежуточный итог"
+
+#: strconsts.rsshowthumbnail
+msgid "Show thumbnail only"
+msgstr "Показывать только миниатюру"
+
+#: strconsts.rsshrinkstretch
+msgid "Shrink/stretch"
+msgstr "Сжать/растянуть"
+
+#: strconsts.rssidebyside
+msgid "Side by side"
+msgstr "Рядом"
+
+#: strconsts.rssimpleform
+msgid "Simple form"
+msgstr "Простая форма"
+
+#: strconsts.rssimpleformcantdatasource
+#, object-pascal-format
+msgid "Simple form [%s] cannot be a data source, because it does not store data."
+msgstr "Простая форма [%s] не может быть источником данных, т. к. не хранит данные."
+
+#: strconsts.rssingle
+msgid "Single"
+msgstr "Монопольный"
+
+#: strconsts.rssinglemodeactiveusers
+msgid "You are logged in single user mode, but there are active users in the database."
+msgstr "Вы вошли в монопольном режиме, но в базе есть активные пользователи."
+
+#: strconsts.rssinglemodenotallowed
+msgid "For this user single-user mode not allowed."
+msgstr "Для этого пользователя монопольный режим не разрешен."
+
+#: strconsts.rssingleusermode
+msgid "Single-user mode"
+msgstr "Монопольный режим"
+
+#: strconsts.rssite
+msgid "Site: "
+msgstr "Сайт: "
+
+#: strconsts.rssize
+msgctxt "strconsts.rssize"
+msgid "Size"
+msgstr "Размер"
+
+#: strconsts.rssizeprec
+msgid "Size/Prec"
+msgstr "Размер/Точн."
+
+#: strconsts.rssnils
+msgid "SNILS"
+msgstr "СНИЛС"
+
+#: strconsts.rssoftcheckenablemsg
+msgid "You have enabled soft data entry validation. If you have configured the user role so that some fields are hidden or cannot be edited, then these fields do not require entering or validating values."
+msgstr "Вы включили мягкую проверку ввода данных. Если вы настроили роль пользователя так, что некоторые поля скрыты или нельзя редактировать, то для этих полей не требуется ввод или проверка значений."
+
+#: strconsts.rssoftcheckvalues
+msgctxt "strconsts.rssoftcheckvalues"
+msgid "Soft check of values"
+msgstr "Мягкая проверка значений"
+
+#: strconsts.rssolid
+msgctxt "strconsts.rssolid"
+msgid "Solid"
+msgstr "Сплошная"
+
+#: strconsts.rssort
+msgctxt "strconsts.rssort"
+msgid "Sort"
+msgstr "Сортировка"
+
+#: strconsts.rssortza
+msgid "Z-A"
+msgstr "Я-А"
+
+#: strconsts.rssource
+msgid "Source"
+msgstr "Источник"
+
+#: strconsts.rssourcefilter
+msgid "Source filter"
+msgstr "Фильтр источника"
+
+#: strconsts.rssourcenotsel
+msgid "Source not select."
+msgstr "Источник не выбран."
+
+#: strconsts.rssourcenum
+#, object-pascal-format
+msgid "Source %d"
+msgstr "Источник %d"
+
+#: strconsts.rssourcetable
+msgid "Source table"
+msgstr "Таблица-источник"
+
+#: strconsts.rssourcetablefilter
+msgid "Source table filter"
+msgstr "Фильтр таблицы-источника"
+
+#: strconsts.rssourcetype
+msgctxt "strconsts.rssourcetype"
+msgid "Type"
+msgstr "Тип"
+
+#: strconsts.rsspacing
+msgid "Spacing"
+msgstr "Расстояние"
+
+#: strconsts.rsspecifiedsize
+msgid "Specified size"
+msgstr "Заданный размер"
+
+#: strconsts.rssqbrexpected
+msgid "Expected closing square bracket."
+msgstr "Ожидается закрывающая квадртаная скобка."
+
+#: strconsts.rssqleditor
+msgid "SQL Editor"
+msgstr "Редактор SQL"
+
+#: strconsts.rssqlexpression
+msgid "SQL expression"
+msgstr "SQL выражение"
+
+#: strconsts.rssqlfieldnameexists
+msgid "Field with same SQL name already exists."
+msgstr "Поле с таким SQL-именем уже существует."
+
+#: strconsts.rssqlname
+msgid "SQL Name"
+msgstr "SQL-имя"
+
+#: strconsts.rssqltextcopytoclip
+msgid "SQL text is successfully copied to the clipboard."
+msgstr "Текст SQL успешно скопирован в буфер обмена."
+
+#: strconsts.rssrcfldnotsel
+msgid "Source field not selected."
+msgstr "Поле таблицы-источника не выбрано."
+
+#: strconsts.rssrctblnotsel
+msgid "Source table not selected."
+msgstr "Таблица-источник не выбрана."
+
+#: strconsts.rsstack
+msgid "Stack"
+msgstr "Стек"
+
+#: strconsts.rsstar
+msgid "Star"
+msgstr "Снежинка"
+
+#: strconsts.rsstart
+msgid "Start"
+msgstr "Начинать"
+
+#: strconsts.rsstarted
+msgid "Started"
+msgstr "Начало"
+
+#: strconsts.rsstartupaction
+msgid "Startup action"
+msgstr "Действие при запуске"
+
+#: strconsts.rsstartupactions
+msgid "Startup actions"
+msgstr "Действия при запуске"
+
+#: strconsts.rsstartwith
+msgid "Start with"
+msgstr "Начать с"
+
+#: strconsts.rsstatusbrowse
+msgid "Browse"
+msgstr "Просмотр"
+
+#: strconsts.rsstatusedit
+msgctxt "strconsts.rsstatusedit"
+msgid "Edit"
+msgstr "Правка"
+
+#: strconsts.rsstatusinsert
+msgctxt "strconsts.rsstatusinsert"
+msgid "Insert"
+msgstr "Вставка"
+
+#: strconsts.rsstdatabase
+msgid "Database"
+msgstr "База данных"
+
+#: strconsts.rsstepinto
+msgid "Step Into"
+msgstr "Шаг со входом"
+
+#: strconsts.rsstepintobn
+msgid "Step Into <F7>"
+msgstr "Шаг со входом <F7>"
+
+#: strconsts.rsstepover
+msgid "Step Over"
+msgstr "Шаг в обход"
+
+#: strconsts.rsstepoverbn
+msgid "Step Over <F8>"
+msgstr "Шаг в обход <F8>"
+
+#: strconsts.rsstfolder
+msgid "Folder"
+msgstr "Папка"
+
+#: strconsts.rsstlink
+msgid "Link"
+msgstr "Ссылка"
+
+#: strconsts.rsstoragefoldernotspec
+msgid "Storage folder not specified."
+msgstr "Не указана папка хранения."
+
+#: strconsts.rsstoragetype
+msgid "Storage type"
+msgstr "Способ хранения"
+
+#: strconsts.rsstyle
+msgid "Style"
+msgstr "Стиль"
+
+#: strconsts.rssubsection
+msgid "Subsection"
+msgstr "Подраздел"
+
+#: strconsts.rssubtotalcolumn
+msgid "Subtotal (column)"
+msgstr "Промежуточный итог (столбец)"
+
+#: strconsts.rssubtraction
+msgid "Subtraction"
+msgstr "Вычитание"
+
+#: strconsts.rssuccess
+msgid "Success"
+msgstr "Порядок"
+
+#: strconsts.rssuccessmsg
+msgid "Success message"
+msgstr "Сообщение об успехе"
+
+#: strconsts.rssum
+msgid "Sum"
+msgstr "Сумма"
+
+#: strconsts.rssummary
+msgid "Summary"
+msgstr "Сводка"
+
+#: strconsts.rssupport
+msgid "Support: "
+msgstr "Поддержка: "
+
+#: strconsts.rssupportdxdb
+msgid "Support new databases (*.DXDB)"
+msgstr "Поддержка новых баз данных (*.DXDB)"
+
+#: strconsts.rsswitchbuildermodemsg
+msgid "Are you sure you want to switch to builder mode? Please note that after saving the settings, the SQL expression will be cleared."
+msgstr "Вы точно хотите переключиться в режим построителя? Обратите внимание, что после сохранения настроек SQL выражение будет стерто."
+
+#: strconsts.rsswitchsqlmodemsg
+msgid "Are you sure you want to switch to SQL mode? Please note that after saving the SQL expression, your previous settings will be cleared."
+msgstr "Вы точно хотите переключиться в режим SQL? Обратите внимание, что после сохранения SQL выражения ваши предыдущие настройки будут стерты."
+
+#: strconsts.rsswitchtobuildermode
+msgid "Switch to builder mode"
+msgstr "Переключиться в режим построителя"
+
+#: strconsts.rsswitchtosqlmode
+msgid "Switch to SQL mode"
+msgstr "Переключиться в режим SQL"
+
+#: strconsts.rssymbolframe
+msgid "Symbol frame"
+msgstr "Рамка символа"
+
+#: strconsts.rssymbolwidth
+msgid "Symbol width"
+msgstr "Ширина символа"
+
+#: strconsts.rstable
+msgid "Table"
+msgstr "Таблица"
+
+#: strconsts.rstablechangeslimitmsg
+#, object-pascal-format
+msgid "The form [%s] has been changed 255 times. The limit on the number of database table changes has been reached. Use the GBAK utility to back up and restore the database."
+msgstr "Форма [%s] была изменена 255 раз. Достигнуто ограничение на количество изменений таблицы базы данных. Сделайте с помощью утилиты GBAK резервное копирование и восстановление базы данных."
+
+#: strconsts.rstableorquery
+msgid "Table or Query"
+msgstr "Таблица или запрос"
+
+#: strconsts.rstaborder
+msgid "Tab order"
+msgstr "Порядок перехода"
+
+#: strconsts.rstabs
+msgid "Tabs"
+msgstr "Закладки"
+
+#: strconsts.rstabsheet
+msgid "Tab"
+msgstr "Закладка"
+
+#: strconsts.rstabstop
+msgid "Tab stop"
+msgstr "Переход по Tab"
+
+#: strconsts.rstagwithoutclosingbracket
+#, object-pascal-format
+msgid "Tag {%s without a closing bracket }."
+msgstr "Тег {%s без закрывающей скобки }."
+
+#: strconsts.rstakeselectioncurlybr
+msgid "Take the selected text in curly brackets"
+msgstr "Взять выделенный текст в фигурные скобки"
+
+#: strconsts.rstakeselectiondoublequotes
+msgid "Take the selected text in double quotes"
+msgstr "Взять выделенный текст в двойные кавычки"
+
+#: strconsts.rstakeselectionsinglequotes
+msgid "Take the selected text in single quotes"
+msgstr "Взять выделенный текст в одинарные кавычки"
+
+#: strconsts.rstakeselectionsquarebr
+msgid "Take the selected text in square brackets"
+msgstr "Взять выделенный текст в квадратные скобки"
+
+#: strconsts.rstakevalue
+msgid "Take value"
+msgstr "Извлечь значение"
+
+#: strconsts.rstemplatefile
+msgid "Template file"
+msgstr "Файл шаблона"
+
+#: strconsts.rstemplatefilenotfound
+#, object-pascal-format
+msgid "Template file %s not found."
+msgstr "Файл шаблона %s не найден."
+
+#: strconsts.rstemplates
+msgid "Templates"
+msgstr "Шаблоны"
+
+#: strconsts.rstemplatesfilesfilter
+msgid "Template files *.docx, *.docm, *.odt, *.ods, *.xml, *.html|*.docx;*.docm;*.odt;*.ods;*.xml;*.html"
+msgstr "Файлы шаблонов *.docx, *.docm, *.odt, *.ods, *.xml, *.html|*.docx;*.docm;*.odt;*.ods;*.xml;*.html"
+
+#: strconsts.rstemplatesfolder
+msgid "Templates folder"
+msgstr "Папка шаблонов"
+
+#: strconsts.rstemplateunknown
+msgid "Template unknown"
+msgstr "Шаблон не определен"
+
+#: strconsts.rstemplatewizard
+msgid "Template wizard"
+msgstr "Мастер шаблонов"
+
+#: strconsts.rstest
+msgid "Test"
+msgstr "Тест"
+
+#: strconsts.rstestform
+msgid "Test form"
+msgstr "Тест формы"
+
+#: strconsts.rstestformerrorfounds
+msgid "Errors were found during compilation. Open the script editor to fix the errors."
+msgstr "Во время компиляции были найдены ошибки. Откройте редактор скриптов, чтобы исправить ошибки."
+
+#: strconsts.rstestinput
+msgid "Test input"
+msgstr "Проверка ввода"
+
+#: strconsts.rstext
+msgctxt "strconsts.rstext"
+msgid "Text"
+msgstr "Текст"
+
+#: strconsts.rstextalignindatacells
+msgid "Text alignment in data cells"
+msgstr "Выравнивание текста в ячейках данных"
+
+#: strconsts.rstextalignment
+msgid "Text alignment"
+msgstr "Выравнивание текста"
+
+#: strconsts.rstextcolor
+msgid "Text color"
+msgstr "Цвет текста"
+
+#: strconsts.rstexteditor
+msgid "Text editor"
+msgstr "Редактор текста"
+
+#: strconsts.rstextlengthexceedmemo
+msgid "Text length exceeded. Adding text to a memo is not possible."
+msgstr "Длина текста превышена. Добавление текста в заметку невозможно."
+
+#: strconsts.rstextpropnotavail
+msgctxt "strconsts.rstextpropnotavail"
+msgid "This property is not available for a calculated label."
+msgstr "Это свойство недоступно для вычисляемого поля."
+
+#: strconsts.rstexttoolong
+#, object-pascal-format
+msgid "Text too long (%d > %d)."
+msgstr "Текст слишком длинный (%d > %d)."
+
+#: strconsts.rsthereproblem
+msgid "There is a problem"
+msgstr "Есть проблема"
+
+#: strconsts.rsthiscommandnotapplysimpleform
+msgid "This command does not apply to a simple form."
+msgstr "Эта команда не применима к простой форме."
+
+#: strconsts.rsthisgroupalreadyexists
+msgid "This group already exists."
+msgstr "Такая группа уже есть."
+
+#: strconsts.rsthismonth
+msgid "This month"
+msgstr "Этот месяц"
+
+#: strconsts.rsthisweek
+msgid "This week"
+msgstr "Эта неделя"
+
+#: strconsts.rsthisyear
+msgid "This year"
+msgstr "Этот год"
+
+#: strconsts.rsthumb
+msgid "Thumbnail"
+msgstr "Миниатюра"
+
+#: strconsts.rsthumbnailsize
+msgid "Thumbnail size"
+msgstr "Размер миниатюры"
+
+#: strconsts.rsticks
+msgid "Ticks"
+msgstr "Деления"
+
+#: strconsts.rstime
+msgid "Time"
+msgstr "Время"
+
+#: strconsts.rstimeformat
+msgid "Time format"
+msgstr "Формат времени"
+
+#: strconsts.rstitle
+msgctxt "strconsts.rstitle"
+msgid "Title"
+msgstr "Заголовок"
+
+#: strconsts.rstoday
+msgid "Today"
+msgstr "Сегодня"
+
+#: strconsts.rstools
+msgid "Tools"
+msgstr "Сервис"
+
+#: strconsts.rstoomanyindex
+msgid "Too many indexes, can not add index. In some form, there are too many date fields or objects. To resolve this issue you need to review the structure of the form, remove unnecessary objects and date fields."
+msgstr "Слишком много индексов, не могу добавить индекс. В какой-то форме слишком много полей дат или объектов. Для устранения ошибки необходимо пересмотреть структуру формы, удалить лишние объекты и поля дат."
+
+#: strconsts.rstopcenter
+msgid "Top center"
+msgstr "Вверху"
+
+#: strconsts.rstopleft
+msgid "Top left"
+msgstr "Вверху слева"
+
+#: strconsts.rstopright
+msgid "Top right"
+msgstr "Вверху справа"
+
+#: strconsts.rstopside
+msgid "Top side"
+msgstr "Верхняя сторона"
+
+#: strconsts.rstotal
+msgctxt "strconsts.rstotal"
+msgid "Total"
+msgstr "Итог"
+
+#: strconsts.rstotalfunc
+msgid "Total function"
+msgstr "Итоговая функция"
+
+#: strconsts.rstotals
+msgid "Totals"
+msgstr "Итоги"
+
+#: strconsts.rstotalsexists
+msgid "Totals with same caption already exists."
+msgstr "Итог с таким названием уже существует."
+
+#: strconsts.rstransparency
+msgid "Transparency"
+msgstr "Прозрачность"
+
+#: strconsts.rstree
+msgid "Tree"
+msgstr "Дерево"
+
+#: strconsts.rstreeall
+msgid "[All]"
+msgstr "[Все]"
+
+#: strconsts.rstreefilter
+msgid "(filter)"
+msgstr "(фильтр)"
+
+#: strconsts.rstreeinlistwindow
+msgid "If there is a tree in the list window"
+msgstr "При наличии дерева в окне списка"
+
+#: strconsts.rstriangle
+msgid "Triangle"
+msgstr "Треугольник"
+
+#: strconsts.rstypename
+msgid "Type name"
+msgstr "Имя типа"
+
+#: strconsts.rsunablefindfilemanager
+msgid "Unable find a supported file manager from list: Nautilus, Thunar, Nemo, Dolphin, PCManFM."
+msgstr "Не удалось найти поддерживаемый менеджер файлов из списка: Nautilus, Thunar, Nemo, Dolphin, PCManFM."
+
+#: strconsts.rsunabletofindgridcolumn
+msgid "Unable to find grid column. Make sure you entered the correct component name."
+msgstr "Невозможно найти столбец таблицы. Проверьте правильность ввода имени компонента."
+
+#: strconsts.rsuncheckall
+msgid "Uncheck all"
+msgstr "Снять отметку"
+
+#: strconsts.rsundefinedaliasorfm
+#, object-pascal-format
+msgid "Undefined alias or form name: %s"
+msgstr "Неопределенный псевдоним или имя формы: %s"
+
+#: strconsts.rsunderline
+msgid "Underline <Ctrl-U>"
+msgstr "Подчеркнутый"
+
+#: strconsts.rsundo
+msgid "Undo"
+msgstr "Отменить"
+
+#: strconsts.rsunexpectedtoken
+#, object-pascal-format
+msgid "Unexpected token %s"
+msgstr "Неожиданный символ %s"
+
+#: strconsts.rsunfoldallcode
+msgid "Unfold all code"
+msgstr "Развернуть весь код"
+
+#: strconsts.rsunknown
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: strconsts.rsunknownidentifier
+msgid "Unknown Identifier"
+msgstr "Неизвестный идентификатор"
+
+#: strconsts.rsunknownmodule
+#, object-pascal-format
+msgid "Unknown module: %s"
+msgstr "Неизвестный модуль: %s"
+
+#: strconsts.rsunknowntag
+#, object-pascal-format
+msgid "Unknown tag: %s"
+msgstr "Неизвестный тег: %s"
+
+#: strconsts.rsunlimited
+msgid "Unlimited"
+msgstr "Неограниченный"
+
+#: strconsts.rsunorderedlist
+msgid "Unordered list"
+msgstr "Неупорядоченный список"
+
+#: strconsts.rsunsuccessfullcompile
+msgid "Unsuccessfull compile"
+msgstr "Неудачная компиляция"
+
+#: strconsts.rsupdatedbcontent
+msgid "Updates database content"
+msgstr "Содержимое базы обновлений"
+
+#: strconsts.rsupdatedbfileinfo
+#, object-pascal-format
+msgid "File size: %s | File changed: %s"
+msgstr "Размер: %s | Изменен: %s"
+
+#: strconsts.rsupdateerror
+msgid "Update error"
+msgstr "Ошибка обновления"
+
+#: strconsts.rsupdates
+msgid "Updates"
+msgstr "Обновления"
+
+#: strconsts.rsupdatesdb
+msgid "Updates database"
+msgstr "База обновлений"
+
+#: strconsts.rsupdatesdbisempty
+msgid "Database is empty"
+msgstr "В базе данных пусто"
+
+#: strconsts.rsupdatesdbpath
+msgid "Updates database path"
+msgstr "Путь к базе обновлений"
+
+#: strconsts.rsupdatesdbpathnotset
+msgid "The path to the updates database was not set."
+msgstr "Не указан путь к базе обновлений."
+
+#: strconsts.rsupdatesdbunavailable
+msgid "Database unavailable"
+msgstr "База данных недоступна"
+
+#: strconsts.rsupdatesettings
+msgid "Update settings"
+msgstr "Настройки обновления"
+
+#: strconsts.rsuploadfileserror
+msgid "Upload files error"
+msgstr "Ошибка загрузки файлов"
+
+#: strconsts.rsuploadfilestoupdatesdbmsg
+msgctxt "strconsts.rsuploadfilestoupdatesdbmsg"
+msgid "The files you select will overwrite the contents of the update database. Continue?"
+msgstr "Выбранные вами файлы перезапишут содержимое базы обновлений. Продолжить?"
+
+#: strconsts.rsuploadselectedfilesintodb
+msgid "Upload selected files into database"
+msgstr "Загрузить выбранные файлы в базу"
+
+#: strconsts.rsurlpatterntosearch
+msgid "URL pattern to search for"
+msgstr "Шаблон URL для поиска"
+
+#: strconsts.rsurlsuccesscopied
+#, object-pascal-format
+msgid "URL was successfully copied to clipboard:%s"
+msgstr "Ссылка была успешно скопирована в буфер обмена:%s"
+
+#: strconsts.rsuser
+msgctxt "strconsts.rsuser"
+msgid "User"
+msgstr "Пользователь"
+
+#: strconsts.rsuseralreadylogged
+#, object-pascal-format
+msgid "User \"%s\" is already logged."
+msgstr "Пользователь \"%s\" уже выполнил вход."
+
+#: strconsts.rsusermanual
+msgid "User manual"
+msgstr "Руководство пользователя"
+
+#: strconsts.rsusermodule
+msgid "User module"
+msgstr "Модуль пользователя"
+
+#: strconsts.rsusermodules
+msgid "User modules"
+msgstr "Модули пользователя"
+
+#: strconsts.rsusermodulesflt
+msgid "User modules (*.pas)|*.pas|"
+msgstr "Модули пользователя (*.pas)|*.pas|"
+
+#: strconsts.rsusermonitor
+msgid "User monitor"
+msgstr "Монитор пользователей"
+
+#: strconsts.rsusername
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: strconsts.rsusers
+msgid "Users"
+msgstr "Пользователи"
+
+#: strconsts.rsusetheme
+msgid "Use theme"
+msgstr "Использовать тему"
+
+#: strconsts.rsvalidateactionerror
+#, object-pascal-format
+msgid "An error occurred while validating the action:%s"
+msgstr "Во время проверки действия произошла ошибка:%s"
+
+#: strconsts.rsvalue
+msgid "Value"
+msgstr "Значение"
+
+#: strconsts.rsvalueaxis
+msgid "Value axis"
+msgstr "Ось значений"
+
+#: strconsts.rsvaluefromform
+msgid "Value from form"
+msgstr "Значение из формы"
+
+#: strconsts.rsvalues
+msgid "Values"
+msgstr "Значения"
+
+#: strconsts.rsvariablename
+msgid "Variable name"
+msgstr "Имя переменной"
+
+#: strconsts.rsversion
+msgid "Version"
+msgstr "Версия"
+
+#: strconsts.rsvert
+msgctxt "strconsts.rsvert"
+msgid "Vertical"
+msgstr "По вертикали"
+
+#: strconsts.rsvertcenter
+msgid "Vert center"
+msgstr "По центру вертикали"
+
+#: strconsts.rsverticalbars
+msgid "Vertical bars"
+msgstr "Гистограмма"
+
+#: strconsts.rsverticalgrid
+msgid "Vertical grid"
+msgstr "Вертикальная сетка"
+
+#: strconsts.rsverticallines
+msgid "Vertical lines"
+msgstr "Вертикальные линии"
+
+#: strconsts.rsvideolessons
+msgid "Video lessons"
+msgstr "Видеоуроки"
+
+#: strconsts.rsviewing
+msgid "Viewing"
+msgstr "Просмотр"
+
+#: strconsts.rsviewonlycaption
+#, object-pascal-format
+msgid "%s (View only)"
+msgstr "%s (Просмотр)"
+
+#: strconsts.rsviewtype
+msgctxt "strconsts.rsviewtype"
+msgid "View"
+msgstr "Представление"
+
+#: strconsts.rsvisible
+msgid "Visible"
+msgstr "Видимое"
+
+#: strconsts.rsvisiblebuttons
+msgid "Visible buttons"
+msgstr "Видимые кнопки"
+
+#: strconsts.rsvisiblecaptions
+msgid "Visible captions"
+msgstr "Видимые надписи"
+
+#: strconsts.rswarning
+msgid "Warning"
+msgstr "Внимание"
+
+#: strconsts.rswebextensionsmodule
+msgid "Extensions web module"
+msgstr "Веб-модуль расширений"
+
+#: strconsts.rswebextensionsmodules
+msgid "Extensions web modules"
+msgstr "Веб-модули расширений"
+
+#: strconsts.rswebextmodulesflt
+msgid "Web extensions modules (*.wepas)|*.wepas|"
+msgstr "Модули веб-расширений (*.wepas)|*.wepas|"
+
+#: strconsts.rswebformmodulesflt
+msgid "Web form modules (*.wfpas)|*.wfpas|"
+msgstr "Модули веб-форм (*.wfpas)|*.wfpas|"
+
+#: strconsts.rswebpage
+msgid "Web page"
+msgstr "Веб-страница"
+
+#: strconsts.rsweeknames
+msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
+msgstr "Понедельник Вторник Среда Четверг Пятница Суббота Воскресенье"
+
+#: strconsts.rsweeknamesbrief
+msgid "Mon Tue Wed Thu Fri Sat Sun"
+msgstr "Пн Вт Ср Чт Пт Сб Вс"
+
+#: strconsts.rswelcome
+#, object-pascal-format
+msgid "Welcome to %s!"
+msgstr "Добро пожаловать в %s!"
+
+#: strconsts.rswhenprinting
+msgid "When printing"
+msgstr "При печати"
+
+#: strconsts.rswholewords
+msgid "Whole words"
+msgstr "Целые слова"
+
+#: strconsts.rswidth
+msgid "Width"
+msgstr "Ширина"
+
+#: strconsts.rswithoutgrid
+msgid "Without grid"
+msgstr "Только форма"
+
+#: strconsts.rsworddocument
+msgid "Word Document"
+msgstr "Документ Word"
+
+#: strconsts.rswordwrap
+msgid "Word wrap"
+msgstr "Перенос слов"
+
+#: strconsts.rswordxml
+msgid "Word XML"
+msgstr "Word XML"
+
+#: strconsts.rsyes
+msgctxt "strconsts.rsyes"
+msgid "Yes"
+msgstr "Да"
+
+#: strconsts.rsyestoall
+msgid "Yes to all"
+msgstr "Да для всех"
+
+#: strconsts.rsyoucantdelcuruser
+msgid "You can not delete the current user."
+msgstr "Нельзя удалить текущего пользователя."
+

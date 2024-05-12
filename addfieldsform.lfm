@@ -1,0 +1,103 @@
+object AddFieldsFm: TAddFieldsFm
+  Left = 783
+  Height = 345
+  Top = 388
+  Width = 484
+  BorderIcons = [biSystemMenu]
+  Caption = 'AddFieldsFm'
+  ClientHeight = 345
+  ClientWidth = 484
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 313
+    Width = 472
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Grid: TDialogGrid
+    Left = 4
+    Height = 278
+    Top = 29
+    Width = 476
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 3
+    Columns = <    
+      item
+        Title.Caption = 'Title'
+        Width = 275
+        ColumnType = gctText
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Title'
+        Width = 120
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Title'
+        Width = 80
+        ColumnType = gctInteger
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
+    ParentShowHint = False
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 0
+    OnKeyDown = GridKeyDown
+    OnPickListSelect = GridPickListSelect
+    OnSelectEditor = GridSelectEditor
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = GridCommand
+    OnResetValue = GridResetValue
+    ColWidths = (
+      275
+      120
+      80
+    )
+  end
+  object DialogGridButtons1: TDialogGridButtons
+    Left = 4
+    Height = 25
+    Top = 4
+    Width = 476
+    Grid = Grid
+    Align = alTop
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+  end
+end

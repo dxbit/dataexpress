@@ -1,0 +1,160 @@
+object TotalsFm: TTotalsFm
+  Left = 524
+  Height = 353
+  Top = 225
+  Width = 467
+  BorderIcons = [biSystemMenu]
+  Caption = 'Итоги'
+  ClientHeight = 353
+  ClientWidth = 467
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 25
+    Top = 4
+    Width = 467
+    AutoSize = True
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 4
+    ButtonHeight = 25
+    ButtonWidth = 23
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = Images
+    List = True
+    ShowCaptions = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButtonClick
+    end
+    object ToolButton2: TToolButton
+      Tag = 1
+      Left = 95
+      Top = 0
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      OnClick = ToolButtonClick
+    end
+    object ToolButton3: TToolButton
+      Tag = 2
+      Left = 189
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 2
+      OnClick = ToolButtonClick
+    end
+    object ToolButton4: TToolButton
+      Tag = 3
+      Left = 283
+      Top = 0
+      Caption = 'ToolButton4'
+      ImageIndex = 3
+      OnClick = ToolButtonClick
+    end
+  end
+  object Grid: TStringGrid
+    Left = 4
+    Height = 282
+    Top = 33
+    Width = 459
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 3
+    Columns = <    
+      item
+        Title.Caption = 'Название'
+        Width = 153
+      end    
+      item
+        Title.Caption = 'Поле'
+        Width = 153
+      end    
+      item
+        Title.Caption = 'Функция'
+        Width = 152
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goSmoothScroll]
+    PopupMenu = PopupMenu1
+    RowCount = 2
+    TabOrder = 1
+    OnKeyDown = GridKeyDown
+    OnPickListSelect = GridPickListSelect
+    OnSelectEditor = GridSelectEditor
+    OnSelection = GridSelection
+    OnSetEditText = GridSetEditText
+    ColWidths = (
+      153
+      153
+      152
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 321
+    Width = 455
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Images: TImageList
+    Left = 95
+    Top = 133
+  end
+  object PopupMenu1: TPopupMenu
+    Images = Images
+    Left = 156
+    Top = 168
+    object MenuItem1: TMenuItem
+      Caption = 'Добавить'
+      ImageIndex = 0
+      ShortCut = 45
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Удалить'
+      ImageIndex = 1
+      ShortCut = 16430
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Вверх'
+      ImageIndex = 2
+      ShortCut = 33
+      OnClick = MenuItem4Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Вниз'
+      ImageIndex = 3
+      ShortCut = 34
+      OnClick = MenuItem5Click
+    end
+  end
+end

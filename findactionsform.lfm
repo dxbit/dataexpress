@@ -1,0 +1,223 @@
+object FindActionsFm: TFindActionsFm
+  Left = 406
+  Height = 445
+  Top = 275
+  Width = 788
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Найти действия'
+  ClientHeight = 445
+  ClientWidth = 788
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    AnchorSideTop.Control = ModuleCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 12
+    Width = 117
+    Caption = 'Модуль расширений'
+    ParentColor = False
+  end
+  object ModuleCbx: TComboBox
+    AnchorSideLeft.Control = Label1
+    AnchorSideLeft.Side = asrBottom
+    Left = 133
+    Height = 23
+    Top = 8
+    Width = 647
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 8
+    DropDownCount = 16
+    ItemHeight = 15
+    OnKeyUp = ValueEdKeyUp
+    OnSelect = ModuleCbxSelect
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = ActionCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 74
+    Width = 51
+    Caption = 'Действие'
+    ParentColor = False
+  end
+  object ActionCbx: TComboBox
+    AnchorSideLeft.Control = ModuleCbx
+    AnchorSideTop.Control = KindCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 133
+    Height = 23
+    Top = 70
+    Width = 647
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    DropDownCount = 16
+    ItemHeight = 15
+    OnKeyUp = ValueEdKeyUp
+    Style = csDropDownList
+    TabOrder = 3
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = ValueEd
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 105
+    Width = 53
+    Caption = 'Значение'
+    ParentColor = False
+  end
+  object ValueEd: TEdit
+    AnchorSideLeft.Control = ModuleCbx
+    AnchorSideTop.Control = ActionCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 133
+    Height = 23
+    Top = 101
+    Width = 549
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    OnKeyUp = ValueEdKeyUp
+    TabOrder = 4
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = ValueEd
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 132
+    Width = 95
+    BorderSpacing.Top = 8
+    Caption = 'Результат поиска'
+    ParentColor = False
+  end
+  object Grid: TStringGrid
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 289
+    Top = 148
+    Width = 772
+    AlternateColor = 15658734
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 1
+    CellHintPriority = chpTruncOnly
+    ColCount = 6
+    Columns = <    
+      item
+        Title.Caption = 'Форма'
+        Width = 180
+      end    
+      item
+        Title.Caption = 'Кнопка'
+        Width = 120
+      end    
+      item
+        Title.Caption = 'Модуль'
+        Width = 150
+      end    
+      item
+        Title.Caption = 'Действие'
+        Width = 250
+      end    
+      item
+        Title.Caption = 'id'
+        Width = 0
+      end>
+    DefaultColWidth = 40
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goColSizing, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goTruncCellHints]
+    ParentShowHint = False
+    RowCount = 1
+    ShowHint = True
+    TabOrder = 6
+    OnCompareCells = GridCompareCells
+    OnDblClick = GridDblClick
+    OnEnter = GridEnter
+    OnExit = GridExit
+    OnGetCellHint = GridGetCellHint
+    OnKeyDown = GridKeyDown
+    OnPrepareCanvas = GridPrepareCanvas
+  end
+  object FindBn: TBitBtn
+    AnchorSideTop.Control = ValueEd
+    AnchorSideTop.Side = asrCenter
+    Left = 684
+    Height = 25
+    Top = 100
+    Width = 96
+    Anchors = [akTop, akRight]
+    BorderSpacing.Top = 8
+    Caption = 'Найти'
+    OnClick = FindBnClick
+    TabOrder = 5
+  end
+  object Label5: TLabel
+    AnchorSideTop.Control = KindCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 43
+    Width = 72
+    Caption = 'Тип действия'
+    ParentColor = False
+  end
+  object KindCbx: TComboBox
+    AnchorSideLeft.Control = ModuleCbx
+    AnchorSideTop.Control = ModuleCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 133
+    Height = 23
+    Top = 39
+    Width = 219
+    BorderSpacing.Top = 8
+    ItemHeight = 15
+    OnKeyUp = ValueEdKeyUp
+    OnSelect = KindCbxSelect
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object NothingPan: TPanel
+    AnchorSideLeft.Control = Grid
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Grid
+    AnchorSideTop.Side = asrCenter
+    Left = 225
+    Height = 50
+    Top = 267
+    Width = 338
+    BevelOuter = bvNone
+    Caption = 'NothingPan'
+    Color = clWindow
+    Font.Color = clGray
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 7
+  end
+  object IfChk: TCheckBox
+    AnchorSideLeft.Control = KindCbx
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = KindCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 368
+    Height = 19
+    Top = 41
+    Width = 101
+    BorderSpacing.Left = 16
+    Caption = 'Искать в ЕСЛИ'
+    TabOrder = 2
+  end
+end

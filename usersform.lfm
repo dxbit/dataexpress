@@ -1,0 +1,249 @@
+object UsersFm: TUsersFm
+  Left = 403
+  Height = 337
+  Top = 284
+  Width = 421
+  ActiveControl = PageControl1
+  BorderIcons = [biSystemMenu]
+  Caption = 'Пользователи'
+  ClientHeight = 337
+  ClientWidth = 421
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object PageControl1: TPageControl
+    Left = 4
+    Height = 295
+    Top = 4
+    Width = 413
+    ActivePage = TabSheet1
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Пользователи'
+      ClientHeight = 267
+      ClientWidth = 405
+      object ToolBar1: TToolBar
+        Left = 0
+        Height = 22
+        Top = 4
+        Width = 405
+        AutoSize = True
+        BorderSpacing.Top = 4
+        BorderSpacing.Bottom = 4
+        Caption = 'ToolBar1'
+        EdgeBorders = []
+        Images = Images
+        List = True
+        ShowCaptions = True
+        TabOrder = 0
+        Transparent = True
+        object ToolButton1: TToolButton
+          Left = 1
+          Top = 0
+          AutoSize = True
+          Caption = 'Добавить'
+          ImageIndex = 0
+          OnClick = ToolButton1Click
+        end
+        object ToolButton2: TToolButton
+          Left = 79
+          Top = 0
+          AutoSize = True
+          Caption = 'Изменить'
+          ImageIndex = 1
+          OnClick = ToolButton2Click
+        end
+        object ToolButton3: TToolButton
+          Left = 159
+          Top = 0
+          AutoSize = True
+          Caption = 'Удалить'
+          ImageIndex = 2
+          OnClick = ToolButton3Click
+        end
+      end
+      object Users: TListBox
+        Left = 0
+        Height = 237
+        Top = 30
+        Width = 405
+        Align = alClient
+        ItemHeight = 0
+        OnDblClick = UsersDblClick
+        OnSelectionChange = UsersSelectionChange
+        ScrollWidth = 407
+        TabOrder = 1
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Роли'
+      ClientHeight = 267
+      ClientWidth = 405
+      object ToolBar2: TToolBar
+        Left = 0
+        Height = 22
+        Top = 4
+        Width = 405
+        AutoSize = True
+        BorderSpacing.Top = 4
+        BorderSpacing.Bottom = 4
+        Caption = 'ToolBar2'
+        EdgeBorders = []
+        Images = Images
+        List = True
+        ShowCaptions = True
+        TabOrder = 0
+        Transparent = True
+        object ToolButton4: TToolButton
+          Left = 1
+          Top = 0
+          AutoSize = True
+          Caption = 'Добавить'
+          ImageIndex = 0
+          OnClick = ToolButton4Click
+        end
+        object ToolButton5: TToolButton
+          Left = 79
+          Top = 0
+          AutoSize = True
+          Caption = 'Изменить'
+          ImageIndex = 1
+          OnClick = ToolButton5Click
+        end
+        object ToolButton6: TToolButton
+          Left = 159
+          Top = 0
+          AutoSize = True
+          Caption = 'Удалить'
+          ImageIndex = 2
+          OnClick = ToolButton6Click
+        end
+        object ToolButton13: TToolButton
+          Left = 229
+          Top = 0
+          AutoSize = True
+          Caption = 'Копировать'
+          ImageIndex = 3
+          OnClick = ToolButton13Click
+        end
+        object ToolButton11: TToolButton
+          Left = 320
+          Top = 0
+          ImageIndex = 4
+          OnClick = ToolButton11Click
+          ParentShowHint = False
+          ShowHint = True
+        end
+      end
+      object Roles: TListBox
+        Left = 0
+        Height = 237
+        Top = 30
+        Width = 405
+        Align = alClient
+        ItemHeight = 0
+        MultiSelect = True
+        OnDblClick = RolesDblClick
+        OnSelectionChange = RolesSelectionChange
+        ParentShowHint = False
+        ScrollWidth = 407
+        TabOrder = 1
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Интерфейсы'
+      ClientHeight = 267
+      ClientWidth = 405
+      object ToolBar3: TToolBar
+        Left = 0
+        Height = 22
+        Top = 4
+        Width = 405
+        AutoSize = True
+        BorderSpacing.Top = 4
+        BorderSpacing.Bottom = 4
+        Caption = 'ToolBar3'
+        EdgeBorders = []
+        Images = Images
+        List = True
+        ShowCaptions = True
+        TabOrder = 0
+        Transparent = True
+        object ToolButton7: TToolButton
+          Left = 1
+          Top = 0
+          AutoSize = True
+          Caption = 'Добавить'
+          ImageIndex = 0
+          OnClick = ToolButton7Click
+        end
+        object ToolButton8: TToolButton
+          Left = 79
+          Top = 0
+          AutoSize = True
+          Caption = 'Изменить'
+          ImageIndex = 1
+          OnClick = ToolButton8Click
+        end
+        object ToolButton9: TToolButton
+          Left = 159
+          Top = 0
+          AutoSize = True
+          Caption = 'Удалить'
+          ImageIndex = 2
+          OnClick = ToolButton9Click
+        end
+        object ToolButton10: TToolButton
+          Left = 229
+          Top = 0
+          AutoSize = True
+          Caption = 'Копировать'
+          ImageIndex = 3
+          OnClick = ToolButton10Click
+        end
+      end
+      object Intfs: TListBox
+        Left = 0
+        Height = 237
+        Top = 30
+        Width = 405
+        Align = alClient
+        ItemHeight = 0
+        OnDblClick = IntfsDblClick
+        OnSelectionChange = RolesSelectionChange
+        ScrollWidth = 407
+        TabOrder = 1
+      end
+    end
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 305
+    Width = 409
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+  object Images: TImageList
+    Left = 144
+    Top = 144
+  end
+end

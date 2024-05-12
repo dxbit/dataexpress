@@ -1,0 +1,225 @@
+object ConnectsFm: TConnectsFm
+  Left = 607
+  Height = 421
+  Top = 181
+  Width = 496
+  BorderIcons = [biSystemMenu]
+  Caption = 'Подключиться к БД'
+  ClientHeight = 421
+  ClientWidth = 496
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.0.0.3'
+  object Panel1: TPanel
+    Left = 4
+    Height = 390
+    Top = 4
+    Width = 322
+    Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 4
+    BevelOuter = bvNone
+    ClientHeight = 390
+    ClientWidth = 322
+    TabOrder = 0
+    object TreeFilter: TTreeFilterEdit
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 322
+      OnFilterItem = TreeFilterFilterItem
+      ButtonWidth = 23
+      Flat = True
+      FocusOnButtonClick = True
+      Align = alTop
+      NumGlyphs = 1
+      MaxLength = 0
+      TabOrder = 0
+      FilteredTreeview = Tree
+    end
+    object Tree: TTreeViewEx
+      Left = 0
+      Height = 365
+      Top = 25
+      Width = 322
+      Align = alClient
+      BorderSpacing.Top = 2
+      Images = Images
+      PopupMenu = PopupMenu2
+      ReadOnly = True
+      RightClickSelect = True
+      TabOrder = 1
+      OnCompare = TreeCompare
+      OnCustomDrawItem = TreeCustomDrawItem
+      OnDblClick = TreeDblClick
+      OnDragDrop = TreeDragDrop
+      OnDragOver = TreeDragOver
+      OnKeyPress = TreeKeyPress
+      OnMouseDown = TreeMouseDown
+      OnSelectionChanged = TreeSelectionChanged
+      OnUTF8KeyPress = TreeUTF8KeyPress
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+    end
+  end
+  object Panel2: TPanel
+    Left = 326
+    Height = 398
+    Top = 0
+    Width = 170
+    Align = alRight
+    BevelOuter = bvNone
+    ClientHeight = 398
+    ClientWidth = 170
+    TabOrder = 1
+    object ConnectBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 16
+      Width = 155
+      Caption = 'Подключиться'
+      Font.Style = [fsBold]
+      OnClick = ConnectBnClick
+      ParentFont = False
+      TabOrder = 0
+    end
+    object DesignBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 48
+      Width = 155
+      Caption = 'Дизайнер'
+      OnClick = DesignBnClick
+      TabOrder = 1
+    end
+    object AddBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 107
+      Width = 155
+      Caption = 'Добавить'
+      OnClick = AddBnClick
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+    end
+    object EditBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 139
+      Width = 155
+      Caption = 'Изменить'
+      OnClick = EditBnClick
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+    end
+    object DelBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 171
+      Width = 155
+      Caption = 'Удалить'
+      OnClick = DelBnClick
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 4
+    end
+    object HelpBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 232
+      Width = 155
+      Caption = 'Помощь'
+      OnClick = HelpBnClick
+      TabOrder = 5
+    end
+    object CloseBn: TBitBtn
+      Left = 8
+      Height = 30
+      Top = 264
+      Width = 155
+      Cancel = True
+      Caption = 'Закрыть'
+      ModalResult = 11
+      TabOrder = 6
+    end
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 398
+    Width = 496
+    Panels = <>
+  end
+  object Images: TImageList
+    Left = 346
+    Top = 312
+  end
+  object PopupMenu2: TPopupMenu
+    OnPopup = PopupMenu2Popup
+    Left = 93
+    Top = 120
+    object MenuItem11: TMenuItem
+      Caption = 'Подключиться'
+      Default = True
+      OnClick = MenuItem11Click
+    end
+    object MenuItem12: TMenuItem
+      Caption = 'Дизайнер'
+      OnClick = MenuItem12Click
+    end
+    object MenuItem13: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Добавить базу данных'
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Добавить текущую базу данных'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Добавить группу'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Копировать подключение'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'Изменить'
+      OnClick = MenuItem7Click
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Удалить'
+      OnClick = MenuItem8Click
+    end
+    object MenuItem9: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem10: TMenuItem
+      Caption = 'Убрать из группы'
+      OnClick = MenuItem10Click
+    end
+    object MenuItem14: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem15: TMenuItem
+      Caption = 'Расположение файла'
+      OnClick = MenuItem15Click
+    end
+    object MenuItem16: TMenuItem
+      Caption = 'Копировать ссылку в буфер обмена'
+      OnClick = MenuItem16Click
+    end
+  end
+end

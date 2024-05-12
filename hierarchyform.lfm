@@ -1,0 +1,76 @@
+object HierarchyFm: THierarchyFm
+  Left = 411
+  Height = 152
+  Top = 156
+  Width = 320
+  ActiveControl = ButtonPanel1.HelpButton
+  BorderIcons = [biSystemMenu]
+  Caption = 'Иерархия'
+  ClientHeight = 152
+  ClientWidth = 320
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 112
+    Width = 308
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 83
+    Caption = 'Поле родителя'
+    ParentColor = False
+  end
+  object ParentField: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 304
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = ParentField
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 114
+    BorderSpacing.Top = 8
+    Caption = 'Количество уровней'
+    ParentColor = False
+  end
+  object LevelCount: TSpinEdit
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 56
+    BorderSpacing.Top = 1
+    MinValue = 1
+    TabOrder = 2
+    Value = 1
+  end
+end

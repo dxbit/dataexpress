@@ -1,0 +1,39 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: dxupdatestrconsts.rsabort
+msgid "Abort"
+msgstr "Прервать"
+
+#: dxupdatestrconsts.rscopyfileerror
+msgid "Can not copy file %s into %s."
+msgstr "Не удалось скопировать файл %s в %s."
+
+#: dxupdatestrconsts.rserror
+msgid "Error"
+msgstr "Ошибка"
+
+#: dxupdatestrconsts.rsfullerrmsg
+msgid "%0:s\\n\\nException class: %1:s\\nException message: %2:s"
+msgstr "%0:s\\n\\nКласс исключения: %1:s\\nСообщение: %2:s"
+
+#: dxupdatestrconsts.rsretry
+msgid "Retry"
+msgstr "Повторить"
+
+#: dxupdatestrconsts.rsstartupdateerror
+msgid "Unable to start DataExpress update. File %s is in use by another process. Make sure you don't have any instances of DataExpress running. Close all applications that may interfere with the update process."
+msgstr "Не удалось начать обновление DataExpress. Файл %s занят другим процессом. Проверьте, что нет запущенных экземпляров DataExpress. Закройте все приложения, которые могут влиять на процесс обновления."
+
+#: dxupdatestrconsts.rsupdateaborteduser
+msgid "The update was aborted by the user."
+msgstr "Обновление было прервано пользователем."
+
+#: dxupdatestrconsts.rsupdating
+msgid "Updating DataExpress..."
+msgstr "Обновление DataExpress..."
+
+#: dxupdatestrconsts.rswarning
+msgid "Warning"
+msgstr "Внимание"
+

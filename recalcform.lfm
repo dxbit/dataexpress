@@ -1,0 +1,78 @@
+object RecalcFm: TRecalcFm
+  Left = 355
+  Height = 218
+  Top = 173
+  Width = 310
+  BorderIcons = [biSystemMenu]
+  Caption = 'RecalcFm'
+  ClientHeight = 218
+  ClientWidth = 310
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 16
+    Height = 15
+    Top = 16
+    Width = 38
+    Caption = 'Форма'
+    ParentColor = False
+  end
+  object Forms: TComboBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 16
+    Height = 23
+    Top = 32
+    Width = 280
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = FormsChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = Forms
+    AnchorSideTop.Side = asrBottom
+    Left = 16
+    Height = 15
+    Top = 71
+    Width = 29
+    BorderSpacing.Top = 16
+    Caption = 'Поле'
+    ParentColor = False
+  end
+  object Fields: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 16
+    Height = 23
+    Top = 87
+    Width = 280
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 178
+    Width = 298
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+end

@@ -1,0 +1,399 @@
+object FindExprFm: TFindExprFm
+  Left = 417
+  Height = 499
+  Top = 249
+  Width = 908
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'FindExprFm'
+  ClientHeight = 499
+  ClientWidth = 908
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '3.2.0.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 53
+    Caption = 'Значение'
+    ParentColor = False
+  end
+  object ValueEd: TEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 726
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 0
+    OnKeyUp = ValueEdKeyUp
+  end
+  object FindBn: TBitBtn
+    AnchorSideTop.Control = ValueEd
+    AnchorSideTop.Side = asrCenter
+    AnchorSideBottom.Side = asrBottom
+    Left = 736
+    Height = 25
+    Top = 23
+    Width = 83
+    Anchors = [akTop, akRight]
+    Caption = 'Найти'
+    OnClick = FindBnClick
+    TabOrder = 1
+  end
+  object PageControl1: TPageControl
+    AnchorSideTop.Control = FilterPan
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 228
+    Top = 264
+    Width = 894
+    ActivePage = FmTab
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 8
+    TabIndex = 0
+    TabOrder = 4
+    object FmTab: TTabSheet
+      Caption = 'Формы'
+      ClientHeight = 200
+      ClientWidth = 886
+      object FmGrid: TStringGrid
+        Left = 0
+        Height = 199
+        Top = 1
+        Width = 886
+        Align = alClient
+        AlternateColor = 15658734
+        BorderSpacing.Top = 1
+        CellHintPriority = chpTruncOnly
+        ColCount = 6
+        Columns = <        
+          item
+            Title.Caption = 'Форма'
+            Width = 180
+          end        
+          item
+            Title.Caption = ' '
+            Width = 32
+          end        
+          item
+            Title.Caption = 'Компонент'
+            Width = 160
+          end        
+          item
+            Title.Caption = 'Свойство'
+            Width = 120
+          end        
+          item
+            Title.Caption = 'Выражение'
+            Width = 320
+          end>
+        DefaultColWidth = 40
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goColSizing, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goTruncCellHints]
+        ParentShowHint = False
+        RowCount = 1
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = FmGridDblClick
+        OnDrawCell = FmGridDrawCell
+        OnEnter = GridEnter
+        OnExit = GridExit
+        OnGetCellHint = GridCellHint
+        OnKeyDown = FmGridKeyDown
+        OnPrepareCanvas = FmGridPrepareCanvas
+      end
+      object FmNothingPan: TPanel
+        AnchorSideLeft.Control = FmGrid
+        AnchorSideLeft.Side = asrCenter
+        AnchorSideTop.Control = FmGrid
+        AnchorSideTop.Side = asrCenter
+        Left = 274
+        Height = 50
+        Top = 75
+        Width = 338
+        BevelOuter = bvNone
+        Caption = 'FmNothingPan'
+        Color = clWindow
+        Font.Color = clGray
+        Font.Height = -16
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentBackground = False
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+    object QTab: TTabSheet
+      Caption = 'Запросы'
+      ClientHeight = 200
+      ClientWidth = 886
+      object QGrid: TStringGrid
+        Left = 0
+        Height = 199
+        Top = 1
+        Width = 886
+        Align = alClient
+        AlternateColor = 15658734
+        BorderSpacing.Top = 1
+        CellHintPriority = chpTruncOnly
+        ColCount = 6
+        Columns = <        
+          item
+            Title.Caption = 'Форма'
+            Width = 180
+          end        
+          item
+            Title.Caption = 'Запрос'
+            Width = 160
+          end        
+          item
+            Title.Caption = 'Свойство'
+            Width = 120
+          end        
+          item
+            Title.Caption = 'Источник/Поле'
+            Width = 120
+          end        
+          item
+            Title.Caption = 'Выражение'
+            Width = 230
+          end>
+        DefaultColWidth = 40
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goColSizing, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goTruncCellHints]
+        ParentShowHint = False
+        RowCount = 1
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = QGridDblClick
+        OnEnter = GridEnter
+        OnExit = GridExit
+        OnGetCellHint = GridCellHint
+        OnKeyDown = QGridKeyDown
+        OnPrepareCanvas = QGridPrepareCanvas
+      end
+      object QNothingPan: TPanel
+        AnchorSideLeft.Control = QGrid
+        AnchorSideLeft.Side = asrCenter
+        AnchorSideTop.Control = QGrid
+        AnchorSideTop.Side = asrCenter
+        Left = 274
+        Height = 50
+        Top = 75
+        Width = 338
+        BevelOuter = bvNone
+        Caption = 'QNothingPan'
+        Color = clWindow
+        Font.Color = clGray
+        Font.Height = -16
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentBackground = False
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+    object RpTab: TTabSheet
+      Caption = 'Отчеты'
+      ClientHeight = 200
+      ClientWidth = 886
+      object RpGrid: TStringGrid
+        Left = 0
+        Height = 199
+        Top = 1
+        Width = 886
+        Align = alClient
+        AlternateColor = 15658734
+        BorderSpacing.Top = 1
+        CellHintPriority = chpTruncOnly
+        Columns = <        
+          item
+            Title.Caption = 'Отчет'
+            Width = 180
+          end        
+          item
+            Title.Caption = 'Свойство'
+            Width = 120
+          end        
+          item
+            Title.Caption = 'Источник/Поле'
+            Width = 160
+          end        
+          item
+            Title.Caption = 'Выражение'
+            Width = 350
+          end>
+        DefaultColWidth = 40
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goColSizing, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goTruncCellHints]
+        ParentShowHint = False
+        RowCount = 1
+        ShowHint = True
+        TabOrder = 0
+        OnDblClick = RpGridDblClick
+        OnEnter = GridEnter
+        OnExit = GridExit
+        OnGetCellHint = GridCellHint
+        OnKeyDown = RpGridKeyDown
+        OnPrepareCanvas = RpGridPrepareCanvas
+      end
+      object RpNothingPan: TPanel
+        AnchorSideLeft.Control = RpGrid
+        AnchorSideLeft.Side = asrCenter
+        AnchorSideTop.Control = RpGrid
+        AnchorSideTop.Side = asrCenter
+        Left = 274
+        Height = 50
+        Top = 75
+        Width = 338
+        BevelOuter = bvNone
+        Caption = 'RpNothingPan'
+        Color = clWindow
+        Font.Color = clGray
+        Font.Height = -16
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentBackground = False
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+  end
+  object FilterPan: TPanel
+    AnchorSideTop.Control = ValueEd
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 201
+    Top = 55
+    Width = 920
+    BorderSpacing.Top = 8
+    BevelOuter = bvNone
+    ClientHeight = 201
+    ClientWidth = 920
+    TabOrder = 3
+    object FmFilter: TCheckGroup
+      Left = 0
+      Height = 200
+      Top = 0
+      Width = 521
+      AutoFill = True
+      Caption = 'Формы'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclTopToBottomThenLeftToRight
+      ChildSizing.ControlsPerLine = 5
+      ClientHeight = 180
+      ClientWidth = 517
+      ColumnLayout = clVerticalThenHorizontal
+      Columns = 4
+      Items.Strings = (
+        'Выражение'
+        'Значение по умолчанию'
+        'Проверка значения'
+        'Фильтр списка'
+        'Заполнить таблицу'
+        'Вычисляемые поля'
+        'Раскраска'
+        'Надпись'
+        'Текст'
+        'Число'
+        'Дата'
+        'Время'
+        'Счетчик'
+        'Заметка'
+        'Флажок'
+        'Список'
+        'Объект'
+        'Изображение'
+        'Файл'
+      )
+      TabOrder = 0
+      Data = {
+        1300000002020202020202020202020202020202020202
+      }
+    end
+    object QFilter: TCheckGroup
+      Left = 528
+      Height = 200
+      Top = 0
+      Width = 176
+      AutoFill = True
+      Caption = 'Запросы'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 180
+      ClientWidth = 172
+      Items.Strings = (
+        'Фильтр источника'
+        'Выходной фильтр'
+        'Вычисляемые поля'
+        'Раскраска'
+        'SQL-выражения'
+      )
+      TabOrder = 1
+      Data = {
+        050000000202020202
+      }
+    end
+    object RpFilter: TCheckGroup
+      Left = 712
+      Height = 200
+      Top = 0
+      Width = 176
+      AutoFill = True
+      Caption = 'Отчеты'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 180
+      ClientWidth = 172
+      Items.Strings = (
+        'Фильтр источника'
+        'Выходной фильтр'
+        'Вычисляемые поля'
+        'Раскраска'
+        'При печати'
+        'SQL-выражения'
+      )
+      TabOrder = 2
+      Data = {
+        06000000020202020202
+      }
+    end
+  end
+  object FilterBn: TToggleBox
+    Left = 819
+    Height = 25
+    Top = 23
+    Width = 83
+    Anchors = [akTop, akRight]
+    Caption = 'Фильтр'
+    TabOrder = 2
+    OnChange = FilterBnChange
+  end
+end

@@ -1,0 +1,210 @@
+object UpdateManFm: TUpdateManFm
+  Left = 367
+  Height = 568
+  Top = 119
+  Width = 787
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Управление обновлениями'
+  ClientHeight = 568
+  ClientWidth = 787
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object UploadBn: TBitBtn
+    Left = 372
+    Height = 88
+    Top = 216
+    Width = 42
+    OnClick = UploadBnClick
+    ParentShowHint = False
+    ShowHint = True
+    Spacing = 0
+    TabOrder = 1
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 536
+    Width = 775
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 4
+    ShowButtons = [pbClose, pbHelp]
+    ShowBevel = False
+  end
+  object FilesGrp: TGroupBox
+    Left = 4
+    Height = 520
+    Top = 8
+    Width = 361
+    Caption = 'Папка программы'
+    ClientHeight = 500
+    ClientWidth = 357
+    TabOrder = 0
+    object AppVer: TLabel
+      Left = 4
+      Height = 15
+      Top = 0
+      Width = 349
+      Align = alTop
+      Alignment = taRightJustify
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 4
+      Caption = 'AppVer'
+      ParentColor = False
+    end
+    object FilesTree: TCheckTreeView
+      Left = 4
+      Height = 460
+      Top = 16
+      Width = 349
+      Align = alClient
+      BorderSpacing.Left = 4
+      BorderSpacing.Top = 1
+      BorderSpacing.Right = 4
+      BorderSpacing.Bottom = 4
+      Images = FilesImages
+      PopupMenu = FilesMnu
+      ReadOnly = True
+      SortType = stData
+      TabOrder = 0
+      OnCompare = FilesTreeCompare
+      OnSelectionChanged = FilesTreeSelectionChanged
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      MixedMode = True
+      OnCheckChange = FilesTreeCheckChange
+    end
+    object FilesSta: TStaticText
+      Left = 4
+      Height = 16
+      Top = 480
+      Width = 349
+      Align = alBottom
+      AutoSize = True
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 4
+      BorderSpacing.Bottom = 4
+      Caption = 'FilesSta'
+      TabOrder = 1
+    end
+  end
+  object DBGrp: TGroupBox
+    Left = 420
+    Height = 520
+    Top = 8
+    Width = 361
+    Caption = 'База обновлений'
+    ClientHeight = 500
+    ClientWidth = 357
+    TabOrder = 3
+    object DBTree: TTreeViewEx
+      Left = 4
+      Height = 460
+      Top = 16
+      Width = 349
+      Align = alClient
+      BorderSpacing.Left = 4
+      BorderSpacing.Top = 1
+      BorderSpacing.Right = 4
+      BorderSpacing.Bottom = 4
+      Images = FilesImages
+      ReadOnly = True
+      TabOrder = 1
+      OnSelectionChanged = DBTreeSelectionChanged
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+    end
+    object DBVer: TLabel
+      Left = 4
+      Height = 15
+      Top = 0
+      Width = 349
+      Align = alTop
+      Alignment = taRightJustify
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 4
+      Caption = 'DBVer'
+      ParentColor = False
+    end
+    object MsgPan: TPanel
+      AnchorSideLeft.Control = DBTree
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Control = DBTree
+      AnchorSideTop.Side = asrCenter
+      Left = 26
+      Height = 52
+      Top = 220
+      Width = 304
+      BevelOuter = bvNone
+      Caption = 'MsgPan'
+      Color = clWindow
+      Font.Color = clGray
+      Font.Height = -21
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 0
+      Visible = False
+    end
+    object DBSta: TStaticText
+      Left = 4
+      Height = 16
+      Top = 480
+      Width = 349
+      Align = alBottom
+      AutoSize = True
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 4
+      BorderSpacing.Bottom = 4
+      Caption = 'DBSta'
+      TabOrder = 2
+    end
+  end
+  object MoreBn: TBitBtn
+    Left = 372
+    Height = 40
+    Top = 312
+    Width = 42
+    OnClick = MoreBnClick
+    ParentShowHint = False
+    ShowHint = True
+    Spacing = 0
+    TabOrder = 2
+  end
+  object FilesImages: TImageList
+    Left = 160
+    Top = 352
+  end
+  object FilesMnu: TPopupMenu
+    Images = MnuImages
+    Left = 70
+    Top = 173
+    object CheckAllMnu: TMenuItem
+      Caption = 'Выделить все'
+      ImageIndex = 0
+      OnClick = CheckAllMnuClick
+    end
+    object CheckDbMnu: TMenuItem
+      Caption = 'Выделить как в базе'
+      ImageIndex = 2
+      OnClick = CheckDbMnuClick
+    end
+    object UnCheckAllMnu: TMenuItem
+      Caption = 'Снять выделение'
+      ImageIndex = 1
+      OnClick = UnCheckAllMnuClick
+    end
+  end
+  object MnuImages: TImageList
+    Left = 193
+    Top = 243
+  end
+end

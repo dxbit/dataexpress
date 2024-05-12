@@ -1,0 +1,97 @@
+object ImportFm: TImportFm
+  Left = 470
+  Height = 224
+  Top = 417
+  Width = 511
+  BorderIcons = [biSystemMenu]
+  Caption = 'ImportFm'
+  ClientHeight = 224
+  ClientWidth = 511
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label2: TLabel
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 62
+    BorderSpacing.Top = 8
+    Caption = 'Имя файла'
+    ParentColor = False
+  end
+  object FileNameEdit1: TFileNameEdit
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 23
+    Width = 497
+    FilterIndex = 0
+    HideDirectories = False
+    ButtonWidth = 23
+    NumGlyphs = 1
+    Flat = True
+    Anchors = [akTop, akLeft, akRight]
+    MaxLength = 0
+    TabOrder = 0
+  end
+  object CheckBox1: TCheckBox
+    AnchorSideTop.Control = RadioGroup1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 118
+    Width = 153
+    BorderSpacing.Top = 8
+    Caption = 'Контроль уникальности'
+    TabOrder = 2
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 184
+    Width = 499
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object RadioGroup1: TRadioGroup
+    AnchorSideTop.Control = FileNameEdit1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 56
+    Top = 54
+    Width = 497
+    Anchors = [akTop, akLeft, akRight]
+    AutoFill = True
+    BorderSpacing.Top = 8
+    Caption = 'Кодировка'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 2
+    ClientHeight = 36
+    ClientWidth = 493
+    Columns = 2
+    Items.Strings = (
+      'UTF8'
+      'ANSI'
+    )
+    TabOrder = 1
+  end
+end

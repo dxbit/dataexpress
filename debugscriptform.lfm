@@ -1,0 +1,80 @@
+object DebugScriptFm: TDebugScriptFm
+  Left = 304
+  Height = 401
+  Top = 378
+  Width = 794
+  Caption = 'DebugScriptFm'
+  ClientHeight = 401
+  ClientWidth = 794
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '3.0.0.3'
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 794
+    AutoSize = True
+    ButtonHeight = 32
+    ButtonWidth = 32
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ImageList2
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      OnClick = ToolButton2Click
+    end
+    object ToolButton3: TToolButton
+      Left = 65
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 2
+      OnClick = ToolButton3Click
+    end
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 378
+    Width = 794
+    Panels = <    
+      item
+        Width = 100
+      end    
+      item
+        Width = 100
+      end>
+    SimplePanel = False
+  end
+  object ImageList2: TImageList
+    Height = 24
+    Width = 24
+    Left = 154
+    Top = 81
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 161
+    Top = 190
+    object MenuItem1: TMenuItem
+      Caption = 'Расширенная информация'
+      OnClick = MenuItem1Click
+    end
+  end
+end

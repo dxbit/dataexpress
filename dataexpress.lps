@@ -1,0 +1,3086 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Win32"/>
+    <Units Count="332">
+      <Unit0>
+        <Filename Value="DataExpress.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="31"/>
+        <UsageCount Value="201"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="aboutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AboutForm"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="45"/>
+        <CursorPos X="50" Y="60"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="actioncontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionControls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="242"/>
+        <CursorPos X="15" Y="259"/>
+        <UsageCount Value="201"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="actionexpressions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionExpressions"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="304"/>
+        <CursorPos X="51" Y="320"/>
+        <UsageCount Value="201"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="actionpans.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionPans"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="574"/>
+        <CursorPos X="3" Y="581"/>
+        <UsageCount Value="201"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="actionseditform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ActionsEditFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ActionsEditForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1237"/>
+        <CursorPos X="7" Y="1265"/>
+        <UsageCount Value="201"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="addfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AddFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AddFieldsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="343"/>
+        <CursorPos X="3" Y="359"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="16" Y="382" ID="1"/>
+        </Bookmarks>
+      </Unit6>
+      <Unit7>
+        <Filename Value="anchorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AnchorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AnchorsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="appimagelists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppImageLists"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="appsettings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppSettings"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="228"/>
+        <CursorPos X="42" Y="245"/>
+        <UsageCount Value="201"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="apputils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AppUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="205"/>
+        <CursorPos X="26" Y="240"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="7" Y="2351" ID="5"/>
+        </Bookmarks>
+      </Unit10>
+      <Unit11>
+        <Filename Value="breakpointsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="BreakpointsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="BreakpointsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="calcerrsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcErrsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CalcErrsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="58"/>
+        <CursorPos X="121" Y="70"/>
+        <UsageCount Value="201"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="calcfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CalcFieldsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="20"/>
+        <CursorPos X="20" Y="46"/>
+        <UsageCount Value="201"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="chartform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ChartForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="31" Y="17"/>
+        <UsageCount Value="201"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="checkprintoutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CheckPrintOutFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CheckPrintOutForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="checktreeview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CheckTreeView"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="186"/>
+        <CursorPos X="43" Y="204"/>
+        <UsageCount Value="201"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="classestree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ClassesTree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="168"/>
+        <CursorPos X="37" Y="188"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 Y="728" ID="3"/>
+        </Bookmarks>
+      </Unit17>
+      <Unit18>
+        <Filename Value="colorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ColorFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ColorForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="64"/>
+        <CursorPos X="27" Y="70"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="32" Y="74" ID="2"/>
+        </Bookmarks>
+      </Unit18>
+      <Unit19>
+        <Filename Value="coloringform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ColoringFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ColoringForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="compilerdecls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CompilerDecls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2884"/>
+        <CursorPos X="34" Y="2901"/>
+        <UsageCount Value="201"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="componenttree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ComponentTree"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="connectinfoform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ConnectInfoFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ConnectInfoForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="196"/>
+        <CursorPos X="3" Y="199"/>
+        <UsageCount Value="201"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="connectionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ConnectsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ConnectionsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="685"/>
+        <CursorPos X="69" Y="702"/>
+        <UsageCount Value="201"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="counterform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CounterFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CounterForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos X="3" Y="80"/>
+        <UsageCount Value="201"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="crossapi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CrossApi"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="25"/>
+        <UsageCount Value="201"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="crypt.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="12" Y="18"/>
+        <UsageCount Value="201"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="csvfiles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CSVFiles"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="191"/>
+        <CursorPos X="15" Y="215"/>
+        <UsageCount Value="201"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="ctrlrightsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CtrlRightsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CtrlRightsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="datasetprocessor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DatasetProcessor"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6395"/>
+        <CursorPos X="3" Y="6418"/>
+        <UsageCount Value="201"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="dbengine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DbEngine"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="148"/>
+        <CursorPos X="57" Y="177"/>
+        <UsageCount Value="201"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="dbfuncform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DBFuncFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DBFuncForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="debugscriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DebugScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DebugScriptForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="521"/>
+        <CursorPos Y="531"/>
+        <UsageCount Value="201"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="deleterecsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DeleteRecsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DeleteRecsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="designerframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DesignFr"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="DesignerFrame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1387"/>
+        <CursorPos X="3" Y="1390"/>
+        <UsageCount Value="201"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="dsproclists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DSProcLists"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="156"/>
+        <CursorPos X="47" Y="164"/>
+        <UsageCount Value="201"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="dxactions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxActions"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="231"/>
+        <CursorPos X="25" Y="256"/>
+        <UsageCount Value="201"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="dxcharts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXCharts"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="40" Y="18"/>
+        <UsageCount Value="201"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="dxctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1734"/>
+        <CursorPos Y="1751"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="2">
+          <Item0 Y="5685" ID="6"/>
+          <Item1 Y="2144" ID="7"/>
+        </Bookmarks>
+      </Unit38>
+      <Unit39>
+        <Filename Value="dxfiles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="dxFiles"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="261"/>
+        <CursorPos X="61" Y="286"/>
+        <UsageCount Value="201"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="dximages.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="dxImages"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="546"/>
+        <CursorPos X="87" Y="560"/>
+        <UsageCount Value="201"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="dxmains.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXMains"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="99"/>
+        <CursorPos Y="116"/>
+        <UsageCount Value="201"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="dxreports.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXReports"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1967"/>
+        <CursorPos X="30" Y="1981"/>
+        <UsageCount Value="201"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="dxsqlquery.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DxSQLQuery"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="719"/>
+        <CursorPos X="13" Y="736"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="2">
+          <Item0 X="10" Y="481" ID="2"/>
+          <Item1 Y="254" ID="1"/>
+        </Bookmarks>
+      </Unit43>
+      <Unit44>
+        <Filename Value="dxusers.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DXUsers"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="276"/>
+        <CursorPos X="14" Y="292"/>
+        <UsageCount Value="201"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="editform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EditForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="111"/>
+        <CursorPos Y="129"/>
+        <UsageCount Value="201"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="editmaskform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="EditMaskFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EditMaskForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="122"/>
+        <CursorPos X="19" Y="140"/>
+        <UsageCount Value="201"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="erroricon.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ErrorIcon"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="23"/>
+        <CursorPos X="15" Y="40"/>
+        <UsageCount Value="201"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="errorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ErrorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ErrorsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="34"/>
+        <CursorPos X="54" Y="45"/>
+        <UsageCount Value="201"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="exportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExportForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="398"/>
+        <CursorPos X="87" Y="423"/>
+        <UsageCount Value="201"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="expressions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Expressions"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1272"/>
+        <CursorPos Y="1285"/>
+        <UsageCount Value="201"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="exprform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExprFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExprForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="618"/>
+        <CursorPos X="52" Y="637"/>
+        <UsageCount Value="201"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="exprfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExprFuncs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="785"/>
+        <CursorPos Y="799"/>
+        <UsageCount Value="201"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="exprhighlighter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExprHighlighter"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="exttemplateform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExtTemplateFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExtTemplateForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="105"/>
+        <CursorPos X="5" Y="123"/>
+        <UsageCount Value="201"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="filltableform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FillTableFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FillTableForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="344"/>
+        <CursorPos X="17" Y="360"/>
+        <UsageCount Value="201"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="filtercontrol.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FilterControl"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="479"/>
+        <CursorPos X="13" Y="495"/>
+        <UsageCount Value="201"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="filterform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FilterFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FilterForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="findactionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindActionsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindActionsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="167"/>
+        <CursorPos Y="185"/>
+        <UsageCount Value="201"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="findexprform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindExprFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindExprForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="694"/>
+        <CursorPos X="9" Y="711"/>
+        <UsageCount Value="201"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="findform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="findscriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FindScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindScriptForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="228"/>
+        <CursorPos Y="246"/>
+        <UsageCount Value="201"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="fixedlistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FixedListFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FixedListForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="fontform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FontFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FontForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="formdesigner.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormDesigner"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="49"/>
+        <CursorPos X="15" Y="67"/>
+        <UsageCount Value="201"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="formfieldvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFieldValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormFieldValueForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="89"/>
+        <CursorPos X="58" Y="105"/>
+        <UsageCount Value="201"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="formfiltersform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFiltersFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormFiltersForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="formmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="693"/>
+        <CursorPos X="38" Y="709"/>
+        <UsageCount Value="201"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="formresizer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormResizer"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="formstree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormsTree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="394"/>
+        <CursorPos X="52" Y="418"/>
+        <UsageCount Value="201"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="formview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormView"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="226"/>
+        <CursorPos X="19" Y="240"/>
+        <UsageCount Value="201"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="funcsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FuncsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FuncsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="226"/>
+        <CursorPos X="5" Y="243"/>
+        <UsageCount Value="201"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="gridbuttonsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GridButtonsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GridButtonsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="113"/>
+        <CursorPos X="35" Y="129"/>
+        <UsageCount Value="201"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="gridcolsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GridColsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GridColsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="gtkthememanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GtkThemeManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="42"/>
+        <CursorPos X="31" Y="63"/>
+        <UsageCount Value="201"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="helpmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="HelpManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <UsageCount Value="201"/>
+      </Unit75>
+      <Unit76>
+        <Filename Value="helptextform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HelpTextFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HelpTextForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="helpviewform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HelpViewFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HelpViewForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="53" Y="12"/>
+        <UsageCount Value="201"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="hierarchyform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HierarchyFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HierarchyForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="hintform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HintFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HintForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="httpclient.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="HttpClient"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="297"/>
+        <CursorPos X="24" Y="312"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 Y="340" ID="2"/>
+        </Bookmarks>
+      </Unit80>
+      <Unit81>
+        <Filename Value="imagemanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ImageManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="70"/>
+        <CursorPos Y="72"/>
+        <UsageCount Value="201"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="imageprocessprintform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImgProcessPrintFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImageProcessPrintForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="imagepropsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImagePropsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit83>
+      <Unit84>
+        <Filename Value="imagesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImagesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImagesForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="348"/>
+        <CursorPos X="9" Y="368"/>
+        <UsageCount Value="201"/>
+      </Unit84>
+      <Unit85>
+        <Filename Value="importerrorsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImportErrorsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImportErrorsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit85>
+      <Unit86>
+        <Filename Value="importform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ImportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ImportForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="768"/>
+        <CursorPos X="5" Y="790"/>
+        <UsageCount Value="201"/>
+      </Unit86>
+      <Unit87>
+        <Filename Value="inputform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="InputFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="InputForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="90"/>
+        <CursorPos X="9" Y="117"/>
+        <UsageCount Value="201"/>
+      </Unit87>
+      <Unit88>
+        <Filename Value="insertvaluesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="InsertValuesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="InsertValuesForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="40" Y="12"/>
+        <UsageCount Value="201"/>
+      </Unit88>
+      <Unit89>
+        <Filename Value="intfform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="IntfFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="IntfForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit89>
+      <Unit90>
+        <Filename Value="labeltextform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LabelTextFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LabelTextForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit90>
+      <Unit91>
+        <Filename Value="langmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="LangManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="42"/>
+        <CursorPos X="14" Y="58"/>
+        <UsageCount Value="201"/>
+      </Unit91>
+      <Unit92>
+        <Filename Value="lcbxlistsourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LCbxListSourceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LCbxListSourceForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="77"/>
+        <CursorPos X="15" Y="94"/>
+        <UsageCount Value="201"/>
+      </Unit92>
+      <Unit93>
+        <Filename Value="licenseform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LicenseFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LicenseForm"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="39"/>
+        <CursorPos X="40" Y="65"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit93>
+      <Unit94>
+        <Filename Value="listform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ListForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="321"/>
+        <CursorPos X="3" Y="339"/>
+        <UsageCount Value="201"/>
+      </Unit94>
+      <Unit95>
+        <Filename Value="lists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Lists"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit95>
+      <Unit96>
+        <Filename Value="listsourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ListSourceFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ListSourceForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="129"/>
+        <CursorPos X="15" Y="148"/>
+        <UsageCount Value="201"/>
+      </Unit96>
+      <Unit97>
+        <Filename Value="loginform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LoginFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LoginForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="82"/>
+        <CursorPos X="58" Y="97"/>
+        <UsageCount Value="201"/>
+      </Unit97>
+      <Unit98>
+        <Filename Value="mainform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1798"/>
+        <CursorPos X="3" Y="1804"/>
+        <UsageCount Value="201"/>
+      </Unit98>
+      <Unit99>
+        <Filename Value="mainframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainFr"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="MainFrame"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="27" Y="91"/>
+        <UsageCount Value="201"/>
+      </Unit99>
+      <Unit100>
+        <Filename Value="memosourceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MemoSourceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MemoSourceForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="67"/>
+        <CursorPos X="5" Y="89"/>
+        <UsageCount Value="201"/>
+      </Unit100>
+      <Unit101>
+        <Filename Value="mergeprojectsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MergeProjectsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MergeProjectsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="614"/>
+        <CursorPos Y="638"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="2">
+          <Item0 X="11" Y="1242" ID="3"/>
+          <Item1 X="12" Y="655" ID="1"/>
+        </Bookmarks>
+      </Unit101>
+      <Unit102>
+        <Filename Value="modulesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ModulesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ModulesForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="35"/>
+        <CursorPos X="11" Y="55"/>
+        <UsageCount Value="201"/>
+      </Unit102>
+      <Unit103>
+        <Filename Value="monitorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MonitorFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MonitorForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="194"/>
+        <CursorPos X="56" Y="210"/>
+        <UsageCount Value="201"/>
+      </Unit103>
+      <Unit104>
+        <Filename Value="multictrlrightsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MultiCtrlRightsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultiCtrlRightsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit104>
+      <Unit105>
+        <Filename Value="multirolesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MultiRolesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultiRolesForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="107" Y="7"/>
+        <UsageCount Value="201"/>
+      </Unit105>
+      <Unit106>
+        <Filename Value="myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyClasses"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22" Y="8"/>
+        <UsageCount Value="201"/>
+      </Unit106>
+      <Unit107>
+        <Filename Value="myctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="74"/>
+        <CursorPos X="14" Y="90"/>
+        <UsageCount Value="201"/>
+      </Unit107>
+      <Unit108>
+        <Filename Value="mydialogs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyDialogs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="311"/>
+        <CursorPos X="16" Y="317"/>
+        <UsageCount Value="201"/>
+      </Unit108>
+      <Unit109>
+        <Filename Value="myfpsqlparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="290"/>
+        <CursorPos Y="306"/>
+        <UsageCount Value="201"/>
+      </Unit109>
+      <Unit110>
+        <Filename Value="mytypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyTypes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="61"/>
+        <CursorPos X="7" Y="75"/>
+        <UsageCount Value="201"/>
+      </Unit110>
+      <Unit111>
+        <Filename Value="newgridform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="GrdFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="NewGridForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1744"/>
+        <CursorPos X="11" Y="1761"/>
+        <UsageCount Value="201"/>
+      </Unit111>
+      <Unit112>
+        <Filename Value="newroleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="NewRoleForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit112>
+      <Unit113>
+        <Filename Value="objectfieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ObjFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ObjectFieldsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="104"/>
+        <CursorPos X="61" Y="122"/>
+        <UsageCount Value="201"/>
+      </Unit113>
+      <Unit114>
+        <Filename Value="outputform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="OutputFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="OutputForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="122"/>
+        <CursorPos X="65" Y="143"/>
+        <UsageCount Value="201"/>
+      </Unit114>
+      <Unit115>
+        <Filename Value="padeg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="72" Y="152"/>
+        <UsageCount Value="201"/>
+      </Unit115>
+      <Unit116>
+        <Filename Value="pivotfieldform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PivotFieldFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PivotFieldForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit116>
+      <Unit117>
+        <Filename Value="pivotgrid.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PivotGrid"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="139"/>
+        <CursorPos X="21" Y="27"/>
+        <UsageCount Value="201"/>
+      </Unit117>
+      <Unit118>
+        <Filename Value="pivotgridform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PivotGridFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PivotGridForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="322"/>
+        <CursorPos X="23" Y="338"/>
+        <UsageCount Value="201"/>
+      </Unit118>
+      <Unit119>
+        <Filename Value="precisionform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrecFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PrecisionForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit119>
+      <Unit120>
+        <Filename Value="printchartform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrintChartFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PrintChartForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit120>
+      <Unit121>
+        <Filename Value="processform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProcessFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProcessForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos X="22" Y="24"/>
+        <UsageCount Value="201"/>
+      </Unit121>
+      <Unit122>
+        <Filename Value="processminiform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProcessMiniFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProcessMiniForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit122>
+      <Unit123>
+        <Filename Value="progressform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ProgressFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ProgressForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="30"/>
+        <CursorPos X="33" Y="40"/>
+        <UsageCount Value="201"/>
+      </Unit123>
+      <Unit124>
+        <Filename Value="propdialogs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropDialogs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="146"/>
+        <CursorPos Y="156"/>
+        <UsageCount Value="201"/>
+      </Unit124>
+      <Unit125>
+        <Filename Value="propgrids.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropGrids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="183"/>
+        <CursorPos X="32" Y="200"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 Y="456" ID="4"/>
+        </Bookmarks>
+      </Unit125>
+      <Unit126>
+        <Filename Value="propsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="361"/>
+        <CursorPos X="35" Y="377"/>
+        <UsageCount Value="201"/>
+      </Unit126>
+      <Unit127>
+        <Filename Value="propsmenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PropsMenus"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="76"/>
+        <CursorPos X="11" Y="96"/>
+        <UsageCount Value="201"/>
+      </Unit127>
+      <Unit128>
+        <Filename Value="querycalcform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalcFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryCalcForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="35" Y="44"/>
+        <UsageCount Value="201"/>
+      </Unit128>
+      <Unit129>
+        <Filename Value="querycoloringform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QueryColoringFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryColoringForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="220"/>
+        <CursorPos X="12" Y="243"/>
+        <UsageCount Value="201"/>
+      </Unit129>
+      <Unit130>
+        <Filename Value="queryfieldvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QueryFieldValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QueryFieldValueForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="51"/>
+        <CursorPos X="8" Y="68"/>
+        <UsageCount Value="201"/>
+      </Unit130>
+      <Unit131>
+        <Filename Value="quicksearchform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="QuickSearchFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="QuickSearchForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="100"/>
+        <CursorPos X="36" Y="115"/>
+        <UsageCount Value="201"/>
+      </Unit131>
+      <Unit132>
+        <Filename Value="rangeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RangeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RangeForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit132>
+      <Unit133>
+        <Filename Value="recalcform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RecalcFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RecalcForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit133>
+      <Unit134>
+        <Filename Value="reportexportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportExportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportExportForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="212"/>
+        <CursorPos X="89" Y="241"/>
+        <UsageCount Value="201"/>
+      </Unit134>
+      <Unit135>
+        <Filename Value="reportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1393"/>
+        <CursorPos X="23" Y="1409"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="2">
+          <Item0 Y="358" ID="3"/>
+          <Item1 Y="229" ID="1"/>
+        </Bookmarks>
+      </Unit135>
+      <Unit136>
+        <Filename Value="reportmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ReportManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="284"/>
+        <CursorPos X="38" Y="302"/>
+        <UsageCount Value="201"/>
+      </Unit136>
+      <Unit137>
+        <Filename Value="reportsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReportsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="457"/>
+        <CursorPos X="37" Y="469"/>
+        <UsageCount Value="201"/>
+      </Unit137>
+      <Unit138>
+        <Filename Value="reportwindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ReportWindow"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="636"/>
+        <CursorPos X="28" Y="653"/>
+        <UsageCount Value="201"/>
+      </Unit138>
+      <Unit139>
+        <Filename Value="rpstyleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="RpStyleFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="RpStyleForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="34" Y="56"/>
+        <UsageCount Value="201"/>
+      </Unit139>
+      <Unit140>
+        <Filename Value="rundecls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RunDecls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1018"/>
+        <CursorPos X="26" Y="1036"/>
+        <UsageCount Value="201"/>
+      </Unit140>
+      <Unit141>
+        <Filename Value="saxbasereader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SAXBaseReader"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="7"/>
+        <UsageCount Value="201"/>
+      </Unit141>
+      <Unit142>
+        <Filename Value="scriptedit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="32" Y="25"/>
+        <UsageCount Value="201"/>
+      </Unit142>
+      <Unit143>
+        <Filename Value="scriptform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ScriptFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ScriptForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1109"/>
+        <CursorPos X="3" Y="1103"/>
+        <UsageCount Value="201"/>
+      </Unit143>
+      <Unit144>
+        <Filename Value="scriptfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptFuncs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="85"/>
+        <CursorPos X="10" Y="102"/>
+        <UsageCount Value="201"/>
+      </Unit144>
+      <Unit145>
+        <Filename Value="scriptmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScriptManager"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="9"/>
+        <UsageCount Value="201"/>
+      </Unit145>
+      <Unit146>
+        <Filename Value="searchreplaceform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SearchReplaceFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SearchReplaceForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit146>
+      <Unit147>
+        <Filename Value="selectactionform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SelectActionFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SelectActionForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="181"/>
+        <CursorPos X="41" Y="205"/>
+        <UsageCount Value="201"/>
+      </Unit147>
+      <Unit148>
+        <Filename Value="selectform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SelectFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SelectForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="45" Y="14"/>
+        <UsageCount Value="201"/>
+      </Unit148>
+      <Unit149>
+        <Filename Value="settingsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SettingsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SettingsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="133"/>
+        <CursorPos X="32" Y="163"/>
+        <UsageCount Value="201"/>
+      </Unit149>
+      <Unit150>
+        <Filename Value="setvalueform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SetValueFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SetValueForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit150>
+      <Unit151>
+        <Filename Value="shapeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShapeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ShapeForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit151>
+      <Unit152>
+        <Filename Value="shoppingform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShoppingFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ShoppingForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="244"/>
+        <CursorPos X="27" Y="270"/>
+        <UsageCount Value="201"/>
+      </Unit152>
+      <Unit153>
+        <Filename Value="sqlform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SqlFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SqlForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="187"/>
+        <CursorPos X="66" Y="197"/>
+        <UsageCount Value="201"/>
+      </Unit153>
+      <Unit154>
+        <Filename Value="sqlgen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SqlGen"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1180"/>
+        <CursorPos X="51" Y="1193"/>
+        <UsageCount Value="201"/>
+      </Unit154>
+      <Unit155>
+        <Filename Value="storagetypeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StorageTypeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StorageTypeForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="52" Y="11"/>
+        <UsageCount Value="201"/>
+      </Unit155>
+      <Unit156>
+        <Filename Value="strconsts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StrConsts"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="687"/>
+        <CursorPos X="18" Y="715"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+      </Unit156>
+      <Unit157>
+        <Filename Value="stringsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StringsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StringsForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit157>
+      <Unit158>
+        <Filename Value="styleform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="StyleFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="StyleForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="63"/>
+        <CursorPos X="43" Y="65"/>
+        <UsageCount Value="201"/>
+      </Unit158>
+      <Unit159>
+        <Filename Value="summarytree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SummaryTree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="91"/>
+        <CursorPos X="16" Y="111"/>
+        <UsageCount Value="201"/>
+      </Unit159>
+      <Unit160>
+        <Filename Value="taborderform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TabOrderFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TabOrderForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="194"/>
+        <CursorPos X="56" Y="208"/>
+        <UsageCount Value="201"/>
+      </Unit160>
+      <Unit161>
+        <Filename Value="templatefieldsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TemplateFieldsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TemplateFieldsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="960"/>
+        <CursorPos X="16" Y="979"/>
+        <UsageCount Value="201"/>
+      </Unit161>
+      <Unit162>
+        <Filename Value="thumbform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ThumbFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ThumbForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit162>
+      <Unit163>
+        <Filename Value="timeedit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimeEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="97"/>
+        <CursorPos X="28" Y="117"/>
+        <UsageCount Value="201"/>
+      </Unit163>
+      <Unit164>
+        <Filename Value="totalform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TotalFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TotalForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="226"/>
+        <CursorPos X="14" Y="244"/>
+        <UsageCount Value="201"/>
+      </Unit164>
+      <Unit165>
+        <Filename Value="totalsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TotalsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TotalsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="275"/>
+        <CursorPos X="21" Y="293"/>
+        <UsageCount Value="201"/>
+      </Unit165>
+      <Unit166>
+        <Filename Value="towordsfuncs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ToWordsFuncs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="153"/>
+        <CursorPos X="10" Y="10"/>
+        <UsageCount Value="201"/>
+      </Unit166>
+      <Unit167>
+        <Filename Value="treeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TreeFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TreeForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="46"/>
+        <UsageCount Value="201"/>
+      </Unit167>
+      <Unit168>
+        <Filename Value="treeviewex.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TreeViewEx"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="14" Y="45"/>
+        <UsageCount Value="201"/>
+      </Unit168>
+      <Unit169>
+        <Filename Value="upsc_mybuttons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyButtons"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit169>
+      <Unit170>
+        <Filename Value="upsc_myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyClasses"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="132"/>
+        <CursorPos X="47" Y="153"/>
+        <UsageCount Value="201"/>
+      </Unit170>
+      <Unit171>
+        <Filename Value="upsc_mycontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyControls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="111"/>
+        <CursorPos X="23" Y="133"/>
+        <UsageCount Value="201"/>
+      </Unit171>
+      <Unit172>
+        <Filename Value="upsc_mydateutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_mydateutils"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="11" Y="9"/>
+        <UsageCount Value="201"/>
+      </Unit172>
+      <Unit173>
+        <Filename Value="upsc_myextctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyExtctrls"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit173>
+      <Unit174>
+        <Filename Value="upsc_myforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyForms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="36"/>
+        <CursorPos X="23" Y="54"/>
+        <UsageCount Value="201"/>
+      </Unit174>
+      <Unit175>
+        <Filename Value="upsc_mygraphics.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyGraphics"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="122"/>
+        <CursorPos Y="134"/>
+        <UsageCount Value="201"/>
+      </Unit175>
+      <Unit176>
+        <Filename Value="upsc_mymenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyMenus"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="24" Y="64"/>
+        <UsageCount Value="201"/>
+      </Unit176>
+      <Unit177>
+        <Filename Value="upsc_mystd.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyStd"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="56"/>
+        <CursorPos X="30" Y="80"/>
+        <UsageCount Value="201"/>
+      </Unit177>
+      <Unit178>
+        <Filename Value="upsc_mystdctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSC_MyStdCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="174"/>
+        <CursorPos X="36" Y="207"/>
+        <UsageCount Value="201"/>
+      </Unit178>
+      <Unit179>
+        <Filename Value="upsr_mybuttons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyButtons"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="70" Y="14"/>
+        <UsageCount Value="201"/>
+      </Unit179>
+      <Unit180>
+        <Filename Value="upsr_myclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyClasses"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="126"/>
+        <CursorPos X="80" Y="152"/>
+        <UsageCount Value="201"/>
+      </Unit180>
+      <Unit181>
+        <Filename Value="upsr_mycontrols.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyControls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="168"/>
+        <CursorPos X="70" Y="177"/>
+        <UsageCount Value="201"/>
+      </Unit181>
+      <Unit182>
+        <Filename Value="upsr_mydateutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_mydateutils"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="201"/>
+      </Unit182>
+      <Unit183>
+        <Filename Value="upsr_myextctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyExtctrls"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="19" Y="12"/>
+        <UsageCount Value="201"/>
+      </Unit183>
+      <Unit184>
+        <Filename Value="upsr_myforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyForms"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="53" Y="15"/>
+        <UsageCount Value="201"/>
+      </Unit184>
+      <Unit185>
+        <Filename Value="upsr_mygraphics.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyGraphics"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="11" Y="14"/>
+        <UsageCount Value="201"/>
+      </Unit185>
+      <Unit186>
+        <Filename Value="upsr_mymenus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyMenus"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="39"/>
+        <CursorPos X="65" Y="60"/>
+        <UsageCount Value="201"/>
+      </Unit186>
+      <Unit187>
+        <Filename Value="upsr_mystd.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyStd"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="62" Y="15"/>
+        <UsageCount Value="201"/>
+      </Unit187>
+      <Unit188>
+        <Filename Value="upsr_mystdctrls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSR_MyStdCtrls"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="66" Y="16"/>
+        <UsageCount Value="201"/>
+      </Unit188>
+      <Unit189>
+        <Filename Value="userform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UserFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UserForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="169"/>
+        <CursorPos X="3" Y="172"/>
+        <UsageCount Value="201"/>
+      </Unit189>
+      <Unit190>
+        <Filename Value="usersform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UsersFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UsersForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="76" Y="15"/>
+        <UsageCount Value="201"/>
+      </Unit190>
+      <Unit191>
+        <Filename Value="visibleformsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="VisibleFormsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="VisibleFormsForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="83" Y="16"/>
+        <UsageCount Value="201"/>
+      </Unit191>
+      <Unit192>
+        <Filename Value="warningform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="WarnFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="WarningForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="45" Y="19"/>
+        <UsageCount Value="201"/>
+      </Unit192>
+      <Unit193>
+        <Filename Value="webserver.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WebServer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="3" Y="14"/>
+        <UsageCount Value="201"/>
+      </Unit193>
+      <Unit194>
+        <Filename Value="xmlreport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="XmlReport"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1193"/>
+        <CursorPos X="30" Y="1215"/>
+        <UsageCount Value="201"/>
+      </Unit194>
+      <Unit195>
+        <Filename Value="modulestree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ModulesTree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="15" Y="23"/>
+        <UsageCount Value="201"/>
+      </Unit195>
+      <Unit196>
+        <Filename Value="treepanel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TreePanel"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="26" Y="28"/>
+        <UsageCount Value="200"/>
+      </Unit196>
+      <Unit197>
+        <Filename Value="metamanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MetaManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="33" Y="42"/>
+        <UsageCount Value="201"/>
+      </Unit197>
+      <Unit198>
+        <Filename Value="updatemanform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UpdateManFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UpdateManForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="359"/>
+        <CursorPos X="59" Y="377"/>
+        <UsageCount Value="202"/>
+        <Bookmarks Count="1">
+          <Item0 Y="375" ID="1"/>
+        </Bookmarks>
+      </Unit198>
+      <Unit199>
+        <Filename Value="msgform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MsgFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MsgForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="26"/>
+        <CursorPos X="15" Y="26"/>
+        <UsageCount Value="200"/>
+      </Unit199>
+      <Unit200>
+        <Filename Value="updateoptionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UpdateOptionsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UpdateOptionsForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos Y="57"/>
+        <UsageCount Value="200"/>
+      </Unit200>
+      <Unit201>
+        <Filename Value="updatemanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UpdateManager"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="150"/>
+        <CursorPos X="35" Y="169"/>
+        <UsageCount Value="200"/>
+        <Bookmarks Count="1">
+          <Item0 X="11" Y="288" ID="1"/>
+        </Bookmarks>
+      </Unit201>
+      <Unit202>
+        <Filename Value="myzipper.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyZipper"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="29"/>
+        <CursorPos X="17" Y="46"/>
+        <UsageCount Value="200"/>
+      </Unit202>
+      <Unit203>
+        <Filename Value="mylogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MyLogger"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="54"/>
+        <CursorPos X="47" Y="62"/>
+        <UsageCount Value="171"/>
+      </Unit203>
+      <Unit204>
+        <Filename Value="padeguc.pas"/>
+        <UnitName Value="PadegUC"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="87"/>
+        <CursorPos X="26" Y="95"/>
+        <UsageCount Value="25"/>
+        <Bookmarks Count="2">
+          <Item0 Y="165" ID="2"/>
+          <Item1 Y="124" ID="1"/>
+        </Bookmarks>
+      </Unit204>
+      <Unit205>
+        <Filename Value="readme.txt"/>
+        <TopLine Value="9118"/>
+        <CursorPos X="75" Y="9136"/>
+        <UsageCount Value="100"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit205>
+      <Unit206>
+        <Filename Value="d:\LazComponents\PascalScript\Source\uPSRuntime.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7242"/>
+        <CursorPos Y="7259"/>
+        <UsageCount Value="7"/>
+      </Unit206>
+      <Unit207>
+        <Filename Value="d:\LazComponents\PascalScript\Source\uPSUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="917"/>
+        <CursorPos X="45" Y="928"/>
+        <UsageCount Value="6"/>
+      </Unit207>
+      <Unit208>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="829"/>
+        <CursorPos X="17" Y="848"/>
+        <UsageCount Value="13"/>
+      </Unit208>
+      <Unit209>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1630"/>
+        <CursorPos X="14" Y="1645"/>
+        <UsageCount Value="21"/>
+      </Unit209>
+      <Unit210>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-db\src\base\db.pas"/>
+        <UnitName Value="DB"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2284"/>
+        <CursorPos Y="2301"/>
+        <UsageCount Value="22"/>
+      </Unit210>
+      <Unit211>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-db\src\base\bufdataset.pas"/>
+        <UnitName Value="BufDataset"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2547"/>
+        <CursorPos Y="2563"/>
+        <UsageCount Value="11"/>
+      </Unit211>
+      <Unit212>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\comctrls.pp"/>
+        <UnitName Value="ComCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="216"/>
+        <CursorPos X="21" Y="247"/>
+        <UsageCount Value="1"/>
+      </Unit212>
+      <Unit213>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\custompage.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="80"/>
+        <CursorPos X="3" Y="88"/>
+        <UsageCount Value="1"/>
+      </Unit213>
+      <Unit214>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\wincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4385"/>
+        <CursorPos X="3" Y="4400"/>
+        <UsageCount Value="2"/>
+      </Unit214>
+      <Unit215>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\winapih.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="142"/>
+        <CursorPos X="10" Y="153"/>
+        <UsageCount Value="6"/>
+      </Unit215>
+      <Unit216>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\themes.pas"/>
+        <UnitName Value="Themes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="411"/>
+        <CursorPos X="14" Y="431"/>
+        <UsageCount Value="9"/>
+      </Unit216>
+      <Unit217>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\tmschema.pas"/>
+        <UnitName Value="TmSchema"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2650"/>
+        <CursorPos X="91" Y="2670"/>
+        <UsageCount Value="9"/>
+      </Unit217>
+      <Unit218>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\winunits-base\src\uxtheme.pp"/>
+        <UnitName Value="UxTheme"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1081"/>
+        <CursorPos X="3" Y="1101"/>
+        <UsageCount Value="9"/>
+      </Unit218>
+      <Unit219>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1869"/>
+        <CursorPos X="3" Y="1878"/>
+        <UsageCount Value="1"/>
+      </Unit219>
+      <Unit220>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\graphics.pp"/>
+        <UnitName Value="Graphics"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1150"/>
+        <CursorPos X="14" Y="1167"/>
+        <UsageCount Value="5"/>
+      </Unit220>
+      <Unit221>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\lazutils\graphtype.pp"/>
+        <UnitName Value="GraphType"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="43" Y="35"/>
+        <UsageCount Value="3"/>
+      </Unit221>
+      <Unit222>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\win\wininc\base.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="35"/>
+        <CursorPos X="6" Y="55"/>
+        <UsageCount Value="7"/>
+      </Unit222>
+      <Unit223>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\canvas.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1776"/>
+        <CursorPos X="50" Y="1796"/>
+        <UsageCount Value="3"/>
+      </Unit223>
+      <Unit224>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\interfacebase.pp"/>
+        <UnitName Value="InterfaceBase"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos X="15" Y="152"/>
+        <UsageCount Value="7"/>
+      </Unit224>
+      <Unit225>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\win\wininc\struct.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7905"/>
+        <CursorPos X="11" Y="7922"/>
+        <UsageCount Value="10"/>
+      </Unit225>
+      <Unit226>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\stdctrls.pp"/>
+        <UnitName Value="StdCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="745"/>
+        <CursorPos X="3" Y="763"/>
+        <UsageCount Value="2"/>
+      </Unit226>
+      <Unit227>
+        <Filename Value="d:\lazarus_2_0_12\designer\designer.pp"/>
+        <UnitName Value="Designer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1979"/>
+        <CursorPos X="53" Y="2000"/>
+        <UsageCount Value="6"/>
+      </Unit227>
+      <Unit228>
+        <Filename Value="d:\lazarus_2_0_12\designer\designerprocs.pas"/>
+        <UnitName Value="DesignerProcs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="507"/>
+        <CursorPos X="3" Y="528"/>
+        <UsageCount Value="2"/>
+      </Unit228>
+      <Unit229>
+        <Filename Value="d:\lazarus_2_0_12\lcl\include\intfbaselcl.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="181"/>
+        <CursorPos X="32" Y="193"/>
+        <UsageCount Value="2"/>
+      </Unit229>
+      <Unit230>
+        <Filename Value="d:\lazarus_2_0_12\lcl\include\lclintf.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="124"/>
+        <CursorPos X="11" Y="144"/>
+        <UsageCount Value="2"/>
+      </Unit230>
+      <Unit231>
+        <Filename Value="d:\lazarus_2_0_12\lcl\interfacebase.pp"/>
+        <UnitName Value="InterfaceBase"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="147"/>
+        <CursorPos X="9" Y="166"/>
+        <UsageCount Value="2"/>
+      </Unit231>
+      <Unit232>
+        <Filename Value="d:\LazComponents\jvdesign\jvdesignsurface.pas"/>
+        <UnitName Value="JvDesignSurface"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="127"/>
+        <CursorPos X="15" Y="144"/>
+        <UsageCount Value="9"/>
+        <Bookmarks Count="1">
+          <Item0 Y="669" ID="9"/>
+        </Bookmarks>
+      </Unit232>
+      <Unit233>
+        <Filename Value="d:\LazComponents\jvdesign\jvdesignimp.pas"/>
+        <UnitName Value="JvDesignImp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1090"/>
+        <CursorPos X="24" Y="1100"/>
+        <UsageCount Value="9"/>
+        <Bookmarks Count="2">
+          <Item0 X="13" Y="981" ID="1"/>
+          <Item1 X="24" Y="1100" ID="2"/>
+        </Bookmarks>
+      </Unit233>
+      <Unit234>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\colorbox.pas"/>
+        <UnitName Value="ColorBox"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="77"/>
+        <CursorPos X="14" Y="99"/>
+        <UsageCount Value="1"/>
+      </Unit234>
+      <Unit235>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\dbctrls.pp"/>
+        <UnitName Value="DBCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="159"/>
+        <CursorPos X="3" Y="177"/>
+        <UsageCount Value="2"/>
+      </Unit235>
+      <Unit236>
+        <Filename Value="d:\LazComponents\dbctrlsex\dbctrlsex.pas"/>
+        <UnitName Value="DBCtrlsEx"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos X="3" Y="40"/>
+        <UsageCount Value="5"/>
+      </Unit236>
+      <Unit237>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\i386\i386.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1396"/>
+        <CursorPos Y="1418"/>
+        <UsageCount Value="7"/>
+      </Unit237>
+      <Unit238>
+        <Filename Value="D:\LazComponents\PascalScript\Source\uPSCompiler.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13230"/>
+        <CursorPos Y="13238"/>
+        <UsageCount Value="5"/>
+      </Unit238>
+      <Unit239>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\objpas.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="30"/>
+        <CursorPos Y="48"/>
+        <UsageCount Value="17"/>
+      </Unit239>
+      <Unit240>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\compon.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="543"/>
+        <CursorPos X="3" Y="548"/>
+        <UsageCount Value="2"/>
+      </Unit240>
+      <Unit241>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\customcontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="41" Y="30"/>
+        <UsageCount Value="5"/>
+      </Unit241>
+      <Unit242>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\astrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="162"/>
+        <CursorPos Y="179"/>
+        <UsageCount Value="8"/>
+      </Unit242>
+      <Unit243>
+        <Filename Value="..\DXWebServer\exprfuncs.pas"/>
+        <UnitName Value="ExprFuncs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="990"/>
+        <CursorPos X="37" Y="998"/>
+        <UsageCount Value="5"/>
+      </Unit243>
+      <Unit244>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="689"/>
+        <CursorPos X="15" Y="706"/>
+        <UsageCount Value="16"/>
+      </Unit244>
+      <Unit245>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\streams.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="825"/>
+        <CursorPos X="25" Y="832"/>
+        <UsageCount Value="7"/>
+      </Unit245>
+      <Unit246>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\typinfo.pp"/>
+        <UnitName Value="TypInfo"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1320"/>
+        <CursorPos Y="1337"/>
+        <UsageCount Value="10"/>
+      </Unit246>
+      <Unit247>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="183"/>
+        <CursorPos X="10" Y="200"/>
+        <UsageCount Value="7"/>
+      </Unit247>
+      <Unit248>
+        <Filename Value="d:\LazComponents\bgra\trunk\bgrabitmap\bgrabitmap.pas"/>
+        <UnitName Value="BGRABitmap"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="38"/>
+        <CursorPos X="9" Y="79"/>
+        <UsageCount Value="7"/>
+      </Unit248>
+      <Unit249>
+        <Filename Value="d:\LazComponents\bgra\trunk\bgrabitmap\bgracustombitmap.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="65"/>
+        <CursorPos X="45" Y="78"/>
+        <UsageCount Value="7"/>
+      </Unit249>
+      <Unit250>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\lazutils\lazutf8.pas"/>
+        <UnitName Value="LazUTF8"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="992"/>
+        <CursorPos X="3" Y="985"/>
+        <UsageCount Value="6"/>
+      </Unit250>
+      <Unit251>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\virtualtreeview\VirtualTrees.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3073"/>
+        <CursorPos X="20" Y="3089"/>
+        <UsageCount Value="11"/>
+        <Bookmarks Count="1">
+          <Item0 X="20" Y="16613" ID="2"/>
+        </Bookmarks>
+      </Unit251>
+      <Unit252>
+        <Filename Value="ibconnection.pp"/>
+        <UnitName Value="IBConnection"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="166"/>
+        <CursorPos Y="183"/>
+        <UsageCount Value="49"/>
+      </Unit252>
+      <Unit253>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\heaptrc.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="744"/>
+        <CursorPos Y="759"/>
+        <UsageCount Value="8"/>
+      </Unit253>
+      <Unit254>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\stringl.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1130"/>
+        <CursorPos X="3" Y="1112"/>
+        <UsageCount Value="10"/>
+      </Unit254>
+      <Unit255>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\lazutils\lazmethodlist.pas"/>
+        <UnitName Value="LazMethodList"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="173"/>
+        <CursorPos Y="189"/>
+        <UsageCount Value="7"/>
+      </Unit255>
+      <Unit256>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\customcombobox.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="247"/>
+        <CursorPos X="3" Y="254"/>
+        <UsageCount Value="2"/>
+      </Unit256>
+      <Unit257>
+        <Filename Value="D:\fpcupdeluxe\fpcsrc\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="187"/>
+        <CursorPos X="23" Y="206"/>
+        <UsageCount Value="3"/>
+      </Unit257>
+      <Unit258>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\lmessages.pp"/>
+        <UnitName Value="LMessages"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="9"/>
+      </Unit258>
+      <Unit259>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\win\wininc\messages.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1347"/>
+        <CursorPos X="6" Y="1330"/>
+        <UsageCount Value="9"/>
+      </Unit259>
+      <Unit260>
+        <Filename Value="myfpsqltree.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="144"/>
+        <CursorPos X="14" Y="161"/>
+        <UsageCount Value="17"/>
+      </Unit260>
+      <Unit261>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\rtl-objpas\src\inc\variants.pp"/>
+        <UnitName Value="Variants"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2837"/>
+        <CursorPos X="3" Y="2840"/>
+        <UsageCount Value="9"/>
+      </Unit261>
+      <Unit262>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\variant.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="234"/>
+        <CursorPos Y="247"/>
+        <UsageCount Value="9"/>
+      </Unit262>
+      <Unit263>
+        <Filename Value="d:\LazComponents\bgra\bgrabitmap\bgrabitmaptypes.pas"/>
+        <UnitName Value="BGRABitmapTypes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="95"/>
+        <CursorPos X="7" Y="126"/>
+        <UsageCount Value="9"/>
+      </Unit263>
+      <Unit264>
+        <Filename Value="d:\LazComponents\tachart\tacustomseries.pas"/>
+        <UnitName Value="TACustomSeries"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="315"/>
+        <CursorPos X="14" Y="332"/>
+        <UsageCount Value="9"/>
+      </Unit264>
+      <Unit265>
+        <Filename Value="D:\fpcupdeluxe\fpcsrc\packages\fcl-xml\src\sax_xml.pp"/>
+        <UnitName Value="SAX_XML"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="272"/>
+        <CursorPos X="28" Y="288"/>
+        <UsageCount Value="3"/>
+      </Unit265>
+      <Unit266>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-xml\src\sax.pp"/>
+        <UnitName Value="SAX"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="266"/>
+        <CursorPos X="15" Y="175"/>
+        <UsageCount Value="9"/>
+      </Unit266>
+      <Unit267>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-xml\src\xmlutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="28"/>
+        <UsageCount Value="9"/>
+      </Unit267>
+      <Unit268>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-db\src\base\csvdataset.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="69"/>
+        <CursorPos X="32" Y="86"/>
+        <UsageCount Value="1"/>
+      </Unit268>
+      <Unit269>
+        <Filename Value="sqldb.pp"/>
+        <UnitName Value="SQLDB"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2918"/>
+        <CursorPos Y="2935"/>
+        <UsageCount Value="13"/>
+        <Bookmarks Count="1">
+          <Item0 X="3" Y="1452" ID="4"/>
+        </Bookmarks>
+      </Unit269>
+      <Unit270>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\dbgrids.pas"/>
+        <UnitName Value="DBGrids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="277"/>
+        <CursorPos X="14" Y="295"/>
+        <UsageCount Value="5"/>
+      </Unit270>
+      <Unit271>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\grids.pas"/>
+        <UnitName Value="Grids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="11336"/>
+        <CursorPos Y="11353"/>
+        <UsageCount Value="10"/>
+      </Unit271>
+      <Unit272>
+        <Filename Value="sqldblib.pp"/>
+        <UnitName Value="SQLDBLib"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="15" Y="21"/>
+        <UsageCount Value="2"/>
+      </Unit272>
+      <Unit273>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\ibase\src\ibase60.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="316"/>
+        <CursorPos X="11" Y="333"/>
+        <UsageCount Value="14"/>
+      </Unit273>
+      <Unit274>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\dynlibs.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="26"/>
+        <CursorPos X="10" Y="43"/>
+        <UsageCount Value="7"/>
+      </Unit274>
+      <Unit275>
+        <Filename Value="D:\fpcupdeluxe\lazarus\components\lazutils\lazfileutils.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="191"/>
+        <CursorPos X="10" Y="209"/>
+        <UsageCount Value="9"/>
+      </Unit275>
+      <Unit276>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\include\screen.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="579"/>
+        <CursorPos X="3" Y="586"/>
+        <UsageCount Value="5"/>
+      </Unit276>
+      <Unit277>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\editbtn.pas"/>
+        <UnitName Value="EditBtn"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1297"/>
+        <CursorPos X="3" Y="1311"/>
+        <UsageCount Value="6"/>
+      </Unit277>
+      <Unit278>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\groupededit.pp"/>
+        <UnitName Value="GroupedEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos X="3" Y="62"/>
+        <UsageCount Value="5"/>
+      </Unit278>
+      <Unit279>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\customform.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2220"/>
+        <CursorPos Y="2236"/>
+        <UsageCount Value="7"/>
+      </Unit279>
+      <Unit280>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4438"/>
+        <CursorPos X="3" Y="4440"/>
+        <UsageCount Value="4"/>
+      </Unit280>
+      <Unit281>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\intfbasewinapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1202"/>
+        <CursorPos X="3" Y="1206"/>
+        <UsageCount Value="2"/>
+      </Unit281>
+      <Unit282>
+        <Filename Value="D:\fpcupdeluxe\fpcsrc\packages\paszlib\src\zipper.pp"/>
+        <UnitName Value="Zipper"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1567"/>
+        <CursorPos X="3" Y="1571"/>
+        <UsageCount Value="2"/>
+      </Unit282>
+      <Unit283>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\lazcontrols\treefilteredit.pas"/>
+        <UnitName Value="TreeFilterEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="471"/>
+        <CursorPos X="57" Y="495"/>
+        <UsageCount Value="2"/>
+      </Unit283>
+      <Unit284>
+        <Filename Value="modify.txt"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="10"/>
+        <UsageCount Value="1"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit284>
+      <Unit285>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\include\scrollingwincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="282"/>
+        <CursorPos X="45" Y="308"/>
+        <UsageCount Value="1"/>
+      </Unit285>
+      <Unit286>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\include\scrollbox.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="21"/>
+        <CursorPos X="3" Y="42"/>
+        <UsageCount Value="1"/>
+      </Unit286>
+      <Unit287>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\PascalScript\Source\uPSRuntime.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7585"/>
+        <CursorPos X="23" Y="7607"/>
+        <UsageCount Value="1"/>
+      </Unit287>
+      <Unit288>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\PascalScript\Source\uPSUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="267"/>
+        <CursorPos X="3" Y="284"/>
+        <UsageCount Value="2"/>
+      </Unit288>
+      <Unit289>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\PascalScript\Source\uPSCompiler.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="12354"/>
+        <CursorPos X="25" Y="12371"/>
+        <UsageCount Value="1"/>
+      </Unit289>
+      <Unit290>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\menus.pp"/>
+        <UnitName Value="Menus"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="420"/>
+        <CursorPos X="3" Y="427"/>
+        <UsageCount Value="3"/>
+      </Unit290>
+      <Unit291>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\menuitem.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="69"/>
+        <CursorPos Y="87"/>
+        <UsageCount Value="3"/>
+      </Unit291>
+      <Unit292>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\include\popupmenu.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="40"/>
+        <CursorPos X="55" Y="50"/>
+        <UsageCount Value="3"/>
+      </Unit292>
+      <Unit293>
+        <Filename Value="D:\fpcupdeluxe\lazarus\lcl\include\menu.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="50" Y="28"/>
+        <UsageCount Value="3"/>
+      </Unit293>
+      <Unit294>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\lists.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="40"/>
+        <CursorPos Y="57"/>
+        <UsageCount Value="21"/>
+      </Unit294>
+      <Unit295>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\winapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="507"/>
+        <CursorPos Y="526"/>
+        <UsageCount Value="2"/>
+      </Unit295>
+      <Unit296>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\interfaces\win32\win32winapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2297"/>
+        <CursorPos Y="2312"/>
+        <UsageCount Value="2"/>
+      </Unit296>
+      <Unit297>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\customtimer.pas"/>
+        <UnitName Value="CustomTimer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="137"/>
+        <CursorPos X="28" Y="154"/>
+        <UsageCount Value="2"/>
+        <Bookmarks Count="1">
+          <Item0 X="28" Y="154" ID="1"/>
+        </Bookmarks>
+      </Unit297>
+      <Unit298>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\sysutils.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="144"/>
+        <CursorPos Y="161"/>
+        <UsageCount Value="2"/>
+      </Unit298>
+      <Unit299>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\interfaces\win32\win32callback.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2951"/>
+        <CursorPos Y="2979"/>
+        <UsageCount Value="2"/>
+      </Unit299>
+      <Unit300>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\interfaces\win32\win32object.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="392"/>
+        <CursorPos Y="420"/>
+        <UsageCount Value="2"/>
+      </Unit300>
+      <Unit301>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="176"/>
+        <CursorPos X="3" Y="193"/>
+        <UsageCount Value="2"/>
+      </Unit301>
+      <Unit302>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-db\src\base\dataset.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="393"/>
+        <CursorPos Y="410"/>
+        <UsageCount Value="9"/>
+      </Unit302>
+      <Unit303>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1499"/>
+        <CursorPos X="11" Y="1516"/>
+        <UsageCount Value="4"/>
+      </Unit303>
+      <Unit304>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\fcl-db\src\base\fields.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="38"/>
+        <CursorPos Y="43"/>
+        <UsageCount Value="8"/>
+      </Unit304>
+      <Unit305>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\customlabel.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="221"/>
+        <CursorPos X="3" Y="223"/>
+        <UsageCount Value="2"/>
+      </Unit305>
+      <Unit306>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\graphiccontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="24"/>
+        <UsageCount Value="2"/>
+      </Unit306>
+      <Unit307>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\maskedit.pp"/>
+        <UnitName Value="MaskEdit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="189"/>
+        <CursorPos X="3" Y="206"/>
+        <UsageCount Value="2"/>
+      </Unit307>
+      <Unit308>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\dynlibh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="33"/>
+        <CursorPos X="10" Y="51"/>
+        <UsageCount Value="7"/>
+      </Unit308>
+      <Unit309>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\dynlib.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="85"/>
+        <CursorPos X="3" Y="87"/>
+        <UsageCount Value="7"/>
+      </Unit309>
+      <Unit310>
+        <Filename Value="padegLocVar.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="18" Y="4"/>
+        <UsageCount Value="6"/>
+      </Unit310>
+      <Unit311>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\syspchh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="10" Y="41"/>
+        <UsageCount Value="6"/>
+      </Unit311>
+      <Unit312>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\currh.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="14" Y="22"/>
+        <UsageCount Value="3"/>
+      </Unit312>
+      <Unit313>
+        <Filename Value="D:\fpcupdeluxe64\lazarus\components\PascalScript\Source\x64.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="395"/>
+        <CursorPos Y="118"/>
+        <UsageCount Value="3"/>
+      </Unit313>
+      <Unit314>
+        <Filename Value="D:\fpcupdeluxe64\lazarus\components\PascalScript\Source\uPSUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="767"/>
+        <CursorPos Y="784"/>
+        <UsageCount Value="3"/>
+      </Unit314>
+      <Unit315>
+        <Filename Value="D:\fpcupdeluxe64\lazarus\components\PascalScript\Source\uPSRuntime.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="3"/>
+      </Unit315>
+      <Unit316>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\icnstypes.pas"/>
+        <UnitName Value="IcnsTypes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="242"/>
+        <CursorPos X="43" Y="264"/>
+        <UsageCount Value="3"/>
+      </Unit316>
+      <Unit317>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\rtl-objpas\src\inc\system.uitypes.pp"/>
+        <UnitName Value="System.UITypes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="191"/>
+        <CursorPos X="3" Y="208"/>
+        <UsageCount Value="5"/>
+      </Unit317>
+      <Unit318>
+        <Filename Value="d:\LazComponents\virtualtreeview\VirtualTrees.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2563"/>
+        <CursorPos X="15" Y="2580"/>
+        <UsageCount Value="9"/>
+      </Unit318>
+      <Unit319>
+        <Filename Value="myfpsqlscanner.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="761"/>
+        <CursorPos X="36" Y="789"/>
+        <UsageCount Value="16"/>
+        <Bookmarks Count="1">
+          <Item0 X="35" Y="792" ID="3"/>
+        </Bookmarks>
+      </Unit319>
+      <Unit320>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\sysstr.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="959"/>
+        <CursorPos Y="976"/>
+        <UsageCount Value="27"/>
+      </Unit320>
+      <Unit321>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\varianth.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="4" Y="27"/>
+        <UsageCount Value="9"/>
+      </Unit321>
+      <Unit322>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\types.pp"/>
+        <UnitName Value="Types"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="150"/>
+        <CursorPos X="3" Y="167"/>
+        <UsageCount Value="8"/>
+      </Unit322>
+      <Unit323>
+        <Filename Value="d:\LazComponents\PascalScript\Source\x86.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="495"/>
+        <CursorPos Y="512"/>
+        <UsageCount Value="7"/>
+      </Unit323>
+      <Unit324>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\synedit\syneditmiscclasses.pp"/>
+        <UnitName Value="SynEditMiscClasses"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="325"/>
+        <CursorPos X="14" Y="341"/>
+        <UsageCount Value="9"/>
+      </Unit324>
+      <Unit325>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos X="10" Y="76"/>
+        <UsageCount Value="9"/>
+      </Unit325>
+      <Unit326>
+        <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\i386\fastmove.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="259"/>
+        <CursorPos Y="276"/>
+        <UsageCount Value="9"/>
+      </Unit326>
+      <Unit327>
+        <Filename Value="dialoggrid.pas"/>
+        <UnitName Value="DialogGrid"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="248"/>
+        <CursorPos Y="265"/>
+        <UsageCount Value="10"/>
+      </Unit327>
+      <Unit328>
+        <Filename Value="d:\fpcupdeluxe\lazarus\components\virtualtreeview\laz.registervirtualtreeview.pas"/>
+        <UnitName Value="laz.RegisterVirtualTreeView"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="20"/>
+        <UsageCount Value="10"/>
+      </Unit328>
+      <Unit329>
+        <Filename Value="d:\LazComponents\kcontrols\packages\kcontrols\kcontrolslaz.pas"/>
+        <UnitName Value="KControlsLaz"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="40" Y="16"/>
+        <UsageCount Value="10"/>
+      </Unit329>
+      <Unit330>
+        <Filename Value="d:\LazComponents\kcontrols\source\kcontrolsdesign.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="44" Y="18"/>
+        <UsageCount Value="10"/>
+      </Unit330>
+      <Unit331>
+        <Filename Value="d:\LazComponents\kcontrols\source\kpictureeditor.pas"/>
+        <ComponentName Value="KPictureEditForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="23"/>
+        <CursorPos X="53" Y="41"/>
+        <UsageCount Value="10"/>
+      </Unit331>
+    </Units>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9137" Column="52" TopLine="9118"/>
+      </Position1>
+      <Position2>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9136" Column="50" TopLine="9118"/>
+      </Position2>
+      <Position3>
+        <Filename Value="aboutform.pas"/>
+        <Caret Line="59" Column="33" TopLine="44"/>
+      </Position3>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+    <HistoryLists Count="1">
+      <List0 Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\Windows\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List0>
+    </HistoryLists>
+  </ProjectSession>
+</CONFIG>

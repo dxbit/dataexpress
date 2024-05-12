@@ -1,0 +1,508 @@
+object ScriptFm: TScriptFm
+  Left = 965
+  Height = 526
+  Top = 297
+  Width = 890
+  ActiveControl = Notebook
+  Caption = 'Скрипт'
+  ClientHeight = 526
+  ClientWidth = 890
+  KeyPreview = True
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  OnWindowStateChange = FormWindowStateChange
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '3.2.0.0'
+  object Splitter1: TSplitter
+    Left = 0
+    Height = 494
+    Top = 32
+    Width = 5
+    ResizeStyle = rsPattern
+  end
+  object Panel1: TPanel
+    Left = 5
+    Height = 494
+    Top = 32
+    Width = 880
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 494
+    ClientWidth = 880
+    TabOrder = 2
+    object Splitter2: TSplitter
+      Cursor = crVSplit
+      Left = 0
+      Height = 5
+      Top = 397
+      Width = 880
+      Align = alBottom
+      ResizeAnchor = akBottom
+      ResizeStyle = rsPattern
+    end
+    object Panel3: TPanel
+      Left = 0
+      Height = 397
+      Top = 0
+      Width = 880
+      Align = alClient
+      BevelOuter = bvNone
+      ClientHeight = 397
+      ClientWidth = 880
+      TabOrder = 1
+      object Notebook: TNotebook
+        Left = 0
+        Height = 374
+        Top = 0
+        Width = 880
+        Align = alClient
+        TabOrder = 0
+        TabStop = True
+      end
+      object StatusBar: TStatusBar
+        Left = 0
+        Height = 23
+        Top = 374
+        Width = 880
+        Panels = <        
+          item
+            Width = 100
+          end        
+          item
+            Width = 100
+          end        
+          item
+            Width = 100
+          end        
+          item
+            Width = 300
+          end>
+        SimplePanel = False
+      end
+    end
+    object Msgs: TListView
+      Left = 0
+      Height = 88
+      Top = 402
+      Width = 880
+      Align = alBottom
+      AutoSort = False
+      AutoWidthLastColumn = True
+      BorderSpacing.Bottom = 4
+      Columns = <      
+        item
+          Width = 24
+        end      
+        item
+          Width = 852
+        end>
+      HideSelection = False
+      ReadOnly = True
+      RowSelect = True
+      ScrollBars = ssVertical
+      ShowColumnHeaders = False
+      SmallImages = MsgImgs
+      TabOrder = 3
+      ViewStyle = vsReport
+      OnClick = MsgsClick
+    end
+    object StaticText2: TStaticText
+      AnchorSideLeft.Control = Msgs
+      AnchorSideTop.Control = Msgs
+      Left = 4
+      Height = 25
+      Top = 404
+      Width = 188
+      BorderSpacing.Left = 4
+      BorderSpacing.Top = 2
+      Caption = 'Сообщения'
+      Color = clWindow
+      Font.Color = clGray
+      Font.Style = [fsItalic]
+      ParentFont = False
+      ParentColor = False
+      TabOrder = 2
+      Transparent = False
+    end
+  end
+  object Splitter3: TSplitter
+    Left = 885
+    Height = 494
+    Top = 32
+    Width = 5
+    Align = alRight
+    OnChangeBounds = Splitter3ChangeBounds
+    ResizeAnchor = akRight
+    ResizeStyle = rsPattern
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 890
+    AutoSize = True
+    ButtonHeight = 32
+    ButtonWidth = 32
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ImageList3
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 107
+      Top = 0
+      Caption = 'Вырезать'
+      ImageIndex = 0
+      OnClick = ToolButtonClick
+    end
+    object ToolButton2: TToolButton
+      Tag = 1
+      Left = 139
+      Top = 0
+      Caption = 'Копировать'
+      ImageIndex = 1
+      OnClick = ToolButtonClick
+    end
+    object ToolButton3: TToolButton
+      Tag = 2
+      Left = 171
+      Top = 0
+      Caption = 'Вставить'
+      ImageIndex = 2
+      OnClick = ToolButtonClick
+    end
+    object ToolButton4: TToolButton
+      Tag = 3
+      Left = 203
+      Top = 0
+      Caption = 'Отменить'
+      ImageIndex = 3
+      OnClick = ToolButtonClick
+    end
+    object ToolButton5: TToolButton
+      Tag = 4
+      Left = 235
+      Top = 0
+      Caption = 'Вернуть'
+      ImageIndex = 4
+      OnClick = ToolButtonClick
+    end
+    object ToolButton6: TToolButton
+      Tag = 5
+      Left = 267
+      Top = 0
+      Caption = 'Найти'
+      DropdownMenu = FindPopup
+      ImageIndex = 5
+      OnClick = ToolButtonClick
+      Style = tbsDropDown
+    end
+    object ToolButton7: TToolButton
+      Tag = 6
+      Left = 311
+      Top = 0
+      Caption = 'Заменить'
+      ImageIndex = 6
+      OnClick = ToolButtonClick
+    end
+    object ToolButton8: TToolButton
+      Tag = 7
+      Left = 343
+      Top = 0
+      Caption = 'Компиляция'
+      ImageIndex = 7
+      OnClick = ToolButtonClick
+    end
+    object ToolButton9: TToolButton
+      Tag = 8
+      Left = 38
+      Top = 0
+      Caption = 'Добавить модуль формы'
+      ImageIndex = 8
+      OnClick = ToolButtonClick
+    end
+    object ToolButton10: TToolButton
+      Tag = 9
+      Left = 70
+      Top = 0
+      Caption = 'Добавить модуль пользователя'
+      ImageIndex = 9
+      OnClick = ToolButtonClick
+    end
+    object ToolButton11: TToolButton
+      Left = 102
+      Height = 32
+      Top = 0
+      AutoSize = True
+      Caption = 'ToolButton11'
+      ImageIndex = 10
+      Style = tbsDivider
+    end
+    object ToolButton12: TToolButton
+      Tag = 10
+      Left = 412
+      Top = 0
+      Caption = 'ToolButton12'
+      ImageIndex = 10
+      OnClick = ToolButtonClick
+    end
+    object ToolButton13: TToolButton
+      Left = 407
+      Height = 32
+      Top = 0
+      AutoSize = True
+      Caption = 'ToolButton13'
+      Style = tbsDivider
+    end
+    object ToolButton14: TToolButton
+      Tag = 11
+      Left = 1
+      Top = 0
+      Caption = 'ToolButton14'
+      ImageIndex = 11
+      OnClick = ToolButtonClick
+    end
+    object ToolButton15: TToolButton
+      Left = 33
+      Height = 32
+      Top = 0
+      AutoSize = True
+      Caption = 'ToolButton15'
+      Style = tbsDivider
+    end
+    object ToolButton16: TToolButton
+      Tag = 12
+      Left = 375
+      Top = 0
+      Caption = 'ToolButton16'
+      ImageIndex = 12
+      OnClick = ToolButtonClick
+    end
+    object FullScreenBn: TToolButton
+      Left = 444
+      Top = 0
+      Caption = 'FullScreenBn'
+      ImageIndex = 13
+      OnClick = FullScreenBnClick
+    end
+    object ToolButton17: TToolButton
+      Left = 476
+      Top = 0
+      Caption = 'ToolButton17'
+      ImageIndex = 14
+      OnClick = ToolButton17Click
+    end
+  end
+  object SynPasSyn1: TSynPasSyn
+    Enabled = False
+    CommentAttri.Foreground = 7368816
+    CommentAttri.Style = []
+    StringAttri.Foreground = clBlue
+    SymbolAttri.Foreground = clRed
+    CompilerMode = pcmDelphi
+    NestedComments = False
+    TypeHelpers = True
+    StringMultilineMode = []
+    Left = 107
+    Top = 155
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 48
+    Top = 293
+    object MenuItem1: TMenuItem
+      Caption = 'Добавить модуль формы'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Добавить модуль пользователя'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem26: TMenuItem
+      Caption = 'Добавить модуль выражений'
+      OnClick = MenuItem26Click
+    end
+    object MenuItem40: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem11: TMenuItem
+      Caption = 'Добавить модуль WebMain'
+      OnClick = MenuItem11Click
+    end
+    object MenuItem22: TMenuItem
+      Caption = 'Добавить модуль веб-формы'
+      OnClick = MenuItem22Click
+    end
+    object MenuItem39: TMenuItem
+      Caption = 'Добавить модуль веб-расширения'
+      OnClick = MenuItem39Click
+    end
+    object MenuItem35: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Переименовать модуль'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem27: TMenuItem
+      Caption = 'Импорт'
+      OnClick = MenuItem27Click
+    end
+    object MenuItem29: TMenuItem
+      Caption = 'Экспорт'
+      OnClick = MenuItem29Click
+    end
+    object MenuItem30: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Удалить'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem10: TMenuItem
+      Caption = '-'
+    end
+    object GotoFormMnu: TMenuItem
+      Caption = 'Перейти к форме'
+      OnClick = GotoFormMnuClick
+    end
+  end
+  object PopupMenu3: TPopupMenu
+    OnPopup = PopupMenu3Popup
+    Left = 400
+    Top = 112
+    object MenuItem12: TMenuItem
+      Caption = 'Вырезать'
+      ShortCut = 16472
+      OnClick = MenuItem12Click
+    end
+    object MenuItem13: TMenuItem
+      Caption = 'Копировать'
+      ShortCut = 16451
+      OnClick = MenuItem13Click
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Вставить'
+      ShortCut = 16470
+      OnClick = MenuItem14Click
+    end
+    object MenuItem36: TMenuItem
+      Caption = 'Специальная вставка'
+      object MenuItem37: TMenuItem
+        Caption = 'Вставить GUID'
+        ShortCut = 24647
+        OnClick = MenuItem37Click
+      end
+      object MenuItem38: TMenuItem
+        Caption = 'Вставить рисунок как BASE64'
+        OnClick = MenuItem38Click
+      end
+      object MenuItem8: TMenuItem
+        Caption = 'Код расширения'
+        OnClick = MenuItem8Click
+      end
+    end
+    object MenuItem15: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem16: TMenuItem
+      Caption = 'Отменить'
+      ShortCut = 16474
+      OnClick = MenuItem16Click
+    end
+    object MenuItem17: TMenuItem
+      Caption = 'Вернуть'
+      ShortCut = 24666
+      OnClick = MenuItem17Click
+    end
+    object MenuItem18: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem19: TMenuItem
+      Caption = 'Найти'
+      ShortCut = 16454
+      OnClick = MenuItem19Click
+    end
+    object MenuItem20: TMenuItem
+      Caption = 'Найти следующее'
+      ShortCut = 114
+      OnClick = MenuItem20Click
+    end
+    object MenuItem21: TMenuItem
+      Caption = 'Найти предыдущее'
+      ShortCut = 8306
+      OnClick = MenuItem21Click
+    end
+    object MenuItem25: TMenuItem
+      Caption = 'Заменить'
+      ShortCut = 16466
+      OnClick = MenuItem25Click
+    end
+    object FindScriptMnu: TMenuItem
+      Caption = 'Найти в модулях'
+      ShortCut = 24646
+      OnClick = FindScriptMnuClick
+    end
+    object MenuItem7: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Найти в синтаксис-панели'
+      ShortCut = 112
+      OnClick = MenuItem6Click
+    end
+    object MenuItem31: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem32: TMenuItem
+      Caption = 'Сворачивание кода'
+      object MenuItem33: TMenuItem
+        Caption = 'Свернуть весь код'
+        OnClick = MenuItem33Click
+      end
+      object MenuItem34: TMenuItem
+        Caption = 'Развернуть весь код'
+        OnClick = MenuItem34Click
+      end
+    end
+    object MenuItem23: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem24: TMenuItem
+      Caption = 'Компиляция'
+      ShortCut = 120
+      OnClick = MenuItem24Click
+    end
+    object MenuItem28: TMenuItem
+      Caption = 'Тест формы'
+      ShortCut = 116
+      OnClick = MenuItem28Click
+    end
+  end
+  object ImageList3: TImageList
+    Height = 24
+    Width = 24
+    Left = 504
+    Top = 197
+  end
+  object MsgImgs: TImageList
+    Left = 260
+    Top = 447
+  end
+  object FindPopup: TPopupMenu
+    Left = 361
+    Top = 239
+    object MenuItem9: TMenuItem
+      Caption = 'Поиск в модулях'
+      OnClick = MenuItem9Click
+    end
+  end
+end

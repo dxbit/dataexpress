@@ -1,0 +1,164 @@
+object FindScriptFm: TFindScriptFm
+  Left = 390
+  Height = 464
+  Top = 152
+  Width = 839
+  BorderIcons = [biSystemMenu]
+  Caption = 'Поиск в модулях'
+  ClientHeight = 464
+  ClientWidth = 839
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    AnchorSideTop.Control = TextCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 12
+    Width = 65
+    Caption = 'Найти текст'
+    ParentColor = False
+  end
+  object TextCbx: TComboBox
+    AnchorSideLeft.Control = Label1
+    AnchorSideLeft.Side = asrBottom
+    Left = 81
+    Height = 23
+    Top = 8
+    Width = 659
+    Anchors = [akTop, akLeft, akRight]
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    BorderSpacing.Left = 8
+    ItemHeight = 15
+    OnKeyUp = TextCbxKeyUp
+    TabOrder = 0
+  end
+  object FindBn: TBitBtn
+    Left = 743
+    Height = 23
+    Top = 8
+    Width = 88
+    Anchors = [akTop, akRight]
+    Caption = 'Найти'
+    OnClick = FindBnClick
+    TabOrder = 1
+  end
+  object ResultLbl: TLabel
+    AnchorSideTop.Control = ModulesGrp
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 128
+    Width = 95
+    BorderSpacing.Top = 8
+    Caption = 'Результат поиска'
+    ParentColor = False
+  end
+  object Tree: TTreeView
+    AnchorSideTop.Control = ResultLbl
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 312
+    Top = 144
+    Width = 823
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 1
+    ReadOnly = True
+    RowSelect = True
+    TabOrder = 4
+    ToolTips = False
+    OnSelectionChanged = TreeSelectionChanged
+    Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoThemedDraw]
+  end
+  object ModulesGrp: TCheckGroup
+    AnchorSideTop.Control = TextCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 81
+    Top = 39
+    Width = 668
+    AutoFill = True
+    BorderSpacing.Top = 8
+    Caption = 'Искать в модулях'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.TopBottomSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclTopToBottomThenLeftToRight
+    ChildSizing.ControlsPerLine = 2
+    ClientHeight = 61
+    ClientWidth = 664
+    ColumnLayout = clVerticalThenHorizontal
+    Columns = 4
+    Items.Strings = (
+      'Main'
+      'WebMain'
+      'Формы'
+      'Веб-формы'
+      'Расширений'
+      'Веб-расширений'
+      'Пользователя'
+    )
+    TabOrder = 2
+    Data = {
+      0700000002020202020202
+    }
+  end
+  object OptionsGrp: TCheckGroup
+    AnchorSideTop.Control = TextCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 679
+    Height = 81
+    Top = 39
+    Width = 152
+    AutoFill = True
+    BorderSpacing.Top = 8
+    Caption = 'Опции'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.TopBottomSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 61
+    ClientWidth = 148
+    Items.Strings = (
+      'Искать целые слова'
+      'Учитывать регистр'
+    )
+    TabOrder = 3
+    Data = {
+      020000000202
+    }
+  end
+  object NothingPan: TPanel
+    AnchorSideLeft.Control = Tree
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Tree
+    AnchorSideTop.Side = asrCenter
+    Left = 250
+    Height = 50
+    Top = 275
+    Width = 338
+    BevelOuter = bvNone
+    Caption = 'NothingPan'
+    Color = clWindow
+    Font.Color = clGray
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 5
+  end
+end

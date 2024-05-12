@@ -1,0 +1,188 @@
+object FillTableFm: TFillTableFm
+  Left = 420
+  Height = 505
+  Top = 268
+  Width = 428
+  BorderIcons = [biSystemMenu]
+  Caption = 'Заполнить таблицу'
+  ClientHeight = 505
+  ClientWidth = 428
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Label2: TLabel
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 103
+    BorderSpacing.Top = 8
+    Caption = 'Таблица-источник'
+    ParentColor = False
+  end
+  object SrcTbl: TComboBox
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 413
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = SrcTblChange
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = SrcTbl
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 55
+    Width = 107
+    BorderSpacing.Top = 8
+    Caption = 'Таблица-приемник'
+    ParentColor = False
+  end
+  object DestTbl: TComboBox
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 71
+    Width = 413
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ItemHeight = 15
+    OnChange = DestTblChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 465
+    Width = 416
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 7
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = DestTbl
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 41
+    BorderSpacing.Top = 8
+    Caption = 'Фильтр'
+    ParentColor = False
+  end
+  object Filter: TEditButton
+    AnchorSideTop.Control = Label4
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 118
+    Width = 412
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    ButtonCaption = '...'
+    ButtonWidth = 23
+    Flat = True
+    MaxLength = 0
+    NumGlyphs = 1
+    OnButtonClick = FilterButtonClick
+    PasswordChar = #0
+    TabOrder = 2
+  end
+  object BitBtn1: TBitBtn
+    AnchorSideTop.Side = asrBottom
+    Left = 322
+    Height = 25
+    Top = 404
+    Width = 99
+    Anchors = [akTop, akRight]
+    BorderSpacing.Top = 8
+    Caption = 'Сброс'
+    OnClick = BitBtn1Click
+    TabOrder = 6
+  end
+  object CheckBox1: TCheckBox
+    AnchorSideTop.Control = Grid
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 408
+    Width = 206
+    BorderSpacing.Top = 8
+    Caption = 'Запрашивать перед заполнением'
+    TabOrder = 4
+  end
+  object CheckBox2: TCheckBox
+    AnchorSideTop.Control = CheckBox1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 435
+    Width = 231
+    BorderSpacing.Top = 8
+    Caption = 'Очищать таблицу перед заполнением'
+    TabOrder = 5
+  end
+  object Grid: TDialogGrid
+    AnchorSideTop.Control = Filter
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 251
+    Top = 149
+    Width = 412
+    AlternateColor = 15658734
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    AutoFillColumns = True
+    BorderSpacing.Top = 8
+    ColCount = 2
+    Columns = <    
+      item
+        Title.Caption = 'Источник'
+        Width = 205
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Title.Caption = 'Приемник'
+        Width = 206
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
+    ParentShowHint = False
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 3
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = GridCommand
+    ColWidths = (
+      205
+      206
+    )
+  end
+end

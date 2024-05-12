@@ -1,0 +1,39 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: dxupdatestrconsts.rsabort
+msgid "Abort"
+msgstr ""
+
+#: dxupdatestrconsts.rscopyfileerror
+msgid "Can not copy file %s into %s."
+msgstr ""
+
+#: dxupdatestrconsts.rserror
+msgid "Error"
+msgstr ""
+
+#: dxupdatestrconsts.rsfullerrmsg
+msgid "%0:s\\n\\nException class: %1:s\\nException message: %2:s"
+msgstr ""
+
+#: dxupdatestrconsts.rsretry
+msgid "Retry"
+msgstr ""
+
+#: dxupdatestrconsts.rsstartupdateerror
+msgid "Unable to start DataExpress update. File %s is in use by another process. Make sure you don't have any instances of DataExpress running. Close all applications that may interfere with the update process."
+msgstr ""
+
+#: dxupdatestrconsts.rsupdateaborteduser
+msgid "The update was aborted by the user."
+msgstr ""
+
+#: dxupdatestrconsts.rsupdating
+msgid "Updating DataExpress..."
+msgstr ""
+
+#: dxupdatestrconsts.rswarning
+msgid "Warning"
+msgstr ""
+

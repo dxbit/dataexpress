@@ -1,0 +1,174 @@
+object ModulesFm: TModulesFm
+  Left = 890
+  Height = 432
+  Top = 283
+  Width = 566
+  ActiveControl = Grid
+  BorderIcons = [biSystemMenu]
+  Caption = 'ModulesFm'
+  ClientHeight = 432
+  ClientWidth = 566
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 22
+    Top = 4
+    Width = 566
+    AutoSize = True
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 4
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    Images = ImageList1
+    List = True
+    ShowCaptions = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 0
+      Caption = 'Добавить'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 79
+      Top = 0
+      Caption = 'Удалить'
+      ImageIndex = 1
+      OnClick = ToolButton2Click
+    end
+    object ToolButton3: TToolButton
+      Left = 149
+      Top = 0
+      Caption = 'Экспорт'
+      ImageIndex = 2
+      OnClick = ToolButton3Click
+    end
+    object ToolButton4: TToolButton
+      Left = 365
+      Top = 0
+      Caption = 'Скачать'
+      ImageIndex = 3
+      OnClick = ToolButton4Click
+    end
+    object ToolButton5: TToolButton
+      Left = 360
+      Height = 22
+      Top = 0
+      Caption = 'ToolButton5'
+      Style = tbsDivider
+    end
+    object ToolButton6: TToolButton
+      Left = 220
+      Top = 0
+      Caption = 'Домашняя страница'
+      ImageIndex = 4
+      OnClick = ToolButton6Click
+    end
+  end
+  object Grid: TStringGrid
+    Left = 4
+    Height = 216
+    Top = 30
+    Width = 558
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 4
+    Columns = <    
+      item
+        Title.Caption = 'Имя файла'
+        Width = 218
+      end    
+      item
+        Title.Caption = 'Автор'
+        Width = 218
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Версия'
+        Width = 80
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Тип'
+        Width = 40
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goRowSelect, goThumbTracking, goSmoothScroll]
+    RowCount = 2
+    TabOrder = 1
+    OnDrawCell = GridDrawCell
+    OnSelection = GridSelection
+    ColWidths = (
+      218
+      218
+      80
+      40
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 400
+    Width = 554
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbClose
+    ShowButtons = [pbClose, pbHelp]
+    ShowBevel = False
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 246
+    Width = 566
+    Align = alBottom
+    ResizeAnchor = akBottom
+    ResizeStyle = rsPattern
+  end
+  object HtmlPan: TIpHtmlPanel
+    Left = 0
+    Height = 143
+    Top = 251
+    Width = 566
+    Align = alBottom
+    ALinkColor = clBlue
+    BorderStyle = bsSingle
+    FixedTypeface = 'Courier New'
+    DefaultTypeFace = 'Verdana'
+    DefaultFontSize = 10
+    FlagErrors = False
+    PrintSettings.MarginLeft = 0.5
+    PrintSettings.MarginTop = 0.5
+    PrintSettings.MarginRight = 0.5
+    PrintSettings.MarginBottom = 0.5
+    PrintSettings.Preview.Left = 480
+    PrintSettings.Preview.Top = 270
+    PrintSettings.Preview.Width = 1440
+    PrintSettings.Preview.Height = 810
+    TabOrder = 4
+    VLinkColor = clBlue
+  end
+  object ImageList1: TImageList
+    Left = 182
+    Top = 106
+  end
+end

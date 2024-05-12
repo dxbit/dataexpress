@@ -1,0 +1,280 @@
+object ReportsFm: TReportsFm
+  Left = 311
+  Height = 524
+  Top = 300
+  Width = 467
+  BorderIcons = [biSystemMenu]
+  Caption = 'ReportsFm'
+  ClientHeight = 524
+  ClientWidth = 467
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 484
+    Width = 455
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    DefaultButton = pbClose
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 478
+    Top = 0
+    Width = 467
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 478
+    ClientWidth = 467
+    TabOrder = 0
+    object List: TListBox
+      Left = 8
+      Height = 470
+      Top = 8
+      Width = 302
+      Align = alClient
+      BorderSpacing.Left = 8
+      BorderSpacing.Top = 8
+      ItemHeight = 0
+      PopupMenu = PopupMenu1
+      TabOrder = 0
+      OnDblClick = ListDblClick
+      OnSelectionChange = ListSelectionChange
+    end
+    object Panel2: TPanel
+      Left = 310
+      Height = 478
+      Top = 0
+      Width = 157
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 478
+      ClientWidth = 157
+      TabOrder = 1
+      object BitBtn1: TBitBtn
+        Left = 8
+        Height = 25
+        Top = 8
+        Width = 144
+        Caption = 'Добавить'
+        OnClick = ButtonClick
+        TabOrder = 0
+      end
+      object BitBtn2: TBitBtn
+        Tag = 2
+        Left = 8
+        Height = 25
+        Top = 104
+        Width = 144
+        Caption = 'Переименовать'
+        OnClick = ButtonClick
+        TabOrder = 3
+      end
+      object BitBtn3: TBitBtn
+        Tag = 3
+        Left = 8
+        Height = 25
+        Top = 144
+        Width = 144
+        Caption = 'Свойства'
+        Font.Style = [fsBold]
+        OnClick = ButtonClick
+        ParentFont = False
+        TabOrder = 4
+      end
+      object BitBtn5: TBitBtn
+        Tag = 5
+        Left = 8
+        Height = 25
+        Top = 176
+        Width = 144
+        Caption = 'Таблица'
+        OnClick = ButtonClick
+        TabOrder = 5
+      end
+      object BitBtn6: TBitBtn
+        Tag = 1
+        Left = 8
+        Height = 25
+        Top = 72
+        Width = 144
+        Caption = 'Удалить'
+        OnClick = ButtonClick
+        TabOrder = 2
+      end
+      object BitBtn7: TBitBtn
+        Tag = 6
+        Left = 8
+        Height = 25
+        Top = 440
+        Width = 144
+        Caption = 'Копировать стиль'
+        OnClick = ButtonClick
+        TabOrder = 13
+      end
+      object BitBtn8: TBitBtn
+        Tag = 7
+        Left = 8
+        Height = 25
+        Top = 208
+        Width = 144
+        Caption = 'Вычисления'
+        OnClick = ButtonClick
+        TabOrder = 6
+      end
+      object BitBtn9: TBitBtn
+        Tag = 8
+        Left = 8
+        Height = 25
+        Top = 240
+        Width = 144
+        Caption = 'Фильтр'
+        OnClick = ButtonClick
+        TabOrder = 7
+      end
+      object BitBtn10: TBitBtn
+        Tag = 9
+        Left = 8
+        Height = 25
+        Top = 304
+        Width = 144
+        Caption = 'Итоги'
+        OnClick = ButtonClick
+        TabOrder = 9
+      end
+      object BitBtn11: TBitBtn
+        Tag = 10
+        Left = 8
+        Height = 25
+        Top = 336
+        Width = 144
+        Caption = 'Справка'
+        OnClick = ButtonClick
+        TabOrder = 10
+      end
+      object BitBtn4: TBitBtn
+        Tag = 11
+        Left = 8
+        Height = 25
+        Top = 40
+        Width = 144
+        Caption = 'Копировать'
+        OnClick = ButtonClick
+        TabOrder = 1
+      end
+      object BitBtn12: TBitBtn
+        Tag = 12
+        Left = 8
+        Height = 25
+        Top = 272
+        Width = 144
+        Caption = 'Раскраска'
+        OnClick = ButtonClick
+        TabOrder = 8
+      end
+      object BitBtn13: TBitBtn
+        Tag = 13
+        Left = 8
+        Height = 25
+        Top = 368
+        Width = 144
+        Caption = 'Шаблоны'
+        OnClick = ButtonClick
+        TabOrder = 11
+      end
+      object BitBtn14: TBitBtn
+        Tag = 14
+        Left = 8
+        Height = 25
+        Top = 400
+        Width = 144
+        Caption = 'При печати'
+        OnClick = ButtonClick
+        TabOrder = 12
+      end
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 104
+    Top = 137
+    object MenuItem1: TMenuItem
+      Caption = 'Добавить'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem13: TMenuItem
+      Caption = 'Копировать'
+      OnClick = MenuItem13Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Удалить'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Переименовать'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Свойства'
+      Default = True
+      ShortCut = 13
+      OnClick = MenuItem5Click
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'Таблица'
+      OnClick = MenuItem7Click
+    end
+    object MenuItem10: TMenuItem
+      Caption = 'Вычисления'
+      OnClick = MenuItem10Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Выходной фильтр'
+      OnClick = MenuItem6Click
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Раскраска'
+      OnClick = MenuItem14Click
+    end
+    object MenuItem11: TMenuItem
+      Caption = 'Итоги'
+      OnClick = MenuItem11Click
+    end
+    object MenuItem12: TMenuItem
+      Caption = 'Справка'
+      OnClick = MenuItem12Click
+    end
+    object MenuItem15: TMenuItem
+      Caption = 'Шаблоны'
+      OnClick = MenuItem15Click
+    end
+    object MenuItem16: TMenuItem
+      Caption = 'При печати'
+      OnClick = MenuItem16Click
+    end
+    object MenuItem8: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem9: TMenuItem
+      Caption = 'Стиль'
+      OnClick = MenuItem9Click
+    end
+  end
+end

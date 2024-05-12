@@ -1,0 +1,80 @@
+object MultiCtrlRightsFm: TMultiCtrlRightsFm
+  Left = 339
+  Height = 406
+  Top = 309
+  Width = 587
+  BorderIcons = [biSystemMenu]
+  Caption = 'Доступ к компонентам'
+  ClientHeight = 406
+  ClientWidth = 587
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
+  object Grid: TStringGrid
+    Left = 4
+    Height = 364
+    Top = 4
+    Width = 579
+    Align = alClient
+    AlternateColor = 15921906
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+    ColCount = 3
+    FixedCols = 0
+    FixedRows = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints, goTruncCellHints]
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    OnDblClick = GridDblClick
+    OnDrawCell = GridDrawCell
+    OnGetCellHint = GridGetCellHint
+    OnKeyDown = GridKeyDown
+    ColWidths = (
+      192
+      192
+      194
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 374
+    Width = 575
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
+    ShowBevel = False
+  end
+  object CmpMnu: TPopupMenu
+    OnPopup = CmpMnuPopup
+    Left = 260
+    Top = 260
+    object MenuItem5: TMenuItem
+      Caption = 'Нет доступа'
+      OnClick = CmpMnuClick
+    end
+    object MenuItem6: TMenuItem
+      Tag = 1
+      Caption = 'Только просмотр'
+      OnClick = CmpMnuClick
+    end
+    object MenuItem7: TMenuItem
+      Tag = 2
+      Caption = 'Редактирование'
+      OnClick = CmpMnuClick
+    end
+  end
+end
