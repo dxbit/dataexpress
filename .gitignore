@@ -3,6 +3,7 @@
 *.exe
 *.old
 *.log
+*.trc
 readme.txt
 modify.txt
 dataexpress

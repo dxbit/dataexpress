@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Win32"/>
-    <Units Count="332">
+    <Units Count="336">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -19,21 +19,16 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AboutForm"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="45"/>
-        <CursorPos X="50" Y="60"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="34" Y="14"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="actioncontrols.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ActionControls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="242"/>
-        <CursorPos X="15" Y="259"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit2>
       <Unit3>
@@ -41,8 +36,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ActionExpressions"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="304"/>
-        <CursorPos X="51" Y="320"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit3>
       <Unit4>
@@ -50,8 +44,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ActionPans"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="574"/>
-        <CursorPos X="3" Y="581"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit4>
       <Unit5>
@@ -62,8 +55,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ActionsEditForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1237"/>
-        <CursorPos X="7" Y="1265"/>
+        <CursorPos X="22" Y="18"/>
         <UsageCount Value="201"/>
       </Unit5>
       <Unit6>
@@ -74,11 +66,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AddFieldsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="343"/>
-        <CursorPos X="3" Y="359"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 X="16" Y="382" ID="1"/>
+          <Item0 X="16" Y="400" ID="1"/>
         </Bookmarks>
       </Unit6>
       <Unit7>
@@ -89,6 +80,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AnchorsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit7>
       <Unit8>
@@ -96,6 +88,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppImageLists"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit8>
       <Unit9>
@@ -103,8 +96,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppSettings"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="228"/>
-        <CursorPos X="42" Y="245"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit9>
       <Unit10>
@@ -112,11 +104,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppUtils"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="205"/>
-        <CursorPos X="26" Y="240"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 X="7" Y="2351" ID="5"/>
+          <Item0 X="7" Y="2369" ID="5"/>
         </Bookmarks>
       </Unit10>
       <Unit11>
@@ -127,6 +118,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="BreakpointsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit11>
       <Unit12>
@@ -137,8 +129,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="CalcErrsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="58"/>
-        <CursorPos X="121" Y="70"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit12>
       <Unit13>
@@ -149,8 +140,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="CalcFieldsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="20"/>
-        <CursorPos X="20" Y="46"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit13>
       <Unit14>
@@ -161,7 +151,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ChartForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="31" Y="17"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit14>
       <Unit15>
@@ -172,6 +162,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="CheckPrintOutForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit15>
       <Unit16>
@@ -179,8 +170,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CheckTreeView"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="186"/>
-        <CursorPos X="43" Y="204"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit16>
       <Unit17>
@@ -188,11 +178,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ClassesTree"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="168"/>
-        <CursorPos X="37" Y="188"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 Y="728" ID="3"/>
+          <Item0 Y="746" ID="3"/>
         </Bookmarks>
       </Unit17>
       <Unit18>
@@ -203,11 +192,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ColorForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="64"/>
-        <CursorPos X="27" Y="70"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 X="32" Y="74" ID="2"/>
+          <Item0 X="32" Y="92" ID="2"/>
         </Bookmarks>
       </Unit18>
       <Unit19>
@@ -218,6 +206,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ColoringForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit19>
       <Unit20>
@@ -225,8 +214,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CompilerDecls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2884"/>
-        <CursorPos X="34" Y="2901"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit20>
       <Unit21>
@@ -234,6 +222,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ComponentTree"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit21>
       <Unit22>
@@ -244,8 +233,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ConnectInfoForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="196"/>
-        <CursorPos X="3" Y="199"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit22>
       <Unit23>
@@ -256,8 +244,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ConnectionsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="685"/>
-        <CursorPos X="69" Y="702"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit23>
       <Unit24>
@@ -268,8 +255,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="CounterForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="59"/>
-        <CursorPos X="3" Y="80"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit24>
       <Unit25>
@@ -277,14 +263,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CrossApi"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="25"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit25>
       <Unit26>
         <Filename Value="crypt.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="12" Y="18"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit26>
       <Unit27>
@@ -292,8 +278,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CSVFiles"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="191"/>
-        <CursorPos X="15" Y="215"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit27>
       <Unit28>
@@ -304,6 +289,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="CtrlRightsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit28>
       <Unit29>
@@ -311,8 +297,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DatasetProcessor"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="6395"/>
-        <CursorPos X="3" Y="6418"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit29>
       <Unit30>
@@ -320,8 +305,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DbEngine"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="148"/>
-        <CursorPos X="57" Y="177"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit30>
       <Unit31>
@@ -332,6 +316,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DBFuncForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit31>
       <Unit32>
@@ -342,8 +327,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DebugScriptForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="521"/>
-        <CursorPos Y="531"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit32>
       <Unit33>
@@ -354,6 +338,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DeleteRecsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit33>
       <Unit34>
@@ -364,8 +349,7 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="DesignerFrame"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1387"/>
-        <CursorPos X="3" Y="1390"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit34>
       <Unit35>
@@ -373,8 +357,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DSProcLists"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="156"/>
-        <CursorPos X="47" Y="164"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit35>
       <Unit36>
@@ -382,8 +365,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxActions"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="231"/>
-        <CursorPos X="25" Y="256"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit36>
       <Unit37>
@@ -391,7 +373,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DXCharts"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="18"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit37>
       <Unit38>
@@ -399,12 +381,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxCtrls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1734"/>
-        <CursorPos Y="1751"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
-          <Item0 Y="5685" ID="6"/>
-          <Item1 Y="2144" ID="7"/>
+          <Item0 Y="5703" ID="6"/>
+          <Item1 Y="2162" ID="7"/>
         </Bookmarks>
       </Unit38>
       <Unit39>
@@ -412,8 +393,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="dxFiles"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="261"/>
-        <CursorPos X="61" Y="286"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit39>
       <Unit40>
@@ -421,8 +401,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="dxImages"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="546"/>
-        <CursorPos X="87" Y="560"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit40>
       <Unit41>
@@ -430,8 +409,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DXMains"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="99"/>
-        <CursorPos Y="116"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit41>
       <Unit42>
@@ -439,8 +417,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DXReports"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1967"/>
-        <CursorPos X="30" Y="1981"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit42>
       <Unit43>
@@ -448,12 +425,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxSQLQuery"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="719"/>
-        <CursorPos X="13" Y="736"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
-          <Item0 X="10" Y="481" ID="2"/>
-          <Item1 Y="254" ID="1"/>
+          <Item0 X="10" Y="499" ID="2"/>
+          <Item1 Y="272" ID="1"/>
         </Bookmarks>
       </Unit43>
       <Unit44>
@@ -461,8 +437,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DXUsers"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="276"/>
-        <CursorPos X="14" Y="292"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit44>
       <Unit45>
@@ -470,8 +445,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="EditForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="111"/>
-        <CursorPos Y="129"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit45>
       <Unit46>
@@ -482,8 +456,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EditMaskForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="122"/>
-        <CursorPos X="19" Y="140"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit46>
       <Unit47>
@@ -491,8 +464,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ErrorIcon"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="23"/>
-        <CursorPos X="15" Y="40"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit47>
       <Unit48>
@@ -503,8 +475,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ErrorsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="34"/>
-        <CursorPos X="54" Y="45"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit48>
       <Unit49>
@@ -515,8 +486,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExportForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="398"/>
-        <CursorPos X="87" Y="423"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit49>
       <Unit50>
@@ -524,8 +494,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Expressions"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1272"/>
-        <CursorPos Y="1285"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit50>
       <Unit51>
@@ -536,8 +505,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExprForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="618"/>
-        <CursorPos X="52" Y="637"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit51>
       <Unit52>
@@ -545,8 +513,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExprFuncs"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="785"/>
-        <CursorPos Y="799"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit52>
       <Unit53>
@@ -554,6 +521,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExprHighlighter"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit53>
       <Unit54>
@@ -564,8 +532,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExtTemplateForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="105"/>
-        <CursorPos X="5" Y="123"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit54>
       <Unit55>
@@ -576,8 +543,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FillTableForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="344"/>
-        <CursorPos X="17" Y="360"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit55>
       <Unit56>
@@ -585,8 +551,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FilterControl"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="479"/>
-        <CursorPos X="13" Y="495"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit56>
       <Unit57>
@@ -597,6 +562,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FilterForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit57>
       <Unit58>
@@ -607,8 +573,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FindActionsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="167"/>
-        <CursorPos Y="185"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit58>
       <Unit59>
@@ -619,8 +584,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FindExprForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="694"/>
-        <CursorPos X="9" Y="711"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit59>
       <Unit60>
@@ -631,6 +595,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FindForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit60>
       <Unit61>
@@ -641,8 +606,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FindScriptForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="228"/>
-        <CursorPos Y="246"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit61>
       <Unit62>
@@ -653,6 +617,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FixedListForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit62>
       <Unit63>
@@ -663,6 +628,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FontForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit63>
       <Unit64>
@@ -670,8 +636,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormDesigner"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="49"/>
-        <CursorPos X="15" Y="67"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit64>
       <Unit65>
@@ -682,8 +647,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormFieldValueForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="89"/>
-        <CursorPos X="58" Y="105"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit65>
       <Unit66>
@@ -694,6 +658,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormFiltersForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit66>
       <Unit67>
@@ -701,8 +666,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="693"/>
-        <CursorPos X="38" Y="709"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit67>
       <Unit68>
@@ -710,6 +674,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormResizer"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit68>
       <Unit69>
@@ -717,8 +682,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormsTree"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="394"/>
-        <CursorPos X="52" Y="418"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit69>
       <Unit70>
@@ -726,8 +690,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormView"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="226"/>
-        <CursorPos X="19" Y="240"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit70>
       <Unit71>
@@ -738,8 +701,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FuncsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="226"/>
-        <CursorPos X="5" Y="243"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit71>
       <Unit72>
@@ -750,8 +712,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="GridButtonsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="113"/>
-        <CursorPos X="35" Y="129"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit72>
       <Unit73>
@@ -762,6 +723,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="GridColsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit73>
       <Unit74>
@@ -769,8 +731,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GtkThemeManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="31" Y="63"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit74>
       <Unit75>
@@ -778,7 +739,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="HelpManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="25"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit75>
       <Unit76>
@@ -789,6 +750,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="HelpTextForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit76>
       <Unit77>
@@ -799,7 +761,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="HelpViewForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="53" Y="12"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit77>
       <Unit78>
@@ -810,6 +772,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="HierarchyForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit78>
       <Unit79>
@@ -820,6 +783,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="HintForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit79>
       <Unit80>
@@ -827,11 +791,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="HttpClient"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="297"/>
-        <CursorPos X="24" Y="312"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 Y="340" ID="2"/>
+          <Item0 Y="358" ID="2"/>
         </Bookmarks>
       </Unit80>
       <Unit81>
@@ -839,8 +802,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ImageManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="70"/>
-        <CursorPos Y="72"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit81>
       <Unit82>
@@ -851,6 +813,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ImageProcessPrintForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit82>
       <Unit83>
@@ -860,6 +823,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit83>
       <Unit84>
@@ -870,8 +834,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ImagesForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="348"/>
-        <CursorPos X="9" Y="368"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit84>
       <Unit85>
@@ -882,6 +845,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ImportErrorsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit85>
       <Unit86>
@@ -892,8 +856,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ImportForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="768"/>
-        <CursorPos X="5" Y="790"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit86>
       <Unit87>
@@ -904,8 +867,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="InputForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="90"/>
-        <CursorPos X="9" Y="117"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit87>
       <Unit88>
@@ -916,7 +878,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="InsertValuesForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="12"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit88>
       <Unit89>
@@ -927,6 +889,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="IntfForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit89>
       <Unit90>
@@ -937,6 +900,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LabelTextForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit90>
       <Unit91>
@@ -944,8 +908,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="LangManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="14" Y="58"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit91>
       <Unit92>
@@ -956,8 +919,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LCbxListSourceForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="77"/>
-        <CursorPos X="15" Y="94"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit92>
       <Unit93>
@@ -967,20 +929,16 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LicenseForm"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="39"/>
-        <CursorPos X="40" Y="65"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit93>
       <Unit94>
         <Filename Value="listform.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ListForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="321"/>
-        <CursorPos X="3" Y="339"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit94>
       <Unit95>
@@ -988,6 +946,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Lists"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit95>
       <Unit96>
@@ -998,8 +957,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ListSourceForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="129"/>
-        <CursorPos X="15" Y="148"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit96>
       <Unit97>
@@ -1010,8 +968,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LoginForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="82"/>
-        <CursorPos X="58" Y="97"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit97>
       <Unit98>
@@ -1022,8 +979,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1798"/>
-        <CursorPos X="3" Y="1804"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit98>
       <Unit99>
@@ -1034,7 +990,7 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="MainFrame"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="27" Y="91"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit99>
       <Unit100>
@@ -1045,8 +1001,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MemoSourceForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="67"/>
-        <CursorPos X="5" Y="89"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit100>
       <Unit101>
@@ -1057,12 +1012,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MergeProjectsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="614"/>
-        <CursorPos Y="638"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
-          <Item0 X="11" Y="1242" ID="3"/>
-          <Item1 X="12" Y="655" ID="1"/>
+          <Item0 X="11" Y="1260" ID="3"/>
+          <Item1 X="12" Y="673" ID="1"/>
         </Bookmarks>
       </Unit101>
       <Unit102>
@@ -1073,8 +1027,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ModulesForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="35"/>
-        <CursorPos X="11" Y="55"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit102>
       <Unit103>
@@ -1085,8 +1038,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MonitorForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="194"/>
-        <CursorPos X="56" Y="210"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit103>
       <Unit104>
@@ -1097,6 +1049,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MultiCtrlRightsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit104>
       <Unit105>
@@ -1107,7 +1060,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MultiRolesForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="107" Y="7"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit105>
       <Unit106>
@@ -1115,7 +1068,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyClasses"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="22" Y="8"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit106>
       <Unit107>
@@ -1123,8 +1076,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyCtrls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="74"/>
-        <CursorPos X="14" Y="90"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit107>
       <Unit108>
@@ -1132,16 +1084,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyDialogs"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="311"/>
-        <CursorPos X="16" Y="317"/>
+        <CursorPos X="87" Y="17"/>
         <UsageCount Value="201"/>
       </Unit108>
       <Unit109>
         <Filename Value="myfpsqlparser.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="290"/>
-        <CursorPos Y="306"/>
+        <CursorPos Y="18"/>
         <UsageCount Value="201"/>
       </Unit109>
       <Unit110>
@@ -1149,8 +1099,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyTypes"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="61"/>
-        <CursorPos X="7" Y="75"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit110>
       <Unit111>
@@ -1161,8 +1110,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="NewGridForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1744"/>
-        <CursorPos X="11" Y="1761"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit111>
       <Unit112>
@@ -1171,6 +1119,7 @@
         <HasResources Value="True"/>
         <UnitName Value="NewRoleForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit112>
       <Unit113>
@@ -1181,8 +1130,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ObjectFieldsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="104"/>
-        <CursorPos X="61" Y="122"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit113>
       <Unit114>
@@ -1193,15 +1141,14 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="OutputForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="122"/>
-        <CursorPos X="65" Y="143"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit114>
       <Unit115>
         <Filename Value="padeg.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="72" Y="152"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit115>
       <Unit116>
@@ -1212,6 +1159,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PivotFieldForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit116>
       <Unit117>
@@ -1219,8 +1167,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="PivotGrid"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="139"/>
-        <CursorPos X="21" Y="27"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit117>
       <Unit118>
@@ -1231,8 +1178,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PivotGridForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="322"/>
-        <CursorPos X="23" Y="338"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit118>
       <Unit119>
@@ -1243,6 +1189,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PrecisionForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit119>
       <Unit120>
@@ -1253,6 +1200,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PrintChartForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit120>
       <Unit121>
@@ -1263,8 +1211,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ProcessForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="17"/>
-        <CursorPos X="22" Y="24"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit121>
       <Unit122>
@@ -1275,6 +1222,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ProcessMiniForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit122>
       <Unit123>
@@ -1285,8 +1233,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ProgressForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="30"/>
-        <CursorPos X="33" Y="40"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit123>
       <Unit124>
@@ -1294,8 +1241,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="PropDialogs"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="146"/>
-        <CursorPos Y="156"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit124>
       <Unit125>
@@ -1303,11 +1249,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="PropGrids"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="183"/>
-        <CursorPos X="32" Y="200"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 Y="456" ID="4"/>
+          <Item0 Y="474" ID="4"/>
         </Bookmarks>
       </Unit125>
       <Unit126>
@@ -1315,8 +1260,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="PropsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="361"/>
-        <CursorPos X="35" Y="377"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit126>
       <Unit127>
@@ -1324,8 +1268,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="PropsMenus"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="76"/>
-        <CursorPos X="11" Y="96"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit127>
       <Unit128>
@@ -1336,8 +1279,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="QueryCalcForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="25"/>
-        <CursorPos X="35" Y="44"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit128>
       <Unit129>
@@ -1348,8 +1290,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="QueryColoringForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="220"/>
-        <CursorPos X="12" Y="243"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit129>
       <Unit130>
@@ -1360,8 +1301,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="QueryFieldValueForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="51"/>
-        <CursorPos X="8" Y="68"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit130>
       <Unit131>
@@ -1372,8 +1312,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="QuickSearchForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="100"/>
-        <CursorPos X="36" Y="115"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit131>
       <Unit132>
@@ -1384,6 +1323,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RangeForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit132>
       <Unit133>
@@ -1394,6 +1334,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RecalcForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit133>
       <Unit134>
@@ -1404,8 +1345,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReportExportForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="212"/>
-        <CursorPos X="89" Y="241"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit134>
       <Unit135>
@@ -1416,12 +1356,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReportForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1393"/>
-        <CursorPos X="23" Y="1409"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
-          <Item0 Y="358" ID="3"/>
-          <Item1 Y="229" ID="1"/>
+          <Item0 Y="376" ID="3"/>
+          <Item1 Y="247" ID="1"/>
         </Bookmarks>
       </Unit135>
       <Unit136>
@@ -1429,8 +1368,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ReportManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="284"/>
-        <CursorPos X="38" Y="302"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit136>
       <Unit137>
@@ -1441,8 +1379,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReportsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="457"/>
-        <CursorPos X="37" Y="469"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit137>
       <Unit138>
@@ -1450,8 +1387,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ReportWindow"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="636"/>
-        <CursorPos X="28" Y="653"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit138>
       <Unit139>
@@ -1462,8 +1398,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RpStyleForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="37"/>
-        <CursorPos X="34" Y="56"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit139>
       <Unit140>
@@ -1471,8 +1406,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="RunDecls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1018"/>
-        <CursorPos X="26" Y="1036"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit140>
       <Unit141>
@@ -1480,7 +1414,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SAXBaseReader"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="28" Y="7"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit141>
       <Unit142>
@@ -1488,8 +1422,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ScriptEdit"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="13"/>
-        <CursorPos X="32" Y="25"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit142>
       <Unit143>
@@ -1500,8 +1433,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ScriptForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1109"/>
-        <CursorPos X="3" Y="1103"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit143>
       <Unit144>
@@ -1509,8 +1441,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ScriptFuncs"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="85"/>
-        <CursorPos X="10" Y="102"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit144>
       <Unit145>
@@ -1518,7 +1449,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ScriptManager"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="28" Y="9"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit145>
       <Unit146>
@@ -1529,6 +1460,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SearchReplaceForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit146>
       <Unit147>
@@ -1539,8 +1471,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SelectActionForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="181"/>
-        <CursorPos X="41" Y="205"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit147>
       <Unit148>
@@ -1551,7 +1482,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SelectForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="45" Y="14"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit148>
       <Unit149>
@@ -1562,8 +1493,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SettingsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="133"/>
-        <CursorPos X="32" Y="163"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit149>
       <Unit150>
@@ -1574,6 +1504,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SetValueForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit150>
       <Unit151>
@@ -1584,6 +1515,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ShapeForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit151>
       <Unit152>
@@ -1594,8 +1526,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ShoppingForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="244"/>
-        <CursorPos X="27" Y="270"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit152>
       <Unit153>
@@ -1606,8 +1537,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SqlForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="187"/>
-        <CursorPos X="66" Y="197"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit153>
       <Unit154>
@@ -1615,8 +1545,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SqlGen"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1180"/>
-        <CursorPos X="51" Y="1193"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit154>
       <Unit155>
@@ -1627,18 +1556,16 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="StorageTypeForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="52" Y="11"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit155>
       <Unit156>
         <Filename Value="strconsts.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="StrConsts"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="687"/>
-        <CursorPos X="18" Y="715"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit156>
       <Unit157>
         <Filename Value="stringsform.pas"/>
@@ -1648,6 +1575,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="StringsForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit157>
       <Unit158>
@@ -1658,8 +1586,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="StyleForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="63"/>
-        <CursorPos X="43" Y="65"/>
+        <CursorPos X="11" Y="11"/>
         <UsageCount Value="201"/>
       </Unit158>
       <Unit159>
@@ -1667,8 +1594,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SummaryTree"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="91"/>
-        <CursorPos X="16" Y="111"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit159>
       <Unit160>
@@ -1679,8 +1605,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TabOrderForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="194"/>
-        <CursorPos X="56" Y="208"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit160>
       <Unit161>
@@ -1691,8 +1616,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TemplateFieldsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="960"/>
-        <CursorPos X="16" Y="979"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit161>
       <Unit162>
@@ -1703,6 +1627,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ThumbForm"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit162>
       <Unit163>
@@ -1710,8 +1635,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="TimeEdit"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="97"/>
-        <CursorPos X="28" Y="117"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit163>
       <Unit164>
@@ -1722,8 +1646,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TotalForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="226"/>
-        <CursorPos X="14" Y="244"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit164>
       <Unit165>
@@ -1734,8 +1657,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TotalsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="275"/>
-        <CursorPos X="21" Y="293"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit165>
       <Unit166>
@@ -1743,8 +1665,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ToWordsFuncs"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="153"/>
-        <CursorPos X="10" Y="10"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit166>
       <Unit167>
@@ -1755,7 +1676,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TreeForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="15" Y="46"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="201"/>
       </Unit167>
       <Unit168>
@@ -1763,8 +1684,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="TreeViewEx"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="15"/>
-        <CursorPos X="14" Y="45"/>
+        <CursorPos X="8" Y="20"/>
         <UsageCount Value="201"/>
       </Unit168>
       <Unit169>
@@ -1772,6 +1692,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyButtons"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="32" Y="9"/>
         <UsageCount Value="201"/>
       </Unit169>
       <Unit170>
@@ -1779,8 +1700,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyClasses"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="132"/>
-        <CursorPos X="47" Y="153"/>
+        <CursorPos X="39" Y="17"/>
         <UsageCount Value="201"/>
       </Unit170>
       <Unit171>
@@ -1788,8 +1708,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyControls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="111"/>
-        <CursorPos X="23" Y="133"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit171>
       <Unit172>
@@ -1797,7 +1716,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_mydateutils"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="11" Y="9"/>
+        <CursorPos X="41" Y="17"/>
         <UsageCount Value="201"/>
       </Unit172>
       <Unit173>
@@ -1805,6 +1724,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyExtctrls"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit173>
       <Unit174>
@@ -1812,8 +1732,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyForms"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="36"/>
-        <CursorPos X="23" Y="54"/>
+        <CursorPos X="37" Y="17"/>
         <UsageCount Value="201"/>
       </Unit174>
       <Unit175>
@@ -1821,8 +1740,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyGraphics"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="122"/>
-        <CursorPos Y="134"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit175>
       <Unit176>
@@ -1830,8 +1748,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyMenus"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="45"/>
-        <CursorPos X="24" Y="64"/>
+        <CursorPos X="37" Y="17"/>
         <UsageCount Value="201"/>
       </Unit176>
       <Unit177>
@@ -1839,8 +1756,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyStd"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="56"/>
-        <CursorPos X="30" Y="80"/>
+        <CursorPos X="35" Y="17"/>
         <UsageCount Value="201"/>
       </Unit177>
       <Unit178>
@@ -1848,8 +1764,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyStdCtrls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="174"/>
-        <CursorPos X="36" Y="207"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit178>
       <Unit179>
@@ -1857,7 +1772,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyButtons"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="70" Y="14"/>
+        <CursorPos X="84" Y="19"/>
         <UsageCount Value="201"/>
       </Unit179>
       <Unit180>
@@ -1865,8 +1780,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyClasses"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="126"/>
-        <CursorPos X="80" Y="152"/>
+        <CursorPos X="39" Y="17"/>
         <UsageCount Value="201"/>
       </Unit180>
       <Unit181>
@@ -1874,8 +1788,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyControls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="168"/>
-        <CursorPos X="70" Y="177"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit181>
       <Unit182>
@@ -1883,6 +1796,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_mydateutils"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="41" Y="17"/>
         <UsageCount Value="201"/>
       </Unit182>
       <Unit183>
@@ -1890,7 +1804,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyExtctrls"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="19" Y="12"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit183>
       <Unit184>
@@ -1898,7 +1812,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyForms"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="53" Y="15"/>
+        <CursorPos X="37" Y="17"/>
         <UsageCount Value="201"/>
       </Unit184>
       <Unit185>
@@ -1906,7 +1820,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyGraphics"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="11" Y="14"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit185>
       <Unit186>
@@ -1914,8 +1828,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyMenus"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="39"/>
-        <CursorPos X="65" Y="60"/>
+        <CursorPos X="37" Y="17"/>
         <UsageCount Value="201"/>
       </Unit186>
       <Unit187>
@@ -1923,7 +1836,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyStd"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="62" Y="15"/>
+        <CursorPos X="35" Y="17"/>
         <UsageCount Value="201"/>
       </Unit187>
       <Unit188>
@@ -1931,7 +1844,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyStdCtrls"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="66" Y="16"/>
+        <CursorPos X="40" Y="17"/>
         <UsageCount Value="201"/>
       </Unit188>
       <Unit189>
@@ -1942,8 +1855,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UserForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="169"/>
-        <CursorPos X="3" Y="172"/>
+        <CursorPos X="85" Y="16"/>
         <UsageCount Value="201"/>
       </Unit189>
       <Unit190>
@@ -1954,7 +1866,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UsersForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="76" Y="15"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit190>
       <Unit191>
@@ -1965,7 +1877,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="VisibleFormsForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="83" Y="16"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit191>
       <Unit192>
@@ -1976,7 +1888,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WarningForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="45" Y="19"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit192>
       <Unit193>
@@ -1984,8 +1896,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WebServer"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="7"/>
-        <CursorPos X="3" Y="14"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit193>
       <Unit194>
@@ -1993,8 +1904,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="XmlReport"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1193"/>
-        <CursorPos X="30" Y="1215"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit194>
       <Unit195>
@@ -2002,8 +1912,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ModulesTree"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2"/>
-        <CursorPos X="15" Y="23"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit195>
       <Unit196>
@@ -2011,8 +1920,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="TreePanel"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="26" Y="28"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="200"/>
       </Unit196>
       <Unit197>
@@ -2020,8 +1928,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MetaManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="15"/>
-        <CursorPos X="33" Y="42"/>
+        <TopLine Value="30"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="201"/>
       </Unit197>
       <Unit198>
@@ -2032,12 +1940,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UpdateManForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="359"/>
-        <CursorPos X="59" Y="377"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="202"/>
-        <Bookmarks Count="1">
-          <Item0 Y="375" ID="1"/>
-        </Bookmarks>
       </Unit198>
       <Unit199>
         <Filename Value="msgform.pas"/>
@@ -2047,8 +1951,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MsgForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="26"/>
-        <CursorPos X="15" Y="26"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="200"/>
       </Unit199>
       <Unit200>
@@ -2059,8 +1962,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UpdateOptionsForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="44"/>
-        <CursorPos Y="57"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="200"/>
       </Unit200>
       <Unit201>
@@ -2068,11 +1970,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="UpdateManager"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="150"/>
-        <CursorPos X="35" Y="169"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="1">
-          <Item0 X="11" Y="288" ID="1"/>
+          <Item0 X="11" Y="306" ID="1"/>
         </Bookmarks>
       </Unit201>
       <Unit202>
@@ -2080,8 +1981,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyZipper"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="29"/>
-        <CursorPos X="17" Y="46"/>
+        <CursorPos X="81" Y="17"/>
         <UsageCount Value="200"/>
       </Unit202>
       <Unit203>
@@ -2089,9 +1989,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyLogger"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="54"/>
-        <CursorPos X="47" Y="62"/>
-        <UsageCount Value="171"/>
+        <CursorPos X="81" Y="17"/>
+        <UsageCount Value="173"/>
       </Unit203>
       <Unit204>
         <Filename Value="padeguc.pas"/>
@@ -2107,8 +2006,9 @@
       </Unit204>
       <Unit205>
         <Filename Value="readme.txt"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="9118"/>
-        <CursorPos X="75" Y="9136"/>
+        <CursorPos X="34" Y="9135"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
@@ -2353,9 +2253,8 @@
         <Filename Value="d:\LazComponents\dbctrlsex\dbctrlsex.pas"/>
         <UnitName Value="DBCtrlsEx"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="24"/>
-        <CursorPos X="3" Y="40"/>
-        <UsageCount Value="5"/>
+        <CursorPos Y="18"/>
+        <UsageCount Value="10"/>
       </Unit236>
       <Unit237>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\i386\i386.inc"/>
@@ -2473,8 +2372,7 @@
         <Filename Value="ibconnection.pp"/>
         <UnitName Value="IBConnection"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="166"/>
-        <CursorPos Y="183"/>
+        <CursorPos X="81" Y="7"/>
         <UsageCount Value="49"/>
       </Unit252>
       <Unit253>
@@ -2529,8 +2427,7 @@
       <Unit260>
         <Filename Value="myfpsqltree.pp"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="144"/>
-        <CursorPos X="14" Y="161"/>
+        <CursorPos Y="18"/>
         <UsageCount Value="17"/>
       </Unit260>
       <Unit261>
@@ -2597,11 +2494,10 @@
         <Filename Value="sqldb.pp"/>
         <UnitName Value="SQLDB"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2918"/>
-        <CursorPos Y="2935"/>
+        <CursorPos Y="17"/>
         <UsageCount Value="13"/>
         <Bookmarks Count="1">
-          <Item0 X="3" Y="1452" ID="4"/>
+          <Item0 X="3" Y="1458" ID="4"/>
         </Bookmarks>
       </Unit269>
       <Unit270>
@@ -2624,9 +2520,8 @@
         <Filename Value="sqldblib.pp"/>
         <UnitName Value="SQLDBLib"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="3"/>
-        <CursorPos X="15" Y="21"/>
-        <UsageCount Value="2"/>
+        <CursorPos Y="4"/>
+        <UsageCount Value="10"/>
       </Unit272>
       <Unit273>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\packages\ibase\src\ibase60.inc"/>
@@ -2961,8 +2856,6 @@
       <Unit319>
         <Filename Value="myfpsqlscanner.pp"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="761"/>
-        <CursorPos X="36" Y="789"/>
         <UsageCount Value="16"/>
         <Bookmarks Count="1">
           <Item0 X="35" Y="792" ID="3"/>
@@ -3024,8 +2917,7 @@
         <Filename Value="dialoggrid.pas"/>
         <UnitName Value="DialogGrid"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="248"/>
-        <CursorPos Y="265"/>
+        <CursorPos X="82" Y="17"/>
         <UsageCount Value="10"/>
       </Unit327>
       <Unit328>
@@ -3058,21 +2950,36 @@
         <CursorPos X="53" Y="41"/>
         <UsageCount Value="10"/>
       </Unit331>
+      <Unit332>
+        <Filename Value="ctrlutils.pas"/>
+        <UnitName Value="CtrlUtils"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit332>
+      <Unit333>
+        <Filename Value="d:\LazComponents\dbctrlsex\regs.pas"/>
+        <UnitName Value="Regs"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit333>
+      <Unit334>
+        <Filename Value="d:\LazComponents\dbctrlsex\listbar.pas"/>
+        <UnitName Value="ListBar"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit334>
+      <Unit335>
+        <Filename Value="d:\LazComponents\dbctrlsex\gridbar.pas"/>
+        <UnitName Value="GridBar"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="82" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit335>
     </Units>
-    <JumpHistory Count="3" HistoryIndex="2">
-      <Position1>
-        <Filename Value="readme.txt"/>
-        <Caret Line="9137" Column="52" TopLine="9118"/>
-      </Position1>
-      <Position2>
-        <Filename Value="readme.txt"/>
-        <Caret Line="9136" Column="50" TopLine="9118"/>
-      </Position2>
-      <Position3>
-        <Filename Value="aboutform.pas"/>
-        <Caret Line="59" Column="33" TopLine="44"/>
-      </Position3>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

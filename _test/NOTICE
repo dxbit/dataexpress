@@ -1,9 +1,0 @@
-DataExpress использует библиотеки и компоненты, распространяемые под лицензией отличной от Apache 2.0.
-
-1. Библиотеки СУБД Firebird - Initial Developer's PUBLIC LICENSE Version 1.0, INTERBASE PUBLIC LICENSE. 
-2. Дизайнер форм JvDesign - Mozilla Public License Version 1.1.
-3. Графическая библиотека BGRA - GNU LESSER GENERAL PUBLIC LICENSE Version 3, modified.
-4. Компоненты KControls - свободная лицензия от Tomas Krysl.
-5. Скриптовый движок RemObject Pascal Script - свободная лицензия от Carlo Kok.
-6. Библиотека Padeg - проприетарная лицезия от Сергея Плахова.
-

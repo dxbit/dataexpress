@@ -12,6 +12,14 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
+
+{-------------------------------------------------------------------------------
+
+This file has been modified by Pavel Duborkin. All changes are marked with
+comment 7bit.
+
+-------------------------------------------------------------------------------}
+
 unit myfpsqlparser;
 { $define debugparser}
 { $define debugexpr}

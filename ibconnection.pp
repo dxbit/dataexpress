@@ -1,3 +1,11 @@
+{-------------------------------------------------------------------------------
+
+This file is part of the Free Pascal software.
+This file has been modified by Pavel Duborkin. All changes are marked with
+comment 7bit.
+
+-------------------------------------------------------------------------------}
+
 unit IBConnection;
 
 {$mode objfpc}{$H+}
