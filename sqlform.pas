@@ -404,7 +404,7 @@ end;
 procedure TSqlFm.PropsEditing(Sender: TObject; const PropName: String;
   var Allowed: Boolean);
 begin
-  if PropName = 'FieldNameDS' then Allowed := False;
+  //if PropName = 'FieldNameDS' then Allowed := False;
 end;
 
 procedure TSqlFm.PropsNeedValues(Sender: TObject; const PropName: String;
