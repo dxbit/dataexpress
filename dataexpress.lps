@@ -9,7 +9,7 @@
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="31"/>
+        <CursorPos X="41" Y="26"/>
         <UsageCount Value="201"/>
       </Unit0>
       <Unit1>
@@ -20,7 +20,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AboutForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="34" Y="14"/>
+        <TopLine Value="79"/>
+        <CursorPos X="20" Y="104"/>
         <UsageCount Value="201"/>
       </Unit1>
       <Unit2>
@@ -1913,7 +1914,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="XmlReport"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="1929"/>
+        <CursorPos X="53" Y="1950"/>
         <UsageCount Value="201"/>
       </Unit194>
       <Unit195>
@@ -2000,7 +2002,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="36"/>
         <CursorPos X="21" Y="64"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="174"/>
       </Unit203>
       <Unit204>
         <Filename Value="padeguc.pas"/>
@@ -2018,7 +2020,7 @@
         <Filename Value="readme.txt"/>
         <IsVisibleTab Value="True"/>
         <TopLine Value="9139"/>
-        <CursorPos X="31" Y="9161"/>
+        <CursorPos X="27" Y="9160"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
@@ -2989,7 +2991,7 @@
         <UsageCount Value="10"/>
       </Unit335>
     </Units>
-    <JumpHistory Count="3" HistoryIndex="2">
+    <JumpHistory Count="4" HistoryIndex="3">
       <Position1>
         <Filename Value="readme.txt"/>
         <Caret Line="9131" Column="25" TopLine="9118"/>
@@ -3002,6 +3004,10 @@
         <Filename Value="readme.txt"/>
         <Caret Line="9151" Column="28" TopLine="9139"/>
       </Position3>
+      <Position4>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9160" Column="45" TopLine="9139"/>
+      </Position4>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

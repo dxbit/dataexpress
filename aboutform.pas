@@ -30,6 +30,10 @@ uses
 
 type
   TAboutFm = class(TForm)
+    MailLbl: TLabel;
+    WebSiteLbl: TLabel;
+    Image2: TImage;
+    Image3: TImage;
     Licensed: TLabel;
     Label2: TLabel;
     BitBtn1: TBitBtn;
@@ -45,6 +49,8 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure MailLblClick(Sender: TObject);
+    procedure WebSiteLblClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -86,6 +92,16 @@ begin
   BitBtn1.LoadGlyphFromLazarusResource('hands16');
   BitBtn2.LoadGlyphFromLazarusResource('money16');
   BitBtn3.LoadGlyphFromLazarusResource('delete16');
+end;
+
+procedure TAboutFm.MailLblClick(Sender: TObject);
+begin
+  OpenUrl('mailto:mydataexpress@mail.ru');
+end;
+
+procedure TAboutFm.WebSiteLblClick(Sender: TObject);
+begin
+  OpenUrl('https://mydataexpress.ru');
 end;
 
 procedure TAboutFm.BitBtn2Click(Sender: TObject);

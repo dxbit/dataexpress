@@ -1,10 +1,44 @@
-DataExpress использует библиотеки и компоненты, распространяемые под лицензией отличной от Apache 2.0.
+DataExpress использует библиотеки и компоненты третьих лиц, распространяемые под лицензией отличной от Apache 2.0.
 
-1. Библиотеки СУБД Firebird - Initial Developer's PUBLIC LICENSE Version 1.0, INTERBASE PUBLIC LICENSE - https://firebirdsql.org
-2. Дизайнер форм JvDesign - Mozilla Public License Version 1.1 - https://github.com/dxbit/dataexpress-depend/tree/main/jvdesign
-3. Графическая библиотека BGRA - GNU LESSER GENERAL PUBLIC LICENSE Version 3, modified - https://github.com/dxbit/dataexpress-depend/tree/main/bgra
-4. Компоненты KControls - свободная лицензия от Tomas Krysl - https://github.com/dxbit/dataexpress-depend/tree/main/kcontrols
-5. Скриптовый движок RemObject Pascal Script - свободная лицензия от Carlo Kok - https://github.com/dxbit/dataexpress-depend/tree/main/PascalScript
-6. Библиотека Padeg - проприетарная лицезия от Сергея Плахова - https://vk.com/padegfio
+
+СУБД Firebird 2.5, Firebird 5
+Лицензия: Initial Developer's PUBLIC LICENSE Version 1.0, INTERBASE PUBLIC LICENSE (см. файлы IDPLicense.txt, IPLicense.txt)
+Официальный сайт: https://firebirdsql.org
+
+
+Библиотека склонения по падежам Ф.И.О., должностей, подразделений, числительных (PadegUC.dll)
+Авторы: Плахов С.В., Покаташкин Г.Л.
+Электронная почта: seer.true@gmail.com, pgl@tut.by
+Лицензия: проприетарная
+Страничка автора: https://vk.com/padegfio
+
+
+Графическая библиотека BGRA
+Лицензия: LGPL, modifiedLGPL
+Официальный сайт: https://bgrabitmap.github.io/
+Оригинальные исходники: https://github.com/bgrabitmap/bgrabitmap
+Используемые исходники: https://github.com/dxbit/dataexpress-depend/tree/main/bgra
+
+
+Дизайнер форм JvDesign
+Авторы: Copyright (C) 2005 Scott J Miles, Contributor(s): Olivier Sannier (JVCL Integration), Modified for Lazarus by Costas Velissariou (velissariouc@gmail.com) 04/01/2011
+Лицензия: MPL 1.1
+Используемые исходники: https://github.com/dxbit/dataexpress-depend/tree/main/jvdesign
+
+
+Скриптовый движок RemObject Pascal Script
+Авторы: Copyright (C) 2000-2014 by Carlo Kok and RemObjects Software, LLC
+Лицензия: https://github.com/dxbit/dataexpress-depend/blob/main/PascalScript/LICENSE.md
+Оригинальные исходники: https://github.com/remobjects/pascalscript/
+Используемые исходники: https://github.com/dxbit/dataexpress-depend/tree/main/PascalScript
+
+
+Компоненты KControls
+Автор: Tomas Krysl
+Электронная почта: tk@tkweb.eu
+Лицензия: см. в исходном коде
+Оригинальные исходники: https://github.com/kryslt/KControls
+Используемые исходники: https://github.com/dxbit/dataexpress-depend/tree/main/kcontrols
+
 
 
