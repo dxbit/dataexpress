@@ -59,6 +59,7 @@ implementation
   end;       }
 
 var
+  {$IFDEF windows}
   _GetFIOPadegFS: function(pFIO: PWideChar; bSex: Boolean; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; stdcall;
   _GetFIOPadegFSAS: function(pFIO: PWideChar; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; stdcall;
   _GetIFPadegFS: function(pIF: PWideChar; bSex: Boolean; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; stdcall;
@@ -77,6 +78,26 @@ var
     var nLen: Integer): Integer; stdcall;
   _DeclCurrency: function(Value: Currency; CurrName: PWideChar; nPadeg: Integer; aForms: Byte; pResult: PWideChar;
     var nLen: Integer): Integer; stdcall;
+  {$ELSE}
+  _GetFIOPadegFS: function(pFIO: PWideChar; bSex: Boolean; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetFIOPadegFSAS: function(pFIO: PWideChar; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetIFPadegFS: function(pIF: PWideChar; bSex: Boolean; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetNominativePadeg: function(pFIO, pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetAppointmentPadeg: function(pAppointment: PWideChar; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetFullAppointmentPadeg: function(pAppointment, pOffice: PWideChar; nPadeg: LongInt; pResult: PWideChar;
+    var nLen: LongInt): Integer; cdecl;
+  _GetOfficePadeg: function(pOffice: PWideChar; nPadeg: LongInt; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _GetSex: function(pMiddleName: PWideChar): Integer;  cdecl;
+  _GetPadegId: function (pFIO: PWideChar): Integer; cdecl;
+  _SetDictionary: function(DicName: PWideChar): Boolean; cdecl;
+  _NumberToString: function(Value: Extended; iSex: Integer; Decimal: Integer; RemoveZero, CnvtFrac: Boolean;
+    pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _DoubleToVerbal: function(Value: Extended; pResult: PWideChar; var nLen: LongInt): Integer; cdecl;
+  _DeclNumeral: function(Value: PWideChar; nPadeg: Integer; iSex: Integer; Order, Soul: Boolean; pResult: PWideChar;
+    var nLen: Integer): Integer; cdecl;
+  _DeclCurrency: function(Value: Currency; CurrName: PWideChar; nPadeg: Integer; aForms: Byte; pResult: PWideChar;
+    var nLen: Integer): Integer; cdecl;
+  {$ENDIF}
 
   {_GetFIOParts: function(pFIO: PChar; Parts: PPartsFIO): Integer; stdcall;
   _GetIFPadeg: function(pFirstName, pLastName: PChar; bSex: Boolean; nPadeg: LongInt; pResult: PChar;
@@ -98,25 +119,6 @@ var
 var
   LibHandle: TLibHandle;
 
-{$ifdef windows}
-{function _GetFIOPadegFS(pName: PChar; bSex: Boolean; nPadeg: LongInt; pResult: PChar;
-  var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetFIOPadegFS';
-function _GetFIOPadegFSAS(pName: PChar; nPadeg: LongInt; pResult: PChar;
-  var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetFIOPadegFSAS';
-function _GetIFPadegFS(pIF: PChar; bSex: Boolean; nPadeg: LongInt;
-  pResult: PChar; var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetIFPadegFS';
-function _GetNominativePadeg(pFIO, pResult: PChar; var nLen: LongInt): Integer; stdcall;
-  external 'padeg.dll' name 'GetNominativePadeg';
-function _GetAppointmentPadeg(pAppointment: PChar; nPadeg: LongInt;
-  pResult: PChar; var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetAppointmentPadeg';
-function _GetFullAppointmentPadeg(pAppointment, pOffice: PChar; nPadeg: LongInt; pResult: PChar;
-  var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetFullAppointmentPadeg';
-function _GetOfficePadeg(pOffice: PChar; nPadeg: LongInt; pResult: PChar;
-  var nLen: LongInt): Integer; stdcall; external 'padeg.dll' name 'GetOfficePadeg';
-function _GetSex(pMiddleName: PChar): Integer; stdcall; external 'padeg.dll' name 'GetSex';
-function _GetPadegID(pFIO: PChar): Integer; stdcall; external 'padeg.dll' name 'GetPadegID';}
-{$endif}
-
 procedure DoError(const Msg: String);
 begin
   raise Exception.Create(Msg);
@@ -137,12 +139,20 @@ var
   LibPath: String;
 begin
   if LibHandle <> 0 then Exit;
+  {$IFDEF windows}
   LibPath := ExtractFilePath(ParamStr(0)) + 'PadegUC.dll';
+  {$ELSE}
+  LibPath := ExtractFilePath(ParamStr(0)) + 'libPadeg.so';
+  {$ENDIF}
 
   LibHandle := SafeLoadLibrary(LibPath);
   if LibHandle = 0 then DoError('Padeg library has been not initialized.');
 
+  {$IFDEF windows}
   Pointer(_GetSex) := GetProcAddress(LibHandle, 'GetSex');
+  {$ELSE}
+  Pointer(_GetSex) := GetProcAddress(LibHandle, 'Get_Sex');
+  {$ENDIF}
   Pointer(_GetIFPadegFS) := GetProcAddress(LibHandle, 'GetIFPadegFS');
   Pointer(_GetFIOPadegFSAS) := GetProcAddress(LibHandle, 'GetFIOPadegFSAS');
   Pointer(_GetFIOPadegFS) := GetProcAddress(LibHandle, 'GetFIOPadegFS');
@@ -242,7 +252,7 @@ end;
 
 function GetFIOPadeg(aName: String; aSex: Byte; aPadeg: LongInt): String;
 begin
-  Result := Utf16ToUtf8( WideGetFIOPadeg(Utf16ToUtf8(aName), aSex, aPadeg) );
+  Result := Utf16ToUtf8( WideGetFIOPadeg(Utf8ToUtf16(aName), aSex, aPadeg) );
 end;
 
 function WideGetIFPadeg(aName: UnicodeString; aSex: Byte; aPadeg: LongInt): UnicodeString;
@@ -268,8 +278,16 @@ begin
 end;
 
 function GetIFPadeg(aName: String; aSex: Byte; aPadeg: LongInt): String;
+var
+  FirstName, LastName: String;
 begin
+  {$IFDEF windows}
   Result := Utf16ToUtf8( WideGetIFPadeg(Utf8ToUtf16(aName), aSex, aPadeg) );
+  {$ELSE}
+  FirstName := GetF(aName);
+  LastName := GetI(aName);
+  Result := GetFIOPadeg(LastName + ' ' + FirstName, aSex, aPadeg);
+  {$ENDIF}
 end;
 
 function WideGetNominativePadeg(aName: UnicodeString): UnicodeString;
@@ -403,7 +421,11 @@ end;
 
 function GetPadegID(aName: String): Byte;
 begin
+  {$IFDEF windows}
   Result := WideGetPadegID( Utf8ToUtf16(aName) );
+  {$ELSE}
+  Result := 0;
+  {$ENDIF}
 end;
 
 function WideNumberToString(Value: Extended; iSex, Decimal: Integer; RemoveZero,

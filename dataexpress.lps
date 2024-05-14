@@ -669,7 +669,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormManager"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="711"/>
+        <CursorPos X="9" Y="727"/>
         <UsageCount Value="201"/>
       </Unit67>
       <Unit68>
@@ -1016,7 +1017,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MergeProjectsForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="1244"/>
+        <CursorPos X="77" Y="1258"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
           <Item0 X="11" Y="1260" ID="3"/>
@@ -1152,7 +1154,7 @@
         <Filename Value="padeg.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <CursorPos X="38"/>
         <UsageCount Value="201"/>
       </Unit115>
       <Unit116>
@@ -1372,7 +1374,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ReportManager"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <TopLine Value="303"/>
+        <CursorPos X="9" Y="320"/>
         <UsageCount Value="201"/>
       </Unit136>
       <Unit137>
@@ -1541,12 +1544,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SqlForm"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="402"/>
         <CursorPos X="5" Y="407"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit153>
       <Unit154>
         <Filename Value="sqlgen.pas"/>
@@ -2015,8 +2016,9 @@
       </Unit204>
       <Unit205>
         <Filename Value="readme.txt"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="9139"/>
-        <CursorPos X="29" Y="9153"/>
+        <CursorPos X="31" Y="9161"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
@@ -2997,8 +2999,8 @@
         <Caret Line="9153" Column="35" TopLine="9139"/>
       </Position2>
       <Position3>
-        <Filename Value="sqlform.pas"/>
-        <Caret Line="88" Column="20" TopLine="81"/>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9151" Column="28" TopLine="9139"/>
       </Position3>
     </JumpHistory>
     <RunParams>
