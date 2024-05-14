@@ -96,7 +96,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppSettings"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="174"/>
+        <CursorPos X="17" Y="195"/>
         <UsageCount Value="201"/>
       </Unit9>
       <Unit10>
@@ -104,7 +105,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppUtils"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="3883"/>
+        <CursorPos X="17" Y="3893"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
           <Item0 X="7" Y="2369" ID="5"/>
@@ -425,7 +427,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxSQLQuery"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="346"/>
+        <CursorPos X="44" Y="352"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
           <Item0 X="10" Y="499" ID="2"/>
@@ -979,7 +982,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="776"/>
+        <CursorPos X="38" Y="796"/>
         <UsageCount Value="201"/>
       </Unit98>
       <Unit99>
@@ -1493,7 +1497,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SettingsForm"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <TopLine Value="274"/>
+        <CursorPos X="14" Y="298"/>
         <UsageCount Value="201"/>
       </Unit149>
       <Unit150>
@@ -1536,9 +1541,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SqlForm"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="402"/>
+        <CursorPos X="5" Y="407"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
       </Unit153>
       <Unit154>
         <Filename Value="sqlgen.pas"/>
@@ -1989,7 +1997,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyLogger"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <TopLine Value="36"/>
+        <CursorPos X="21" Y="64"/>
         <UsageCount Value="173"/>
       </Unit203>
       <Unit204>
@@ -2006,9 +2015,8 @@
       </Unit204>
       <Unit205>
         <Filename Value="readme.txt"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="9118"/>
-        <CursorPos X="34" Y="9135"/>
+        <TopLine Value="9139"/>
+        <CursorPos X="29" Y="9153"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
@@ -2979,7 +2987,20 @@
         <UsageCount Value="10"/>
       </Unit335>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9131" Column="25" TopLine="9118"/>
+      </Position1>
+      <Position2>
+        <Filename Value="readme.txt"/>
+        <Caret Line="9153" Column="35" TopLine="9139"/>
+      </Position2>
+      <Position3>
+        <Filename Value="sqlform.pas"/>
+        <Caret Line="88" Column="20" TopLine="81"/>
+      </Position3>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

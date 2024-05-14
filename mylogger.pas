@@ -67,7 +67,7 @@ var
   Buf: String;
   FS: TFileStream;
 begin
-  if (FFileName = '') or not AppConfig.ErrLogging then Exit;
+  if (FFileName = '') or not AppConfig.LogErrors then Exit;
 
   EnterCriticalSection(FLock);
   FS := nil;

@@ -34,7 +34,7 @@ type
   TSettingsFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     Caching: TCheckBox;
-    ErrLogging: TCheckBox;
+    LogErrorsChk: TCheckBox;
     SupportDXDB: TCheckBox;
     ShowGridChk: TCheckBox;
     CheckUpdates: TCheckBox;
@@ -178,7 +178,7 @@ begin
   // Прочее
   Caching.Caption := rsCacheMetadata;
   SupportDXDB.Caption := rsSupportDXDB;
-  ErrLogging.Caption := rsErrorLogging;
+  LogErrorsChk.Caption := rsErrorLogging;
 
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
@@ -288,7 +288,7 @@ begin
 
   Caching.Checked := AppConfig.Caching;
   SupportDXDB.Checked := AppConfig.SupportDXDB;
-  ErrLogging.Checked := AppConfig.ErrLogging;
+  LogErrorsChk.Checked := AppConfig.LogErrors;
 
   {$ifdef linux}
   GetThemes(UseTheme.Items);
@@ -333,7 +333,7 @@ begin
 
   AppConfig.Caching := Caching.Checked;
   AppConfig.SupportDXDB := SupportDXDB.Checked;
-  Appconfig.ErrLogging := ErrLogging.Checked;
+  Appconfig.LogErrors := LogErrorsChk.Checked;
 
   {$ifdef linux}
   if UseTheme.ItemIndex = 0 then

@@ -445,7 +445,7 @@ object SettingsFm: TSettingsFm
         Caption = 'Поддержка новых баз данных (*.DXDB)'
         TabOrder = 1
       end
-      object ErrLogging: TCheckBox
+      object LogErrorsChk: TCheckBox
         AnchorSideTop.Control = SupportDXDB
         AnchorSideTop.Side = asrBottom
         Left = 16

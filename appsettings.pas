@@ -103,7 +103,7 @@ type
     //FHideParents: Boolean;
     FLanguage: String;
     FLeftPanelWidth: Integer;
-    FErrLogging: Boolean;
+    FLogErrors: Boolean;
     FMainFormPosCorrected: Boolean;
     FOutputBounds: TRect;
     FOutputDir: String;
@@ -192,7 +192,7 @@ type
     property UpdatesDBPwd: String read FUpdatesDBPwd write FUpdatesDBPwd;
     property Pwd: String read GetPwd write SetPwd;
     property SupportDXDB: Boolean read FSupportDXDB write FSupportDXDB;
-    property ErrLogging: Boolean read FErrLogging write FErrLogging;
+    property LogErrors: Boolean read FLogErrors write FLogErrors;
     property WasError: Boolean read FWasError write FWasError;
     property Recents[Index: Integer]: TRecentData read GetRecents;
     property RecentCount: Integer read GetRecentCount;
@@ -525,7 +525,7 @@ begin
       WriteBool('UI', 'ConfirmExit', FConfirmExit);
       WriteBool('UI', 'CacheMetadata', FCaching);
       WriteBool('UI', 'SupportDXDB', FSupportDXDB);
-      WriteBool('UI', 'ErrorLogging', FErrLogging);
+      WriteBool('UI', 'LogErrors', FLogErrors);
       WriteInteger('UI', 'StartupAction', Ord(FStartupAction));
       WriteBool('UI', 'WasError', FWasError);
       WriteBool('UI', 'ExpertMode', FExpertMode);
@@ -651,7 +651,7 @@ begin
       FConfirmExit := ReadBool('UI', 'ConfirmExit', False);
       FCaching := ReadBool('UI', 'CacheMetadata', False);
       FSupportDXDB := ReadBool('UI', 'SupportDXDB', True);
-      FErrLogging := ReadBool('UI', 'LogErrors', False);
+      FLogErrors := ReadBool('UI', 'LogErrors', False);
       FStartupAction := TStartupAction(ReadInteger('UI', 'StartupAction', 0));
       FWasError := ReadBool('UI', 'WasError', False);
       FExpertMode := ReadBool('UI', 'ExpertMode', False);
