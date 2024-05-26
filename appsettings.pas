@@ -152,6 +152,8 @@ type
     function GetPwd: String;
     function GetRecentCount: Integer;
     function GetRecents(Index: Integer): TRecentData;
+    procedure SetGridSizeX(AValue: Integer);
+    procedure SetGridSizeY(AValue: Integer);
     procedure SetPwd(AValue: String);
     procedure ReadConnections(Ini: TIniFile);
   public
@@ -244,8 +246,8 @@ type
     property PPI: Integer read FPPI write FPPI;
     property IsWine: Boolean read FIsWine;
     // Дизайнер
-    property GridSizeX: Integer read FGridSizeX write FGridSizeX;
-    property GridSizeY: Integer read FGridSizeY write FGridSizeY;
+    property GridSizeX: Integer read FGridSizeX write SetGridSizeX;
+    property GridSizeY: Integer read FGridSizeY write SetGridSizeY;
     property GridColor: TColor read FGridColor write FGridColor;
     property ShowGrid: Boolean read FShowGrid write FShowGrid;
     // Корректировка положения окон
@@ -409,6 +411,22 @@ end;
 function TAppSettings.GetRecents(Index: Integer): TRecentData;
 begin
   Result := TRecentData(FRecents[Index]);
+end;
+
+procedure TAppSettings.SetGridSizeX(AValue: Integer);
+begin
+  if FGridSizeX=AValue then Exit;
+  if AValue < 5 then AValue := 5
+  else if AValue > 32 then AValue := 32;
+  FGridSizeX:=AValue;
+end;
+
+procedure TAppSettings.SetGridSizeY(AValue: Integer);
+begin
+  if FGridSizeY=AValue then Exit;
+  if AValue < 5 then AValue := 5
+  else if AValue > 32 then AValue := 32;
+  FGridSizeY:=AValue;
 end;
 
 procedure TAppSettings.SetPwd(AValue: String);
@@ -729,8 +747,8 @@ begin
       FUpdatesDBPwd := Decrypt(ReadString('Updates', 'DBPwd', ''), StartKey, MultKey, AddKey);
 
       FShowGrid := ReadBool('Designer', 'ShowGrid', True);
-      FGridSizeX := ReadInteger('Designer', 'GridSizeX', 8);
-      FGridSizeY := ReadInteger('Designer', 'GridSizeY', 8);
+      GridSizeX := ReadInteger('Designer', 'GridSizeX', 8);
+      GridSizeY := ReadInteger('Designer', 'GridSizeY', 8);
       FGridColor := ReadInteger('Designer', 'GridColor', 0);
 
       FSQLEditorWidth := ReadInteger('SQL Editor', 'Width', 950);

@@ -35,12 +35,12 @@ object SettingsFm: TSettingsFm
     Height = 317
     Top = 4
     Width = 453
-    ActivePage = IntfTab
+    ActivePage = DesignTab
     Align = alClient
     BorderSpacing.Left = 4
     BorderSpacing.Top = 4
     BorderSpacing.Right = 4
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 1
     object IntfTab: TTabSheet
       Caption = 'Интерфейс'
@@ -370,7 +370,10 @@ object SettingsFm: TSettingsFm
         Width = 64
         BorderSpacing.Left = 8
         BorderSpacing.Top = 8
+        MaxValue = 32
+        MinValue = 5
         TabOrder = 1
+        Value = 8
       end
       object Label10: TLabel
         AnchorSideTop.Control = GridYSpin
@@ -391,7 +394,10 @@ object SettingsFm: TSettingsFm
         Top = 74
         Width = 64
         BorderSpacing.Top = 16
+        MaxValue = 32
+        MinValue = 5
         TabOrder = 2
+        Value = 8
       end
       object GridColorBox: TColorBox
         AnchorSideLeft.Control = Label11
