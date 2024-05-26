@@ -368,7 +368,13 @@ begin
 	      C := FindComponentByFieldName(Fm, FlNm);
         if C = nil then raise Exception.CreateFmt(rsFieldNotFound,
         	[Fm.FormCaption + ' -> ' + FlNm]);
-        Result := Result + '.' + FieldStr(C);
+
+        if C is TdxRecordId then
+          FlNm := 'id'
+        else
+          FlNm := FieldStr(C);
+
+        Result := Result + '.' + FlNm;
       end
       else Result := Result + '.' + FlNm;
     end
@@ -386,7 +392,12 @@ begin
       C := FindComponentByFieldName(Fm, FlNm);
       if C = nil then raise Exception.CreateFmt(rsFieldNotFound,
         [Fm.FormCaption + ' -> ' + FlNm]);
-      FlNm := FieldStr(C);
+
+      if C is TdxRecordId then
+        FlNm := 'id'
+      else
+        FlNm := FieldStr(C);
+
       if AliasName <> '' then
         Result := AliasName + '.' + FlNm
       else
@@ -648,11 +659,14 @@ begin
       end;
       if (Als = '') or (CompareText(Als, TblAls) = 0) then
       begin
-        FFields.Add(FlNm);
-        if F.AliasName <> nil then
-	        FAliases.Add(F.AliasName.Name)
-        else
-          FAliases.Add('');
+        if FFields.IndexOf(FlNm) < 0 then
+        begin
+          FFields.Add(FlNm);
+          if F.AliasName <> nil then
+	          FAliases.Add(F.AliasName.Name)
+          else
+            FAliases.Add('');
+        end;
       end;
     end;
   end;
