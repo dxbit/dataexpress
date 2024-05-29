@@ -3334,7 +3334,7 @@ begin
     with TdxLookupComboBox(C) do
     begin
       OnButtonClick:=@LCbxButtonClick;
-      OnFilterData:=@LCbxFilterData;
+      OnNeedData:=@LCbxFilterData;
       OnKeyMatch:=@LCbxKeyMatch;
 
       // !!! Доступ
@@ -3383,7 +3383,7 @@ begin
         LCbx.DropDownButton.Color := aGrid.Color;
         LCbx.DataSource := DataSource;
         LCbx.KeyField := KeyField;
-			  LCbx.OnFilterData := OnFilterData;
+			  LCbx.OnNeedData := OnNeedData;
         LCbx.OnKeyMatch := OnKeyMatch;
         LCbx.OnButtonClick := OnButtonClick;
         LCbx.OnKeyDown:=@LCbxKeyDown;

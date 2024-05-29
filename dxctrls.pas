@@ -487,7 +487,7 @@ type
   private
     FControl: TdxLookupComboBox;
     FControlForm: TCustomForm;
-    FGrid: TListGrid;
+    FGrid: TDropDownList;
    // FAccept, FCancel: Boolean;
     FRealDropDownCount: Integer;
     FFrags: TStringList;
@@ -507,18 +507,19 @@ type
   protected
     procedure Activate; override;
     procedure Deactivate; override;
+    procedure DoClose(var CloseAction: TCloseAction); override;
   public
     constructor CreateNew(AOwner: TComponent; Num: Integer=0); override;
     destructor Destroy; override;
     procedure ShowForm;
     function IsMouseEntered: Boolean;
     property Control: TdxLookupComboBox read FControl write SetControl;
-    property Grid: TListGrid read FGrid write FGrid;
+    property Grid: TDropDownList read FGrid write FGrid;
   end;
 
   { TdxLookupComboBox }
 
-  TdxLookupComboBoxFilterEvent = procedure (Sender: TObject; const Text: String) of object;
+  TNeedDataEvent = procedure (Sender: TObject; const Text: String) of object;
 
   TdxLookupComboBox = class(TDBEditEx)
   private
@@ -555,7 +556,7 @@ type
     FOnCreateForm: TCreateFormEvent;
     FOnCreateListWindow: TCreateListWindowEvent;
     FOnCtrlClick: TNotifyEvent;
-    FOnFilterData: TdxLookupComboBoxFilterEvent;
+    FOnNeedData: TNeedDataEvent;
     FOnKeyMatch: TNotifyEvent;
     FOnMenuClick: TNotifyEvent;
     //FOnMyUtf8KeyPress: TMyUtf8KeyPressEvent;
@@ -572,7 +573,7 @@ type
     FKeyDown: Boolean;
     FKeepList: Boolean;
     FSkipKillFocus: Boolean;		// Для linux
-    FGrid: TListGrid;
+    FGrid: TDropDownList;
     FStopTab: Boolean;
     FUpdateTree: Boolean;
     FPopup: TPopupMenu;
@@ -582,6 +583,7 @@ type
     procedure DropDownButtonMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     function GetDroppedDown: Boolean;
+    function GetGrid: TDropDownList;
     function GetKeyValue: Variant;
     function GetSourceFieldName: String;
     function GetSourceFormName: String;
@@ -643,10 +645,11 @@ type
     property SourceFormName: String read GetSourceFormName;
     property SourceFieldName: String read GetSourceFieldName;
     property DroppedDown: Boolean read GetDroppedDown;
+    property DropDownList: TDropDownList read GetGrid;
 
     //property ItemIndex: Integer read FItemIndex write FItemIndex;
     //property Style: TComboBoxStyle read FStyle write FStyle;
-    property OnFilterData: TdxLookupComboBoxFilterEvent read FOnFilterData write FOnFilterData;
+    property OnNeedData: TNeedDataEvent read FOnNeedData write FOnNeedData;
     property OnKeyMatch: TNotifyEvent read FOnKeyMatch write FOnKeyMatch;
 
     property OnButtonClick: TNotifyEvent read FOnButtonClick write FOnButtonClick;
@@ -2230,15 +2233,18 @@ var
   S, LowerS, Txt, PartTxt, LowerTxt: String;
   C: TCanvas;
 begin
+  if not FGrid.HighlightSearchedText then Exit;
+
   if (FFrags.Count = 0) or
     (FGrid.Columns[aCol].ButtonStyle = cbsCheckboxColumn) or
-    ((aCol > 0) and (not FControl.ListFields[aCol-1].Searchable)) then Exit;
+    not FGrid.Columns[aCol].Searchable then Exit;
+    //((aCol > 0) and (not FControl.ListFields[aCol-1].Searchable)) then Exit;
 
   C := FGrid.Canvas;
   if (gdSelected in aState) then
-  	C.Brush.Color := $777777
+  	C.Brush.Color := FGrid.SelectedHighlightColor
   else
-	  C.Brush.Color := $88FFFF;
+	  C.Brush.Color := FGrid.HighlightColor;
 
   Txt := FGrid.Cells[aCol, aRow];
   LowerTxt := Utf8LowerCase(Txt);
@@ -2277,8 +2283,11 @@ procedure TdxLCbxListForm.SetControl(AValue: TdxLookupComboBox);
 begin
   if FControl=AValue then Exit;
   FControl:=AValue;
-  FControlForm := GetParentForm(FControl);
-  FOldChangeBounds := FControlForm.OnChangeBounds;
+
+  FGrid.OnMouseUp:=@GridMouseUp;
+  FGrid.OnKeyDown:=@GridKeyDown;
+  FGrid.OnDrawCell:=@GridDrawCell;
+  FGrid.OnUTF8KeyPress:=@GridUtf8KeyPress;
 end;
 
 procedure TdxLCbxListForm.SetPosition;
@@ -2338,7 +2347,8 @@ var
 begin
   with FGrid do
   begin
-	  id := PtrInt(Objects[0, Row]);
+	  //id := PtrInt(Objects[0, Row]);
+    id := RecId[Row];
     txt := Cells[0, Row];
   end;
   Hide;
@@ -2364,7 +2374,7 @@ end;
 procedure TdxLCbxListForm.FindItem;
 var
   i, id, tr: Integer;
-  obj: TObject;
+  //obj: TObject;
 begin
   if FControl.KeyValue = Null then
   begin
@@ -2373,11 +2383,12 @@ begin
   end;
 
 	id := FControl.KeyValue;
-  obj := TObject(PtrInt(id));
+  //obj := TObject(PtrInt(id));
 
   for i := 0 to FGrid.RowCount - 1 do
   begin
-		if FGrid.Objects[0, i] = obj then
+		//if FGrid.Objects[0, i] = obj then
+    if FGrid.RecId[i] = id then
     begin
       tr := Round(i - FRealDropDownCount / 2);
       if tr + FRealDropDownCount > FGrid.RowCount then
@@ -2393,7 +2404,7 @@ procedure TdxLCbxListForm.Deactivate;
 begin
   inherited Deactivate;
 
-  FGrid.SelectedColor := clSilver;
+  FGrid.SelectedColor := FGrid.InactiveSelectedColor;// clSilver;
 
   if {FAccept or FCancel or} FControl.FKeepList then Exit;
 
@@ -2403,6 +2414,12 @@ begin
   begin
     FControl.CloseListForm;
   end;
+end;
+
+procedure TdxLCbxListForm.DoClose(var CloseAction: TCloseAction);
+begin
+  inherited DoClose(CloseAction);
+  FControlForm.OnChangeBounds:=FOldChangeBounds;
 end;
 
 procedure TdxLCbxListForm.GridKeyDown(Sender: TObject; var Key: Word;
@@ -2450,7 +2467,7 @@ end;
 procedure TdxLCbxListForm.Activate;
 begin
   inherited Activate;
-  FGrid.SelectedColor := clHighlight;
+  FGrid.SelectedColor := FGrid.SelColor;
 end;
 
 constructor TdxLCbxListForm.CreateNew(AOwner: TComponent; Num: Integer);
@@ -2464,19 +2481,18 @@ end;
 
 destructor TdxLCbxListForm.Destroy;
 begin
-  FControlForm.OnChangeBounds:=FOldChangeBounds;
   FFrags.Free;
   inherited Destroy;
 end;
 
 procedure TdxLCbxListForm.ShowForm;
 begin
-  FControlForm.OnChangeBounds:=@FormChangeBounds;
+  FControlForm := GetParentForm(FControl);
 
-  FGrid.OnMouseUp:=@GridMouseUp;
-  FGrid.OnKeyDown:=@GridKeyDown;
-  FGrid.OnDrawCell:=@GridDrawCell;
-  FGrid.OnUTF8KeyPress:=@GridUtf8KeyPress;
+  if FControlForm.OnChangeBounds <> @FormChangeBounds then
+    FOldChangeBounds := FControlForm.OnChangeBounds;
+
+  FControlForm.OnChangeBounds:=@FormChangeBounds;
 
   SetPosition;
 
@@ -4324,7 +4340,7 @@ var
   r, i: Integer;
   FmFields: TList;
 
-  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox: Boolean);
+  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean);
   begin
     with FGrid.Columns.Add do
     begin
@@ -4335,6 +4351,7 @@ var
         Width := W;
       end;
       if IsCheckBox then ButtonStyle:=cbsCheckboxColumn;
+      Searchable := ASearchable;
     end;
   end;
 
@@ -4348,19 +4365,21 @@ var
 		FGrid.Columns.Clear;
     Fm := FormMan.FindForm(FSourceTId);
     C := FindById(Fm, SourceFId);
-    AddColumn(GetFieldName(C), 0, False);
+    AddColumn(GetFieldName(C), 0, False, True);
     FmFields.Add(C);
     for i := 0 to FListFields.Count - 1 do
     begin
       LF := FListFields[i];
       C := FindById(Fm, LF.FieldId);
-      AddColumn(GetFieldName(C), LF.Width, C is TdxCheckBox);
+      AddColumn(GetFieldName(C), LF.Width, C is TdxCheckBox, LF.Searchable);
       FmFields.Add(C);
     end;
     if FListFields.Count = 0 then
-      FGrid.FixedRows := 0
+      FGrid.Options := FGrid.Options - [loTitles]
+      //FGrid.FixedRows := 0
     else
-      FGrid.FixedRows := 1;
+      FGrid.Options := FGrid.Options + [loTitles]
+      //FGrid.FixedRows := 1;
   end;
 
   // Преобразуем дату вида d.M.yy в dd.MM.yyyy. Порядок дня, месяца и года
@@ -4446,7 +4465,8 @@ begin
 
   while not DS.EOF do
   begin
-    FGrid.Objects[0, r] := TObject(PtrInt(DS.Fields[0].AsInteger));
+    FGrid.RecId[r] := DS.Fields[0].AsInteger;
+    //FGrid.Objects[0, r] := TObject(PtrInt(DS.Fields[0].AsInteger));
     FGrid.Cells[0, r] := ConvertFieldValue(0, DS.Fields[1]);  // DS.Fields[1].AsString;
 
     for i := 0 to FListFields.Count - 1 do
@@ -4506,6 +4526,14 @@ end;
 function TdxLookupComboBox.GetDroppedDown: Boolean;
 begin
   Result := IsListVisible;//FForm <> nil;
+end;
+
+function TdxLookupComboBox.GetGrid: TDropDownList;
+begin
+  if HideList then Exit(nil);
+
+  CreateListForm;
+  Result := FGrid;
 end;
 
 function TdxLookupComboBox.GetSourceFieldName: String;
@@ -4641,9 +4669,6 @@ begin
   if FForm = nil then
   begin
   	FForm := TdxLCbxListForm.CreateNew(Self);
-    {$ifdef windows}
-    FForm.PopupParent := TCustomForm(Self.GetTopParent);
-    {$endif}
     FForm.Grid := FGrid;
     FGrid.Parent := FForm;
     FForm.Control := Self;
@@ -4659,10 +4684,13 @@ begin
   if FFiltering then S := Text
   else S := '';
 
-  if FOnFilterData <> nil then FOnFilterData(Self, S);
-  if FGrid.RowCount = FGrid.FixedRows then Exit;
+	CreateListForm;
+  {$ifdef windows}
+  FForm.PopupParent := TCustomForm(Self.GetTopParent);
+  {$endif}
 
-	if FForm = nil then CreateListForm;
+  if FOnNeedData <> nil then FOnNeedData(Self, S);
+  //if FGrid.RowCount = FGrid.FixedRows then Exit;
 
   FForm.Enabled := True;
   FForm.ShowForm;
@@ -5122,7 +5150,7 @@ begin
   FButton.ShowHint:=True;
   FButton.Hint:=rsObjectButtonHint;
 
-  FGrid := TListGrid.Create(Self);
+  FGrid := TDropDownList.Create(Self);
   with FGrid do
   begin
     Align := alClient;

@@ -1704,24 +1704,63 @@ procedure TdxLookupComboBoxOnCreateListWindow_R(Self: TdxLookupComboBox; var T: 
 procedure TdxLookupComboBoxOnCreateListWindow_W(Self: TdxLookupComboBox; T: TCreateListWindowEvent); begin Self.OnCreateListWindow := T; end;
 procedure TdxLookupComboBoxOnCreateForm_R(Self: TdxLookupComboBox; var T: TCreateFormEvent); begin T := Self.OnCreateForm; end;
 procedure TdxLookupComboBoxOnCreateForm_W(Self: TdxLookupComboBox; T: TCreateFormEvent); begin Self.OnCreateForm := T; end;
-//procedure TdxLookupComboBoxOnUtf8KeyPress_R(Self: TdxLookupComboBox; var T: TMyUtf8KeyPressEvent); begin T := Self.OnMyUTF8KeyPress; end;
-//procedure TdxLookupComboBoxOnUtf8KeyPress_W(Self: TdxLookupComboBox; T: TMyUtf8KeyPressEvent); begin Self.OnMyUTF8KeyPress := T; end;
 procedure TdxLookupComboBoxSourceFormName_R(Self: TdxLookupComboBox; var T: String); begin T := Self.SourceFormName; end;
 procedure TdxLookupComboBoxSourceFieldName_R(Self: TdxLookupComboBox; var T: String); begin T := Self.SourceFieldName; end;
+procedure TdxLookupComboBoxOnNeedData_R(Self: TdxLookupComboBox; var T: TNeedDataEvent); begin T := Self.OnNeedData; end;
+procedure TdxLookupComboBoxOnNeedData_W(Self: TdxLookupComboBox; T: TNeedDataEvent); begin Self.OnNeedData := T; end;
+procedure TdxLookupComboBoxDropDownList_R(Self: TdxLookupComboBox; var T: TDropDownList); begin T := Self.DropDownList; end;
+
+procedure TDropDownColumnsItems_R(Self: TDropDownListColumns; var T: TDropDownListColumn; I: Integer); begin T := Self.Items[I]; end;
+procedure TDropDownColumnsItems_W(Self: TDropDownListColumns; T: TDropDownListColumn; I: Integer); begin Self.Items[I] := T; end;
+
+procedure TDropDownListColumns_R(Self: TDropDownList; var T: TDropDownListColumns); begin T := Self.Columns; end;
+procedure TDropDownListRecId_R(Self: TDropDownList; var T: Integer; I: Integer); begin T := Self.RecId[I]; end;
+procedure TDropDownListRecId_W(Self: TDropDownList; T: Integer; I: Integer); begin Self.RecId[I] := T; end;
+procedure TDropDownListOptions_R(Self: TDropDownList; var T: TDropDownListOptions); begin T := Self.Options; end;
+procedure TDropDownListOptions_W(Self: TDropDownList; T: TDropDownListOptions); begin Self.Options := T; end;
+procedure TDropDownListRowCount_R(Self: TDropDownList; var T: Integer); begin T := Self.RowCount; end;
+procedure TDropDownListRowCount_W(Self: TDropDownList; T: Integer); begin Self.RowCount := T; end;
+procedure TDropDownListCells_R(Self: TDropDownList; var T: String; C, R: Integer); begin T := Self.Cells[C, R]; end;
+procedure TDropDownListCells_W(Self: TDropDownList; T: String; C, R: Integer); begin Self.Cells[C, R] := T; end;
+procedure TDropDownListFixedGridLineColor_R(Self: TDropDownList; var T: TColor); begin T := Self.FixedGridLineColor; end;
+procedure TDropDownListFixedGridLineColor_W(Self: TDropDownList; T: TColor); begin Self.FixedGridLineColor := T; end;
+procedure TDropDownListSelectedColor_R(Self: TDropDownList; var T: TColor); begin T := Self.SelColor; end;
+procedure TDropDownListSelectedColor_W(Self: TDropDownList; T: TColor); begin Self.SelColor := T; end;
 
 procedure RIRegister_dxLookupComboBox(Cl: TPSRuntimeClassImporter);
 begin
+  with Cl.Add(TDropDownListColumn) do
+  begin
+
+  end;
+  with Cl.Add(TDropDownListColumns) do
+  begin
+    RegisterMethod(@TDropDownListColumns.Add, 'Add');
+    RegisterPropertyHelper(@TDropDownColumnsItems_R, @TDropDownColumnsItems_W, 'Items');
+  end;
+  with Cl.Add(TDropDownList) do
+  begin
+    RegisterPropertyHelper(@TDropDownListColumns_R, nil, 'Columns');
+    RegisterPropertyHelper(@TDropDownListRecId_R, @TDropDownListRecId_W, 'RecId');
+    RegisterPropertyHelper(@TDropDownListOptions_R, @TDropDownListOptions_W, 'Options');
+    RegisterPropertyHelper(@TDropDownListRowCount_R, @TDropDownListRowCount_W, 'RowCount');
+    RegisterPropertyHelper(@TDropDownListCells_R, @TDropDownListCells_W, 'Cells');
+    RegisterPropertyHelper(@TDropDownListSelectedColor_R, @TDropDownListSelectedColor_W, 'SelectedColor');
+    RegisterPropertyHelper(@TDropDownListFixedGridLineColor_R, @TDropDownListFixedGridLineColor_W, 'FixedGridLineColor');
+  end;
   with Cl.Add(TdxLookupComboBox) do
   begin
     RegisterPropertyHelper(@TdxLookupComboBoxButton_R, nil, 'Button');
     RegisterPropertyHelper(@TdxLookupComboBoxKeyValue_R, @TdxLookupComboBoxKeyValue_W, 'KeyValue');
     RegisterPropertyHelper(@TdxLookupComboBoxSourceFormName_R, nil, 'SourceFormName');
     RegisterPropertyHelper(@TdxLookupComboBoxSourceFieldName_R, nil, 'SourceFieldName');
+    RegisterPropertyHelper(@TdxLookupComboBoxDropDownList_R, nil, 'DropDownList');
     RegisterEventPropertyHelper(@TdxLookupComboBoxOnCreateListWindow_R, @TdxLookupComboBoxOnCreateListWindow_W,
       'OnCreateListWindow');
     RegisterEventPropertyHelper(@TdxLookupComboBoxOnCreateForm_R, @TdxLookupComboBoxOnCreateForm_W,
       'OnCreateForm');
-    //RegisterPropertyHelper(@TdxLookupComboBoxOnUtf8KeyPress_R, @TdxLookupComboBoxOnUtf8KeyPress_W, 'OnUtf8KeyPress');
+    RegisterEventPropertyHelper(@TdxLookupComboBoxOnNeedData_R, @TdxLookupComboBoxOnNeedData_W,
+      'OnNeedData');
   end;
 end;
 

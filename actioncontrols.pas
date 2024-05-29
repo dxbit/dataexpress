@@ -1118,18 +1118,6 @@ var
   Nm: String;
 begin
 	Clear;
-  {Fm := nil;
-
-  if FSourceCbx <> nil then
-  begin
-    S := FSourceCbx.Text;
-    if (FSourceCbx is TFormCbx) or (FSourceCbx is TChildFormCbx) then
-		  Fm := FormMan.FindFormByName(S)
-    else if FSourceCbx is TObjectCbx then
-	  	Fm := TObjectCbx(FSourceCbx).GetSourceForm;
-  end
-  else
-  	Fm := FCurForm; }
   Fm := GetSourceForm;
   if Fm = nil then Exit;
 

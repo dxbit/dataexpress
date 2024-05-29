@@ -1522,6 +1522,43 @@ end;
 
 procedure SIRegister_dxLookupComboBox(Cl: TPSPascalCompiler);
 begin
+  Cl.AddTypeS('TNeedDataEvent', 'procedure (Sender: TObject; const Text: String)');
+  Cl.AddTypeS('TDropDownListOption', '(loVertLine, loHorzLine, loTitles, loWordWrap)');
+  Cl.AddTypeS('TDropDownListOptions', 'set of TDropDownListOption');
+  Cl.AddTypeS('TOnDrawCell', 'procedure(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState:TGridDrawState)');
+
+  with Cl.AddClassN(Cl.FindClass('TGridColumn'), 'TDropDownListColumn') do
+  begin
+    RegisterProperty('Searchable', 'Boolean', iptRW);
+  end;
+  with Cl.AddClassN(Cl.FindClass('TCollection'), 'TDropDownListColumns') do
+  begin
+    RegisterMethod('function Add: TDropDownListColumn');
+    RegisterProperty('Items', 'TDropDownListColumn Integer', iptRW);
+    SetDefaultPropery('Items');
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TCustomControl'), 'TDropDownList') do
+  begin
+    RegisterProperty('Columns', 'TDropDownListColumns', iptR);
+    RegisterProperty('RecId', 'Integer Integer', iptRW);
+    RegisterProperty('Options', 'TDropDownListOptions', iptRW);
+    RegisterProperty('RowCount', 'Integer', iptRW);
+    RegisterProperty('Cells', 'String Integer Integer', iptRW);
+    RegisterProperty('DefaultRowHeight', 'Integer', iptRW);
+    RegisterProperty('SelectedColor', 'TColor', iptRW);
+    RegisterProperty('AlternateColor', 'TColor', iptRW);
+    RegisterProperty('GridLineColor', 'TColor', iptRW);
+    RegisterProperty('FixedGridLineColor', 'TColor', iptRW);
+    RegisterProperty('GridLineStyle', 'TPenStyle', iptRW);
+    RegisterProperty('InactiveSelectedColor', 'TColor', iptRW);
+    RegisterProperty('FixedColor', 'TColor', iptRW);
+    RegisterProperty('HighlightSearchedText', 'Boolean', iptRW);
+    RegisterProperty('HighlightColor', 'TColor', iptRW);
+    RegisterProperty('SelectedHighlightColor', 'TColor', iptRW);
+    RegisterProperty('TitleFont', 'TFont', iptRW);
+    RegisterProperty('OnDrawCell', 'TOnDrawCell', iptRW);
+  end;
   with Cl.AddClassN(Cl.FindClass('TDBEdit'), 'TdxLookupComboBox') do
   begin
     RegisterProperty('Id', 'Integer', iptR);
@@ -1539,12 +1576,14 @@ begin
     RegisterProperty('SourceFieldName', 'String', iptR);
     RegisterProperty('HideButton', 'Boolean', iptRW);
     RegisterProperty('HideList', 'Boolean', iptRW);
+    RegisterProperty('DropDownList', 'TDropDownList', iptR);
 
     //RegisterProperty('OnDropDown', 'TNotifyEvent', iptRW);
     //RegisterProperty('OnChange', 'TNotifyEvent', iptRW);
     RegisterProperty('OnCreateListWindow', 'TCreateListWindowEvent', iptRW);
     RegisterProperty('OnCreateForm', 'TCreateFormEvent', iptRW);
     RegisterProperty('OnUTF8KeyPress', 'TUTF8KeyPressEvent', iptRW);
+    RegisterProperty('OnNeedData', 'TNeedDataEvent', iptRW);
   end;
 end;
 

@@ -121,16 +121,63 @@ type
     property Columns: TMyGridColumns read GetColumns write SetColumns;
   end;
 
-  { TListGrid }
+  { TDropDownListColumn }
 
-  TListGrid = class(TStringGrid)
+  TDropDownListColumn = class(TGridColumn)
+  private
+    FSearchable: Boolean;
+  published
+    property Searchable: Boolean read FSearchable write FSearchable;
+  end;
+
+  { TDropDownListColumns }
+
+  TDropDownListColumns = class(TGridColumns)
+  private
+    function GetItems(Index: Integer): TDropDownListColumn;
+    procedure SetItems(Index: Integer; AValue: TDropDownListColumn);
+  public
+    function Add: TDropDownListColumn;
+    property Items[Index: Integer]: TDropDownListColumn read GetItems write SetItems; default;
+  end;
+
+  { TDropDownList }
+
+  TDropDownListOption = (loVertLine, loHorzLine, loTitles, loWordWrap);
+  TDropDownListOptions = set of TDropDownListOption;
+
+  TDropDownList = class(TStringGrid)
+  private
+    FHighlightColor: TColor;
+    FHighlightSearchedText: Boolean;
+    FSelectedHighlightColor: TColor;
+    FInactiveSelectedColor: TColor;
+    FOptions: TDropDownListOptions;
+    FSelColor: TColor;
+    function GetColumns: TDropDownListColumns;
+    function GetRecId(Index: Integer): Integer;
+    procedure SetColumns(AValue: TDropDownListColumns);
+    procedure SetOptions(AValue: TDropDownListOptions);
+    procedure SetRecId(Index: Integer; AValue: Integer);
   protected
     function GetDefaultRowHeight: integer; override;
     procedure WMVScroll(var message: TLMVScroll); message LM_VSCROLL;
+    function CreateColumns: TGridColumns; override;
+    procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
+      aText: String); override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure DrawText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String);
+    property RecId[Index: Integer]: Integer read GetRecId write SetRecId;
+    property SelColor: TColor read FSelColor write FSelColor; // Это SelectedColor
+  published
+    property Columns: TDropDownListColumns read GetColumns write SetColumns;
+    property Options: TDropDownListOptions read FOptions write SetOptions;
+    property InactiveSelectedColor: TColor read FInactiveSelectedColor write FInactiveSelectedColor;
+    property HighlightSearchedText: Boolean read FHighlightSearchedText write FHighlightSearchedText;
+    property HighlightColor: TColor read FHighlightColor write FHighlightColor;
+    property SelectedHighlightColor: TColor read FSelectedHighlightColor write FSelectedHighlightColor;
   end;
 
   { TGridButton }
@@ -461,7 +508,7 @@ end;
 
 procedure TMyGridColumns.SetItems(Index: Integer; AValue: TMyGridColumn);
 begin
-  Items[Index].Assign(AValue);
+  inherited Items[Index].Assign(AValue);
 end;
 
 function TMyGridColumns.Add: TMyGridColumn;
@@ -656,9 +703,45 @@ begin
   end;
 end;
 
-{ TListGrid }
+{ TDropDownList }
 
-function TListGrid.GetDefaultRowHeight: integer;
+function TDropDownList.GetColumns: TDropDownListColumns;
+begin
+  Result := TDropDownListColumns( inherited Columns );
+end;
+
+function TDropDownList.GetRecId(Index: Integer): Integer;
+begin
+  Result := Integer(Objects[0, Index]);
+end;
+
+procedure TDropDownList.SetColumns(AValue: TDropDownListColumns);
+begin
+  inherited Columns := AValue;
+end;
+
+procedure TDropDownList.SetOptions(AValue: TDropDownListOptions);
+var
+  Opt: TGridOptions;
+begin
+  if FOptions=AValue then Exit;
+  FOptions:=AValue;
+  Opt := inherited Options;
+  if loVertLine in AValue then Include(Opt, goVertLine)
+  else Exclude(Opt, goVertLine);
+  if loHorzLine in AValue then Include(Opt, goHorzLine)
+  else Exclude(Opt, goHorzLine);
+  if loTitles in AValue then FixedRows := 1
+  else FixedRows := 0;
+  inherited Options := Opt;
+end;
+
+procedure TDropDownList.SetRecId(Index: Integer; AValue: Integer);
+begin
+  Objects[0, Index] := TObject(AValue);
+end;
+
+function TDropDownList.GetDefaultRowHeight: integer;
 var
   TmpCanvas: TCanvas;
 begin
@@ -672,7 +755,7 @@ end;
 
 // При скроллинге списка объекта выравниваем верхнюю строку, чтобы при смене
 // выделения не появлялись артефакты
-procedure TListGrid.WMVScroll(var message: TLMVScroll);
+procedure TDropDownList.WMVScroll(var message: TLMVScroll);
 begin
   inherited WMVScroll(message);
   {if message.ScrollCode = SB_ENDSCROLL then
@@ -681,20 +764,51 @@ begin
   end;    }
 end;
 
-constructor TListGrid.Create(AOwner: TComponent);
+function TDropDownList.CreateColumns: TGridColumns;
+begin
+  Result := TDropDownListColumns.Create(Self, TDropDownListColumn);
+end;
+
+procedure TDropDownList.DrawCellText(aCol, aRow: Integer; aRect: TRect;
+  aState: TGridDrawState; aText: String);
+var
+  ts: TTextStyle;
+begin
+  ts := Canvas.TextStyle;
+  if loWordWrap in Options then
+  begin
+    ts.Wordbreak := True;
+    ts.SingleLine := False;
+  end
+  else
+  begin
+    ts.WordBreak := False;
+    ts.SingleLine := True;
+  end;
+  Canvas.TextStyle := ts;
+
+  inherited DrawCellText(aCol, aRow, aRect, aState, aText);
+end;
+
+constructor TDropDownList.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   AutoFillColumns:=True;
-  Options := Options - [goHorzLine, goRangeSelect, goColMoving,
+  inherited Options := inherited Options - [goHorzLine, goRangeSelect, goColMoving,
     goColSizing, goEditing] + [goRowSelect, goThumbTracking, goDrawFocusSelected,
     goTruncCellHints, goScrollKeepVisible, goSmoothScroll];
   Flat := True;
   ShowHint := True;
   FocusRectVisible := False;
   SelectedColor := Color;
+  FSelColor := clHighlight;
+  FInactiveSelectedColor := clSilver;
+  FHighlightSearchedText := True;
+  FHighlightColor := $88FFFF;
+  FSelectedHighlightColor := $777777;
 end;
 
-procedure TListGrid.DrawText(aCol, aRow: Integer; aRect: TRect;
+procedure TDropDownList.DrawText(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState; aText: String);
 begin
   DrawCellText(aCol, aRow, aRect, aState, aText);
@@ -1935,6 +2049,23 @@ begin
   FreeAndNil(FDown);
   FSortCols.Free;
   inherited Destroy;
+end;
+
+{ TDropDownListColumns }
+
+function TDropDownListColumns.GetItems(Index: Integer): TDropDownListColumn;
+begin
+  Result := TDropDownListColumn( inherited Items[Index] );
+end;
+
+procedure TDropDownListColumns.SetItems(Index: Integer; AValue: TDropDownListColumn);
+begin
+  inherited Items[Index].Assign(AValue);
+end;
+
+function TDropDownListColumns.Add: TDropDownListColumn;
+begin
+  Result := TDropDownListColumn( inherited Add );
 end;
 
 end.

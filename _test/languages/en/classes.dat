@@ -347,7 +347,9 @@ Events
 	TMouseMoveEvent = procedure (Sender: TObject; Shift: TShiftState; X, Y: Integer)
 	TMouseWheelEvent = procedure (Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean)
 	TMovedEvent = procedure (Sender: TObject; FromIndex, ToIndex: Integer)
+	TNeedDataEvent = procedure (Sender: TObject; const Text: String)
 	TNotifyEvent = procedure (Sender: TObject)
+	TOnDrawCell = procedure(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState)
 	TParamNotifyEvent = procedure (Sender: TObject; const ParamName: String)
 	TPasswordEvent = procedure (Sender: TObject; Var RepeatRequest: Boolean)
 	TPrepareDbGridCanvasEvent = procedure (Sender: TObject; DataCol: Integer; Column: TColumn; AState: TGridDrawState)
@@ -419,6 +421,8 @@ Types
 	TDataSetState = (dsInactive, dsBrowse, dsEdit, dsInsert, dsSetKey, dsCalcFields, dsFilter, dsNewValue, dsOldValue, dsCurValue, dsBlockRead, dsInternalCalc, dsOpening)
 	TDataSetState = (dsInactive, dsBrowse, dsEdit, dsInsert, dsOpening) used
 	TDateTime = Double
+	TDropDownListOption = (loVertLine, loHorzLine, loTitles, loWordWrap)
+	TDropDownListOptions = set of TDropDownListOption
 	TDuplicates = (dupIgnore, dupAccept, dupError)
 	TEchoMode = (emNormal, emNone, emPassword)
 	TEdgeBorder = (ebLeft, ebTop, ebRight, ebBottom)
@@ -1237,6 +1241,21 @@ TDOMNode = class(TObject)
 TDOMNodeList = class(TObject)
 	property Count: LongWord [r]
 	property Item[Index: LongWord]: TDOMNode [r] default
+TDropDownList = class(TCustomControl)
+	property Columns: TDropDownListColumns [rw]
+	property HighlightColor: TColor [rw]
+	property HighlightSearchedText: Boolean [rw]
+	property InactiveSelectedColor: TColor [rw]
+	property Options: TDropDownListOptions [rw]
+	property RecId[Index: Integer]: Integer [rw]
+	property SelectedColor: TColor [rw]
+	property SelectedHighlightColor: TColor [rw]
+	property TitleFont: TFont [rw]
+TDropDownListColumn = class(TGridColumn)
+	property Searchable: Boolean [rw]
+TDropDownListColumns = class(TCollection)
+	function Add: TDropDownListColumn
+	property Items[Index: Integer]: TDropDownListColumn [rw] default
 TEdit = class(TCustomEdit)
 	property AutoSelect: Boolean [rw]
 TEditWindow = class(TWindow)
@@ -2507,6 +2526,7 @@ TdxLookupComboBox = class(TDBEdit)
 	property Button: TSpeedButton [r]
 	property CheckExpression: String [r]
 	property DefaultValue: String [r] 
+	property DropDownList: TDropDownList [r]
 	property Editable: Boolean [r]
 	property Expression: String [r]
 	property FieldName: String [r]
@@ -2517,6 +2537,7 @@ TdxLookupComboBox = class(TDBEdit)
 	property KeyValue: Variant [rw]
 	property OnCreateForm: TCreateFormEvent [rw]
 	property OnCreateListWindow: TCreateListwindowEvent [rw]
+	property OnNeedData: TNeedDataEvent [rw]
 	property Required: Boolean [r]
 	property SourceFormName: String [r]
 	property SourceFieldName: String [r]
