@@ -2864,6 +2864,9 @@ begin
   Exec.RegisterDelphiFunction(@ScaleToScreen, 'Scale96ToScreen', cdRegister);
   Exec.RegisterDelphiFunction(@IIF, 'IIF', cdRegister);
   Exec.RegisterDelphiFunction(@CreateGUIDString, 'CreateGUIDString', cdRegister);
+
+  Exec.RegisterDelphiFunction(@SetVar, 'SetVar', cdRegister);
+  Exec.RegisterDelphiFunction(@GetVar, 'GetVar', cdRegister);
 end;
 
 end.

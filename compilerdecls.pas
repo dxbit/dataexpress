@@ -2988,6 +2988,9 @@ begin
 
   Cl.AddDelphiFunction('function IIF(Cond, V1, V2: Variant): Variant');
   Cl.AddDelphiFunction('function CreateGUIDString: String');
+
+  Cl.AddDelphiFunction('function SetVar(const aName: String; aValue: Variant): Variant');
+  Cl.AddDelphiFunction('function GetVar(const aName: String): Variant');
 end;
 
 procedure SIRegister_dxControlsWeb(Cl: TPSPascalCompiler);
