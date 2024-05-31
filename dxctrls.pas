@@ -488,7 +488,6 @@ type
     FControl: TdxLookupComboBox;
     FControlForm: TCustomForm;
     FGrid: TDropDownList;
-   // FAccept, FCancel: Boolean;
     FRealDropDownCount: Integer;
     FFrags: TStringList;
     FOldChangeBounds: TNotifyEvent;
@@ -507,6 +506,7 @@ type
   protected
     procedure Activate; override;
     procedure Deactivate; override;
+    procedure DoShow; override;
     procedure DoClose(var CloseAction: TCloseAction); override;
   public
     constructor CreateNew(AOwner: TComponent; Num: Integer=0); override;
@@ -2404,9 +2404,9 @@ procedure TdxLCbxListForm.Deactivate;
 begin
   inherited Deactivate;
 
-  FGrid.SelectedColor := FGrid.InactiveSelectedColor;// clSilver;
+  FGrid.SelectedColor := FGrid.InactiveSelectedColor;
 
-  if {FAccept or FCancel or} FControl.FKeepList then Exit;
+  if FControl.FKeepList then Exit;
 
   if FControl.DropDownButton.MouseEntered then
     FControl.FDropDownBnClick:=True
@@ -2416,21 +2416,27 @@ begin
   end;
 end;
 
+procedure TdxLCbxListForm.DoShow;
+begin
+  inherited DoShow;
+  FControlForm := GetParentForm(FControl);
+  if FControlForm <> nil then
+    FControlForm.AddHandlerOnChangeBounds(@FormChangeBounds);
+end;
+
 procedure TdxLCbxListForm.DoClose(var CloseAction: TCloseAction);
 begin
   inherited DoClose(CloseAction);
-  FControlForm.OnChangeBounds:=FOldChangeBounds;
+  if FControlForm <> nil then
+    FControlForm.RemoveHandlerOnChangeBounds(@FormChangeBounds);
 end;
 
 procedure TdxLCbxListForm.GridKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  //FControl.FGridKeyClose := Key in [VK_RETURN, VK_ESCAPE];
-
   if Key = VK_RETURN then AcceptSelected
   else if Key = VK_ESCAPE then
   begin
-    //FCancel := True;
     SetFocusControl('');
     FControl.CloseListForm;
   end
@@ -2474,7 +2480,6 @@ constructor TdxLCbxListForm.CreateNew(AOwner: TComponent; Num: Integer);
 begin
   inherited CreateNew(AOwner, Num);
   BorderStyle:=bsNone;
-  //FormStyle := fsStayOnTop;
   ShowInTaskBar := stNever;
   FFrags := TStringList.Create;
 end;
@@ -2487,13 +2492,6 @@ end;
 
 procedure TdxLCbxListForm.ShowForm;
 begin
-  FControlForm := GetParentForm(FControl);
-
-  if FControlForm.OnChangeBounds <> @FormChangeBounds then
-    FOldChangeBounds := FControlForm.OnChangeBounds;
-
-  FControlForm.OnChangeBounds:=@FormChangeBounds;
-
   SetPosition;
 
   FRealDropDownCount := Round(Height / FGrid.DefaultRowHeight);

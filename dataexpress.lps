@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Win32"/>
-    <Units Count="341">
+    <Units Count="344">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -219,11 +219,10 @@
         <Filename Value="compilerdecls.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CompilerDecls"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="2975"/>
         <CursorPos X="77" Y="2993"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="componenttree.pas"/>
@@ -396,15 +395,15 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxCtrls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2282"/>
-        <CursorPos X="24" Y="2303"/>
+        <TopLine Value="2394"/>
+        <CursorPos X="45" Y="2420"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="5">
-          <Item0 Y="5746" ID="6"/>
+          <Item0 Y="5744" ID="6"/>
           <Item1 Y="2166" ID="7"/>
-          <Item2 Y="2485" ID="1"/>
-          <Item3 X="3" Y="4555" ID="2"/>
-          <Item4 X="23" Y="4693" ID="3"/>
+          <Item2 Y="2490" ID="1"/>
+          <Item3 X="3" Y="4553" ID="2"/>
+          <Item4 X="23" Y="4691" ID="3"/>
         </Bookmarks>
       </Unit38>
       <Unit39>
@@ -437,7 +436,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DXReports"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="82" Y="17"/>
+        <TopLine Value="1078"/>
+        <CursorPos X="51" Y="1093"/>
         <UsageCount Value="201"/>
       </Unit42>
       <Unit43>
@@ -529,11 +529,10 @@
         <Filename Value="exprfuncs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExprFuncs"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos X="10" Y="62"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit52>
       <Unit53>
         <Filename Value="exprhighlighter.pas"/>
@@ -1001,8 +1000,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="768"/>
-        <CursorPos X="10" Y="784"/>
+        <TopLine Value="1998"/>
+        <CursorPos X="3" Y="2016"/>
         <UsageCount Value="201"/>
       </Unit98>
       <Unit99>
@@ -1432,11 +1431,10 @@
         <Filename Value="rundecls.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="RunDecls"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="2837"/>
         <CursorPos X="65" Y="2869"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit140>
       <Unit141>
         <Filename Value="saxbasereader.pas"/>
@@ -1666,7 +1664,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="TimeEdit"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="81" Y="17"/>
+        <TopLine Value="64"/>
+        <CursorPos X="15" Y="81"/>
         <UsageCount Value="201"/>
       </Unit163>
       <Unit164>
@@ -1739,7 +1738,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSC_MyControls"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="17"/>
+        <TopLine Value="95"/>
+        <CursorPos X="23" Y="111"/>
         <UsageCount Value="201"/>
       </Unit171>
       <Unit172>
@@ -1803,7 +1803,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyButtons"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="84" Y="19"/>
+        <TopLine Value="27"/>
+        <CursorPos X="10" Y="55"/>
         <UsageCount Value="201"/>
       </Unit179>
       <Unit180>
@@ -1819,7 +1820,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSR_MyControls"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="17"/>
+        <TopLine Value="143"/>
+        <CursorPos X="40" Y="157"/>
         <UsageCount Value="201"/>
       </Unit181>
       <Unit182>
@@ -2040,7 +2042,7 @@
         <Filename Value="readme.txt"/>
         <IsVisibleTab Value="True"/>
         <TopLine Value="9146"/>
-        <CursorPos X="42" Y="9171"/>
+        <CursorPos X="17" Y="9168"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
@@ -2063,16 +2065,16 @@
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\forms.pp"/>
         <UnitName Value="Forms"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="829"/>
-        <CursorPos X="17" Y="848"/>
+        <TopLine Value="1645"/>
+        <CursorPos X="15" Y="1662"/>
         <UsageCount Value="10"/>
       </Unit208>
       <Unit209>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\controls.pp"/>
         <UnitName Value="Controls"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1630"/>
-        <CursorPos X="14" Y="1645"/>
+        <TopLine Value="1746"/>
+        <CursorPos X="15" Y="1763"/>
         <UsageCount Value="18"/>
       </Unit209>
       <Unit210>
@@ -2109,9 +2111,9 @@
       <Unit214>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\wincontrol.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="4385"/>
-        <CursorPos X="3" Y="4400"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="5413"/>
+        <CursorPos Y="5430"/>
+        <UsageCount Value="10"/>
       </Unit214>
       <Unit215>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\winapih.inc"/>
@@ -2285,8 +2287,9 @@
         <Filename Value="d:\LazComponents\dbctrlsex\dbctrlsex.pas"/>
         <UnitName Value="DBCtrlsEx"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="18"/>
-        <UsageCount Value="7"/>
+        <TopLine Value="905"/>
+        <CursorPos X="41" Y="915"/>
+        <UsageCount Value="11"/>
       </Unit236>
       <Unit237>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\i386\i386.inc"/>
@@ -2305,9 +2308,9 @@
       <Unit239>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\objpas.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="30"/>
-        <CursorPos Y="48"/>
-        <UsageCount Value="14"/>
+        <TopLine Value="669"/>
+        <CursorPos Y="684"/>
+        <UsageCount Value="15"/>
       </Unit239>
       <Unit240>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\compon.inc"/>
@@ -2602,16 +2605,16 @@
       <Unit279>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2220"/>
-        <CursorPos Y="2236"/>
-        <UsageCount Value="4"/>
+        <TopLine Value="2121"/>
+        <CursorPos X="65" Y="2139"/>
+        <UsageCount Value="11"/>
       </Unit279>
       <Unit280>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="4438"/>
-        <CursorPos X="3" Y="4440"/>
-        <UsageCount Value="1"/>
+        <TopLine Value="4965"/>
+        <CursorPos X="30" Y="4982"/>
+        <UsageCount Value="11"/>
       </Unit280>
       <Unit281>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\intfbasewinapi.inc"/>
@@ -3023,8 +3026,8 @@
         <UnitName Value="LCLMessageGlue"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
-        <CursorPos Y="106"/>
-        <UsageCount Value="8"/>
+        <CursorPos Y="114"/>
+        <UsageCount Value="10"/>
       </Unit337>
       <Unit338>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\collect.inc"/>
@@ -3047,53 +3050,34 @@
         <CursorPos Y="1345"/>
         <UsageCount Value="11"/>
       </Unit340>
+      <Unit341>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\forms\calendarpopup.pas"/>
+        <ComponentName Value="CalendarPopupForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CalendarPopup"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="159"/>
+        <CursorPos X="23" Y="176"/>
+        <UsageCount Value="11"/>
+      </Unit341>
+      <Unit342>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\include\application.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1795"/>
+        <CursorPos X="30" Y="1823"/>
+        <UsageCount Value="10"/>
+      </Unit342>
+      <Unit343>
+        <Filename Value="d:\fpcupdeluxe\lazarus\lcl\calendar.pp"/>
+        <UnitName Value="Calendar"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="289"/>
+        <CursorPos Y="309"/>
+        <UsageCount Value="11"/>
+      </Unit343>
     </Units>
-    <JumpHistory Count="11" HistoryIndex="9">
-      <Position1>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="17" Column="82"/>
-      </Position1>
-      <Position2>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="63" Column="16" TopLine="34"/>
-      </Position2>
-      <Position3>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="896" Column="3" TopLine="892"/>
-      </Position3>
-      <Position4>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="62" Column="10" TopLine="46"/>
-      </Position4>
-      <Position5>
-        <Filename Value="compilerdecls.pas"/>
-        <Caret Line="1549" Column="35" TopLine="1528"/>
-      </Position5>
-      <Position6>
-        <Filename Value="compilerdecls.pas"/>
-        <Caret Line="92" Column="11" TopLine="73"/>
-      </Position6>
-      <Position7>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="884" Column="3" TopLine="880"/>
-      </Position7>
-      <Position8>
-        <Filename Value="rundecls.pas"/>
-        <Caret Line="1748" Column="49" TopLine="1730"/>
-      </Position8>
-      <Position9>
-        <Filename Value="rundecls.pas"/>
-        <Caret Line="95" Column="11" TopLine="68"/>
-      </Position9>
-      <Position10>
-        <Filename Value="rundecls.pas"/>
-        <Caret Line="2868" Column="38" TopLine="2837"/>
-      </Position10>
-      <Position11>
-        <Filename Value="exprfuncs.pas"/>
-        <Caret Line="62" Column="10" TopLine="45"/>
-      </Position11>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>
