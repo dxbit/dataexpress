@@ -258,14 +258,22 @@ end;
 function TEditWindow.ShowModal: Integer;
 begin
   if Visible and (Screen.GetCurrentModalForm <> Self) then Close;
+
   with TDataSetProcessor(FDSP) do
+  begin
+    PrepareBeforeShowEditForm(FDSRi);
     RefreshAllData(FDSRi);
+  end;
   Result:=inherited ShowModal;
 end;
 
 procedure TEditWindow.Show;
 begin
-  TDataSetProcessor(FDSP).RefreshAllData(FDSRi);
+  with TDataSetProcessor(FDSP) do
+  begin
+    PrepareBeforeShowEditForm(FDSRi);
+    RefreshAllData(FDSRi);
+  end;
   inherited Show;
 end;
 
