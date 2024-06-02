@@ -126,6 +126,8 @@ type
   TDropDownListColumn = class(TGridColumn)
   private
     FSearchable: Boolean;
+  public
+    procedure Assign(Source: TPersistent); override;
   published
     property Searchable: Boolean read FSearchable write FSearchable;
   end;
@@ -169,6 +171,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure DrawText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String);
+    procedure Assign(Source: TPersistent); override;
     property RecId[Index: Integer]: Integer read GetRecId write SetRecId;
     property SelColor: TColor read FSelColor write FSelColor; // Это SelectedColor
   published
@@ -731,7 +734,11 @@ begin
   else Exclude(Opt, goVertLine);
   if loHorzLine in AValue then Include(Opt, goHorzLine)
   else Exclude(Opt, goHorzLine);
-  if loTitles in AValue then FixedRows := 1
+  if loTitles in AValue then
+  begin
+    if RowCount = 0 then RowCount := 1;
+    FixedRows := 1;
+  end
   else FixedRows := 0;
   inherited Options := Opt;
 end;
@@ -812,6 +819,21 @@ procedure TDropDownList.DrawText(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState; aText: String);
 begin
   DrawCellText(aCol, aRow, aRect, aState, aText);
+end;
+
+procedure TDropDownList.Assign(Source: TPersistent);
+var
+  Src: TDropDownList;
+begin
+  Src := TDropDownList(Source);
+  Columns.Assign(Src.Columns);
+  Options := Src.Options;
+  FInactiveSelectedColor := Src.InactiveSelectedColor;
+  FHighlightSearchedText := Src.HighlightSearchedText;
+  FHighlightColor := Src.HighlightColor;
+  FSelectedHighlightColor := Src.SelectedHighlightColor;
+  FSelColor := Src.SelColor;
+  DefaultRowHeight := Src.DefaultRowHeight;
 end;
 
 { TMaskCellEditor }
@@ -2049,6 +2071,17 @@ begin
   FreeAndNil(FDown);
   FSortCols.Free;
   inherited Destroy;
+end;
+
+{ TDropDownListColumn }
+
+procedure TDropDownListColumn.Assign(Source: TPersistent);
+var
+  Src: TDropDownListColumn;
+begin
+  inherited Assign(Source);
+  Src := TDropDownListColumn(Source);
+  FSearchable := Src.Searchable;
 end;
 
 { TDropDownListColumns }

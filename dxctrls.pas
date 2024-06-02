@@ -40,6 +40,8 @@ const
 
   DummyForm = -1;
 
+  LCbxMenuItemsCount = 10;
+
 type
   TdxForm = class;
   TParamList = class;
@@ -462,6 +464,8 @@ type
   private
     FFieldId, FWidth: Integer;
     FSearchable: Boolean;
+  public
+    procedure Assign(Source: TPersistent); override;
   published
     property FieldId: Integer read FFieldId write FFieldId;
 	  property Width: Integer read FWidth write FWidth;
@@ -520,9 +524,12 @@ type
   { TdxLookupComboBox }
 
   TNeedDataEvent = procedure (Sender: TObject; const Text: String) of object;
+  TLCbxAccessOption = (aoView, aoAppend, aoEdit, aoGoto);
+  TLCbxAccessOptions = set of TLCbxAccessOption;
 
   TdxLookupComboBox = class(TDBEditEx)
   private
+    FAccessOptions: TLCbxAccessOptions;
     FAutoComplete: Boolean;
     FCheckExpression: String;
     FClearTableBeforeFill: Boolean;
@@ -629,6 +636,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
     procedure EnableButtons(AValue: Boolean);
     procedure ClearData;
     procedure ClearInsertTableProps;
@@ -637,6 +645,10 @@ type
     procedure FillGrid(DS: TDataSet; Empty: Boolean);
     function GetButtonWidths: Integer;
     procedure ApplyChanges;
+    function IsOwnPopupMenu: Boolean;
+    function IsOwnPopupMenuHandler(MI: TMenuItem): Boolean;
+    procedure ResetPopupMenu;
+    procedure ResetPopupMenuHandler(MI: TMenuItem);
     property KeyValue: Variant read GetKeyValue write SetKeyValue;
     property OnCtrlClick: TNotifyEvent read FOnCtrlClick write FOnCtrlClick;
     property Button: TSpeedButton read FButton;
@@ -646,6 +658,7 @@ type
     property SourceFieldName: String read GetSourceFieldName;
     property DroppedDown: Boolean read GetDroppedDown;
     property DropDownList: TDropDownList read GetGrid;
+    property AccessOptions: TLCbxAccessOptions read FAccessOptions write FAccessOptions;
 
     //property ItemIndex: Integer read FItemIndex write FItemIndex;
     //property Style: TComboBoxStyle read FStyle write FStyle;
@@ -2551,6 +2564,16 @@ begin
   inherited Clear;
 end;
 
+procedure TLCbxListField.Assign(Source: TPersistent);
+var
+  Src: TLCbxListField;
+begin
+  Src := TLCbxListField(Source);
+  FFieldId := Src.FieldId;
+  FWidth := Src.Width;
+  FSearchable := Src.Searchable;
+end;
+
 function CheckCutPasteKeys(C: TComponent; Field: TField; var Key: Word; Shift: TShiftState): Boolean;
 begin
   Result := False;
@@ -4318,7 +4341,7 @@ begin
   FSkipKillFocus := True;
   {$endif}
   if (FOnButtonClick <> nil) and (not FHideButton) and (FButton.Enabled) then
-    FOnButtonClick(Self);
+    FOnButtonClick(TComponent(Sender).Owner);
 end;
 
 procedure TdxLookupComboBox.DoPositionButton;
@@ -4711,12 +4734,34 @@ begin
   ProcessKillFocus;
 end;
 
+function TdxLookupComboBox.IsOwnPopupMenu: Boolean;
+begin
+  Result := PopupMenu = FPopup;
+end;
+
+function TdxLookupComboBox.IsOwnPopupMenuHandler(MI: TMenuItem): Boolean;
+begin
+  Result := MI.OnClick = @MenuClick;
+end;
+
+procedure TdxLookupComboBox.ResetPopupMenu;
+begin
+  PopupMenu := FPopup;
+  FDropDownButton.PopupMenu := FPopup;
+  FButton.PopupMenu := FPopup;
+end;
+
+procedure TdxLookupComboBox.ResetPopupMenuHandler(MI: TMenuItem);
+begin
+  MI.OnClick := @MenuClick;
+end;
+
 procedure TdxLookupComboBox.SetButtonState;
 begin
   FDropDownButton.Visible := Visible and (not FHideList);
   FDropDownButton.Enabled := (not ReadOnly) and Enabled;
   FButton.Visible := Visible and (not FHideButton);
-  FButton.Enabled := (not ReadOnly) and Enabled;
+  FButton.Enabled := (not ReadOnly) and Enabled and (aoView in FAccessOptions);
 end;
 
 procedure TdxLookupComboBox.ProcessKillFocus;
@@ -4777,6 +4822,31 @@ begin
   Pop.Items[6].Enabled := src and ae and (not ReadOnly) and (not hbns) and Pop.Items[6].Visible;
   Pop.Items[7].Enabled := src and ae and (KeyValue <> Null) and Pop.Items[7].Visible;
   Pop.Items[9].Enabled := src and (KeyValue <> Null);
+
+  // !!! Доступ
+  Pop.Items[5].Visible := aoView in FAccessOptions;
+  Pop.Items[6].Visible := aoAppend in FAccessOptions;
+  Pop.Items[7].Visible := Pop.Items[5].Visible;
+  if not (aoEdit in FAccessOptions) then
+  begin
+    Pop.Items[7].ImageIndex := IMG16_EYES;
+    Pop.Items[7].Caption := rsLook;
+  end;
+  //
+  Pop.Items[8].Visible := aoGoto in FAccessOptions;
+  Pop.Items[9].Visible:=Pop.Items[8].Visible;
+  // Вне зависимости от правил доступа на видимость пунктов влияет видимость кнопок.
+  if HideList then
+  begin
+    Pop.Items[0].Visible := False;
+    Pop.Items[2].Visible := False;
+  end;
+  if HideButton and HideList then
+  begin
+    Pop.Items[3].Visible := False;
+    Pop.Items[4].Visible := False;
+    Pop.Items[6].Visible := False;
+  end;
 end;
 
 procedure TdxLookupComboBox.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -5201,6 +5271,43 @@ begin
   FFieldsTables.Free;
   //FreeAndNil(FButton);
   inherited Destroy;
+end;
+
+procedure TdxLookupComboBox.Assign(Source: TPersistent);
+var
+  Src: TdxLookupComboBox;
+begin
+  Src := TdxLookupComboBox(Source);
+  FId := Src.Id;
+  FFieldName := Src.FieldName;
+  FSourceTId := Src.SourceTId;
+  FSourceFId := Src.SourceFId;
+  FKeyField := Src.KeyField;
+  FFilter := Src.Filter;
+  FRequired := Src.Required;
+  FDefaultValue := Src.DefaultValue;
+  FExpression := Src.Expression;
+  FCheckExpression := Src.CheckExpression;
+  FSourceTable := Src.SourceTable;
+  FDestTable := Src.DestTable;
+  FFillFilter := Src.FillFilter;
+  FFieldsTables.Assign(Src.FieldsTables);
+  FPromptFillTable := Src.PromptFillTable;
+  FClearTableBeforeFill := Src.ClearTableBeforeFill;
+  FEditable := Src.Editable;
+  FListFields.Assign(Src.ListFields);
+  FDropDownCount := Src.DropDownCount;
+  FListWidthExtra := Src.ListWidthExtra;
+  FHideButton := Src.HideButton;
+  FHideList := Src.HideList;
+  FUpdateTree := Src.FUpdateTree;
+  FGrid.Assign(Src.FGrid);
+  FAccessOptions := Src.AccessOptions;
+  ReadOnly := Src.ReadOnly;
+  Button.Enabled := Src.Button.Enabled;
+  DropDownButton.Enabled := Src.DropDownButton.Enabled;
+  DataSource := Src.DataSource;
+  DataField := Src.DataField;
 end;
 
 procedure TdxLookupComboBox.EnableButtons(AValue: Boolean);

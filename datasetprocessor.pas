@@ -185,7 +185,7 @@ type
     procedure UpdateQueryPopupStates(DSRi: Integer);
     procedure UpdateQueryPopupState(Q: TQueryRec);
     procedure MenuItemClick(Sender: TObject);
-    procedure SetNeedRefresh(DSRi: Integer);
+    procedure SetNeedRefresh(DSRi: Integer; QueriesOnly: Boolean = False);
     procedure SetNeedRefreshQueriesWithParams(DSRi: Integer; const FieldName: String);
     function SetNeedRefreshLinkedQueries(CurQ: PQueryRec): Boolean;
     procedure SetNeedBuildPivot(QRi: Integer);
@@ -280,6 +280,7 @@ type
     procedure ClearChartSources(Fm: TdxForm);
     procedure FindImages(DSR: PDataSetRec);
     procedure UpdateRecIdFields(DSR: PDataSetRec);
+    procedure PrepareLCbxCellEditor(LCbx: TdxLookupComboBox; aGrid: TdxGrid);
   public
     constructor Create;
     destructor Destroy; override;
@@ -335,6 +336,7 @@ type
     procedure RefreshAllData(DSRi: Integer);
     procedure HideNotif;
     procedure ShowImages(DSRi: Integer);
+    procedure PrepareBeforeShowEditForm(DSRi: Integer);
     //procedure ClearQueryChangedFlag(DSRi: Integer);
     //property Printing: Boolean read FPrinting write FPrinting;
     property GotoEnable: Boolean read FGotoEnable write FGotoEnable;
@@ -1914,11 +1916,6 @@ begin
   else if Editor is TPickListCellEditor then TPickListCellEditor(Editor).ReadOnly := False;
 
   pLR := FindLookupByColumn(Column);
-  {if pLR = nil then
-  begin
-    Editor := nil;
-    Exit;
-  end;  }
 
   C := FindById(DSR.Form, Column.Tag);
   if C is TdxLookupComboBox then
@@ -1929,6 +1926,8 @@ begin
       // На случай если с режимом редактирования "играются" в скрипте.
       if Editor <> nil then
       begin
+        PrepareLCbxCellEditor(pLR^.LCbx, Grid);
+
         R := Grid.CellRect(Grid.Col, Grid.Row);
         R.Top := R.Top + (R.Height div 2 - pLR^.LCbx.Height div 2);
         pLR^.LCbx.Left := R.Left;
@@ -1959,7 +1958,6 @@ begin
   begin
     Grid.MaskEdit.EditMask := TdxEdit(C).EditMask;
     Editor := Grid.MaskEdit;
-    //Grid.MaskEdit.OnEditingDone:=@CellMaskEditEditingDone;
   end
   else if (C is TdxEdit) or (C is TdxMemo) then
   begin
@@ -2023,7 +2021,6 @@ begin
   i := TPopupMenu(MI.Owner).Tag;
   pLR := PLookupRec(FLookups[i]);
   Cbx := TdxLookupComboBox(pLR^.Control);
-  //Ed := Cbx.DataSource.DataSet.State in [dsInsert, dsEdit];
   if (MI.Tag in [6..7]) and (pLR^.DSProc = nil) then
   begin
     pLR^.DSProc := TDataSetProcessor.Create;
@@ -2044,7 +2041,7 @@ begin
         begin
           DS := pLR^.DSProc.MasterSet;
           Fm := pLR^.DSProc.Form;
-          Cbx.Field.Value := GetObjectFullValue(Fm, Cbx.SourceFId);  //DS.FieldByName(FieldStr(Cbx.SourceFId)).Value;
+          Cbx.Field.Value := GetObjectFullValue(Fm, Cbx.SourceFId);
           Cbx.KeyValue := DS['id'];
           RefreshAllLookups(Cbx.SourceTId);
         end;
@@ -2059,7 +2056,7 @@ begin
             begin
               DS := pLR^.DSProc.MasterSet;
               Fm := pLR^.DSProc.Form;
-              Cbx.Field.Value := GetObjectFullValue(Fm, Cbx.SourceFId);  //DS.FieldByName(FieldStr(Cbx.SourceFId)).Value;
+              Cbx.Field.Value := GetObjectFullValue(Fm, Cbx.SourceFId);
               Cbx.KeyValue := DS['id'];
               RefreshAllLookups(Cbx.SourceTId);
             end;
@@ -2557,14 +2554,18 @@ begin
   UpdateControlState(i);
 end;
 
-procedure TDataSetProcessor.SetNeedRefresh(DSRi: Integer);
+procedure TDataSetProcessor.SetNeedRefresh(DSRi: Integer; QueriesOnly: Boolean);
 var
   j: Integer;
   pQ: PQueryRec;
 begin
-  if DSRi = 0 then
-    for j := 1 to DataSetCount - 1 do
-      DataSets[j]^.NeedRefresh := True;
+  if not QueriesOnly then
+  begin
+    if DSRi = 0 then
+      for j := 1 to DataSetCount - 1 do
+        DataSets[j]^.NeedRefresh := True;
+  end;
+
   for j := 0 to QueryCount - 1 do
   begin
     pQ := Queries[j];
@@ -2581,27 +2582,8 @@ procedure TDataSetProcessor.SetNeedRefreshQueriesWithParams(DSRi: Integer;
 var
   i: Integer;
   Q: TQueryRec;
-  //RD: TReportData;
-  //CF: TRpCalcField;
-  {Found, }IsParent: Boolean;
+  IsParent: Boolean;
   pQ: PQueryRec;
-
-  {procedure _SetFlag(idx: Integer);
-  begin
-    pQ^.NeedRefresh := True;
-    if not FRecalculate then
-    begin
-      if not IsParent then
-        pQ^.Changed := True
-      else
-        pQ^.ParentChanged := True;
-    end;
-    SetNeedBuildPivot(idx);
-    SetNeedRefreshLinkedQueries(pQ);
-    ClearAggCalcLabels(DSRi, Q.RD.Name);
-    Found := True;
-  end; }
-
 begin
   IsParent := Copy(FieldName, 1, 1) = '!';
   for i := 0 to FQueries.Count - 1 do
@@ -2623,29 +2605,6 @@ begin
       SetNeedRefreshLinkedQueries(pQ);
       ClearAggCalcLabels(DSRi, Q.RD.Name);
     end;
-
-    {RD := Q.RD;
-    Found := False;
-    for j := 0 to RD.Sources.Count - 1 do
-    begin
-      if FieldExists(DSRi, FieldName, RD.Sources[j]^.Filter) then
-      begin
-        _SetFlag(i);
-        Break;
-      end;
-    end;
-    if (not Found) and FieldExistsForQuery(FieldName, RD.Filter) then
-      _SetFlag(i);
-    if not Found then
-      for j := 0 to RD.CalcFields.Count - 1 do
-      begin
-        CF := RD.CalcFields[j]^;
-        if FieldExistsForQuery(FieldName, CF.Expr) then
-        begin
-          _SetFlag(i);
-          Break;
-        end;
-      end;}
   end;
 
   if DSRi = 0 then
@@ -3333,22 +3292,32 @@ begin
   begin
     with TdxLookupComboBox(C) do
     begin
-      OnButtonClick:=@LCbxButtonClick;
-      OnNeedData:=@LCbxFilterData;
-      OnKeyMatch:=@LCbxKeyMatch;
+      OnButtonClick := @LCbxButtonClick;
+      OnNeedData := @LCbxFilterData;
+      OnKeyMatch := @LCbxKeyMatch;
 
       // !!! Доступ
-      if UserMan.CheckFmVisible(SourceTId) = False then Button.Enabled:=False;
+      //if UserMan.CheckFmVisible(SourceTId) = False then Button.Enabled:=False;
       //
 
       Pop := PopupMenu;
       // !!! Доступ
-      Pop.Items[5].Visible := UserMan.CheckFmVisible(SourceTId);
+      if UserMan.CheckFmVisible(SourceTId) then
+        AccessOptions := AccessOptions + [aoView];
+      if UserMan.CheckFmAdding(SourceTId) then
+        AccessOptions := AccessOptions + [aoAppend];
+      if UserMan.CheckFmEditing(SourceTId) then
+        AccessOptions := AccessOptions + [aoEdit];
+      if (DSRi = 0) and FGotoEnable and (FFm.ViewType <> vtGridOnly) and
+        (aoView in AccessOptions) then
+        AccessOptions := AccessOptions + [aoGoto];
+      SetButtonState;
+
+      (*Pop.Items[5].Visible := UserMan.CheckFmVisible(SourceTId);
       Pop.Items[6].Visible := UserMan.CheckFmAdding(SourceTId);
       Pop.Items[7].Visible := Pop.Items[5].Visible;
       if UserMan.CheckFmEditing(SourceTId) = False then
       begin
-        //SetMenuItemImage(Pop.Items[7], 'eyes16');
         Pop.Items[7].ImageIndex := IMG16_EYES;
         Pop.Items[7].Caption := rsLook;
       end;
@@ -3365,18 +3334,18 @@ begin
       begin
         Pop.Items[3].Visible := False;
         Pop.Items[4].Visible := False;
-        //Pop.Items[5].Visible := False;
         Pop.Items[6].Visible := False;
-        //Pop.Items[7].Visible := False;
       end;
-      //
+      //              *)
       OnMenuClick := @LookupMenuClick;
 
       // Закоментировал, чтобы можно было динамически из скрипта разрешать/запрещать
       // редактирование в гриде.
       //if not aGrid.ReadOnly then
       begin
-        LCbx := TdxLookupComboBox(CloneComponent(C));
+        LCbx := TdxLookupComboBox.Create(nil);
+        //LCbx.Assign(C);
+        {LCbx := TdxLookupComboBox(CloneComponent(C));
         LCbx.Button.Transparent := False;
         LCbx.Button.Color := aGrid.Color;
         LCbx.DropDownButton.Transparent := False;
@@ -3392,13 +3361,12 @@ begin
         LCbx.PopupMenu.Items[7].Visible := Pop.Items[7].Visible;
         if UserMan.CheckFmEditing(SourceTId) = False then
         begin
-          //SetMenuItemImage(LCbx.PopupMenu.Items[7], 'eyes16');
           LCbx.PopupMenu.Items[7].ImageIndex := IMG16_EYES;
           LCbx.PopupMenu.Items[7].Caption := rsLook;
         end;
         LCbx.PopupMenu.Items[8].Visible := Pop.Items[8].Visible;
         LCbx.PopupMenu.Items[9].Visible := Pop.Items[9].Visible;
-        LCbx.OnMenuClick:=@LookupMenuClick;
+        LCbx.OnMenuClick:=@LookupMenuClick;   }
       end;
     end;
 
@@ -4288,6 +4256,86 @@ begin
   end;
 end;
 
+procedure TDataSetProcessor.PrepareLCbxCellEditor(LCbx: TdxLookupComboBox;
+  aGrid: TdxGrid);
+var
+  pLR: PLookupRec;
+  C: TdxLookupComboBox;
+  SrcPop, DestPop: TPopupMenu;
+  i: Integer;
+  SrcMI, DestMI: TMenuItem;
+begin
+  pLR := PLookupRec(FLookups[LCbx.Tag]);
+  C := TdxLookupComboBox(pLR^.Control);
+  {CloneComponent(C, LCbx);
+  LCbx.KeyField := C.KeyField;
+  LCbx.DataSource := C.DataSource;}
+
+  LCbx.Assign(C);
+
+  LCbx.Button.Transparent := False;
+  LCbx.Button.Color := aGrid.Color;
+  LCbx.DropDownButton.Transparent := False;
+  LCbx.DropDownButton.Color := aGrid.Color;
+
+  LCbx.OnNeedData := C.OnNeedData;
+  LCbx.OnKeyMatch := C.OnKeyMatch;
+  LCbx.OnButtonClick := C.OnButtonClick;
+  LCbx.Button.OnClick := C.Button.OnClick;
+  LCbx.OnKeyDown := @LCbxKeyDown;
+  LCbx.OnMenuClick := @LookupMenuClick;
+  if LCbx.DropDownList <> nil then
+    LCbx.DropDownList.OnDrawCell := C.DropDownList.OnDrawCell;
+
+  if C.IsOwnPopupMenu then
+  begin
+    SrcPop := C.PopupMenu;
+    LCbx.ResetPopupMenu;
+    DestPop := LCbx.PopupMenu;
+    for i := 0 to LCbxMenuItemsCount - 1 do
+    begin
+      SrcMI := SrcPop.Items[i];
+      DestMI := DestPop.Items[i];
+      DestMI.Caption := SrcMI.Caption;
+      DestMI.Enabled := SrcMI.Enabled;
+      DestMI.Visible := SrcMI.Visible;
+      DestMI.ShortCut := SrcMI.ShortCut;
+      DestMI.ImageIndex := SrcMI.ImageIndex;
+      if DestMI.ImageIndex < 0 then
+      begin
+        if SrcMI.HasBitmap then
+          DestMI.Bitmap := SrcMI.Bitmap
+        else
+          DestMI.Bitmap := nil;
+      end;
+      if not C.IsOwnPopupMenuHandler(SrcMI) then
+        DestMI.OnClick := SrcMI.OnClick
+      else
+        LCbx.ResetPopupMenuHandler(DestMI);
+    end;
+
+    for i := LCbxMenuItemsCount to DestPop.Items.Count - 1 do
+      DestPop.Items[i].Free;
+
+    // Если есть добавленный пункты
+    for i := LCbxMenuItemsCount to SrcPop.Items.Count - 1 do
+    begin
+      SrcMI := SrcPop.Items[i];
+      DestMI := CreateMenuItem(DestPop, SrcMI.Caption, SrcMI.Tag, SrcMI.ShortCut,
+        SrcMI.OnClick, SrcMI.ImageIndex);
+      DestMI.Visible := SrcMI.Visible;
+      DestMI.Enabled := SrcMI.Enabled;
+      DestPop.Items.Add(DestMI);
+    end;
+  end
+  else
+  begin
+    LCbx.PopupMenu := C.PopupMenu;
+    LCbx.DropDownButton.PopupMenu := C.PopupMenu;
+    LCbx.Button.PopupMenu := C.PopupMenu;
+  end;
+end;
+
 procedure TDataSetProcessor.ShowImages(DSRi: Integer);
 var
   Images: TList;
@@ -4296,6 +4344,14 @@ begin
   Images := GetDataSet(DSRi)^.Images;
   for i := 0 to Images.Count - 1 do
     TdxDBImage(Images[i]).ShowImage;
+end;
+
+procedure TDataSetProcessor.PrepareBeforeShowEditForm(DSRi: Integer);
+begin
+  SetNeedRefresh(DSRi, True);
+  ClearCalcLabels(DSRi, '');
+  RefreshLookupsWithParams('');
+  UpdateControlState(DSRi);
 end;
 
 function TDataSetProcessor.AnyDataSetModified(DSRi: Integer): Boolean;
@@ -4681,10 +4737,13 @@ begin
     for i := 1 to DataSetCount - 1 do
       CalcAggFields(0, GetDataSet(i)^.Form.FormCaption);
 
-  RefreshAllData(DSRi);
+  if not Fm.IsHide then
+  begin
+    RefreshAllData(DSRi);
 
-  UpdateQueryPopupStates(DSRi);
-  UpdateControlState(DSRi);
+    UpdateQueryPopupStates(DSRi);
+    UpdateControlState(DSRi);
+  end;
 
   FDuplicateFlag := False;
 

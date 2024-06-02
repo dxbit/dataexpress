@@ -141,7 +141,7 @@ procedure FieldsToList(Fm: TdxForm; Items: TStrings; Excepts: array of TClass);
 procedure ExpandAllNodes(Tree: TCustomTreeView);
 procedure CollapseAllNodes(Tree: TCustomTreeView);
 procedure ResetLookupComponent(C: TComponent);
-function CloneComponent(Src: TComponent): TComponent;
+procedure CloneComponent(Src, Dest: TComponent);
 function CheckDuplicateFieldName(const aName: String; aCmp: TComponent; IsShowExpr: Boolean = False): Boolean;
 function EscapeSQuotes(const S: String): String;
 //function TryCreateFile(const Dir, Prefix, Ext: String): TFileStream;
@@ -2225,14 +2225,14 @@ begin
     end;
 end;
 
-function CloneComponent(Src: TComponent): TComponent;
+procedure CloneComponent(Src, Dest: TComponent);
 var
   MS: TMemoryStream;
 begin
   MS := TMemoryStream.Create;
   MS.WriteComponent(Src);
   MS.Position := 0;
-  Result := MS.ReadComponent(nil);
+  Dest := MS.ReadComponent(Dest);
   MS.Free;
 end;
 
