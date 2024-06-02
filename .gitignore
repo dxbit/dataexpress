@@ -4,6 +4,7 @@
 *.old
 *.log
 *.trc
+*.lps
 readme.txt
 modify.txt
 dataexpress
