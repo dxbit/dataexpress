@@ -5262,6 +5262,7 @@ begin
     FKeyTimer.Interval := 100;
     FKeyTimer.OnTimer:=@KeyTimerTimer;
   end;
+  FAccessOptions := [aoView];
 end;
 
 destructor TdxLookupComboBox.Destroy;

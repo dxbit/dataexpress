@@ -3302,6 +3302,7 @@ begin
 
       Pop := PopupMenu;
       // !!! Доступ
+      AccessOptions := [];
       if UserMan.CheckFmVisible(SourceTId) then
         AccessOptions := AccessOptions + [aoView];
       if UserMan.CheckFmAdding(SourceTId) then
@@ -3311,7 +3312,6 @@ begin
       if (DSRi = 0) and FGotoEnable and (FFm.ViewType <> vtGridOnly) and
         (aoView in AccessOptions) then
         AccessOptions := AccessOptions + [aoGoto];
-      SetButtonState;
 
       (*Pop.Items[5].Visible := UserMan.CheckFmVisible(SourceTId);
       Pop.Items[6].Visible := UserMan.CheckFmAdding(SourceTId);

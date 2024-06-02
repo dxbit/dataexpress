@@ -301,9 +301,10 @@
         <Filename Value="datasetprocessor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DatasetProcessor"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="3276"/>
-        <CursorPos X="22" Y="3314"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="3290"/>
+        <CursorPos X="35" Y="3311"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="5">
           <Item0 Y="4351" ID="4"/>
@@ -312,6 +313,7 @@
           <Item3 X="10" Y="1391" ID="7"/>
           <Item4 X="34" Y="3361" ID="1"/>
         </Bookmarks>
+        <Loaded Value="True"/>
       </Unit29>
       <Unit30>
         <Filename Value="dbengine.pas"/>
@@ -400,14 +402,15 @@
         <Filename Value="dxctrls.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DxCtrls"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="4747"/>
-        <CursorPos X="29" Y="4764"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="5246"/>
+        <CursorPos X="30" Y="5265"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="2">
-          <Item0 X="14" Y="5309" ID="5"/>
+          <Item0 X="14" Y="5310" ID="5"/>
           <Item1 X="21" Y="694" ID="6"/>
         </Bookmarks>
+        <Loaded Value="True"/>
       </Unit38>
       <Unit39>
         <Filename Value="dxfiles.pas"/>
@@ -1110,10 +1113,14 @@
         <Filename Value="myctrls.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyCtrls"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="823"/>
-        <CursorPos X="22" Y="832"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="244"/>
+        <CursorPos X="35" Y="254"/>
         <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="35" Y="254" ID="8"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
       </Unit107>
       <Unit108>
         <Filename Value="mydialogs.pas"/>
@@ -2052,7 +2059,6 @@
       </Unit204>
       <Unit205>
         <Filename Value="readme.txt"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="9170"/>
         <CursorPos X="73" Y="9190"/>
         <UsageCount Value="100"/>
@@ -2071,7 +2077,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="917"/>
         <CursorPos X="45" Y="928"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit207>
       <Unit208>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\forms.pp"/>
@@ -2132,7 +2138,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="142"/>
         <CursorPos X="10" Y="153"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit215>
       <Unit216>
         <Filename Value="d:\fpcupdeluxe\lazarus\lcl\themes.pas"/>
@@ -2224,7 +2230,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1979"/>
         <CursorPos X="53" Y="2000"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit227>
       <Unit228>
         <Filename Value="d:\lazarus_2_0_12\designer\designerprocs.pas"/>
@@ -2403,7 +2409,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="992"/>
         <CursorPos X="3" Y="985"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit250>
       <Unit251>
         <Filename Value="d:\fpcupdeluxe\lazarus\components\virtualtreeview\VirtualTrees.pas"/>
@@ -2605,7 +2611,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1297"/>
         <CursorPos X="3" Y="1311"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit277>
       <Unit278>
         <Filename Value="D:\fpcupdeluxe\lazarus\lcl\groupededit.pp"/>
@@ -2837,14 +2843,14 @@
         <Filename Value="padegLocVar.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="18" Y="4"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit309>
       <Unit310>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\syspchh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="10" Y="41"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit310>
       <Unit311>
         <Filename Value="d:\fpcupdeluxe\fpcsrc\rtl\inc\currh.inc"/>
@@ -3126,7 +3132,100 @@
         <UsageCount Value="12"/>
       </Unit348>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="23" HistoryIndex="22">
+      <Position1>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="4764" Column="48" TopLine="6870"/>
+      </Position1>
+      <Position2>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="730" Column="3" TopLine="713"/>
+      </Position2>
+      <Position3>
+        <Filename Value="myctrls.pas"/>
+        <Caret Line="254" Column="35" TopLine="232"/>
+      </Position3>
+      <Position4>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="1927" Column="20" TopLine="1909"/>
+      </Position4>
+      <Position5>
+        <Filename Value="myctrls.pas"/>
+        <Caret Line="254" Column="35" TopLine="244"/>
+      </Position5>
+      <Position6>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="1918" Column="4" TopLine="1909"/>
+      </Position6>
+      <Position7>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="3300" Column="9" TopLine="3289"/>
+      </Position7>
+      <Position8>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="4280" TopLine="4263"/>
+      </Position8>
+      <Position9>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="4350" TopLine="4332"/>
+      </Position9>
+      <Position10>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="5309" Column="14" TopLine="5293"/>
+      </Position10>
+      <Position11>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="694" Column="21" TopLine="677"/>
+      </Position11>
+      <Position12>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="1391" Column="10" TopLine="1374"/>
+      </Position12>
+      <Position13>
+        <Filename Value="myctrls.pas"/>
+        <Caret Line="254" Column="35" TopLine="244"/>
+      </Position13>
+      <Position14>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="5309" Column="14" TopLine="5292"/>
+      </Position14>
+      <Position15>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="628" Column="15" TopLine="605"/>
+      </Position15>
+      <Position16>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="644" Column="29" TopLine="616"/>
+      </Position16>
+      <Position17>
+        <Filename Value="datasetprocessor.pas"/>
+        <Caret Line="1391" Column="10" TopLine="1374"/>
+      </Position17>
+      <Position18>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="4769" Column="32" TopLine="4758"/>
+      </Position18>
+      <Position19>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="5317" TopLine="5296"/>
+      </Position19>
+      <Position20>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="644" Column="15" TopLine="624"/>
+      </Position20>
+      <Position21>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="4764" Column="48" TopLine="4758"/>
+      </Position21>
+      <Position22>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="637" Column="15" TopLine="628"/>
+      </Position22>
+      <Position23>
+        <Filename Value="dxctrls.pas"/>
+        <Caret Line="5265" Column="30" TopLine="5246"/>
+      </Position23>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>
