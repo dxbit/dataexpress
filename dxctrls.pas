@@ -3201,12 +3201,14 @@ begin
       FF.FId:=FId;
     end;
     C := FindById(FForm, FF.FId);
+    if C is TdxObjectField then
+      C := LookupObjectField(TdxObjectField(C), False);
     if N.Text = '' then
     	FF.IsNull := True
     else if (C is TdxCalcEdit) or (C is TdxDateEdit) or (C is TdxTimeEdit) or
     	(C is TdxCounter) or (C is TdxRecordId) then
     	FF.Values.Add(N.Text + ' .. ' + N.Text)
-    else if (C is TdxLookupComboBox) or ObjectFieldIsObject(C) then
+    else if (C is TdxLookupComboBox) {or ObjectFieldIsObject(C)} then
     	FF.Values.Add(IntToStr(ND.RecId))
     else
       FF.Values.Add(N.Text);
