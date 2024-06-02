@@ -948,13 +948,14 @@ The function is used when some calculations need to be performed only in a new r
 
 [GET]
 7
-Returns the field value of the current query record. <br><br>
+Returns the field value of the current query (or table) record. <br><br>
 <center><code> GET (query name, field name) </code></center><br><br>
-<b> Parameters: </b> query name - text, field name - text. <br>
+<b> Parameters: </b> query (or table) name - text, field name - text. <br>
 <b> Result: </b> any type. <br><br>
 <b> Example: </b><br>
 <center><code> GET ('Query', 'Field') </code></center><br><br>
-A function is often used to access query fields from an expression of another query or a calculated form field.
+A function is often used to access query fields from an expression of another query or a calculated form field.<br><br>
+The function can also be used to access the fields of the current form.
 
 [DBCOUNTD]
 6

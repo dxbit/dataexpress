@@ -31,18 +31,18 @@ uses
 type
   TQueryFieldValueFm = class(TForm)
     ButtonPanel1: TButtonPanel;
-    Qry: TComboBox;
+    QryCbx: TComboBox;
     Field: TEditButton;
     Label1: TLabel;
     Label2: TLabel;
     procedure FieldButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure QryChange(Sender: TObject);
+    procedure QryCbxChange(Sender: TObject);
   private
     { private declarations }
     FFm: TdxForm;
-    procedure FillQueries;
+    procedure FillTablesQueries;
     procedure SetControlState;
   public
     { public declarations }
@@ -57,7 +57,7 @@ function ShowQueryFieldValueForm(Fm: TdxForm; var Res: String): Integer;
 implementation
 
 uses
-  dxreports, reportmanager, mydialogs;
+  dxreports, reportmanager, formmanager, mydialogs;
 
 function ShowQueryFieldValueForm(Fm: TdxForm; var Res: String): Integer;
 begin
@@ -72,72 +72,96 @@ end;
 
 procedure TQueryFieldValueFm.FormShow(Sender: TObject);
 begin
-  Qry.SetFocus;
+  QryCbx.SetFocus;
   SetControlState;
 end;
 
 procedure TQueryFieldValueFm.FieldButtonClick(Sender: TObject);
 var
   RD: TReportData;
+  i: Integer;
+  Fm: TdxForm;
 begin
-  with Qry do
-  	RD := TReportData(Items.Objects[ItemIndex]);
+  i := QryCbx.ItemIndex;
 
-  with TSelectQFieldForm.CreateNew(nil) do
-	try
-    if ShowForm(RD) = mrOk then
-    	Field.Text := FieldName;
-  finally
-    Free;
+  if QryCbx.Items.Objects[i] is TReportData then
+  begin
+ 	  RD := TReportData(QryCbx.Items.Objects[i]);
+
+    with TSelectQFieldForm.CreateNew(nil) do
+	  try
+      if ShowForm(RD) = mrOk then
+    	  Field.Text := FieldName;
+    finally
+      Free;
+    end;
+  end
+  else if QryCbx.Items.Objects[i] is TdxForm then
+  begin
+    Fm := TdxForm(QryCbx.Items.Objects[i]);
+
+    with TSelectFieldForm.CreateNew(nil) do
+    try
+      if ShowForm(Fm, nil) = mrOk then
+        Field.Text := FieldName;
+    finally
+      Free;
+    end;
   end;
 end;
 
 procedure TQueryFieldValueFm.FormCreate(Sender: TObject);
 begin
   Caption := rsFunctionGET;
-  Label1.Caption := rsQuery;
+  Label1.Caption := rsTableOrQuery;
   Label2.Caption := rsField;
   Field.Button.LoadGlyphFromLazarusResource('grid24');
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
 end;
 
-procedure TQueryFieldValueFm.QryChange(Sender: TObject);
+procedure TQueryFieldValueFm.QryCbxChange(Sender: TObject);
 begin
   SetControlState;
 end;
 
-procedure TQueryFieldValueFm.FillQueries;
+procedure TQueryFieldValueFm.FillTablesQueries;
 var
   i: Integer;
   C: TComponent;
   RD: TReportData;
+  Fm: TdxForm;
 begin
-  Qry.Clear;
+  QryCbx.Clear;
   for i := 0 to FFm.ComponentCount - 1 do
   begin
     C := FFm.Components[i];
     if C is TdxQueryGrid then
     begin
       RD := ReportMan.FindReport(TdxQueryGrid(C).Id);
-	    Qry.Items.AddObject(RD.Name, RD);
+	    QryCbx.Items.AddObject(RD.Name, RD);
+    end
+    else if C is TdxGrid then
+    begin
+      Fm := FormMan.FindForm(GetId(C));
+      QryCbx.Items.AddObject(Fm.FormCaption, Fm);
     end;
   end;
 end;
 
 procedure TQueryFieldValueFm.SetControlState;
 begin
-  Field.Enabled := Qry.ItemIndex >= 0;
+  Field.Enabled := QryCbx.ItemIndex >= 0;
 end;
 
 function TQueryFieldValueFm.ShowForm(Fm: TdxForm; var Res: String): Integer;
 begin
   FFm := Fm;
-  FillQueries;
+  FillTablesQueries;
   Field.Text := '';
 	Result := ShowModal;
   if Result <> mrOk then Exit;
-  Res := 'GET(''' + Qry.Text + ''', ''' + Field.Text + ''')';
+  Res := 'GET(''' + QryCbx.Text + ''', ''' + Field.Text + ''')';
 end;
 
 end.

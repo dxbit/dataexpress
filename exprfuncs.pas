@@ -50,7 +50,7 @@ function MyIndexOf(i: Integer; const S: String): String;
 function FmtDate(DT: TDateTime): String;
 function MergeRows(aForm: TdxForm; const FormName, FieldName, Delim: String): String;
 function MergeRowsEx(aForm: TdxForm; const FormName, Expr, Delim: String): String;
-function GetRecId(aForm, aParForm: TdxForm; const FormName: String): Variant;
+function GetRecId(aForm: TdxForm; const FormName: String): Variant;
 function GetObjId(const FormName, FieldName, FieldValue: String): Variant;
 function GetUser: String;
 function GetRole: String;
@@ -671,7 +671,7 @@ begin
   end;
 end;
 
-function GetRecId(aForm, aParForm: TdxForm; const FormName: String): Variant;
+function GetRecId(aForm: TdxForm; const FormName: String): Variant;
 var
   Fm: TdxForm;
   F: TField;
@@ -1100,11 +1100,16 @@ var
   DS: TDataSet;
   F: TField;
   RD: TReportData;
+  Fm: TdxForm;
 begin
   if FieldName = '' then raise Exception.Create(rsFieldNameEmpty);
-  if not GetQueryData(aForm, FormName, FieldName, RD, DS, F) then Exit(Null);
+  GetFormData(aForm, FormName, FieldName, Fm, DS, F);
+  if Fm = nil then
+  begin
+    if not GetQueryData(aForm, FormName, FieldName, RD, DS, F) then Exit(Null);
+  end;
   if DS <> nil then Result := F.Value
-  else raise Exception.Create(Format(rsQueryNotFound, [FormName]))
+  else raise Exception.Create(Format(rsFormQryNotFound, [FormName]))
 end;
 
 function GetOldValue(aForm: TdxForm; DS: TDataSet; const FieldName: String

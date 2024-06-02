@@ -683,7 +683,7 @@ begin
     FUNC_NZ: V := IIF(Vals[0] = Null, Vals[1], Vals[0]);
     FUNC_FDATE: V := FmtDate(Vals[0]);
     FUNC_MERGE: V := MergeRows(FForm, Vals[0], Vals[1], Vals[2]);
-    FUNC_RECID: V := GetRecId(FForm, FParForm, Vals[0]);
+    FUNC_RECID: V := GetRecId(FForm, Vals[0]);
     FUNC_OBJID: V := GetObjId(Vals[0], Vals[1], Vals[2]);
     FUNC_USER: V := GetUser;
     FUNC_ROLE: V := GetRole;

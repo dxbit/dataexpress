@@ -10,7 +10,7 @@ object QueryFieldValueFm: TQueryFieldValueFm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -19,17 +19,17 @@ object QueryFieldValueFm: TQueryFieldValueFm
     Caption = 'Запрос'
     ParentColor = False
   end
-  object Qry: TComboBox
+  object QryCbx: TComboBox
     Left = 8
     Height = 23
     Top = 24
     Width = 312
     Anchors = [akTop, akLeft, akRight]
     ItemHeight = 15
-    OnChange = QryChange
     Sorted = True
     Style = csDropDownList
     TabOrder = 0
+    OnChange = QryCbxChange
   end
   object Label2: TLabel
     Left = 8
