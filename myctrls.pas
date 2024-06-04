@@ -171,7 +171,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure DrawText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String);
-    procedure Assign(Source: TPersistent); override;
+    //procedure Assign(Source: TPersistent); override;
     property RecId[Index: Integer]: Integer read GetRecId write SetRecId;
     property SelColor: TColor read FSelColor write FSelColor; // Это SelectedColor
   published
@@ -821,7 +821,7 @@ begin
   DrawCellText(aCol, aRow, aRect, aState, aText);
 end;
 
-procedure TDropDownList.Assign(Source: TPersistent);
+{procedure TDropDownList.Assign(Source: TPersistent);
 var
   Src: TDropDownList;
 begin
@@ -834,7 +834,7 @@ begin
   FSelectedHighlightColor := Src.SelectedHighlightColor;
   FSelColor := Src.SelColor;
   DefaultRowHeight := Src.DefaultRowHeight;
-end;
+end;  }
 
 { TMaskCellEditor }
 

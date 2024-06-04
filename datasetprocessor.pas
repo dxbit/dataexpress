@@ -280,7 +280,6 @@ type
     procedure ClearChartSources(Fm: TdxForm);
     procedure FindImages(DSR: PDataSetRec);
     procedure UpdateRecIdFields(DSR: PDataSetRec);
-    procedure PrepareLCbxCellEditor(LCbx: TdxLookupComboBox; aGrid: TdxGrid);
   public
     constructor Create;
     destructor Destroy; override;
@@ -1387,12 +1386,12 @@ var
   mr: Integer;
 begin
   pLR := PLookupRec(FLookups[TComponent(Sender).Tag]);
-  C := TdxLookupComboBox(Sender);// (pLR^.Control);
+  C := TdxLookupComboBox(Sender);
   if C.CanFocus then C.SetFocus;
   try
     PrepareListForm(pLR);
   except
-    on E: ESQLSelectStatementError{EFilterParserError} do
+    on E: ESQLSelectStatementError do
     begin
       DataSets[pLR^.DSRi]^.Err.AddErrC(C, rsFilter, C.Filter, E);
       Exit;
@@ -1412,11 +1411,6 @@ begin
       DataSets[pLR^.DSRi]^.Err.AddErrC(C, rsFilter, C.Filter, E);
       Exit;
     end;
-    {on E: Exception do
-    begin
-      ErrMsg(ExceptionToString(E, False, False));
-      Exit;
-    end;}
   end;
   if mr = mrOk then
   begin
@@ -1893,7 +1887,7 @@ var
   Grid: TdxGrid;
   F: TFont;
   i: PtrInt;
-  R: Classes.TRect;
+  R: TRect;
 begin
   if (TDBGrid(Sender).ReadOnly) or (TDBGrid(Sender).Parent = nil) then
   begin
@@ -1920,23 +1914,12 @@ begin
   C := FindById(DSR.Form, Column.Tag);
   if C is TdxLookupComboBox then
   begin
-    if pLR <> nil then
-    begin
-      Editor := pLR^.LCbx;
-      // На случай если с режимом редактирования "играются" в скрипте.
-      if Editor <> nil then
-      begin
-        PrepareLCbxCellEditor(pLR^.LCbx, Grid);
-
-        R := Grid.CellRect(Grid.Col, Grid.Row);
-        R.Top := R.Top + (R.Height div 2 - pLR^.LCbx.Height div 2);
-        pLR^.LCbx.Left := R.Left;
-        pLR^.LCbx.Top := R.Top;
-        pLR^.LCbx.Width := R.Width - pLR^.LCbx.GetButtonWidths - ScaleToScreen(1);
-      end;
-    end
-    else
-      Editor := nil;
+    Editor := pLR^.LCbx;
+    R := Grid.CellRect(Grid.Col, Grid.Row);
+    R.Top := R.Top + (R.Height div 2 - pLR^.LCbx.Height div 2);
+    pLR^.LCbx.Left := R.Left;
+    pLR^.LCbx.Top := R.Top;
+    pLR^.LCbx.Width := R.Width - pLR^.LCbx.GetButtonWidths - ScaleToScreen(1);
   end
   else if C is TdxComboBox then
   begin
@@ -3297,23 +3280,13 @@ begin
       OnKeyMatch := @LCbxKeyMatch;
 
       // !!! Доступ
-      //if UserMan.CheckFmVisible(SourceTId) = False then Button.Enabled:=False;
+      if UserMan.CheckFmVisible(SourceTId) = False then Button.Enabled:=False;
       //
 
       Pop := PopupMenu;
       // !!! Доступ
-      AccessOptions := [];
-      if UserMan.CheckFmVisible(SourceTId) then
-        AccessOptions := AccessOptions + [aoView];
-      if UserMan.CheckFmAdding(SourceTId) then
-        AccessOptions := AccessOptions + [aoAppend];
-      if UserMan.CheckFmEditing(SourceTId) then
-        AccessOptions := AccessOptions + [aoEdit];
-      if (DSRi = 0) and FGotoEnable and (FFm.ViewType <> vtGridOnly) and
-        (aoView in AccessOptions) then
-        AccessOptions := AccessOptions + [aoGoto];
 
-      (*Pop.Items[5].Visible := UserMan.CheckFmVisible(SourceTId);
+      Pop.Items[5].Visible := UserMan.CheckFmVisible(SourceTId);
       Pop.Items[6].Visible := UserMan.CheckFmAdding(SourceTId);
       Pop.Items[7].Visible := Pop.Items[5].Visible;
       if UserMan.CheckFmEditing(SourceTId) = False then
@@ -3336,38 +3309,48 @@ begin
         Pop.Items[4].Visible := False;
         Pop.Items[6].Visible := False;
       end;
-      //              *)
+      //
       OnMenuClick := @LookupMenuClick;
 
-      // Закоментировал, чтобы можно было динамически из скрипта разрешать/запрещать
-      // редактирование в гриде.
-      //if not aGrid.ReadOnly then
+      LCbx := TdxLookupComboBox.Create(nil);
+      LCbx.Id := Id;
+      LCbx.FieldName := FieldName;
+      LCbx.SourceTId := SourceTId;
+      LCbx.SourceFId := SourceFId;
+      LCbx.KeyField := KeyField;
+      LCbx.ListFields.Assign(ListFields);
+      LCbx.DropDownCount := DropDownCount;
+      LCbx.ListWidthExtra := ListWidthExtra;
+      LCbx.HideButton := HideButton;
+      LCbx.HideList := HideList;
+      LCbx.ReadOnly := ReadOnly;
+      LCbx.DataSource := DataSource;
+      LCbx.DataField := DataField;
+      LCbx.Button.Transparent := False;
+      LCbx.Button.Color := aGrid.Color;
+      LCbx.DropDownButton.Transparent := False;
+      LCbx.DropDownButton.Color := aGrid.Color;
+      LCbx.DataSource := DataSource;
+      LCbx.KeyField := KeyField;
+			LCbx.OnNeedData := OnNeedData;
+      LCbx.OnKeyMatch := OnKeyMatch;
+      LCbx.OnButtonClick := OnButtonClick;
+      LCbx.OnKeyDown:=@LCbxKeyDown;
+      LCbx.PopupMenu.Items[5].Visible := Pop.Items[5].Visible;
+      LCbx.PopupMenu.Items[6].Visible := Pop.Items[6].Visible;
+      LCbx.PopupMenu.Items[7].Visible := Pop.Items[7].Visible;
+      if UserMan.CheckFmEditing(SourceTId) = False then
       begin
-        LCbx := TdxLookupComboBox.Create(nil);
-        //LCbx.Assign(C);
-        {LCbx := TdxLookupComboBox(CloneComponent(C));
-        LCbx.Button.Transparent := False;
-        LCbx.Button.Color := aGrid.Color;
-        LCbx.DropDownButton.Transparent := False;
-        LCbx.DropDownButton.Color := aGrid.Color;
-        LCbx.DataSource := DataSource;
-        LCbx.KeyField := KeyField;
-			  LCbx.OnNeedData := OnNeedData;
-        LCbx.OnKeyMatch := OnKeyMatch;
-        LCbx.OnButtonClick := OnButtonClick;
-        LCbx.OnKeyDown:=@LCbxKeyDown;
-        LCbx.PopupMenu.Items[5].Visible := Pop.Items[5].Visible;
-        LCbx.PopupMenu.Items[6].Visible := Pop.Items[6].Visible;
-        LCbx.PopupMenu.Items[7].Visible := Pop.Items[7].Visible;
-        if UserMan.CheckFmEditing(SourceTId) = False then
-        begin
-          LCbx.PopupMenu.Items[7].ImageIndex := IMG16_EYES;
-          LCbx.PopupMenu.Items[7].Caption := rsLook;
-        end;
-        LCbx.PopupMenu.Items[8].Visible := Pop.Items[8].Visible;
-        LCbx.PopupMenu.Items[9].Visible := Pop.Items[9].Visible;
-        LCbx.OnMenuClick:=@LookupMenuClick;   }
+        LCbx.PopupMenu.Items[7].ImageIndex := IMG16_EYES;
+        LCbx.PopupMenu.Items[7].Caption := rsLook;
       end;
+      LCbx.PopupMenu.Items[8].Visible := Pop.Items[8].Visible;
+      LCbx.PopupMenu.Items[9].Visible := Pop.Items[9].Visible;
+      LCbx.OnMenuClick:=@LookupMenuClick;
+
+      // Форма скрыта
+      if not Pop.Items[5].Visible then
+        LCbx.HideButton := True;
     end;
 
   end
@@ -4253,86 +4236,6 @@ begin
       F := Fm.DataSet.FieldByName(FieldStr(C));
       F.Value := Fm.DataSet['id'];
     end;
-  end;
-end;
-
-procedure TDataSetProcessor.PrepareLCbxCellEditor(LCbx: TdxLookupComboBox;
-  aGrid: TdxGrid);
-var
-  pLR: PLookupRec;
-  C: TdxLookupComboBox;
-  SrcPop, DestPop: TPopupMenu;
-  i: Integer;
-  SrcMI, DestMI: TMenuItem;
-begin
-  pLR := PLookupRec(FLookups[LCbx.Tag]);
-  C := TdxLookupComboBox(pLR^.Control);
-  {CloneComponent(C, LCbx);
-  LCbx.KeyField := C.KeyField;
-  LCbx.DataSource := C.DataSource;}
-
-  LCbx.Assign(C);
-
-  LCbx.Button.Transparent := False;
-  LCbx.Button.Color := aGrid.Color;
-  LCbx.DropDownButton.Transparent := False;
-  LCbx.DropDownButton.Color := aGrid.Color;
-
-  LCbx.OnNeedData := C.OnNeedData;
-  LCbx.OnKeyMatch := C.OnKeyMatch;
-  LCbx.OnButtonClick := C.OnButtonClick;
-  LCbx.Button.OnClick := C.Button.OnClick;
-  LCbx.OnKeyDown := @LCbxKeyDown;
-  LCbx.OnMenuClick := @LookupMenuClick;
-  if LCbx.DropDownList <> nil then
-    LCbx.DropDownList.OnDrawCell := C.DropDownList.OnDrawCell;
-
-  if C.IsOwnPopupMenu then
-  begin
-    SrcPop := C.PopupMenu;
-    LCbx.ResetPopupMenu;
-    DestPop := LCbx.PopupMenu;
-    for i := 0 to LCbxMenuItemsCount - 1 do
-    begin
-      SrcMI := SrcPop.Items[i];
-      DestMI := DestPop.Items[i];
-      DestMI.Caption := SrcMI.Caption;
-      DestMI.Enabled := SrcMI.Enabled;
-      DestMI.Visible := SrcMI.Visible;
-      DestMI.ShortCut := SrcMI.ShortCut;
-      DestMI.ImageIndex := SrcMI.ImageIndex;
-      if DestMI.ImageIndex < 0 then
-      begin
-        if SrcMI.HasBitmap then
-          DestMI.Bitmap := SrcMI.Bitmap
-        else
-          DestMI.Bitmap := nil;
-      end;
-      if not C.IsOwnPopupMenuHandler(SrcMI) then
-        DestMI.OnClick := SrcMI.OnClick
-      else
-        LCbx.ResetPopupMenuHandler(DestMI);
-    end;
-
-    for i := LCbxMenuItemsCount to DestPop.Items.Count - 1 do
-      DestPop.Items[i].Free;
-
-    // Если есть добавленный пункты
-    for i := LCbxMenuItemsCount to SrcPop.Items.Count - 1 do
-    begin
-      SrcMI := SrcPop.Items[i];
-      DestMI := CreateMenuItem(DestPop, SrcMI.Caption, SrcMI.Tag, SrcMI.ShortCut,
-        SrcMI.OnClick, SrcMI.ImageIndex);
-      DestMI.Visible := SrcMI.Visible;
-      DestMI.Enabled := SrcMI.Enabled;
-      DestPop.Items.Add(DestMI);
-    end;
-  end
-  else
-  begin
-    LCbx.PopupMenu := C.PopupMenu;
-    LCbx.DropDownButton.PopupMenu := C.PopupMenu;
-    LCbx.Button.PopupMenu := C.PopupMenu;
   end;
 end;
 
