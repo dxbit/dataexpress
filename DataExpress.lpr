@@ -9,7 +9,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel, MetaManager,
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,
-  MyLogger, PascalScriptFCL;
+  MyLogger, PascalScriptFCL, LCbxListSourceMoreForm;
 
 {$R *.res}
 

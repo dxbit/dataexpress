@@ -2568,6 +2568,10 @@ msgstr "Тип поля должен быть \"Число\"."
 msgid "Field should be visible or parameter."
 msgstr "Поле должно быть видимым или параметром."
 
+#: strconsts.rsfieldsinthelist
+msgid "Fields in the list"
+msgstr "Поля в списке"
+
 #: strconsts.rsfieldsize
 msgid "Field size"
 msgstr "Размер поля"
@@ -3670,6 +3674,14 @@ msgstr "IP адрес"
 msgid "Italic <Ctrl-I>"
 msgstr "Наклонный <Ctrl-I>"
 
+#: strconsts.rskeyfield
+msgid "Key field"
+msgstr "Ключевое поле"
+
+#: strconsts.rskeyfieldnotselected
+msgid "Key field not selected."
+msgstr "Ключевое поле не выбрано."
+
 #: strconsts.rslabel
 msgid "Label"
 msgstr "Надпись"
@@ -3812,6 +3824,10 @@ msgstr "Связь с формой"
 msgid "List"
 msgstr "Список"
 
+#: strconsts.rslistfieldsnotspecify
+msgid "Specify at least one field in the list."
+msgstr "Укажите хотя бы одно поле в списке."
+
 #: strconsts.rslistfilter
 msgid "List filter"
 msgstr "Фильтр списка"
@@ -3819,6 +3835,14 @@ msgstr "Фильтр списка"
 #: strconsts.rslistsource
 msgid "List Source"
 msgstr "Источник списка"
+
+#: strconsts.rslistsourceclickmorebn
+msgid "Click the \"More\" button to see the list source."
+msgstr "Нажмите кнопку \"Дополнительно\", чтобы увидеть источник списка."
+
+#: strconsts.rslistsourcenotready
+msgid "The list source is not configured correctly."
+msgstr "Источник списка настроен некорректно."
 
 #: strconsts.rsloaddataerrormsg
 #, object-pascal-format
@@ -5503,6 +5527,10 @@ msgstr "Обнулить"
 #: strconsts.rssetvalue
 msgid "Set value"
 msgstr "Установить значение"
+
+#: strconsts.rssetwidthtoautowidth
+msgid "Set width to 0 for auto width."
+msgstr ""
 
 #: strconsts.rsshadow
 msgid "Shadow"

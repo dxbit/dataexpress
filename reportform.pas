@@ -145,7 +145,6 @@ type
     function Validate: Boolean;
     procedure DoSelectField(APickUp: Boolean);
     function CanOldSqlFieldsDeleted: Boolean;
-    //function ProcessRenameSqlFieldsInActions: Boolean;
     function ProcessRenameFieldsInActions: Boolean;
     procedure SetModified;
     procedure ResetModified;
@@ -153,6 +152,7 @@ type
     procedure PasteField(const AFieldName: String; AComponent: TComponent);
     function FindRpFieldByFieldNameDS(const FieldNameDS: String): Integer;
     function FindRpFieldByName(const FieldName: String): Integer;
+    procedure DeleteOldFieldsReferences;
   public
     { public declarations }
     function ShowForm(RD: TReportData; aForm: TdxForm; QGrid: TdxQueryGrid;
@@ -246,55 +246,6 @@ begin
     end; }
   end;
 end;
-
-{function TReportFm.ProcessRenameSqlFieldsInActions: Boolean;
-var
-  i, c, r: Integer;
-  SqlF: TSQLField;
-  FlNm: String;
-begin
-  Result := True;
-  c := Grid.Columns.Count;
-  for i := 0 to FRD.SqlFields.Count - 1 do
-  begin
-    SqlF := FRD.SqlFields[i];
-    r := FindRpFieldByFieldNameDS(SqlF.FieldNameDS);
-    if r > 0 then FlNm := Grid.Cells[c - 3, r]
-    else FlNm := '';
-    if (FlNm <> '') and (FlNm <> SqlF.Name) then
-    begin
-      if FInDesigner then
-        RenameInActions(FRD, renRpField, SqlF.Name, FlNm)
-      else
-      begin
-        Grid.Col := c - 3;
-        Grid.Row := r;
-        if CheckExistsInActions(FRD, renRpField, SqlF.Name, LineEnding +
-          rsCantRenameRpFieldMsg) then Exit(False);
-      end;
-    end;
-  end;
-end;  }
-
-{for j := 5 to Grid.RowCount - 1 do
-    begin
-      pSr^.Fields.AddField(pFl);
-      Cmp := TComponent(Grid.Objects[i, j]);
-      if Cmp = nil then
-      begin
-        pFl^.Zero := True;
-        Cmp := FindFirstCmp(j);
-        if (Cmp <> nil) then pFl^.Tp := GetTypeByComponent(Cmp)
-        else pFl^.Tp:=flNumber;
-      end
-      else
-        SetupRpField(Cmp, Grid.Cells[i, j], pFl);
-      pFl^.Id := PtrInt(Grid.Objects[0, j]);
-      pFl^.Name := Grid.Cells[c - 3, j];
-      pFl^.Func := TRpTotalFunc(PtrInt(Grid.Objects[c - 2, j]));
-      pFl^.Visible:=Str2Bool(Grid.Cells[c - 1, j]);
-      pFl^.Param := Str2Bool(Grid.Cells[c, j]);
-    end;    }
 
 function TReportFm.ProcessRenameFieldsInActions: Boolean;
 var
@@ -401,6 +352,24 @@ begin
     // Если имя поля совпадает и поле видимо, возвращаем имя поля
     if (Utf8CompareText(FieldName, FlNm) = 0) and (Grid.Cells[c - 1, i] = '1') then
       Exit(i);
+  end;
+end;
+
+procedure TReportFm.DeleteOldFieldsReferences;
+var
+  i: Integer;
+  FlNm: String;
+begin
+  if FFm = nil then Exit;
+
+  for i := 0 to FRD.SqlFields.Count - 1 do
+    DeleteLCbxListSourceField(FFm, FRD.Id, FRD.SqlFields[i].FieldNameDS);
+
+  for i := 0 to FOldFieldNames.Count - 1 do
+  begin
+    FlNm :='f' + IntToStr(Integer(FOldFieldNames.Objects[i]));
+    if FindRpFieldByFieldNameDS(FlNm) < 0 then
+      DeleteLCbxListSourceField(FFm, FRD.Id, FlNm);
   end;
 end;
 
@@ -1064,42 +1033,12 @@ var
   pSr: PRpSource;
   pFl: PRpField;
   Cmp: TComponent;
-  Col: TRpGridColumn;
-  S: String;
-
-  (*function NewCol(const FlName: String): TRpGridColumn;
-  begin
-    Result := FRD.Grid.AddColumn;
-    Result.FieldNameDS:=FlName;
-    Result.Index:=FRD.Grid.ColumnCount - 1;
-    Result.Width := ScaleToScreen(100);
-    Result.Color:=FRD.Grid.Color;
-    Result.FixedColor:=FRD.Grid.FixedColor;
-    Result.Font.Assign(FRD.Grid.Font);
-    Result.TitleFont.Assign(FRD.Grid.TitleFont);
-  end;
-
-  procedure RemoveTotal(Col: TRpGridColumn);
-  var
-    T: TRpTotalData;
-  begin
-    repeat
-      T := FRD.Totals.FindTotal(Col.FieldNameDS);
-      if T <> nil then FRD.Totals.RemoveTotal(T);
-    until T = nil;
-  end;
-
-  procedure RemoveColoring(Col: TRpGridColumn);
-  var
-    CD: TRpColoringData;
-  begin
-    repeat
-      CD := FRD.Coloring.FindColoring(Col.FieldNameDS);
-      if CD <> nil then FRD.Coloring.DeleteColoring(CD);
-    until CD = nil;
-  end;  *)
-
 begin
+  DeleteOldFieldsReferences;
+
+  FRD.SQLFields.Clear;
+  FRD.SQL := '';
+
   FRD.DateField := -1;
   if DateFl.Text <> '' then
     FRD.DateField:=FindDateFieldIndex(DateFl.TexT);
@@ -1142,44 +1081,7 @@ begin
   end;
   RemoveLostFieldsFromReportData(FRD);
   CreateOrUpdateReportGridColumns(FRD);
-  // Удаляем лишние столбцы
-  (*for i := FRD.Grid.ColumnCount - 1 downto 0 do
-  begin
-    Col := FRD.Grid.Columns[i];
-    S := Col.FieldNameDS;
 
-    // Пожинаю плоды безрассудства :)
-    if (S = 'income') or (S = 'outcome') or (S = 'total') then
-    begin
-      FRD.Grid.DeleteColumn(Col);
-      Continue;
-    end
-    else if Copy(S, 1, 2) = 'cf' then Continue;
-    //
-    Delete(S, 1, 1);
-    j := StrToInt(S);
-    pFl := pSr^.Fields.FindField(j);
-    if (pFl = nil) or (not pFl^.Visible) then
-    begin
-      RemoveTotal(Col);
-      RemoveColoring(Col);
-      FRD.Grid.DeleteColumn(Col);
-    end;
-  end;
-  // Добавляем новые
-  pSr := FRD.Sources[0];
-  for i := 0 to pSr^.Fields.Count - 1 do
-  begin
-    pFl := pSr^.Fields[i];
-    if pFl^.Visible = False then Continue;
-
-    S := 'f' + IntToStr(pFl^.Id);
-    Col := FRD.Grid.FindColumnByFieldName(S);
-    if Col = nil then
-      Col := NewCol(S);
-    Col.Caption := pFl^.Name;
-  end;     *)
-  // Обновляем поля сводок
   if FFm <> nil then
 	  UpdatePivotFieldCaptions(FFm, FRD);
 end;
@@ -1650,12 +1552,7 @@ begin
     Grid.Row := 2; Grid.Row := 3;
   end;
   Result := ShowModal;
-  if Result = mrOk then
-  begin
-    FRD.SqlFields.Clear;
-    FRD.SQL := '';
-    Save;
-  end;
+  if Result = mrOk then Save;
 end;
 
 end.

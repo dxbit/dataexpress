@@ -2526,6 +2526,10 @@ msgstr ""
 msgid "Field should be visible or parameter."
 msgstr ""
 
+#: strconsts.rsfieldsinthelist
+msgid "Fields in the list"
+msgstr ""
+
 #: strconsts.rsfieldsize
 msgid "Field size"
 msgstr ""
@@ -3616,6 +3620,14 @@ msgstr ""
 msgid "Italic <Ctrl-I>"
 msgstr ""
 
+#: strconsts.rskeyfield
+msgid "Key field"
+msgstr ""
+
+#: strconsts.rskeyfieldnotselected
+msgid "Key field not selected."
+msgstr ""
+
 #: strconsts.rslabel
 msgid "Label"
 msgstr ""
@@ -3758,12 +3770,24 @@ msgstr ""
 msgid "List"
 msgstr ""
 
+#: strconsts.rslistfieldsnotspecify
+msgid "Specify at least one field in the list."
+msgstr ""
+
 #: strconsts.rslistfilter
 msgid "List filter"
 msgstr ""
 
 #: strconsts.rslistsource
 msgid "List Source"
+msgstr ""
+
+#: strconsts.rslistsourceclickmorebn
+msgid "Click the \"More\" button to see the list source."
+msgstr ""
+
+#: strconsts.rslistsourcenotready
+msgid "The list source is not configured correctly."
 msgstr ""
 
 #: strconsts.rsloaddataerrormsg
@@ -5436,6 +5460,10 @@ msgstr ""
 
 #: strconsts.rssetvalue
 msgid "Set value"
+msgstr ""
+
+#: strconsts.rssetwidthtoautowidth
+msgid "Set width to 0 for auto width."
 msgstr ""
 
 #: strconsts.rsshadow

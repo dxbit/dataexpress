@@ -136,6 +136,8 @@ type
     procedure GridCellClick(Column: TColumn);
     procedure GridPrepareCanvas(sender: TObject; DataCol: Integer;
       Column: TColumn; AState: TGridDrawState);
+    procedure LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet; OnlyClear: Boolean);
+    procedure LCbxSetDisplayFormat(LCbx: TdxLookupComboBox; DS: TDataSet);
     procedure LCbxFilterData(Sender: TObject; const Text: String);
     procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LCbxKeyMatch(Sender: TObject);
@@ -732,29 +734,40 @@ var
   DS: TSQLQuery;
   LR: TLookupRec;
   Cbx: TdxLookupComboBox;
+  Fm: TdxForm;
+  QGrid: TdxQueryGrid;
+  QryOpened: Boolean;
 begin
   LR := PLookupRec(FLookups[TComponent(Sender).Tag])^;
   Cbx := TdxLookupComboBox(Sender);
 
-  DS := nil;
-  try try
-  	SQL := SqlLCbxSelect(Cbx, GetDataSet(LR.DSRi)^.Form, Text, Trim(Text) <> '');
-    DS := DBase.OpenDataSet(SQL);
-    Cbx.FillGrid(DS, False);
-  except
-    on E: EFilterParserError do
-    begin
-      DataSets[LR.DSRi]^.Err.AddErrC(Cbx, rsFilter, Cbx.Filter, E);
-      Cbx.FillGrid(nil, True);
+  if Cbx.ListSource = 0 then
+  begin
+    DS := nil;
+    try try
+  	  SQL := SqlLCbxSelect(Cbx, GetDataSet(LR.DSRi)^.Form, Text, Trim(Text) <> '');
+      DS := DBase.OpenDataSet(SQL);
+      LCbxSetDisplayFormat(Cbx, DS);
+      LCbxFillGrid(Cbx, DS, False);
+    except
+      on E: EFilterParserError do
+      begin
+        DataSets[LR.DSRi]^.Err.AddErrC(Cbx, rsFilter, Cbx.Filter, E);
+        LCbxFillGrid(Cbx, nil, True);
+      end;
     end;
-    {on E: Exception do
-    begin
-      ErrMsg(ExceptionToString(E, False, False));
-      Cbx.FillGrid(nil, True);
-    end;  }
-  end;
-  finally
-    FreeAndNil(DS);
+    finally
+      FreeAndNil(DS);
+    end;
+  end
+  else if (Cbx.ListKeyField <> '') and (Cbx.ListFields.Count > 0) then
+  begin
+    Fm := TdxForm(LR.Control.Owner);
+    QGrid := FindQueryGrid(Fm, Cbx.ListSource);
+    QryOpened := QGrid.Opened;
+    QGrid.Refresh;
+    LCbxFillGrid(Cbx, QGrid.DataSource.DataSet, False);
+    if not QryOpened then QGrid.Close;
   end;
 end;
 
@@ -1223,6 +1236,129 @@ begin
       if gdRowHighlight in AState then Clr := ColorToRGB(Clr) xor $1F1F1F;
       DSR.Grid.Canvas.Brush.Color:=Clr;
     end;
+  end;
+end;
+
+procedure TDataSetProcessor.LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet;
+  OnlyClear: Boolean);
+var
+  r, i, idx: Integer;
+  Grid: TDropDownList;
+  DSFields: TList;
+  SrcFm: TdxForm;
+  RD: TReportData;
+  LF: TLCbxListField;
+  C: TComponent;
+
+  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean);
+  begin
+    with Grid.Columns.Add do
+    begin
+			Title.Caption := Caption;
+      if W > 0 then
+      begin
+	      SizePriority := 0;
+        Width := W;
+      end
+      else
+        SizePriority := 1;
+      if IsCheckBox then ButtonStyle:=cbsCheckboxColumn;
+      Searchable := ASearchable;
+    end;
+  end;
+
+begin
+  Grid := LCbx.DropDownList;
+
+  SrcFm := FormMan.FindForm(LCbx.SourceTId);
+  RD := ReportMan.FindReport(LCbx.ListSource);
+
+  Grid.BeginUpdate;
+  Grid.Columns.Clear;
+  if LCbx.ListSource = 0 then
+  begin
+    C := FindById(SrcFm, LCbx.SourceFId);
+    AddColumn(GetFieldName(C), 0, False, True);
+    for i := 0 to LCbx.ListFields.Count - 1 do
+    begin
+      LF := LCbx.ListFields[i];
+      C := FindById(SrcFm, LF.FieldId);
+      AddColumn(GetFieldName(C), LF.Width, C is TdxCheckBox, LF.Searchable);
+    end;
+  end
+  else
+  begin
+    for i := 0 to LCbx.ListFields.Count - 1 do
+    begin
+      LF := LCbx.ListFields[i];
+      idx := RD.IndexOfNameDS(LF.FieldName);
+      AddColumn(RD.GetFieldName(idx), LF.Width, C is TdxCheckBox, LF.Searchable);
+    end;
+  end;
+
+  if LCbx.ListFields.Count = 0 then
+    Grid.Options := Grid.Options - [loTitles]
+  else
+    Grid.Options := Grid.Options + [loTitles];
+
+  Grid.EndUpdate;
+
+  if OnlyClear then
+  begin
+    Grid.RowCount := Grid.FixedRows;
+    Grid.RowCount := Grid.RowCount + 1;
+    Exit;
+  end;
+
+  DSFields := TList.Create;
+
+  if LCbx.ListSource = 0 then
+  begin
+    for i := 0 to DS.Fields.Count - 1 do
+      DSFields.Add(DS.Fields[i]);
+  end
+  else
+  begin
+    DSFields.Add(DS.FieldByName(LCbx.ListKeyField));
+    for i := 0 to LCbx.ListFields.Count - 1 do
+      DSFields.Add(DS.FieldByName(LCbx.ListFields[i].FieldName));
+  end;
+
+  DS.Last;
+  DS.First;
+
+  Grid.BeginUpdate;
+  Grid.RowCount := DS.RecordCount + Grid.FixedRows;
+  Grid.Row := 0;
+
+  r := Grid.FixedRows;
+  while not DS.EOF do
+  begin
+    Grid.RecId[r] := TField(DSFields[0]).AsInteger;
+    for i := 1 to DSFields.Count - 1 do
+      Grid.Cells[i-1, r] := TField(DSFields[i]).DisplayText;
+    DS.Next;
+    Inc(r);
+  end;
+  Grid.EndUpdate;
+
+  DSFields.Free;
+end;
+
+procedure TDataSetProcessor.LCbxSetDisplayFormat(LCbx: TdxLookupComboBox;
+  DS: TDataSet);
+var
+  SrcFm: TdxForm;
+  C: TComponent;
+  i: Integer;
+begin
+  SrcFm := FormMan.FindForm(LCbx.SourceTId);
+  C := FindById(SrcFm, LCbx.SourceFId);
+  SetDSFieldDisplayFormat(DS.Fields[1], GetComponentDisplayFormat(SrcFm, C));
+  for i := 0 to LCbx.ListFields.Count - 1  do
+  begin
+    C := FindById(SrcFm, LCbx.ListFields[i].FieldId);
+    SetDSFieldDisplayFormat(DS.Fields[i+2], GetComponentDisplayFormat(SrcFm, C));
   end;
 end;
 
@@ -3332,6 +3468,8 @@ begin
       LCbx.DropDownButton.Color := aGrid.Color;
       LCbx.DataSource := DataSource;
       LCbx.KeyField := KeyField;
+      LCbx.ListSource := ListSource;
+      LCbx.ListKeyField := ListKeyField;
 			LCbx.OnNeedData := OnNeedData;
       LCbx.OnKeyMatch := OnKeyMatch;
       LCbx.OnButtonClick := OnButtonClick;

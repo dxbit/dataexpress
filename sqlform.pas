@@ -80,6 +80,7 @@ type
     FQGrid: TdxQueryGrid;
     FCurrentForm: TdxForm;
     FProps: TVirtualPropGrid;
+    procedure DeleteOldFieldsReferences;
     procedure ShowGrid;
     procedure ShowErrors;
     function ExecuteSQLQuery: Boolean;
@@ -331,6 +332,25 @@ procedure TSqlFm.ShowGrid;
 begin
   Grid.Visible := True;
   Errors.Visible := False;
+end;
+
+procedure TSqlFm.DeleteOldFieldsReferences;
+var
+  FlNm: String;
+  i: Integer;
+begin
+  if FCurrentForm = nil then Exit;
+
+  if FRD.Sources.Count > 0 then
+    for i := 0 to FRD.Sources[0]^.Fields.Count - 1 do
+      DeleteLCbxListSourceField(FCurrentForm, FRD.Id, FRD.GetFieldNameDS(i));
+
+  for i := 0 to FRD.SqlFields.Count - 1 do
+  begin
+    FlNm := FRD.SqlFields[i].FieldNameDS;
+    if FSqlFields.FindFieldDS(FlNm) = nil then
+      DeleteLCbxListSourceField(FCurrentForm, FRD.Id, FlNm);
+  end;
 end;
 
 procedure TSqlFm.ShowErrors;
@@ -770,6 +790,8 @@ begin
 
   if Result = mrOk then
   begin
+    DeleteOldFieldsReferences;
+
     FRD.Sources.Clear;
 
     ProcessRenameFields;

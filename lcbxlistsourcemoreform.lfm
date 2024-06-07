@@ -1,0 +1,146 @@
+object LCbxListSourceMoreFm: TLCbxListSourceMoreFm
+  Left = 902
+  Height = 325
+  Top = 418
+  Width = 398
+  BorderIcons = [biSystemMenu]
+  Caption = 'Источник списка'
+  ClientHeight = 325
+  ClientWidth = 398
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '3.2.0.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 95
+    Caption = 'Источник списка'
+  end
+  object SourceCbx: TComboBox
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 381
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Sorted = True
+    Style = csDropDownList
+    TabOrder = 0
+    OnSelect = SourceCbxSelect
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 15
+    Top = 56
+    Width = 52
+    Caption = 'ID записи'
+  end
+  object KeyFieldCbx: TComboBox
+    Left = 8
+    Height = 23
+    Top = 72
+    Width = 381
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Sorted = True
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 102
+    Width = 79
+    BorderSpacing.Top = 8
+    Caption = 'Поля в списке'
+    ParentColor = False
+  end
+  object Fields: TDialogGrid
+    AnchorSideTop.Control = Label3
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 137
+    Top = 118
+    Width = 381
+    AlternateColor = 15658734
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    AutoAdvance = aaNone
+    AutoFillColumns = True
+    BorderSpacing.Top = 1
+    ColCount = 3
+    Columns = <    
+      item
+        Title.Caption = 'Поле'
+        Width = 140
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = 'Ширина столбца'
+        Width = 120
+        ColumnType = gctInteger
+        MinValue = 0
+        MaxValue = 2000
+        Increment = 10
+      end    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        SizePriority = 0
+        Title.Caption = 'Включить в поиск'
+        Width = 120
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
+    ParentShowHint = False
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 2
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = FieldsCommand
+    ColWidths = (
+      140
+      120
+      120
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 285
+    Width = 386
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 3
+    DefaultButton = pbClose
+    ShowButtons = [pbClose, pbHelp]
+  end
+  object LegendLbl: TLabel
+    AnchorSideTop.Control = Fields
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 256
+    Width = 55
+    BorderSpacing.Top = 1
+    Caption = 'LegendLbl'
+    Font.Color = clGray
+    ParentFont = False
+  end
+end

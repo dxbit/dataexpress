@@ -25,13 +25,15 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   Grids, Spin, ButtonPanel, dxctrls, strconsts, DialogGrid, CheckTreeView,
-  LclType;
+  LclType, Buttons, ExtCtrls;
 
 { TLCbxListSourceFm }
 
 type
   TLCbxListSourceFm = class(TForm)
+    MoreBn: TBitBtn;
     ButtonPanel1: TButtonPanel;
+    ListMsgTxt: TStaticText;
     UpdateTree: TComboBox;
     HideList: TCheckBox;
     HideButton: TCheckBox;
@@ -55,6 +57,8 @@ type
     procedure FrmChange(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
     procedure HideButtonChange(Sender: TObject);
+    procedure ListMsgTxtClick(Sender: TObject);
+    procedure MoreBnClick(Sender: TObject);
   private
     { private declarations }
     FLCbx: TdxLookupComboBox;
@@ -70,6 +74,7 @@ type
     function ValidateFields: Boolean;
     function Validate: Boolean;
     procedure SetVisibleSearchColumn;
+    procedure CheckListSource;
   public
     { public declarations }
     function ShowForm(LCbx: TdxLookupComboBox): Integer;
@@ -84,7 +89,7 @@ implementation
 
 uses
   apputils, formmanager, reportmanager, dxreports, dximages, dxfiles, helpmanager,
-  mytypes, designerframe, templatefieldsform;
+  mytypes, designerframe, templatefieldsform, lcbxlistsourcemoreform;
 
 {$R *.lfm}
 
@@ -138,6 +143,8 @@ begin
   FillListFields;
   Fields.RowCount := 1;
   SetVisibleSearchColumn;
+  LCbxListSourceMoreFm.Clear;
+  CheckListSource;
 end;
 
 procedure TLCbxListSourceFm.HelpButtonClick(Sender: TObject);
@@ -148,6 +155,17 @@ end;
 procedure TLCbxListSourceFm.HideButtonChange(Sender: TObject);
 begin
   UpdateTree.Enabled := not HideButton.Checked;
+end;
+
+procedure TLCbxListSourceFm.ListMsgTxtClick(Sender: TObject);
+begin
+  MoreBn.Click;
+end;
+
+procedure TLCbxListSourceFm.MoreBnClick(Sender: TObject);
+begin
+  LCbxListSourceMoreFm.ShowForm;
+  CheckListSource;
 end;
 
 procedure TLCbxListSourceFm.FieldsCommand(Sender: TObject;
@@ -186,6 +204,7 @@ begin
   Label4.Caption := rsExtraListWidth;
   Label5.Caption := rsRowCountInList;
   Label7.Caption := rsTreeInListWindow;
+  ListMsgTxt.Caption := rsListSourceClickMoreBn;
   UpdateTree.Items[0] := rsRefreshTreeFirstShow;
   UpdateTree.Items[1] := rsRefreshTreeEveryShow;
   Fields.Columns[0].Title.Caption := rsField;
@@ -373,6 +392,7 @@ begin
   	ObjectFieldsExistsInReports(FLCbx.Id, RpName) then
     ErrMsgFmt(rsCanNotChangeListSourceMsg, [RpName])
   else if not ValidateFields then
+  else if not LCbxListSourceMoreFm.Validate then
   else Result := True;
 
   if Result and (GetForm.Id <> FLCbx.SourceTId) then
@@ -383,9 +403,42 @@ end;
 procedure TLCbxListSourceFm.SetVisibleSearchColumn;
 var
   C: TComponent;
+  b: Boolean;
+  i: Integer;
 begin
   C := GetField;
-  Fields.Columns[2].Visible := (C = nil) or (C is TdxEdit) or (C is TdxComboBox) or (C is TdxMemo);
+  b := (C = nil) or (C is TdxEdit) or (C is TdxComboBox) or (C is TdxMemo);
+  Fields.Columns[2].Visible := b;
+  if not b then
+    for i := 1 to Fields.RowCount - 1 do
+      Fields.Cells[2, i] := '0';
+  LCbxListSourceMoreFm.SetVisibleSearchColumn(b);
+end;
+
+procedure TLCbxListSourceFm.CheckListSource;
+begin
+  if LCbxListSourceMoreFm.HasListSource then
+  begin
+    Fields.RowCount := 1;
+    Fields.Enabled := False;
+    ListMsgTxt.Visible := True;
+
+    if not LCbxListSourceMoreFm.ReadyListSource then
+    begin
+      ListMsgTxt.Caption := rsListSourceNotReady;
+      ListMsgTxt.Font.Color := clRed;
+    end
+    else
+    begin
+      ListMsgTxt.Caption := rsListSourceClickMoreBn;
+      ListMsgTxt.Font.Color := clGray;
+    end;
+  end
+  else
+  begin
+    ListMsgTxt.Visible := False;
+    Fields.Enabled := True;
+  end;
 end;
 
 function TLCbxListSourceFm.ShowForm(LCbx: TdxLookupComboBox): Integer;
@@ -404,13 +457,19 @@ begin
   SetField;
   FillListFields;
   LoadFields;
-  SetVisibleSearchColumn;
   ListWidth.Value := LCbx.ListWidthExtra;
   RowCnt.Value := LCbx.DropDownCount;
   HideList.Checked := LCbx.HideList;
   HideButton.Checked := LCbx.HideButton;
   if LCbx.UpdateTree then UpdateTree.ItemIndex := 1
   else UpdateTree.ItemIndex := 0;
+
+  if LCbxListSourceMoreFm = nil then
+    LCbxListSourceMoreFm := TLCbxListSourceMoreFm.Create(Application);
+  LCbxListSourceMoreFm.Load(LCbx);
+
+  SetVisibleSearchColumn;
+  CheckListSource;
 
   Result := ShowModal;
 	if Result <> mrOk then Exit;
@@ -425,7 +484,10 @@ begin
   LCbx.HideList := HideList.Checked;
   LCbx.HideButton := HideButton.Checked;
   LCbx.UpdateTree := UpdateTree.ItemIndex = 1;
-  SaveFields;
+
+  LCbxListSourceMoreFm.Save(LCbx);
+
+  if LCbx.ListSource = 0 then SaveFields;
 
   if OldFId <> GetId(GetField) then
   begin

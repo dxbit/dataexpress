@@ -242,6 +242,9 @@ function IsNumericComponent(C: TComponent): Boolean;
 procedure LoopDetect(const AExpression: String; ACmp: TComponent; AForm: TdxForm;
   ARD: TReportData; AOnlyPrefix: Boolean);
 function IsDesignerMode: Boolean;
+function GetComponentDisplayFormat(Fm: TdxForm; C: TComponent): String;
+procedure SetDSFieldDisplayFormat(F: TField; Fmt: String);
+procedure DeleteLCbxListSourceField(Fm: TdxForm; RDId: Integer; const FieldNameDS: String);
 
 implementation
 
@@ -1408,8 +1411,16 @@ begin
   begin
     C := Fm.Components[i];
     if C is TdxPivotGrid then
+    begin
       with TdxPivotGrid(C) do
         if Id = aId then Clear;
+    end
+    else if C is TdxLookupComboBox then
+    begin
+      with TdxLookupComboBox(C) do
+        if ListSource = aId then
+          ResetListSource;
+    end;
   end;
 end;
 
@@ -2222,6 +2233,8 @@ begin
       ListFields.Clear;
       ClearInsertTableProps;
       ClearObjectFieldId(Fm, Id, 0);
+      ListSource := 0;
+      ListKeyField := '';
     end;
 end;
 
@@ -4047,6 +4060,71 @@ end;
 function IsDesignerMode: Boolean;
 begin
   Result := DesignFr <> nil;
+end;
+
+function GetComponentDisplayFormat(Fm: TdxForm; C: TComponent): String;
+var
+  ObjC: TComponent;
+  SrcFm: TdxForm;
+begin
+  Result := '';
+  if C is TdxObjectField then
+  begin
+    with TdxObjectField(C) do
+      if (ObjId > 0) and (FieldId > 0) then
+      begin
+        ObjC := FindById(Fm, ObjId);
+        SrcFm := FormMan.FindForm(GetSourceTId(ObjC));
+        C := FindById(SrcFm, FieldId);
+      end;
+  end
+  else if C is TdxLookupComboBox then
+    with TdxLookupComboBox(C) do
+      if (SourceTId > 0) and (SourceFId > 0) then
+      begin
+        SrcFm := FormMan.FindForm(SourceTId);
+        C := FindById(SrcFm, SourceFId);
+      end;
+
+  if C is TdxCalcEdit then
+    Result := TdxCalcEdit(C).PrecStr
+  else if C is TdxTimeEdit then
+    Result := TdxTimeEdit(C).TimeFormatStr;
+end;
+
+procedure SetDSFieldDisplayFormat(F: TField; Fmt: String);
+var
+  PInfo: PPropInfo;
+begin
+  PInfo := GetPropInfo(F, 'DisplayFormat');
+  if PInfo <> nil then
+    SetPropValue(F, PInfo, Fmt)
+end;
+
+procedure DeleteLCbxListSourceField(Fm: TdxForm; RDId: Integer;
+  const FieldNameDS: String);
+var
+  i, j: Integer;
+  C: TComponent;
+begin
+  for i := 0 to Fm.ComponentCount - 1 do
+  begin
+    C := Fm.Components[i];
+    if C is TdxLookupComboBox then
+    begin
+      with TdxLookupComboBox(C) do
+        if ListSource = RDId then
+        begin
+          if CompareText(ListKeyField, FieldNameDS) = 0 then
+            ListKeyField := '';
+          for j := ListFields.Count - 1 downto 0 do
+          begin
+            if CompareText(ListFields[j].FieldName, FieldNameDS) = 0 then
+              ListFields.Delete(j);
+          end;
+        end;
+    end;
+  end;
 end;
 
 end.

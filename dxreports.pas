@@ -479,11 +479,13 @@ type
     function GotoRecord(aRecId: Integer): Boolean;
     procedure Refresh;
     procedure Close;
+    function Opened: Boolean;
     procedure DisableScrollEvents;
     procedure EnableScrollEvents;
     procedure RequeryIfNeed;
     function ScrollEventsDisabled: Boolean;
     procedure SortColsToRpGridSortCols;
+    function GetReportData: TReportData;
     property DSP: TObject read FDSP write FDSP;
     property QRi: Integer read FQRi write FQRi;
     property RpWnd: TObject read FRpWnd write FRpWnd;
@@ -3013,6 +3015,11 @@ begin
   TDataSetProcessor(FDSP).Queries[FQRi]^.DataSet.Close;
 end;
 
+function TdxQueryGrid.Opened: Boolean;
+begin
+  Result := TDataSetProcessor(FDSP).Queries[FQRi]^.DataSet.Active;
+end;
+
 procedure TdxQueryGrid.DisableScrollEvents;
 begin
   if FScrollEventsCounter = 0 then
@@ -3124,6 +3131,11 @@ begin
     C := RD.Grid.FindColumnByFieldName(TColumn(CD.Col).FieldName);
     RD.Grid.SortCols.AddCol(C, CD.Desc);
   end;
+end;
+
+function TdxQueryGrid.GetReportData: TReportData;
+begin
+  Result := ReportMan.FindReport(FId);
 end;
 
 { TRpTotalList }

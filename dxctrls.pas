@@ -463,11 +463,13 @@ type
   TLCbxListField = class(TCollectionItem)
   private
     FFieldId, FWidth: Integer;
+    FFieldName: String;
     FSearchable: Boolean;
   public
     procedure Assign(Source: TPersistent); override;
   published
     property FieldId: Integer read FFieldId write FFieldId;
+    property FieldName: String read FFieldName write FFieldName;
 	  property Width: Integer read FWidth write FWidth;
     property Searchable: Boolean read FSearchable write FSearchable;
   end;
@@ -553,7 +555,8 @@ type
     FListField: String;
     FListFieldIndex: Integer;
     FListFields: TLCbxListFields;
-    FListSource: TDataSource;
+    FListKeyField: String;
+    FListSource: Integer;
     FListWidthExtra: Integer;
     FLookupCache: Boolean;
     FOnButtonClick: TNotifyEvent;
@@ -641,9 +644,10 @@ type
     procedure ClearInsertTableProps;
     procedure DoPositionButton;
     procedure SetButtonState;
-    procedure FillGrid(DS: TDataSet; Empty: Boolean);
     function GetButtonWidths: Integer;
     procedure ApplyChanges;
+    function GetSourceReportData: TObject;
+    procedure ResetListSource;
     property KeyValue: Variant read GetKeyValue write SetKeyValue;
     property OnCtrlClick: TNotifyEvent read FOnCtrlClick write FOnCtrlClick;
     property Button: TSpeedButton read FButton;
@@ -696,15 +700,18 @@ type
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
 
-    property AutoComplete: Boolean read FAutoComplete write FAutoComplete stored False;
-    property ItemHeight: Integer read FItemHeight write FItemHeight stored False;
+    property ListSource: Integer read FListSource write FListSource;
+    property ListKeyField: String read FListKeyField write FListKeyField;
+
+    //property AutoComplete: Boolean read FAutoComplete write FAutoComplete stored False;
+    //property ItemHeight: Integer read FItemHeight write FItemHeight stored False;
 
     property PopupMenu stored False;
-    property ListSource: TDataSource read FListSource write FListSource stored False;
+    //property ListSource: TDataSource read FListSource write FListSource stored False;
     property KeyField: String read FKeyField write FKeyField stored False;
-    property ListField: String read FListField write FListField stored False;
-    property ListFieldIndex: Integer read FListFieldIndex write FListFieldIndex stored False;
-    property LookupCache: Boolean read FLookupCache write FLookupCache stored False;
+    //property ListField: String read FListField write FListField stored False;
+    //property ListFieldIndex: Integer read FListFieldIndex write FListFieldIndex stored False;
+    //property LookupCache: Boolean read FLookupCache write FLookupCache stored False;
     property Params: String read FParams write FParams stored False;
   end;
 
@@ -2233,6 +2240,7 @@ var
   C: TCanvas;
 begin
   if not FGrid.HighlightSearchedText then Exit;
+  if FGrid.Columns.Count = 0 then Exit;
 
   if (FFrags.Count = 0) or
     (FGrid.Columns[aCol].ButtonStyle = cbsCheckboxColumn) or
@@ -2556,6 +2564,7 @@ var
 begin
   Src := TLCbxListField(Source);
   FFieldId := Src.FieldId;
+  FFieldName := Src.FieldName;
   FWidth := Src.Width;
   FSearchable := Src.Searchable;
 end;
@@ -4211,7 +4220,7 @@ end;
 procedure TdxComboBox.DoNeedData;
 begin
   if (SourceTId > 0) and (SourceFId > 0) and (FOnNeedData <> nil) then
-  	FOnNeedData(Self);
+    FOnNeedData(Self);
 end;
 
 procedure TdxComboBox.Loaded;
@@ -4344,155 +4353,6 @@ begin
   FButton.Parent := Parent;
   FButton.Visible := Visible;
   FButton.AnchorToCompanion(akLeft,0,FDropDownButton);
-end;
-
-procedure TdxLookupComboBox.FillGrid(DS: TDataSet; Empty: Boolean);
-var
-  r, i: Integer;
-  FmFields: TList;
-
-  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean);
-  begin
-    with FGrid.Columns.Add do
-    begin
-			Title.Caption := Caption;
-      if W > 0 then
-      begin
-	      SizePriority := 0;
-        Width := W;
-      end;
-      if IsCheckBox then ButtonStyle:=cbsCheckboxColumn;
-      Searchable := ASearchable;
-    end;
-  end;
-
-  procedure InitGrid;
-  var
-    Fm: TdxForm;
-    LF: TLCbxListField;
-    C: TComponent;
-    i: Integer;
-  begin
-		FGrid.Columns.Clear;
-    Fm := FormMan.FindForm(FSourceTId);
-    C := FindById(Fm, SourceFId);
-    AddColumn(GetFieldName(C), 0, False, True);
-    FmFields.Add(C);
-    for i := 0 to FListFields.Count - 1 do
-    begin
-      LF := FListFields[i];
-      C := FindById(Fm, LF.FieldId);
-      AddColumn(GetFieldName(C), LF.Width, C is TdxCheckBox, LF.Searchable);
-      FmFields.Add(C);
-    end;
-    if FListFields.Count = 0 then
-      FGrid.Options := FGrid.Options - [loTitles]
-      //FGrid.FixedRows := 0
-    else
-      FGrid.Options := FGrid.Options + [loTitles]
-      //FGrid.FixedRows := 1;
-  end;
-
-  // Преобразуем дату вида d.M.yy в dd.MM.yyyy. Порядок дня, месяца и года
-  // может быть любой.
-  function ShortDateToFullDateFormat: String;
-  var
-    Fmt, S, W: String;
-    SL: TStringList;
-    i: Integer;
-    Sep: Char;
-  begin
-    Result := '';
-    Fmt := DefaultFormatSettings.ShortDateFormat;
-    Sep := DefaultFormatSettings.DateSeparator;
-    SL := TStringList.Create;
-
-    SplitStr(Fmt, Sep, SL);
-    for i := 0 to SL.Count - 1 do
-    begin
-      S := SL[i];
-      if S = '' then Continue;
-      case S[1] of
-        'd': W := 'dd';
-        'M': W := 'MM';
-        'y': W := 'yyyy';
-        else Continue;
-      end;
-      Result := Result + W + Sep;
-    end;
-    SL.Free;
-
-    Result := Copy(Result, 1, Length(Result) - 1);
-  end;
-
-  function ConvertFieldValue(Idx: Integer; Field: TField): String;
-  var
-    C: TComponent;
-    FS: TFormatSettings;
-  begin
-    if Field.IsNull then Exit('');
-
-    C := TComponent(FmFields[Idx]);
-    if C is TdxCalcEdit then
-    begin
-      Result := FormatFloat(TdxCalcEdit(C).PrecStr, Field.AsFloat);
-    end
-    else if C is TdxDateEdit then
-    begin
-      FS := DefaultFormatSettings;
-      FS.ShortDateFormat := ShortDateToFullDateFormat;
-      Result := DateToStr(Field.AsDateTime, FS);
-    end
-    else if C is TdxTimeEdit then
-    begin
-      FS := DefaultFormatSettings;
-      FS.LongTimeFormat:='hh:nn:ss';
-      Result := TimeToStr(Field.AsDateTime, FS);
-    end
-    else
-  		Result := Field.AsString;
-  end;
-
-begin
-  FmFields := TList.Create;
-
-  InitGrid;
-
-  if Empty then
-  begin
-    FGrid.RowCount := FGrid.FixedRows;
-    FGrid.RowCount := FGrid.RowCount + 1;
-    FmFields.Free;
-    Exit;
-  end;
-
-  DS.First;
-  FGrid.BeginUpdate;
-  FGrid.RowCount := 10000;
-  FGrid.Row := 0;
-
-  if FListFields.Count = 0 then r := 0
-  else r := 1;
-
-  while not DS.EOF do
-  begin
-    FGrid.RecId[r] := DS.Fields[0].AsInteger;
-    //FGrid.Objects[0, r] := TObject(PtrInt(DS.Fields[0].AsInteger));
-    FGrid.Cells[0, r] := ConvertFieldValue(0, DS.Fields[1]);  // DS.Fields[1].AsString;
-
-    for i := 0 to FListFields.Count - 1 do
-    	FGrid.Cells[i+1, r] := ConvertFieldValue(i+1, DS.Fields[i+2]); //DS.Fields[i+2].AsString;
-
-    DS.Next;
-    Inc(r);
-    if r = FGrid.RowCount then FGrid.RowCount := FGrid.RowCount + 10000;
-
-  end;
-  if r = FGrid.FixedRows then Inc(r);
-  FGrid.RowCount := r;
-  FGrid.EndUpdate;
-
-  FmFields.Free;
 end;
 
 function TdxLookupComboBox.GetKeyValue: Variant;
@@ -4722,6 +4582,18 @@ end;
 procedure TdxLookupComboBox.ApplyChanges;
 begin
   ProcessKillFocus;
+end;
+
+function TdxLookupComboBox.GetSourceReportData: TObject;
+begin
+  Result := ReportMan.FindReport(FListSource);
+end;
+
+procedure TdxLookupComboBox.ResetListSource;
+begin
+  FListSource := 0;
+  FListKeyField := '';
+  FListFields.Clear;
 end;
 
 procedure TdxLookupComboBox.SetButtonState;

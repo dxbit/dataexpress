@@ -61,6 +61,7 @@ type
     function CheckNames: Boolean;
     function ProcessRenameFieldsInActions: Boolean;
     function Validate: Boolean;
+    procedure DeleteOldFieldsReferences;
   public
     { public declarations }
     function ShowForm(aRD: TReportData; aForm: TdxForm; QGrid: TdxQueryGrid;
@@ -261,43 +262,8 @@ end;
 
 procedure TCalcFm.SaveFields;
 var
-  i, n: Integer;
-  Col: TRpGridColumn;
-  S: String;
+  i: Integer;
   pF: PRpCalcField;
-
-  (*function NewCol(const aFlNm: String): TRpGridColumn;
-  begin
-    Result := FRD.Grid.AddColumn;
-    Result.FieldNameDS := aFlNm;
-    Result.Index:=FRD.Grid.ColumnCount - 1;
-    Result.Width := 100;
-    Result.Color:=FRD.Grid.Color;
-    Result.FixedColor:=FRD.Grid.FixedColor;
-    Result.Font.Assign(FRD.Grid.Font);
-    Result.TitleFont.Assign(FRD.Grid.TitleFont);
-  end;
-
-  procedure RemoveTotal(Col: TRpGridColumn);
-  var
-    T: TRpTotalData;
-  begin
-    repeat
-      T := FRD.Totals.FindTotal(Col.FieldNameDS);
-      if T <> nil then FRD.Totals.RemoveTotal(T);
-    until T = nil;
-  end;
-
-  procedure RemoveColoring(Col: TRpGridColumn);
-  var
-    CD: TRpColoringData;
-  begin
-    repeat
-      CD := FRD.Coloring.FindColoring(Col.FieldNameDS);
-      if CD <> nil then FRD.Coloring.DeleteColoring(CD);
-    until CD = nil;
-  end;    *)
-
 begin
   FRD.CalcFields.Clear;
   for i := 1 to Grid.RowCount - 1 do
@@ -312,32 +278,7 @@ begin
   end;
   RemoveLostFieldsFromReportData(FRD);
   CreateOrUpdateReportGridColumns(FRD);
-  (*// Удаляем лишние столбцы
-  for i := FRD.Grid.ColumnCount - 1 downto 0 do
-  begin
-    Col := FRD.Grid.Columns[i];
-    S := Col.FieldNameDS;
-    if Copy(S, 1, 2) = 'cf' then
-    begin
-      n := StrToInt(Copy(S, 3, 50));
-      if FRD.CalcFields.FindField(n) = nil then
-      begin
-        RemoveTotal(Col);
-        RemoveColoring(Col);
-        FRD.Grid.DeleteColumn(Col);
-      end;
-    end;
-  end;
-  // Добавляем новые и обновляем заголовки, если надо
-  for i := 0 to FRD.CalcFields.Count - 1 do
-  begin
-    pF := FRD.CalcFields[i];
-    S := 'cf' + IntToStr(pF^.Id);
-    Col := FRD.Grid.FindColumnByFieldName(S);
-    if Col = nil then
-      Col := NewCol(S);
-    Col.Caption:=pF^.Name;
-  end;   *)
+  DeleteOldFieldsReferences;
 end;
 
 function TCalcFm.CheckNames: Boolean;
@@ -474,10 +415,21 @@ begin
   Result := ProcessRenameFieldsInActions;
 end;
 
+procedure TCalcFm.DeleteOldFieldsReferences;
+var
+  i: Integer;
+  FlNm: String;
+begin
+  for i := 0 to FOldFieldNames.Count - 1 do
+  begin
+    FlNm :='cf' + IntToStr(Integer(FOldFieldNames.Objects[i]));
+    if FRD.CalcFields.FindFieldByNameDS(FlNm) = nil then
+      DeleteLCbxListSourceField(FForm, FRD.Id, FlNm);
+  end;
+end;
+
 function TCalcFm.ShowForm(aRD: TReportData; aForm: TdxForm;
   QGrid: TdxQueryGrid; InDesigner: Boolean; ARow: Integer): Integer;
-var
-  pCF: PRpCalcField;
 begin
   FInDesigner := InDesigner;
   Result := mrNone;

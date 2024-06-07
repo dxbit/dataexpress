@@ -1811,8 +1811,13 @@ resourcestring
   rsSwitchToBuilderMode = 'Switch to builder mode';
   rsSwitchToSQLMode = 'Switch to SQL mode';
   rsLicensedApache = 'Licensed under the Apache License, Version 2.0';
-  //rsCannotDeleteTotalField = 'Cannot delete a field because it is used in '
-  //  +'totals: %s';
+  rsListSourceClickMoreBn = 'Click the "More" button to see the list source.';
+  rsKeyFieldNotSelected = 'Key field not selected.';
+  rsKeyField = 'Key field';
+  rsFieldsInTheList = 'Fields in the list';
+  rsListFieldsNotSpecify = 'Specify at least one field in the list.';
+  rsListSourceNotReady = 'The list source is not configured correctly.';
+  rsSetWidthToAutoWidth = 'Set width to 0 for auto width.';
 
 implementation
 

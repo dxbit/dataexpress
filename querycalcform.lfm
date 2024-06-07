@@ -12,7 +12,7 @@ object CalcFm: TCalcFm
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
@@ -57,7 +57,7 @@ object CalcFm: TCalcFm
     Columns = <    
       item
         Title.Caption = 'Поле'
-        Width = 194
+        Width = 195
         ColumnType = gctText
         MinValue = 0
         MaxValue = 0
@@ -84,7 +84,7 @@ object CalcFm: TCalcFm
       item
         ButtonStyle = cbsButton
         Title.Caption = 'Выражение'
-        Width = 195
+        Width = 194
         ColumnType = gctExpr
         MinValue = 0
         MaxValue = 0
@@ -106,10 +106,10 @@ object CalcFm: TCalcFm
     OnCommand = GridCommand
     OnResetValue = GridPickListSelect
     ColWidths = (
-      194
-      80
-      80
       195
+      80
+      80
+      194
     )
   end
 end
