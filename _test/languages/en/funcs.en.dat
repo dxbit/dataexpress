@@ -1463,3 +1463,13 @@ Function for converting a number to a string equivalent (number in words).<br><b
 <b>Example:</b><br>
 <center><code>FRACTOWORDS([amount])</code></center><br><br>
 Unlike the NUMTOWORDS function, the words "integers", "integers" will be specified during the conversion.
+
+[GETTEXT]
+5
+Returns the text of the component. Used in conjunction with an object-query when the query is used as a list source.
+In combination with the frags comparison operation, the function is used to filter a query based on text fragments.<br><br>
+<center><code>GETTEXT(fieldname)</code></center><br><br>
+<b>Parameters:</b> fieldname - text.<br>
+<b>Result:</b> text.<br><br>
+<b>Example:</b><br>
+<center><code>GETTEXT('Client')</code></center>

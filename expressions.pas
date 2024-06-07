@@ -221,7 +221,7 @@ const
     ('+', '-', '', '', '', ''), ('*', '/', '', '', '', ''),
     ('', '', '', '', '', ''));
 
-  Funcs: array [0..138, 0..2] of String =
+  Funcs: array [0..139, 0..2] of String =
     (('COUNT', 's', 'n'),
     ('SUM', 'ss', 'n'),
     ('LENGTH', 's', 'n'),
@@ -365,7 +365,9 @@ const
     ('MONEYTOWORDS', 'nsnn', 's'),
     ('NUMTOWORDS', 'nnn', 's'),
     ('NUMPADEG', 'snnnn', 's'),
-    ('FRACTOWORDS', 'n', 's')
+    ('FRACTOWORDS', 'n', 's'),
+
+    ('GETTEXT', 's', 's')
 
     );
 
@@ -513,6 +515,8 @@ const
     FUNC_NUMTOWORDS = 136;
     FUNC_NUMPADEG = 137;
     FUNC_FRACTOWORDS = 138;
+
+    FUNC_GETTEXT = 139;
 
 
 function FindFunc(const Func: String): Integer;
@@ -767,6 +771,8 @@ begin
     FUNC_NUMPADEG: V := DeclNumeral(Vals[0], Vals[1], Vals[2], Vals[3], Vals[4]);
     FUNC_FRACTOWORDS: V := DoubleToVerbal(Vals[0]);
     //
+
+    FUNC_GETTEXT: V := GetFieldText(FForm, Vals[0]);
   end;
   Result := V;
 end;
