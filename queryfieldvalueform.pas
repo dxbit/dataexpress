@@ -102,6 +102,7 @@ begin
 
     with TSelectFieldForm.CreateNew(nil) do
     try
+      ShowFieldsOfObject := True;
       if ShowForm(Fm, nil) = mrOk then
         Field.Text := FieldName;
     finally
