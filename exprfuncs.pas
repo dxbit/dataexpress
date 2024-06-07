@@ -1103,8 +1103,18 @@ var
   Fm: TdxForm;
 begin
   if FieldName = '' then raise Exception.Create(rsFieldNameEmpty);
-  GetFormData(aForm, FormName, FieldName, Fm, DS, F);
-  if Fm = nil then
+  //GetFormData(aForm, FormName, FieldName, Fm, DS, F);
+
+  if Utf8CompareText(aForm.FormCaption, FormName) = 0 then
+    Exit( aForm.Fields[FieldName] );
+
+  Fm := aForm.FindForm(FormName);
+
+  if Fm <> nil then
+  begin
+    Exit( Fm.Fields[FieldName] );
+  end
+  else
   begin
     if not GetQueryData(aForm, FormName, FieldName, RD, DS, F) then Exit(Null);
   end;

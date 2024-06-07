@@ -955,7 +955,9 @@ Returns the field value of the current query (or table) record. <br><br>
 <b> Example: </b><br>
 <center><code> GET ('Query', 'Field') </code></center><br><br>
 A function is often used to access query fields from an expression of another query or a calculated form field.<br><br>
-The function can also be used to access the fields of the current form.
+The function can also be used to access the fields of the current form.<br><br>
+If the first parameter is a form/table, then you can access the object's fields through a vertical bar:<br><br>
+<center><code>GET('Form', 'Object|Field|...|Field')</code></center>
 
 [DBCOUNTD]
 6
