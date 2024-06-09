@@ -1402,8 +1402,8 @@ begin
               Grid.Row := i; Grid.Col := j;
               Exit;
             end;
-          end
-          else if (Fn in [tfMerge, tfMergeAll]) and (Grid.Cells[c-1, i] = '1') then
+          end;
+          {else if (Fn in [tfMerge, tfMergeAll]) and (Grid.Cells[c-1, i] = '1') then
           begin
             if (C1 <> nil) and (not ((C1 is TdxEdit) or (C1 is TdxMemo) or (C1 is TdxComboBox))) then
             begin
@@ -1411,7 +1411,7 @@ begin
               Grid.Row := i; Grid.Col := j;
               Exit;
             end;
-          end;
+          end;}
           if C1 <> nil then Inc(n);
         end;
         // Нельзя использовать это поле как параметр, если ни одного поля не выбрано.

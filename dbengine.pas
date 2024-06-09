@@ -235,7 +235,7 @@ begin
   begin
     if (CompareText(ExtractFileExt(DB.Database), '.FDB') = 0) and
       not IsFirebird25Lib then ForceUnloadLibrary
-    else if {(CompareText(ExtractFileExt(DB.Database), '.DXDB') = 0) and }
+    else if (CompareText(ExtractFileExt(DB.Database), '.FDB') <> 0) and
       not IsFirebird5Lib then ForceUnloadLibrary
   end;
 

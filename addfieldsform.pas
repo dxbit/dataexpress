@@ -469,6 +469,8 @@ begin
   DesignFr.CompTree.UpdateTree;
   DesignFr.CompTree.SelectComponents(FormDesign.Selected);
   UpdateTemplateFieldsForm;
+  LL.Free;
+  CL.Free;
 end;
 
 procedure TAddFieldsFm.InitCol3;

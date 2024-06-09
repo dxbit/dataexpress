@@ -1817,7 +1817,8 @@ resourcestring
   rsFieldsInTheList = 'Fields in the list';
   rsListFieldsNotSpecify = 'Specify at least one field in the list.';
   rsListSourceNotReady = 'The list source is not configured correctly.';
-  rsSetWidthToAutoWidth = 'Set width to 0 for auto width.';
+  rsSetWidthToAutoWidth = '*Set width to 0 for auto width';
+  //rsContainingTextFrags = 'Containing one or more text fragments';
 
 implementation
 

@@ -56,7 +56,7 @@ var
 implementation
 
 uses
-  mytypes, apputils, helpmanager, strconsts;
+  mytypes, apputils, helpmanager, reportmanager, strconsts;
 
 {$R *.lfm}
 
@@ -181,7 +181,7 @@ begin
     C := FForm.Components[i];
     if not (C is TdxQueryGrid) then Continue;
 
-    RD := TdxQueryGrid(C).GetReportData;
+    RD := ReportMan.FindReport(GetId(C));
     SourceCbx.Items.AddObject(RD.Name, RD);
   end;
 end;
@@ -328,7 +328,7 @@ procedure TLCbxListSourceMoreFm.Load(LCbx: TdxLookupComboBox);
 begin
   FForm := TdxForm(LCbx.Owner);
   FillSources;
-  SetSelectedSource(LCbx.GetSourceReportData);
+  SetSelectedSource(ReportMan.FindReport(LCbx.ListSource));
   FillKeyFields;
   SetSelectedKeyField(LCbx.ListKeyField);
   FillListFields;

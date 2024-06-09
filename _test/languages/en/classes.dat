@@ -744,14 +744,14 @@ Procedures & Functions
 		procedure Exclude(var S: Set; X: Ordinal)
 		function GetBuildDate: TDateTime
 		function GetFormatSettings: TFormatSettings
-		function GetVar(const AName: String): Variant
+		function GetExprVar(const AName: String): Variant
 		function High(Var: Ordinal): Int64
 		procedure Inc(Var: Ordinal)
 		procedure Include(var S: Set; X: Ordinal); 
 		function Low(Var: Ordinal): Int64
 		function Ord(X: Ordinal): Byte
 		procedure SetFormatSettings(Settings: TFormatSettings)
-		function SetVar(const aName: String; aValue: Variant): Variant
+		function SetExprVar(const aName: String; aValue: Variant): Variant
 		function SizeOf(Identifier): LongInt
 	SQL
 		function SQLSelect(const SQL: String): TdxSQLQuery

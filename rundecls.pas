@@ -2865,8 +2865,8 @@ begin
   Exec.RegisterDelphiFunction(@IIF, 'IIF', cdRegister);
   Exec.RegisterDelphiFunction(@CreateGUIDString, 'CreateGUIDString', cdRegister);
 
-  Exec.RegisterDelphiFunction(@SetVar, 'SetVar', cdRegister);
-  Exec.RegisterDelphiFunction(@GetVar, 'GetVar', cdRegister);
+  Exec.RegisterDelphiFunction(@SetVar, 'SetExprVar', cdRegister);
+  Exec.RegisterDelphiFunction(@GetVar, 'GetExprVar', cdRegister);
 end;
 
 end.

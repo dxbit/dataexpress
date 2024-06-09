@@ -646,7 +646,6 @@ type
     procedure SetButtonState;
     function GetButtonWidths: Integer;
     procedure ApplyChanges;
-    function GetSourceReportData: TObject;
     procedure ResetListSource;
     property KeyValue: Variant read GetKeyValue write SetKeyValue;
     property OnCtrlClick: TNotifyEvent read FOnCtrlClick write FOnCtrlClick;
@@ -4582,11 +4581,6 @@ end;
 procedure TdxLookupComboBox.ApplyChanges;
 begin
   ProcessKillFocus;
-end;
-
-function TdxLookupComboBox.GetSourceReportData: TObject;
-begin
-  Result := ReportMan.FindReport(FListSource);
 end;
 
 procedure TdxLookupComboBox.ResetListSource;

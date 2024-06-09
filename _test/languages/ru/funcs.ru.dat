@@ -1445,12 +1445,10 @@ CONCAT([Фамилия], ' ', [Имя], ' ', [Отчество])
 <center><code>FRACTOWORDS([сумма])</code></center><br><br>
 В отличии от функции NUMTOWORDS, при преобразовании будет указаны слова "целые", "целых".
 
-[GETTEXT]
+[TYPEDTEXT]
 5
-Возвращает текст компонента. Используется в связке объект-запрос, когда запрос используется в качестве источника списка. 
+Возвращает набираемый в объекте текст. Используется в связке объект-запрос, когда запрос используется в качестве источника списка. 
 В сочетании с операцией сравнения frags функция используется для фильтрации запроса по фрагментам текста.<br><br>
-<center><code>GETTEXT(имя поля)</code></center><br><br>
-<b>Параметры:</b> имя поля - текст.<br>
-<b>Результат:</b> текст.<br><br>
-<b>Пример:</b><br>
-<center><code>GETTEXT('Клиент')</code></center>
+<center><code>TYPEDTEXT</code></center><br><br>
+<b>Результат:</b> текст или NULL<br><br>
+When the user types text, the function returns the typed text. When the user expands the list, the function returns NULL.

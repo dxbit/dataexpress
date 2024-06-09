@@ -245,6 +245,7 @@ function IsDesignerMode: Boolean;
 function GetComponentDisplayFormat(Fm: TdxForm; C: TComponent): String;
 procedure SetDSFieldDisplayFormat(F: TField; Fmt: String);
 procedure DeleteLCbxListSourceField(Fm: TdxForm; RDId: Integer; const FieldNameDS: String);
+function IsTextComponent(C: TComponent): Boolean;
 
 implementation
 
@@ -4125,6 +4126,12 @@ begin
         end;
     end;
   end;
+end;
+
+function IsTextComponent(C: TComponent): Boolean;
+begin
+  Result := (C is TdxMemo) or (C is TdxEdit) or (C is TdxComboBox) or
+    (C is TdxFile);
 end;
 
 end.

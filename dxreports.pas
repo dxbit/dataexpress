@@ -63,6 +63,7 @@ type
     Parent, Src: PRpField;
     Func: TRpTotalFunc;
     Id: Integer;
+    TextSearch: Boolean;
   end;
 
   PRpSource = ^TRpSource;
@@ -360,7 +361,9 @@ type
     FId: Integer;
     FName: String;
     FKind: TReportKind;
+    FParamsOrMode: Boolean;
     FPrintFields: TStringList;
+    FSearchText: String;
     //FPivotGrid: TObject;
     FSortOrder: String;
     FSources: TRpSourceList;
@@ -424,6 +427,8 @@ type
     property SqlMode: Boolean read FSqlMode write FSqlMode;
     property SqlFields: TSQLFieldList read FSqlFields;
     property SQL: String read FSQL write FSQL;
+
+    property SearchText: String read FSearchText write FSearchText;
   end;
 
   //TdxQueryLinkType = (lkNone, lkForm, lkField);
@@ -485,7 +490,6 @@ type
     procedure RequeryIfNeed;
     function ScrollEventsDisabled: Boolean;
     procedure SortColsToRpGridSortCols;
-    function GetReportData: TReportData;
     property DSP: TObject read FDSP write FDSP;
     property QRi: Integer read FQRi write FQRi;
     property RpWnd: TObject read FRpWnd write FRpWnd;
@@ -1259,6 +1263,22 @@ begin
   end;
 end;
 
+function GetDateDetailSql(RD: TReportData; Fl: TRpField): String;
+var
+  Nm: String;
+begin
+  Result := '';
+  Nm := FieldStr(Fl.Id);
+  case RD.DateDetail of
+    ddDay: Result := Nm;
+    ddWeek: Result:= Format('(extract (year from %0:s) || ''.'' || trim(iif(extract (week from %0:s) < 10, ''0'', '''') || (extract (week from %0:s))))', [Nm]);
+    ddMonth: Result := Format('(extract (year from %0:s) || ''.'' || trim(iif(extract (month from %0:s) < 10, ''0'', '''') || (extract (month from %0:s))))', [Nm]);
+    ddQuart: Result := Format('(extract (year from %0:s)  || ''.'' || ROUND((CAST(EXTRACT(MONTH FROM %0:s) AS FLOAT)/3 + 0.3)))', [Nm]);
+    ddHalfYear: Result := Format('(extract (year from %0:s)  || ''.'' ||iif(extract(month from %0:s) <= 6, 1, 2))', [Nm]);
+    ddYear: Result := Format('(extract (year from %0:s))', [Nm]);
+  end;
+end;
+
 function GetHavingClause(Fl: TRpField): String;
 var
   i, p: Integer;
@@ -1271,6 +1291,7 @@ begin
   Result := '';
   Fn := GetFuncSql(Fl);
   if Fl.Func in [tfCount, tfDistCount] then Tp := flNumber
+  else if Fl.Func in [tfMerge, tfMergeAll] then Tp := flText
   else Tp := GetLowField(@Fl)^.Tp;
 
   SL := TStringList.Create;
@@ -1481,6 +1502,88 @@ begin
   end;
 end;
 
+function GetTextSearchClause(RD: TreportData; aFl: TRpField): String;
+var
+  Text, FlNm, W, S, Tmp: String;
+  i: Integer;
+  SL: TStringList;
+  C: TComponent;
+  Tp: TRpFieldType;
+  pLowF: PRpField;
+  Fm: TdxForm;
+begin
+  Result := '';
+  Text := Trim(RD.SearchText);
+  if Text = '' then Exit;
+
+  SL := TStringList.Create;
+  SplitStr(Text, ' ', SL);
+
+  if aFl.Func <> tfNone then
+  begin
+    FlNm := GetFuncSql(aFl);
+    if aFl.Func in [tfCount, tfDistCount] then Tp := flCounter
+    else if aFl.Func in [tfMerge, tfMergeAll] then Tp := flText
+    else Tp := GetLowField(@aFl)^.Tp;
+  end
+  else
+  begin
+    FlNm := 'f' + IntToStr(aFl.Id);
+    Tp := GetLowField(@aFl)^.Tp;
+  end;
+
+  W := '';
+  for i := 0 to SL.Count - 1 do
+  begin
+    S := SL[i];
+    if S = '' then Continue;
+    case Tp of
+      flText, flFile:
+        begin
+          S := UnEscapeSemicolon(S);
+          W := W + FlNm + ' containing ''' + EscapeSQuotes(S) + ''' or ';
+        end;
+      flDate:
+        begin
+          if IsValidCharsSql(S, DefaultFormatSettings.DateSeparator) then
+          begin
+            if (RD.DateField >= 0) and (aFl.Id = RD.TryGetRpField(RD.DateField)^.Id)
+              and (RD.DateDetail <> ddDay) then
+              Tmp := GetDateDetailSql(RD, aFl)
+            else
+              Tmp := DateFormatToSql(FlNm);
+	          W := W + Tmp + ' containing ''' + S + ''' or ';
+          end;
+        end;
+			flTime:
+        begin
+          if IsValidCharsSql(S, DefaultFormatSettings.TimeSeparator) then
+          	W := W + FlNm + ' containing ''' + S + ''' or ';
+        end;
+      flNumber:
+        begin
+          pLowF := GetLowField(@aFl);
+          Fm := FormMan.FindForm(pLowF^.TId);
+          C := FindById(Fm, pLowF^.FId);
+
+          if IsValidCharsSql(S, DefaultFormatSettings.DecimalSeparator) then
+    	      W := W + 'substring(' + FlNm + ' from 1 for position(''.'',' + FlNm + ')+' +
+      	      IntToStr(TdxCalcEdit(C).Precission) + ') containing ''' +
+              StringReplace(S, DefaultFormatSettings.DecimalSeparator, '.', []) + ''' or ';
+        end;
+      flBool, flCounter, flRecId, flObject:
+        begin
+          if IsValidCharsSql(S, '0') then
+          	W := W + FlNm + ' containing ''' + S + ''' or '
+        end;
+     end;
+  end;
+  SL.Free;
+  W := Copy(W, 1, Length(W) - 4);
+  if W <> '' then
+    Result := '(' + W + ')';
+end;
+
 // Устанавливает в полях флаг "Не выбрано ни одного поля для функции Количество".
 // В этом случае, если для функции "Количество" не указаны поля, то считается
 // количество записей. Если указано хотя бы одно поле, то считаются записи для
@@ -1556,12 +1659,11 @@ end;
 function InnerSqlReportSelect(RD: TReportData; Fm, PFm: TdxForm; DS: TDataSet): String;
 var
   Sr: TRpSource;
-  FStr, GStr, FromStr, Nm, Srt, S, Hav, Wh: String;
+  FStr, GStr, FromStr, Nm, Srt, S, Hav, Wh, WhTS, HavTS: String;
   i: Integer;
   Fl: TRpField;
   Sim, NeedGroup: Boolean;
   Col: TRpGridSortData;
-  CF: TRpCalcField;
 begin
   Result := '';
   if RD.IsEmpty then Exit;
@@ -1574,6 +1676,9 @@ begin
   GStr := '';
   Hav := '';
   Wh := '';
+  WhTS := '';
+  HavTS := '';
+
   NeedGroup := False;
   for i := 0 to Sr.Fields.Count - 1 do
   begin
@@ -1587,13 +1692,25 @@ begin
       begin
         S := GetHavingClause(Fl);
         if S <> '' then
-          Hav := Hav + S + ' and '
+          Hav := Hav + S + ' and ';
       end
       else
       begin
         S := GetWhereClause(Fl);
         if S <> '' then
-          Wh := Wh + S + ' and '
+          Wh := Wh + S + ' and ';
+      end;
+    end;
+
+    if Fl.TextSearch then
+    begin
+      S := GetTextSearchClause(RD, Fl);
+      if S <> '' then
+      begin
+        if Fl.Func = tfNone then
+          WhTS := WhTS + S + ' or '
+        else
+          HavTS := HavTS + S + ' or ';
       end;
     end;
 
@@ -1601,14 +1718,15 @@ begin
 
     if i = RD.DateField then
     begin
-      case RD.DateDetail of
+      FStr := FStr + GetDateDetailSql(RD, Fl) + ' as ' + Nm + ',';
+      {case RD.DateDetail of
         ddDay: FStr := FStr + Nm + ',';
         ddWeek: FStr := FStr + Format('(extract (year from %0:s) || ''.'' || trim(iif(extract (week from %0:s) < 10, ''0'', '''') || (extract (week from %0:s)))) as %0:s,', [Nm]);
         ddMonth: FStr := FStr + Format('(extract (year from %0:s) || ''.'' || trim(iif(extract (month from %0:s) < 10, ''0'', '''') || (extract (month from %0:s)))) as %0:s,', [Nm]);
         ddQuart: FStr := FStr + Format('(extract (year from %0:s)  || ''.'' || ROUND((CAST(EXTRACT(MONTH FROM %0:s) AS FLOAT)/3 + 0.3))) as %0:s,', [Nm]);
         ddHalfYear: FStr := FStr + Format('(extract (year from %0:s)  || ''.'' ||iif(extract(month from %0:s) <= 6, 1, 2)) as %0:s,', [Nm]);
         ddYear: FStr := FStr + Format('(extract (year from %0:s)) as %0:s,', [Nm]);     // ROUND(CAST(EXTRACT(MONTH FROM %0:s)/3 + 0.3 AS FLOAT),0))
-      end;
+      end;  }
       GStr := GStr + Nm + ',';
       NeedGroup := True;
     end
@@ -1623,9 +1741,18 @@ begin
       NeedGroup := True;
     end;
   end;
-  Wh := Copy(Wh, 1, Length(Wh) - 5);
 
-  Hav := Copy(Hav, 1, Length(Hav) - 5);
+  // при текстовом поиске, если есть группировка, используем только having
+  if NeedGroup then
+  begin
+    HavTS := HavTS + WhTS;
+    WhTS := '';
+  end;
+
+  SetLength(Wh, Length(Wh) - 5);
+  SetLength(Hav, Length(Hav) - 5);
+  SetLength(WhTS, Length(WhTS) - 4);
+  SetLength(HavTS, Length(HavTS) - 4);
 
   FromStr := '';
   for i := 0 to RD.Sources.Count - 1 do
@@ -1649,20 +1776,7 @@ begin
     if RD.Sources[0]^.TId > 0 then FStr := 'tid,' + FStr;
     FStr := 'id,' + FStr;
   end;
-  // Добавляем поля-пустышки для вычисляемых полей
-  (*for i := 0 to RD.CalcFields.Count - 1 do
-  begin
-    CF := RD.CalcFields[i]^;
-    case CF.Tp of
-      flNumber: S := 'CAST(0.0 AS DOUBLE PRECISION)';
-      flDate: S := 'CURRENT_DATE';
-      flTime: S := 'CURRENT_TIME';
-      else S := Format('(CAST('' '' AS VARCHAR(%d)))', [CF.Size]) //S := '(''' + DupeString(' ', CF.Size) + ''')';
-    end;
-    //FStr := FStr + '(''' + DupeString(' ', 200) + ''') as cf' +
-    FStr := FStr + S + ' as cf' + IntToStr(CF.Id) + ',';
-  end; *)
-  //
+
   FStr := Copy(FStr, 1, Length(FStr) - 1);
   GStr := Copy(GStr, 1, Length(GStr) - 1);
   Result := 'select ';
@@ -1671,12 +1785,24 @@ begin
   Result := Result + FStr + ' from (' + FromStr + ') ';
   if Wh <> '' then
     Result := Result + ' where ' + Wh;
+  if WhTS <> '' then
+  begin
+    if Wh <> '' then Result := Result + ' and '
+    else Result := Result + ' where ';
+    Result := Result + '(' + WhTS + ')';
+  end;
   if (not Sim) and NeedGroup then
   begin
     if GStr <> '' then
       Result := Result + ' group by ' + GStr;
     if Hav <> '' then
       Result := Result + ' having ' + Hav;
+    if HavTS <> '' then
+    begin
+      if Hav <> '' then Result := Result + ' and '
+      else Result := Result + ' having ';
+      Result := Result + '(' + HavTS + ')';
+    end;
   end;
 
   // Сортировка. Пропускаем вычисляемые поля.
@@ -3131,11 +3257,6 @@ begin
     C := RD.Grid.FindColumnByFieldName(TColumn(CD.Col).FieldName);
     RD.Grid.SortCols.AddCol(C, CD.Desc);
   end;
-end;
-
-function TdxQueryGrid.GetReportData: TReportData;
-begin
-  Result := ReportMan.FindReport(FId);
 end;
 
 { TRpTotalList }

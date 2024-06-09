@@ -1083,6 +1083,7 @@ begin
   	AddBn('#', rsNotContainingText, -1, 4);
     AddBn('in', rsContainedInList, -1, 4);
     AddBn('notin', rsNotContainedInList, -1, 4);
+    //AddBn('frags', rsContainingTextFrags, -1, 4);
   end;
   AddBn('&&', rsLogicalAND, -1, 4);
   AddBn('|', rsLogicalOR, -1, 4);

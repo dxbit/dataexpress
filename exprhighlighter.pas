@@ -55,6 +55,7 @@ type
     procedure UnknownProc;
     procedure InProc;
     procedure NotInProc;
+    //procedure FragsProc;
     procedure FieldProc;
     procedure FuncProc;
     procedure StringProc;
@@ -153,6 +154,17 @@ begin
   else UnknownProc;
   FRange := ersExpr;
 end;
+
+{procedure TdxExprHighlighter.FragsProc;
+begin
+  if LowerCase(Copy(FLine, FPos+1, 5)) = 'frags' then
+  begin
+    Inc(FPos, 5);
+    FTokenId := etkSymbol;
+  end
+  else UnknownProc;
+  FRange := ersExpr;
+end;    }
 
 procedure TdxExprHighlighter.FieldProc;
 var
@@ -385,6 +397,7 @@ begin
       end;
     'i', 'I': InProc;
     'n', 'N': NotInProc;
+    //'f', 'F': FragsProc;
     '{': SymbolProc;
     #1..#32: SpaceProc;
     '/': SlashProc;

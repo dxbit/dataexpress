@@ -116,12 +116,13 @@ type
     FTableName: String;
     FFields, FAliases: TStringList;
     FSourceForms: TStrings;
+    FLosts: TList;
     function PrepareSQLExpr(const S: String): String;
     function ReplaceFieldName(S: String; Fm: TdxForm; const AliasName: String): String;
     procedure ProcessElement(El: TSQLElement; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean);
     procedure ProcessJoinTableRef(Join: TSQLJoinTableReference; Fm: TdxForm; const AliasName: String);
     procedure ReplaceFieldNames(Stat: TSQLSelectStatement; Fm: TdxForm; const AliasName: String);
-    procedure ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean);
+    function ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean): TSQLExpression;
     procedure ParseSimpleTableRef(Stat: TSQLSelectStatement; T: TSQLSimpleTableReference);
     procedure ParseSelectTableRef(T: TSQLSelectTableReference);
     procedure ParseJoinTableRef(Stat: TSQLSelectStatement; T: TSQLJoinTableReference);
@@ -455,8 +456,8 @@ begin
     if T is TSQLJoinTableReference then
     	ProcessJoinTableRef(TSQLJoinTableReference(T), Fm, AliasName);
   end;
-  ProcessSQLExpression(Stat.Where, Fm, AliasName, Dummy);
-  ProcessSQLExpression(Stat.Having, Fm, AliasName, Dummy);
+  Stat.Where := ProcessSQLExpression(Stat.Where, Fm, AliasName, Dummy);
+  Stat.Having := ProcessSQLExpression(Stat.Having, Fm, AliasName, Dummy);
   for i := 0 to Stat.GroupBy.Count - 1 do
     ProcessElement(Stat.GroupBy[i], Fm, AliasName, Dummy);
   for i := 0 to Stat.OrderBy.Count - 1 do
@@ -470,33 +471,58 @@ begin
   TSQLIntegerLiteral(Result.Literal).Value:=1;
 end;
 
-procedure TdxSQLParser.ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm;
-  const AliasName: String; out DetectNull: Boolean);
+function TdxSQLParser.ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm;
+  const AliasName: String; out DetectNull: Boolean): TSQLExpression;
 var
   i: Integer;
   Dummy: Boolean;
 begin
+  Result := Expr;
   DetectNull := False;
   if Expr = nil then Exit;
   if Expr is TSQLIdentifierExpression then
     with TSQLIdentifierExpression(Expr) do
 	    Identifier.Name := ReplaceFieldName(Identifier.Name, Fm, AliasName)
   else if Expr is TSQLUnaryExpression then
-  	ProcessSQLExpression(TSQLUnaryExpression(Expr).Operand, Fm, AliasName, Dummy)
+    with TSQLUnaryExpression(Expr) do
+    begin
+    	Operand := ProcessSQLExpression(Operand, Fm, AliasName, Dummy);
+      if Operand  = nil then
+      begin
+        FLosts.Add(Expr);
+        Result := nil;
+      end;
+    end
   else if Expr is TSQLBinaryExpression then
     with TSQLBinaryExpression(Expr) do
     begin
-      ProcessSQLExpression(Left, Fm, AliasName, Dummy);
-      ProcessSQLExpression(Right, Fm, AliasName, DetectNull);
+      Left := ProcessSQLExpression(Left, Fm, AliasName, Dummy);
+      Right := ProcessSQLExpression(Right, Fm, AliasName, DetectNull);
 
-      if DetectNull then
+      if Left = nil then
+      begin
+        FLosts.Add(Expr);
+        Result := Right;
+        Right := nil;
+      end
+      else if Right = nil then
+      begin
+        FLosts.Add(Expr);
+        Result := Left;
+        Left := nil;
+      end
+      else if DetectNull then
       begin
         if Left is TSQLIdentifierExpression then
         begin
           if TSQLIdentifierExpression(Left).Identifier.Name[1] = '?' then
           begin
-            Left.Free;
+            FLosts.Add(Expr);
+            Result := nil;
+          end;
+        {    Left.Free;
             Right.Free;
+
             Left := CreateIntLiteral(Expr);
             Right := CreateIntLiteral(Expr);
             Operation := boEQ;
@@ -505,7 +531,7 @@ begin
             boContaining, boStarting] then
             Operation := boIS
           else if Operation = boNE then
-            Operation := boIsNot;
+            Operation := boIsNot; }
         end;
       end
       else if Left is TSQLIdentifierExpression then
@@ -677,10 +703,17 @@ begin
   FFields := TStringList.Create;
   FAliases := TStringList.Create;
   FSourceForms := TStringList.Create;
+  FLosts := TList.Create;
 end;
 
 destructor TdxSQLParser.Destroy;
+//var
+//  i: Integer;
 begin
+  ClearList(FLosts);
+  //for i := 0 to FLosts.Count - 1 do
+  //  Debug(TSQLElement(FLosts[i]).GetAsSQL([], 2));
+  FLosts.Free;
   FSourceForms.Free;
   FFields.Free;
   FAliases.Free;

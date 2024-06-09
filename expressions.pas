@@ -367,7 +367,7 @@ const
     ('NUMPADEG', 'snnnn', 's'),
     ('FRACTOWORDS', 'n', 's'),
 
-    ('GETTEXT', 's', 's')
+    ('TYPEDTEXT', 'n', 'v')
 
     );
 
@@ -516,7 +516,7 @@ const
     FUNC_NUMPADEG = 137;
     FUNC_FRACTOWORDS = 138;
 
-    FUNC_GETTEXT = 139;
+    FUNC_TYPEDTEXT = 139;
 
 
 function FindFunc(const Func: String): Integer;
@@ -772,7 +772,7 @@ begin
     FUNC_FRACTOWORDS: V := DoubleToVerbal(Vals[0]);
     //
 
-    FUNC_GETTEXT: V := GetFieldText(FForm, Vals[0]);
+    FUNC_TYPEDTEXT: V := GetTypedText(Vals[0]);
   end;
   Result := V;
 end;

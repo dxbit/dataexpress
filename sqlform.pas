@@ -443,7 +443,7 @@ procedure TSqlFm.FreeQry;
 begin
   if FQry <> nil then
   begin
-    FQry.Close;
+    //FQry.Close;
     FreeAndNil(FQry);
   end;
 end;

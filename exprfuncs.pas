@@ -95,7 +95,8 @@ function FNumber(V: Extended; Digits: Integer): String;
 function TextFormat(const S: String; Fm: TdxForm): String;
 function GetTimeStamp(D, T: Variant): Variant;
 function CaseOf(const AValue, AItems: String): String;
-function GetFieldText(AForm: TdxForm; const FieldName: String): String;
+function GetTypedText(AIndex: Integer): Variant;
+procedure SetTypedText(S: String);
 
 var
   VarList: TVarList;
@@ -1653,13 +1654,28 @@ begin
   SL.Free;
 end;
 
-function GetFieldText(AForm: TdxForm; const FieldName: String): String;
+function GetTypedText(AIndex: Integer): Variant;
 var
-  C: TComponent;
+  S, W: String;
+  i: Integer;
 begin
-  C := AForm.FindComponentByFldName(FieldName);
-  if C is TControl then
-    Result := TControl(C).Caption;
+  Result := GetVar('__TypedText__');
+  if (AIndex <= 0) or (Result = Null) then Exit;
+
+  S := VarToStr(Result);
+  for i := 1 to AIndex do
+  begin
+    S := Trim(S);
+    W := CutStr(S, ' ');
+  end;
+  if W = '' then Result := Null
+  else Result := W;
+end;
+
+procedure SetTypedText(S: String);
+begin
+  S := Trim(S);
+  SetVar('__TypedText__', IIF(S <> '', S, Null));
 end;
 
 {function Fmt(Args: array of Variant): String;

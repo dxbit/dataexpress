@@ -5529,8 +5529,8 @@ msgid "Set value"
 msgstr "Установить значение"
 
 #: strconsts.rssetwidthtoautowidth
-msgid "Set width to 0 for auto width."
-msgstr ""
+msgid "*Set width to 0 for auto width"
+msgstr "*Установите ширину в 0 для автоматического подбора ширины"
 
 #: strconsts.rsshadow
 msgid "Shadow"

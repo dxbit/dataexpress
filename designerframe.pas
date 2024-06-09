@@ -1072,12 +1072,6 @@ begin
   end;
 end;
 
-function IsTextField(C: TComponent): Boolean;
-begin
-  Result := (C is TdxMemo) or (C is TdxEdit) or (C is TdxComboBox) or
-    (C is TdxFile);
-end;
-
 procedure TDesignFr.ImportProject(const aFileName: String);
 
   procedure _CompareForms(Fm, OldFm: TdxForm);
@@ -1091,7 +1085,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       if not IsField(OldC) then Continue;
       C := FindById(Fm, GetId(OldC));
       if C = nil then Cache.DeleteComponent(OldC)
-      else if IsTextField(C) and IsTextField(OldC) then
+      else if IsTextComponent(C) and IsTextComponent(OldC) then
       else if C.ClassName <> OldC.ClassName then Cache.DeleteComponent(OldC);
     end;
     for i := 0 to Fm.ComponentCount - 1 do
@@ -1100,7 +1094,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       if not IsField(C) then Continue;
       OldC := FindById(OldFm, GetId(C));
       if OldC = nil then Cache.AddComponent(C)
-      else if IsTextField(C) and IsTextField(OldC) then
+      else if IsTextComponent(C) and IsTextComponent(OldC) then
       begin
         if GetFieldSize(C) <> GetFieldSize(OldC) then
           Cache.SetFieldSize(C, GetFieldSize(OldC));

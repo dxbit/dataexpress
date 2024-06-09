@@ -127,6 +127,9 @@ procedure DoFilterParserError(const Msg: String; P: Integer);
 
 procedure CheckTime(fmt: TdxTimeFormat; var Bg, Ed: String);
 
+function DateFormatToSql(const FlNm: String): String;
+function IsValidCharsSql(const S: String; Sep: Char): Boolean;
+
 implementation
 
 uses
@@ -321,7 +324,7 @@ begin
     CC := FindById(Fm, Id);
     if CC = nil then
       Result := Result + SQLDeleteField(C)
-    else if IsTextField(CC) and IsTextField(C) then
+    else if IsTextComponent(CC) and IsTextComponent(C) then
       // пропускаем
     else if (CC.ClassName <> C.ClassName) then
       Result := Result + SQLDeleteField(C)
@@ -334,7 +337,7 @@ begin
     CC := FindById(SFm, Id);
     if CC = nil then
       Result := Result + SQLCreateField(C) + SQLInitField(Fm, C)
-    else if (IsTextField(CC) and IsTextField(C)) or ((CC is TdxCounter) and
+    else if (IsTextComponent(CC) and IsTextComponent(C)) or ((CC is TdxCounter) and
       (C is TdxCounter)) then
       Result := Result + SQLUpdateField(Fm, C)
     else if (C.ClassName <> CC.ClassName) then
@@ -1245,8 +1248,9 @@ begin
   end;
   if PartDate <> '' then
   	Result := Result + Format(_lpad, [PartDate, FlNm, n, DateSep]);
+  //Debug(Result);
 
-  Result := Copy(Result, 1, Length(Result) - 11);
+  Result := '(' + Copy(Result, 1, Length(Result) - 11) + ')';
 end;
 
 function IsValidCharsSql(const S: String; Sep: Char): Boolean;
@@ -1819,10 +1823,11 @@ end;
 
 function TSQLSourceFilterParser.CheckOp(const Op: String): Boolean;
 begin
-  FOp := Op;
+  FOp := Op;;
   Result:=inherited CheckOp(Op);
   if (FCmp is TdxLookupComboBox) and (Op <> '=') and (Op <> '<>') and
-    (Op <> 'in') and (Op <> 'notin') then Result := False;
+    (Op <> 'in') and (Op <> 'notin') then Result := False
+  //else if not IsTextComponent(FCmp) and (Op = 'frags') then Result := False
 end;
 
 function TSQLSourceFilterParser.GetAnotherStr(const AValue: String): String;
@@ -1898,7 +1903,7 @@ end;
 
 function TSQLFilterParser.CheckOp(const Op: String): Boolean;
 begin
-  Result := Pos(Op, '= <> <= >= == # in notin') > 0;
+  Result := Pos(Op, '= <> <= >= == # in notin frags') > 0;
 end;
 
 // Эта функция введена для изменения строки условия, если полем является
@@ -1944,7 +1949,7 @@ function TSQLFilterParser.Parse(const Flt: String): String;
 type
   TState = (stField, stOp, stExpr, stBoolOp, stBrace);
 var
-  S, Wh, WhIn, Expr, Op, BlOp, FlNm, Tmp: String;
+  S, Wh, WhIn, Expr, Op, BlOp, FlNm, Tmp, WhFrags: String;
   l, BrCnt, BrN, ExprPos, i: Integer;
   Tk: Char;
   St: TState;
@@ -1998,7 +2003,8 @@ begin
         end;
       stOp:
         begin
-          if (Tk = '=') or ((Tk = 'a') and ((LowerCase(S) = 'in') or (LowerCase(S) = 'notin'))) then
+          if (Tk = '=') or ((Tk = 'a') and ((LowerCase(S) = 'in') or
+            (LowerCase(S) = 'notin') {or (LowerCase(S) = 'frags')})) then
           begin
             S := LowerCase(S);
             if not CheckOp(S) then DoFilterParserError(rsInvalidCmpOp, FOldPos);
@@ -2098,6 +2104,33 @@ begin
                   Wh := Wh + '(' + WhIn + ')';
                 SL.Free;
               end
+              {else if Op = 'frags' then
+              begin
+                S := Trim(S);
+                if S <> '' then
+                begin
+                  WhFrags := '';
+                  SL := TStringListUtf8.Create;
+                  SplitStr(Utf8LowerCase(S), ' ', SL);
+                  for i := 0 to SL.Count - 1 do
+                  begin
+                    S := SL[i];
+                    if S = '' then Continue;
+                    CheckValue(S);
+                    WhFrags := WhFrags + FlNm + ' containing ' + S + ' or ';
+                  end;
+                  SL.Free;
+                  SetLength(WhFrags, Length(WhFrags) - 4);
+                  if WhFrags <> '' then
+                    Wh := Wh + '(' + WhFrags + ')';
+                end
+                // Вне зависимости от префикса ? если пустая строка, пропускаем.
+                else
+                begin
+                  Optional := True;
+                  V := Null;
+                end;
+              end  }
               else
               begin
                 if not CheckValue(S) then

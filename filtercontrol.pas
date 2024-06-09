@@ -425,6 +425,7 @@ var
 begin
   pF := PRpField(Obj);
   if pF^.Func in [tfCount, tfDistCount] then Result := flNumber
+  else if pF^.Func in [tfMerge, tfMergeAll] then Result := flText
   else Result := GetLowField(pF)^.Tp;
 end;
 

@@ -98,7 +98,7 @@ type
     function MakeUniqueMergedReportName(const AnyName: String): String;
     function MakeUniqueMergedImageName(const AnyName: String; L: TStrings): String;
     procedure ClearBrokenLinksInReports(aForms: TFormScriptList; aReports: TQueryFormList);
-    procedure ClearBrokenLinks(aForms: TFormScriptList);
+    procedure ClearBrokenLinks(aForms: TFormScriptList; aReports: TQueryFormList);
     procedure ChangeQueryId(aForms: TFormScriptList; OldId, NewId: Integer);
     procedure ChangeFieldIdInReports(aReports: TQueryFormList; OldId, NewId: Integer);
     procedure ChangeFieldId(aForm: TdxForm; OldId, NewId: Integer);
@@ -151,6 +151,7 @@ type
     function GetQueries(Index: Integer): TQueryFormItem;
   public
     procedure AddQuery(Fm: TdxForm; RD: TReportData);
+    function FindQuery(RDId: Integer): TQueryFormItem;
     procedure Clear; override;
     property Queries[Index: Integer]: TQueryFormItem read GetQueries; default;
   end;
@@ -164,7 +165,7 @@ implementation
 
 uses
   myzipper, dbengine, apputils, sqlgen, helpmanager, dxfiles, dximages,
-  formdesigner, dxactions;
+  formdesigner, dxactions, pivotgrid;
 
 {$R *.lfm}
 
@@ -362,6 +363,15 @@ begin
   Item.Form := Fm;
   Item.RD := RD;
   Add(Item);
+end;
+
+function TQueryFormList.FindQuery(RDId: Integer): TQueryFormItem;
+var
+  i: Integer;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+    if Queries[i].RD.Id = RDId then Exit(Queries[i]);
 end;
 
 procedure TQueryFormList.Clear;
@@ -819,6 +829,7 @@ var
   i, j: Integer;
   RD: TReportData;
   pSr: PRpSource;
+  Fm: TFormScriptItem;
 begin
   for i := 0 to aReports.Count - 1 do
   begin
@@ -835,11 +846,12 @@ begin
   end;
 end;
 
-procedure TMergeProjectsFm.ClearBrokenLinks(aForms: TFormScriptList);
+procedure TMergeProjectsFm.ClearBrokenLinks(aForms: TFormScriptList; aReports: TQueryFormList);
 var
   i, j: Integer;
   Fm: TdxForm;
   C: TComponent;
+  QItem: TQueryFormItem;
 begin
   for i := 0 to aForms.Count - 1 do
   begin
@@ -851,6 +863,17 @@ begin
       begin
         if aForms.FindForm(GetSourceTId(C)) = nil then
           ResetLookupComponent(C);
+
+        if C is TdxLookupComboBox then
+          with TdxLookupcomboBox(C) do
+          begin
+            if ListSource > 0 then
+            begin
+              QItem := aReports.FindQuery(ListSource);
+              if (QItem <> nil) and QItem.RD.IsEmpty then
+                ResetListSource;
+            end;
+          end;
       end;
     end;
   end;
@@ -866,7 +889,25 @@ begin
   for i := 0 to aForms.Count - 1 do
   begin
     Fm := aForms[i].Form;
+    C := FindQueryGrid(Fm, OldId);
+    if C <> nil then SetId(C, NewId);
     for j := 0 to Fm.ComponentCount - 1 do
+    begin
+      C := Fm.Components[j];
+      if C is TdxLookupComboBox then
+        with TdxLookupComboBox(C) do
+        begin
+          if ListSource = OldId then
+            ListSource := NewId;
+        end
+      else if C is TdxPivotGrid then
+        with TdxPivotGrid(C) do
+        begin
+          if Id = OldId then
+            Id := NewId;
+        end;
+    end;
+    {for j := 0 to Fm.ComponentCount - 1 do
     begin
       C := Fm.Components[j];
       if C is TdxQueryGrid then
@@ -874,7 +915,7 @@ begin
         with TdxQueryGrid(C) do
           if Id = OldId then Id := NewId;
       end
-    end;
+    end;}
   end;
 end;
 
@@ -1227,7 +1268,7 @@ begin
   MaxFId := DBase.GetCurrentId('gen_fid');
   MaxRId := DBase.GetCurrentId('gen_rid');
 
-  ClearBrokenLinks(FL);
+  ClearBrokenLinks(FL, RL);
   ClearBrokenLinksInReports(FL, RL);
 
   // Сначала меняем Id на 1,2,3,4...

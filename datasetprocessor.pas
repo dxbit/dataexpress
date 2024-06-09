@@ -138,6 +138,7 @@ type
       Column: TColumn; AState: TGridDrawState);
     procedure LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet; OnlyClear: Boolean);
     procedure LCbxSetDisplayFormat(LCbx: TdxLookupComboBox; DS: TDataSet);
+    procedure LCbxSetupParams(LCbx: TdxLookupComboBox; RD: TReportData);
     procedure LCbxFilterData(Sender: TObject; const Text: String);
     procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LCbxKeyMatch(Sender: TObject);
@@ -357,7 +358,7 @@ uses
   LazUtf8, Dialogs, dxfiles, Variants, reportmanager, dxusers,
   ButtonPanel, warningform, Clipbrd, errorsform, mainform, xmlreport,
   pivotgrid, formview, designerframe, DateUtils, dxmains, mydialogs, dxcharts,
-  appimagelists, appsettings;
+  appimagelists, appsettings, exprfuncs;
 
 function IsTableInput(pDSR: PDataSetRec): Boolean;
 begin
@@ -737,6 +738,7 @@ var
   Fm: TdxForm;
   QGrid: TdxQueryGrid;
   QryOpened: Boolean;
+  RD: TReportData;
 begin
   LR := PLookupRec(FLookups[TComponent(Sender).Tag])^;
   Cbx := TdxLookupComboBox(Sender);
@@ -762,12 +764,26 @@ begin
   end
   else if (Cbx.ListKeyField <> '') and (Cbx.ListFields.Count > 0) then
   begin
+    SetTypedText(Text);
     Fm := TdxForm(LR.Control.Owner);
     QGrid := FindQueryGrid(Fm, Cbx.ListSource);
-    QryOpened := QGrid.Opened;
-    QGrid.Refresh;
-    LCbxFillGrid(Cbx, QGrid.DataSource.DataSet, False);
-    if not QryOpened then QGrid.Close;
+
+    if QGrid.DSP <> nil then
+    begin
+
+      RD := PQueryRec(FQueries[QGrid.QRi])^.RD;
+      if not RD.SqlMode then
+      begin
+        RD.SearchText := Trim(Text);
+        LCbxSetupParams(Cbx, RD);
+      end;
+
+      QryOpened := QGrid.Opened;
+      QGrid.Refresh;
+      LCbxFillGrid(Cbx, QGrid.DataSource.DataSet, False);
+      if not QryOpened then QGrid.Close;
+
+    end;
   end;
 end;
 
@@ -1336,7 +1352,11 @@ begin
   begin
     Grid.RecId[r] := TField(DSFields[0]).AsInteger;
     for i := 1 to DSFields.Count - 1 do
-      Grid.Cells[i-1, r] := TField(DSFields[i]).DisplayText;
+      with TField(DSFields[i]) do
+        if DataType <> ftMemo then
+          Grid.Cells[i-1, r] := DisplayText
+        else
+          Grid.Cells[i-1, r] := AsString;
     DS.Next;
     Inc(r);
   end;
@@ -1359,6 +1379,27 @@ begin
   begin
     C := FindById(SrcFm, LCbx.ListFields[i].FieldId);
     SetDSFieldDisplayFormat(DS.Fields[i+2], GetComponentDisplayFormat(SrcFm, C));
+  end;
+end;
+
+procedure TDataSetProcessor.LCbxSetupParams(LCbx: TdxLookupComboBox;
+  RD: TReportData);
+var
+  L: TLCbxListFields;
+  i, idx: Integer;
+  LF: TLCbxListField;
+  pF: PRpField;
+begin
+  L := LCbx.ListFields;
+  for i := 0 to L.Count - 1 do
+  begin
+    LF := L[i];
+    if not LF.Searchable then Continue;
+    idx := RD.IndexOfNameDS(LF.FieldName);
+    if idx < 0 then Continue;
+
+    pF := RD.TryGetRpField(idx);
+    if (pF <> nil) {and (idx <> RD.DateField) }then pF^.TextSearch := True;
   end;
 end;
 
