@@ -139,6 +139,7 @@ type
     procedure LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet; OnlyClear: Boolean);
     procedure LCbxSetDisplayFormat(LCbx: TdxLookupComboBox; DS: TDataSet);
     procedure LCbxSetupParams(LCbx: TdxLookupComboBox; RD: TReportData);
+    procedure LCbxClearParams(RD: TReportData);
     procedure LCbxFilterData(Sender: TObject; const Text: String);
     procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LCbxKeyMatch(Sender: TObject);
@@ -783,6 +784,12 @@ begin
       LCbxFillGrid(Cbx, QGrid.DataSource.DataSet, False);
       if not QryOpened then QGrid.Close;
 
+      if not RD.SqlMode then
+      begin
+        RD.SearchText := '';
+        LCbxClearParams(RD);
+      end;
+
     end;
   end;
 end;
@@ -1399,8 +1406,18 @@ begin
     if idx < 0 then Continue;
 
     pF := RD.TryGetRpField(idx);
-    if (pF <> nil) {and (idx <> RD.DateField) }then pF^.TextSearch := True;
+    if pF <> nil then pF^.TextSearch := True;
   end;
+end;
+
+procedure TDataSetProcessor.LCbxClearParams(RD: TReportData);
+var
+  i: Integer;
+begin
+  if RD.Sources.Count = 0 then Exit;
+
+  for i := 0 to RD.Sources[0]^.Fields.Count - 1 do
+    RD.Sources[0]^.Fields[i]^.TextSearch := False;
 end;
 
 procedure TDataSetProcessor.GridDblClick(Sender: TObject);

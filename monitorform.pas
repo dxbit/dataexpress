@@ -274,7 +274,7 @@ begin
   FMon.Database:=DBase.Database;
 
   try
-    FMon.Connect;
+    FMon.Connect(False);
 
     ClearList(FRecs);
     FillUsers;

@@ -464,12 +464,12 @@ begin
   	ProcessElement(Stat.OrderBy[i], Fm, AliasName, Dummy);
 end;
 
-function CreateIntLiteral(Parent: TSQLElement): TSQLLiteralExpression;
+{function CreateIntLiteral(Parent: TSQLElement): TSQLLiteralExpression;
 begin
   Result := TSQLLiteralExpression.Create(Parent);
   Result.Literal := TSQLIntegerLiteral.Create(Result);
   TSQLIntegerLiteral(Result.Literal).Value:=1;
-end;
+end; }
 
 function TdxSQLParser.ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm;
   const AliasName: String; out DetectNull: Boolean): TSQLExpression;
@@ -519,19 +519,19 @@ begin
           begin
             FLosts.Add(Expr);
             Result := nil;
-          end;
+          end
         {    Left.Free;
             Right.Free;
 
             Left := CreateIntLiteral(Expr);
             Right := CreateIntLiteral(Expr);
             Operation := boEQ;
-          end
+          end     }
           else if Operation in [boEQ, boLT, boGT, boLE, boGE, boLike,
             boContaining, boStarting] then
             Operation := boIS
           else if Operation = boNE then
-            Operation := boIsNot; }
+            Operation := boIsNot;
         end;
       end
       else if Left is TSQLIdentifierExpression then

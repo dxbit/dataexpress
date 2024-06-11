@@ -1465,10 +1465,11 @@ Function for converting a number to a string equivalent (number in words).<br><b
 Unlike the NUMTOWORDS function, the words "integers", "integers" will be specified during the conversion.
 
 [TYPEDTEXT]
-5
-Returns the text typed in the object. Used in conjunction with an object-query when the query is used as a list source.
-In combination with the frags comparison operation, the function is used to filter a query based on text fragments.<br><br>
-<center><code>GETTEXT(fieldname)</code></center><br><br>
+4
+Returns the text typed in the object. Used in conjunction with an object-query when the query is used as a list source. And the query is in SQL mode.
+The function is used to implement text search based on entered fragments.<br><br>
+<center><code>TYPEDTEXT(index)</code></center><br><br>
+<b>Parameters:</b> index - number.<br>
 <b>Result:</b> text or NULL<br><br>
 <b>Example:</b><br>
-<center><code>GETTEXT('Client')</code></center>
+If index is 0, then all text is returned. If greater than 0, then the fragment is in order. Fragments are separated by spaces. The number of spaces between fragments does not matter. If the user did not enter anything or the fragment with the given index does not exist, then NULL is returned.
