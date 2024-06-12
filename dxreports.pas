@@ -487,7 +487,7 @@ type
     function Opened: Boolean;
     procedure DisableScrollEvents;
     procedure EnableScrollEvents;
-    procedure RequeryIfNeed;
+    procedure RequeryIfNeed(All: Boolean = False);
     function ScrollEventsDisabled: Boolean;
     procedure SortColsToRpGridSortCols;
     property DSP: TObject read FDSP write FDSP;
@@ -3214,7 +3214,7 @@ begin
   end;
 end;
 
-procedure TdxQueryGrid.RequeryIfNeed;
+procedure TdxQueryGrid.RequeryIfNeed(All: Boolean);
 var
   Q: TQueryRec;
 begin
@@ -3222,7 +3222,7 @@ begin
   with TDataSetProcessor(FDSP) do
   begin
     Q := Queries[FQRi]^;
-    if not FManualRefresh and Q.NeedRefresh then
+    if (not FManualRefresh or All) and Q.NeedRefresh then
     begin
       if (Q.DSRi > 0) and DataSets[Q.DSRi]^.NeedRefresh then
         RequeryDetail(Q.DSRi);

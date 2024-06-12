@@ -278,7 +278,7 @@ type
     procedure UnlockDSDelete(DS: TDataSet);
     procedure RefreshAllLookups(FmId: Integer);
     procedure RepaintAllGrids;
-    procedure ClearAllChildData(DSRi: Integer);
+    //procedure ClearAllChildData(DSRi: Integer);
     procedure ClearCalcLabels(DSRi: Integer; const FieldName: String);
     procedure ClearAggCalcLabels(DSRi: Integer; const FormName: String);
     procedure GetTabOrderComponents(Fm: TdxForm; List: TList);
@@ -2751,7 +2751,7 @@ begin
   for j := 0 to QueryCount - 1 do
   begin
     pQ := Queries[j];
-    if (pQ^.DSRi = DSRi) and not pQ^.Grid.ManualRefresh then
+    if (pQ^.DSRi = DSRi) {and not pQ^.Grid.ManualRefresh} then
     begin
       Queries[j]^.NeedRefresh := True;
       SetNeedBuildPivot(j);
@@ -2772,7 +2772,7 @@ begin
   begin
     pQ := PQueryRec(FQueries[i]);
     Q := pQ^;
-    if (DSRi <> Q.DSRi) or (Q.Grid.ManualRefresh) then Continue;
+    if (DSRi <> Q.DSRi) {or (Q.Grid.ManualRefresh)} then Continue;
     if Q.RD.FieldExistsInExpr(DSRi, FieldName) then
     begin
       pQ^.NeedRefresh := True;
@@ -2810,7 +2810,7 @@ begin
   begin
     pQ := PQueryRec(FQueries[i]);
     Q := pQ^;
-    if (pQ = CurQ) or (Q.DSRi <> CurQ^.DSRi) or Q.Grid.ManualRefresh then Continue;
+    if (pQ = CurQ) or (Q.DSRi <> CurQ^.DSRi) {or Q.Grid.ManualRefresh} then Continue;
 
     if Q.RD.QueryExistsInExpr(QueryName) then
     begin
@@ -4238,7 +4238,7 @@ begin
   	Queries[i]^.Grid.Repaint;
 end;
 
-procedure TDataSetProcessor.ClearAllChildData(DSRi: Integer);
+{procedure TDataSetProcessor.ClearAllChildData(DSRi: Integer);
 
   procedure ClearDataSet(DS: TDataSet);
   var
@@ -4275,7 +4275,7 @@ begin
     if (Q.DSRi = DSRi) and not Q.Grid.ManualRefresh then
     	ClearDataSet(Q.DataSet);
   end;
-end;
+end;   }
 
 procedure TDataSetProcessor.ClearCalcLabels(DSRi: Integer;
   const FieldName: String);

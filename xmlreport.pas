@@ -2165,7 +2165,7 @@ begin
             if (not Accept) and (pD^.DataSet <> nil) then
             begin
               if (pD^.Form <> nil) and pD^.Form.IsHide then pD^.Form.RequeryIfNeed
-              else if pD^.RD <> nil then pD^.QGrid.RequeryIfNeed;
+              else if pD^.RD <> nil then pD^.QGrid.RequeryIfNeed(True);
 	            pD^.DataSet.First;
             end;
           end
