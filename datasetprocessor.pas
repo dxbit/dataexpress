@@ -6202,7 +6202,7 @@ var
   DSR: TDataSetRec;
   List: TList;
 begin
-  if FSimpleMode then Exit(True);
+  if FSimpleMode and (DSRi = 0) then Exit(True);
 
   // Сначала проверяем дочерние.
   if DSRi = 0 then
