@@ -351,6 +351,10 @@ msgstr ""
 msgid "Allow multiple authorization"
 msgstr ""
 
+#: strconsts.rsallowresizeeditwindow
+msgid "Allow resize edit window"
+msgstr ""
+
 #: strconsts.rsallowsingleusermode
 msgid "Allow single-user mode"
 msgstr ""

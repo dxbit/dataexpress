@@ -55,6 +55,7 @@ type
     FExec: TPSDebugExec;
     FSD, FOldSD: TScriptData;
     Edit: TScriptEdit;
+    FFormsDisabled: TList;
     procedure EditBreakpointChanged(Sender: TObject; aLine: Integer);
     procedure EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure EditStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -546,6 +547,8 @@ procedure TDebugScriptFm.FormDestroy(Sender: TObject);
 var
   FormBounds: TRect;
 begin
+  if FFormsDisabled <> nil then Screen.EnableForms(FFormsDisabled);
+
   FormBounds := ScaleRectTo96(GetFormRealBounds(Self));
   AppConfig.DebugFormLeft:=FormBounds.Left;
   AppConfig.DebugFormTop:=FormBounds.Top;
@@ -572,6 +575,7 @@ end;
 
 procedure TDebugScriptFm.ToolButton1Click(Sender: TObject);
 begin
+  Screen.EnableForms(FFormsDisabled);
   Edit.CurLine := 0;
   Edit.Refresh;
   FExec.Run;
@@ -581,6 +585,7 @@ end;
 
 procedure TDebugScriptFm.ToolButton2Click(Sender: TObject);
 begin
+  Screen.EnableForms(FFormsDisabled);
   Edit.CurLine := 0;
   Edit.Refresh;
   FExec.StepInto;
@@ -590,6 +595,7 @@ end;
 
 procedure TDebugScriptFm.ToolButton3Click(Sender: TObject);
 begin
+  Screen.EnableForms(FFormsDisabled);
   Edit.CurLine := 0;
   Edit.Refresh;
   FExec.StepOver;
@@ -639,16 +645,17 @@ begin
 	  Edit.LoadData(SD);
   	Edit.RestoreState;
   end;
-  Edit.CurLine := aLine;
+
   FExec.Pause;
+  Edit.CurLine := aLine;
   Edit.CaretY:=aLine;
   Edit.CaretX := 1;
-  //if aLine > Edit.TopLine + Edit.LinesInWindow - 4 then
-  	Edit.TopLine := aLine - Edit.LinesInWindow div 2;
+  Edit.TopLine := aLine - Edit.LinesInWindow div 2;
 
   SetFormCaption(rsPaused);
   SetControlState;
   Show;
+  FFormsDisabled := Screen.DisableForms(Self);
 end;
 
 end.

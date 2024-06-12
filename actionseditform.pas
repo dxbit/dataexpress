@@ -67,12 +67,12 @@ type
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
     MenuItem9: TMenuItem;
-    Panel2: TPanel;
+    HelpPan: TPanel;
     Panel5: TPanel;
     PopupMenu1: TPopupMenu;
     ScrollBox1: TScrollBox;
-    Splitter1: TSplitter;
-    Splitter2: TSplitter;
+    HelpSplitter: TSplitter;
+    TreeSplitter: TSplitter;
     Title: TLabel;
     Params: TLabel;
     Tree: TTreeViewEx;
@@ -136,6 +136,7 @@ type
     function CheckIfElseIfExists(PrevN: TTreeNode): Boolean;
     function CheckElseExists(N: TTreeNode): Boolean;
     procedure SetMenuState;
+    procedure SetShortCutMenuState;
     procedure UpdateNodeText(N: TTreeNode);
     function GetNodeLineKind(N: TTreeNode): TActionLineKind;
     function GetParentLines(N: TTreeNode): TActionLines;
@@ -154,6 +155,8 @@ type
     procedure ShowAction(AAction: TBaseAction);
     procedure ShowLine(ALine: TActionLine);
     procedure SelectAction(AType: TdxActionType; const AId: String; ActionPos: Integer);
+    procedure SetActionsDisabled(ADisable: Boolean);
+    function GetFirstSelectedAction: TBaseAction;
   public
     { public declarations }
     function ShowForm(const ATitle, Xml: String; AForm: TdxForm;
@@ -244,7 +247,7 @@ begin
   Width := AppConfig.AEWidth;
   Height := AppConfig.AEHeight;
   Tree.Width := AppConfig.AELeftPanWidth;
-  Panel2.Width := AppConfig.AERightPanWidth;
+  HelpPan.Width := AppConfig.AERightPanWidth;
   Link.Hint := rsOpenHomePage;
 
   ButtonPanel1.OKButton.Caption := rsOk;
@@ -313,7 +316,7 @@ begin
   AppConfig.AEWidth := ScaleTo96(Width);
   AppConfig.AEHeight := ScaleTo96(Height);
   AppConfig.AELeftPanWidth := ScaleTo96(Tree.Width);
-  AppConfig.AERightPanWidth := ScaleTo96(Panel2.Width);
+  AppConfig.AERightPanWidth := ScaleTo96(HelpPan.Width);
 end;
 
 procedure TActionsEditFm.FormDestroy(Sender: TObject);
@@ -323,13 +326,10 @@ begin
 end;
 
 procedure TActionsEditFm.FormResize(Sender: TObject);
-var
-  DW: Integer;
 begin
-  DW := (Width - FOldWidth) div 2;
-  Tree.Width := Tree.Width + DW;
-  Panel2.Width := Panel2.Width + DW;
-  FOldWidth := Width;
+  // Удерживаем сплиттеры на месте. Бывает, что слетают.
+  TreeSplitter.Left := Tree.Width + 10;
+  HelpSplitter.Left := HelpPan.Left - 10;
 end;
 
 procedure TActionsEditFm.FormShow(Sender: TObject);
@@ -366,12 +366,12 @@ begin
 end;
 
 procedure TActionsEditFm.MenuItem12Click(Sender: TObject);
+var
+  A: TBaseAction;
 begin
-  with TActionLine(Tree.Selected.Data).Action do
-  begin
-    Disabled := not Disabled;
-    Tree.Invalidate;
-  end;
+  A := GetFirstSelectedAction;
+  if A <> nil then
+    SetActionsDisabled(not A.Disabled);
 end;
 
 procedure TActionsEditFm.MenuItem1Click(Sender: TObject);
@@ -412,6 +412,7 @@ begin
     else DeleteLine(N);
   end;
   SetModified;
+  Tree.ClearSelection(True);
 end;
 
 procedure TActionsEditFm.MenuItem8Click(Sender: TObject);
@@ -576,6 +577,8 @@ var
   N: TTreeNode;
   Line: TActionLine;
 begin
+  SetShortCutMenuState;
+
   N := Tree.Selected;
   // При перетаскивании Tree.Selected = nil, хотя узел выделен
   if (N = nil) and (Tree.SelectionCount = 1) then N := Tree.Selections[0];
@@ -594,10 +597,14 @@ begin
   end;
   FreeAndNil(FPan);
 
-  if N = nil then Exit;
-  Line := TActionLine(N.Data);
-  ShowLine(Line);
-  FOldNode := N;
+  if N <> nil then
+  begin
+    Line := TActionLine(N.Data);
+    ShowLine(Line);
+    FOldNode := N;
+  end
+  else
+    ShowLine(nil);
 end;
 
 procedure TActionsEditFm.SetModified;
@@ -919,6 +926,7 @@ var
   alk: TActionLineKind;
   cms, sc1, ne, ae, ife: Boolean;
   Buf: String;
+  Act: TBaseAction;
 begin
   N := Tree.Selected;
   alk := GetNodeLineKind(N);
@@ -926,6 +934,7 @@ begin
   sc1 := Tree.SelectionCount = 1;
   ne := not (alk in [alkElseIf, alkElse]);
   ife := (N <> nil) and CheckIfElseIfExists(N.GetPrevSibling);
+  Act := GetFirstSelectedAction;
   Buf := Clipboard.AsText;
   ae := Copy(Buf, 1, 9) = '<actions>';
 
@@ -939,8 +948,21 @@ begin
   MenuItem8.Enabled := cms;
 	MenuItem9.Enabled := cms;
   MenuItem10.Enabled := sc1 and ne and ae;
-  MenuItem12.Enabled := alk = alkAction;
-  MenuItem12.Checked := (alk = alkAction) and TActionLine(N.Data).Action.Disabled;
+  MenuItem12.Enabled := Act <> nil;
+  MenuItem12.Checked := (Act <> nil) and Act.Disabled;
+end;
+
+procedure TActionsEditFm.SetShortCutMenuState;
+var
+  N: TTreeNode;
+  alk: TActionLineKind;
+  sc1: Boolean;
+begin
+  N := Tree.Selected;
+  alk := GetNodeLineKind(N);
+  sc1 := Tree.SelectionCount = 1;
+  MenuItem7.Enabled := sc1 and (alk <> alkNone);
+  MenuItem12.Enabled := True;
 end;
 
 procedure TActionsEditFm.UpdateNodeText(N: TTreeNode);
@@ -1024,6 +1046,8 @@ end;
 
 procedure TActionsEditFm.EditLine(Node: TTreeNode; Line: TActionLine);
 begin
+  if Tree.SelectionCount > 1 then Exit;
+
   case Line.Kind of
     alkAction: EditAction(Node, Line);
     alkIf, alkElseIf: EditCondition(Node, Line);
@@ -1039,7 +1063,7 @@ var
   Lines: TActionLines;
   ATp: TdxActionType;
 begin
-  if not ValidateCurrentAction then Exit;
+  if not ValidateCurrentAction or (Tree.SelectionCount > 1) then Exit;
 
   N := Tree.Selected;
   Lines := GetParentLines(N);
@@ -1334,6 +1358,38 @@ begin
           Dec(ActionPos);
       end;
     end;
+  end;
+end;
+
+procedure TActionsEditFm.SetActionsDisabled(ADisable: Boolean);
+var
+  i: Integer;
+  N: TTreeNode;
+  AL: TActionLine;
+begin
+  for i := 0 to Tree.SelectionCount - 1 do
+  begin
+    N := Tree.Selections[i];
+    AL := TActionLine(N.Data);
+    if (AL <> nil) and (AL.Kind = alkAction) then
+      AL.Action.Disabled := ADisable;
+  end;
+  Tree.Invalidate;
+end;
+
+function TActionsEditFm.GetFirstSelectedAction: TBaseAction;
+var
+  i: Integer;
+  N: TTreeNode;
+  AL: TActionLine;
+begin
+  Result := nil;
+  for i := 0 to Tree.SelectionCount - 1 do
+  begin
+    N := Tree.Selections[i];
+    AL := TActionLine(N.Data);
+    if (AL <> nil) and (AL.Kind = alkAction) then
+      Exit(AL.Action);
   end;
 end;
 

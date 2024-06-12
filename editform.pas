@@ -131,6 +131,12 @@ begin
   FScrollBox.Color := FForm.Color;
   Color := FForm.Color;
   FForm.Parent := FScrollBox;
+
+  if FForm.AllowResizeWindow then
+    BorderStyle := bsSizeable
+  else
+    BorderStyle := bsSingle;
+
   //CorrectSize;
 end;
 

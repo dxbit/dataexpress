@@ -905,6 +905,7 @@ type
   private
     FActionOnCreate: String;
     FActionResult: Variant;
+    FAllowResizeWindow: Boolean;
     FConfirmAutoSaveRecord: Boolean;
     FConfirmCancelEditing: Boolean;
     FConfirmSaveRecord: Boolean;
@@ -1115,6 +1116,7 @@ type
     property OnMouseLeave;
 
     property ActionOnCreate: String read FActionOnCreate write FActionOnCreate;
+    property AllowResizeWindow: Boolean read FAllowResizeWindow write FAllowResizeWindow default False;
   end;
 
   { TdxObjectField }
@@ -1480,7 +1482,8 @@ uses
   FPImage, BGRAReadPNG, {dximages, dxfiles, }apputils, reportmanager,
   DXReports, DateUtils, pivotgrid, sqlgen, datasetprocessor,
   Variants, expressions, LazFileUtils, scriptfuncs, MaskEdit,
-  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, crossapi;
+  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, crossapi,
+  debugscriptform;
 
 // Utils
 

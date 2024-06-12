@@ -14,8 +14,8 @@ object ActionsEditFm: TActionsEditFm
   OnResize = FormResize
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
-  object Panel2: TPanel
+  LCLVersion = '3.2.0.0'
+  object HelpPan: TPanel
     Left = 621
     Height = 536
     Top = 4
@@ -61,6 +61,7 @@ object ActionsEditFm: TActionsEditFm
       ClientHeight = 56
       ClientWidth = 256
       Color = 11462907
+      ParentBackground = False
       ParentColor = False
       ParentShowHint = False
       TabOrder = 1
@@ -155,7 +156,7 @@ object ActionsEditFm: TActionsEditFm
       end
     end
   end
-  object Splitter1: TSplitter
+  object HelpSplitter: TSplitter
     Left = 616
     Height = 540
     Top = 0
@@ -222,7 +223,7 @@ object ActionsEditFm: TActionsEditFm
       ParentFont = False
     end
   end
-  object Splitter2: TSplitter
+  object TreeSplitter: TSplitter
     Left = 264
     Height = 540
     Top = 0
@@ -242,6 +243,7 @@ object ActionsEditFm: TActionsEditFm
     HideSelection = False
     Images = ImageList1
     MultiSelect = True
+    MultiSelectStyle = [msControlSelect, msShiftSelect]
     ParentFont = False
     PopupMenu = PopupMenu1
     ReadOnly = True
@@ -288,6 +290,7 @@ object ActionsEditFm: TActionsEditFm
     end
     object MenuItem12: TMenuItem
       Caption = 'Отключено'
+      ShortCut = 68
       OnClick = MenuItem12Click
     end
     object N1: TMenuItem

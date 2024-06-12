@@ -61,8 +61,9 @@ type
     											// Id вместо ненужного обращения к базе.
     NeedRefresh: Boolean;
     NewRecord: Boolean;
-    DeletedRecId: Integer;  // Удаляемая запись
-    RowsExchanged: Boolean; // перемещались ли строки в какой-либо таблице
+    DeletedRecId: Integer;      // Удаляемая запись
+    RowsExchanged: Boolean;     // перемещались ли строки в какой-либо таблице
+    DetailsChanged: Boolean;    // Были ли изменения где-либо в подчиненной форме
     Images: TList;
   end;
 
@@ -1761,6 +1762,7 @@ begin
   begin
     if not FSimpleMode then UnLockRecord;
     FMaster^.RowsExchanged:=False;
+    FMaster^.DetailsChanged:=False;
   end;
 
   if DSR.NewRecord then
@@ -1801,6 +1803,7 @@ begin
   if DataSet.Tag > 0 then
   begin
     MasterSetModified;
+    FMaster^.DetailsChanged := True;
     CalcAggFields(0, DSR.Form.FormCaption);
     ClearAggCalcLabels(0, DSR.Form.FormCaption);
     if not FFm.IsHide then CalcExprs(0);
@@ -2025,6 +2028,7 @@ begin
           end;
     end;
     FMaster^.RowsExchanged:=False;
+    FMaster^.DetailsChanged:=False;
   end
   else
   begin
@@ -2036,6 +2040,7 @@ begin
         CalcExprs(0);
     end;
     MasterSetModified;
+    FMaster^.DetailsChanged := True;
   end;
 
   if FReCalculate then Exit;
@@ -4459,13 +4464,15 @@ var
 begin
   if DSRi = 0 then
   begin
-    Result := FMaster^.RowsExchanged;
+    Result := FMaster^.RowsExchanged or FMaster^.DetailsChanged;
     if not Result then
       for i := 0 to DataSetCount - 1 do
-  	    if DataSets[i]^.DataSet.Modified and IsDataSetModified(DataSets[i]^.Form) then Exit(True);
+      begin
+  	    if (DataSets[i]^.DataSet.Modified and IsDataSetModified(DataSets[i]^.Form)) then Exit(True);
+      end;
   end
   else
-  	Result := DataSets[DSRi]^.DataSet.Modified and IsDataSetModified(DataSets[DSRi]^.Form){.Modified;}
+  	Result := DataSets[DSRi]^.DataSet.Modified and IsDataSetModified(DataSets[DSRi]^.Form)
 end;
 
 procedure TDataSetProcessor.Open;

@@ -411,7 +411,8 @@ begin
     1: FCmp.ConfirmAutoSaveRecord := not FCmp.ConfirmAutoSaveRecord;
     2: FCmp.ConfirmCancelEditing := not FCmp.ConfirmCancelEditing;
     4: FCmp.ShowScrollBars := not FCmp.ShowScrollBars;
-    6:
+    5: FCmp.AllowResizeWindow := not FCmp.AllowResizeWindow;
+    7:
       begin
         FCmp.SoftCheck := not FCmp.SoftCheck;
         if FCmp.SoftCheck then
@@ -427,7 +428,8 @@ begin
   Items[1].Checked:=FCmp.ConfirmAutoSaveRecord;
   Items[2].Checked:=FCmp.ConfirmCancelEditing;
   Items[4].Checked:=FCmp.ShowScrollBars;
-  Items[6].Checked:=FCmp.SoftCheck;
+  Items[5].Checked:=FCmp.AllowResizeWindow;
+  Items[7].Checked:=FCmp.SoftCheck;
 end;
 
 constructor TFormMoreMenu.Create(AOwner: TComponent);
@@ -438,8 +440,9 @@ begin
   Items.Add( CreateMenuItem(Self, rsConfirmCancelEditing, 2, 0, @MenuClick) );
   Items.Add( CreateMenuItem(Self, '-', 3, 0, nil) );
   Items.Add( CreateMenuItem(Self, rsShowScrollbars, 4, 0, @MenuClick) );
-  Items.Add( CreateMenuItem(Self, '-', 5, 0, nil) );
-  Items.Add( CreateMenuItem(Self, rsSoftCheckValues, 6, 0, @MenuClick) );
+  Items.Add( CreateMenuItem(Self, rsAllowResizeEditWindow, 5, 0, @MenuClick) );
+  Items.Add( CreateMenuItem(Self, '-', 6, 0, nil) );
+  Items.Add( CreateMenuItem(Self, rsSoftCheckValues, 7, 0, @MenuClick) );
 end;
 
 procedure TFormMoreMenu.PopupMenu(C: TdxForm);

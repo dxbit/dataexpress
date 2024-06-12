@@ -1107,7 +1107,7 @@ Checks records of a subordinate form or query for uniqueness. Returns 1 if there
 <b> Parameters: </b> form or query name - text, list of fields - text. <br>
 <b> Result: </b> number. <br><br>
 <b> Example: </b><br>
-<center><code> IIF (UNIQUE ('products', 'product name;unit') = 0, 'Product is indicated more than once', '')) </code></center><br><br >
+<center><code> IIF (UNIQUE ('products', 'product name;unit') = 0, 'Product is indicated more than once', '') </code></center><br><br >
 The field list is the name of the field, separated by a semicolon. This function is mainly used when checking values ​​to prevent duplicate entries. Text fields are case-insensitive, that is, "Ivanov" and "Ivanovo" are the same. Only table records subordinate to the current parent record are checked. <b> Check for uniqueness by this function is carried out after filling in the table. The expression should not be in the table, but in the parent form, for example, in the field of totals or inscriptions. </b>
 
 [MSGBOX]

@@ -376,6 +376,10 @@ msgstr "Разрешить перемещать столбцы"
 msgid "Allow multiple authorization"
 msgstr "Разрешить множественную авторизацию"
 
+#: strconsts.rsallowresizeeditwindow
+msgid "Allow resize edit window"
+msgstr "Изменение размера окна редактирования"
+
 #: strconsts.rsallowsingleusermode
 msgid "Allow single-user mode"
 msgstr "Разрешить монопольный режим"

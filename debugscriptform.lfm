@@ -13,7 +13,7 @@ object DebugScriptFm: TDebugScriptFm
   OnShow = FormShow
   Position = poOwnerFormCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '3.2.0.0'
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
