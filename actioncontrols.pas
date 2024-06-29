@@ -439,6 +439,7 @@ begin
     flTime: Result := 'time';
     flFile: Result := 'file';
     flRecId: Result := 'recid';
+    flImage: Result := 'image';
     else Result := '';
   end;
 end;

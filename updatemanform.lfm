@@ -11,7 +11,7 @@ object UpdateManFm: TUpdateManFm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object UploadBn: TBitBtn
     Left = 372
     Height = 88
@@ -149,6 +149,7 @@ object UpdateManFm: TUpdateManFm
       Font.Color = clGray
       Font.Height = -21
       Font.Style = [fsBold]
+      ParentBackground = False
       ParentColor = False
       ParentFont = False
       TabOrder = 0

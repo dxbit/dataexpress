@@ -92,7 +92,8 @@ begin
 
   for i := FHistory.Count - 1 downto FHistoryIndex + 1 do
     FHistory.Delete(i);
-  FHistoryIndex := FHistory.Add(N);
+  if FHistory.Last <> Pointer(N) then
+    FHistoryIndex := FHistory.Add(N);
 end;
 
 function TTreeViewEx.DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
@@ -284,6 +285,7 @@ var
   SL: TStringList;
   PN, N: TTreeNode;
   i: Integer;
+  S: String;
 begin
   SL := TStringList.Create;
   SL.Delimiter:=APathDelim;
@@ -292,12 +294,13 @@ begin
   PN := nil;
   for i := 0 to SL.Count - 1 do
   begin
+    S := SL[i];
     if PN = nil then
-      N := Items.FindNodeWithText(SL[i])
+      N := Items.FindTopLvlNode(S)
     else
-      N := PN.FindNode(SL[i]);
+      N := PN.FindNode(S);
     if N = nil then
-      N := Items.AddChild(PN, SL[i]);
+      N := Items.AddChild(PN, S);
     PN := N;
     PN.ImageIndex := DefaultImageIndex;
     PN.SelectedIndex := DefaultImageIndex;

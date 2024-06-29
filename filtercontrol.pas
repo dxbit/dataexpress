@@ -884,7 +884,7 @@ begin
       flBool: Editor := InitBoolEdit;
       flObject: Editor := InitObjEdit;
       flTime: Editor := InitTimeEdit;
-      flText:
+      flText, flFile, flImage:
         begin
           Cmp := TComponent(LookupField(Obj, S));
           if Cmp is TdxComboBox then Editor := InitListEdit;

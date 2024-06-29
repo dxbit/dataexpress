@@ -1473,3 +1473,9 @@ The function is used to implement text search based on entered fragments.<br><br
 <b>Result:</b> text or NULL<br><br>
 <b>Example:</b><br>
 If index is 0, then all text is returned. If greater than 0, then the fragment is in order. Fragments are separated by spaces. The number of spaces between fragments does not matter. If the user did not enter anything or the fragment with the given index does not exist, then NULL is returned.
+
+[ISWEB]
+4
+The function returns true if the user is working with the database in the browser. If the user is using a desktop application, the function returns false.<br><br>
+<center><code>ISWEB</code></center><br><br>
+The function has no parameters.

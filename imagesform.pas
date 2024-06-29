@@ -65,13 +65,13 @@ type
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
-    procedure PopupMenu1Popup(Sender: TObject);
     procedure PopupMenu2Popup(Sender: TObject);
     procedure TreeUTF8KeyPress(Sender: TObject; var UTF8Key: TUTF8Char);
   private
     FImg: TdxImage;
     FPPIndex: Integer;
     FAddOnly: Boolean;
+    FErrorLoadImageMsg: String;
     procedure FillTree;
     procedure ImgClick(Sender: TObject);
     procedure ImgPaint(Sender: TObject);
@@ -80,6 +80,9 @@ type
     function GetImgIndex: Integer;
     procedure UpdateImage(const AImageName: String);
     procedure AddImage(AIndex: Integer);
+    procedure AddImages;
+    function GetUniqueImageName(const AName: String): String;
+    procedure SetPopupState;
   public
     function ShowForm(ASelect: Boolean; ASelImageName: String; AddOnly: Boolean): Integer;
     function SelectedImageName: String;
@@ -217,6 +220,15 @@ begin
   Result := True;
 end;
 
+procedure ReplaceInvalidChars(var S: String);
+var
+  i: Integer;
+begin
+  for i := 1 to Length(S) do
+    if S[i] in ['\', '/', ':', '*', '?', '"', '<', '>', '|'] then
+      S[i] := '_';
+end;
+
 function TImageNameForm.CloseQuery: boolean;
 begin
   if (ModalResult <> mrOk) or (MyUtf8CompareText(FOldName, FEdit.Text) = 0) then Exit;
@@ -241,7 +253,8 @@ end;
 
 procedure TImagesFm.MenuItem1Click(Sender: TObject);
 begin
-  AddImage(0);
+  AddImages;
+  SetPopupState;
 end;
 
 procedure TImagesFm.MenuItem2Click(Sender: TObject);
@@ -286,6 +299,8 @@ begin
       if N <> nil then N.Selected := True
       else SetImage;
     end;
+
+    SetPopupState;
   end;
 end;
 
@@ -356,14 +371,6 @@ begin
   FImg.Parent := PageControl1.ActivePage;
 end;
 
-procedure TImagesFm.PopupMenu1Popup(Sender: TObject);
-begin
-  MenuItem2.Enabled := (Tree.Selected <> nil) and not FAddOnly;
-  MenuItem3.Enabled := (Tree.Selected <> nil) and not FAddOnly;
-  MenuItem2.Visible := not FAddOnly;
-  MenuItem3.Visible := not FAddOnly;
-end;
-
 procedure TImagesFm.PopupMenu2Popup(Sender: TObject);
 begin
   MenuItem4.Enabled := (Tree.Items.Count = 0) or (Tree.Selected <> nil);
@@ -401,15 +408,28 @@ end;
 procedure TImagesFm.ImgPaint(Sender: TObject);
 var
   TS: TTextStyle;
+  Msg: String;
 begin
   if FImg.BGRABitmap.Empty then
   begin
     TS := FImg.Canvas.TextStyle;
     TS.Alignment:=taCenter;
     TS.Layout:=tlCenter;
-    FImg.Canvas.Font.Color := clDkGray;
-    FImg.Canvas.TextRect(Rect(0, 0, FImg.Width, FImg.Height), 0, 0,
-      rsClickToLoadImage, TS);
+    TS.Wordbreak:=True;
+    TS.SingleLine:=False;
+
+    if FErrorLoadImageMsg <> '' then
+    begin
+      FImg.Canvas.Font.Color := clRed;
+      Msg := FErrorLoadImageMsg;
+    end
+    else
+    begin
+      FImg.Canvas.Font.Color := clDkGray;
+      Msg := rsClickToLoadImage;
+    end;
+
+    FImg.Canvas.TextRect(Rect(0, 0, FImg.Width, FImg.Height), 0, 0, Msg, TS);
   end;
 end;
 
@@ -417,12 +437,17 @@ procedure TImagesFm.SetImage;
 var
   St: TStream;
 begin
+  FErrorLoadImageMsg := '';
   FImg.Clear;
   if Tree.Selected = nil then Exit;
   ImageMan.GetImageStream(GetImgName, GetImgIndex, St);
   if St <> nil then
-    try
+    try try
       FImg.LoadFromStream(St);
+    except
+      on E: Exception do
+        FErrorLoadImageMsg := E.Message;
+    end;
     finally
       St.Free;
     end;
@@ -488,6 +513,78 @@ begin
         ErrMsg(rsFailedToLoadImage + Spaces + E.Message);
     end;
   end;
+end;
+
+procedure TImagesFm.AddImages;
+var
+  i: Integer;
+  FL: TStringList;
+  ImgNm, FileNm, RenamesBuf: String;
+  N: TTreeNode;
+begin
+  N := nil;
+  RenamesBuf := '';
+  FL := TStringList.Create;
+
+  if OpenPictureDialogMulti(FL) then
+  try try
+    Tree.BeginUpdate;
+    for i := 0 to FL.Count - 1 do
+    begin
+      FileNm := ExtractFileNameOnly(FL[i]);
+      ImgNm := GetUniqueImageName(FileNm);
+      ImageMan.AddImage(ImgNm);
+      N := Tree.Items.AddChild(nil, ImgNm);
+      ImageMan.SetImage(ImgNm, 0, FL[i]);
+
+      if FileNm <> ImgNm then
+        RenamesBuf := RenamesBuf + Format(rsImageRenameItem, [FileNm, ImgNm]);
+    end;
+  finally
+    Tree.EndUpdate;
+    if N <> nil then N.Selected := True;
+  end;
+  except
+    on E: Exception do
+      ErrMsg(rsFailedToLoadImage + Spaces + E.Message);
+  end;
+
+  FL.Free;
+
+  if RenamesBuf <> '' then
+    Info(rsRenameAddedImagesMsg + LineEnding + LineEnding + RenamesBuf);
+end;
+
+function TImagesFm.GetUniqueImageName(const AName: String): String;
+var
+  n: Integer;
+  BaseName: String;
+begin
+  n := 1;
+  BaseName := Utf8Copy(AName, 1, 50);
+  ReplaceInvalidChars(BaseName);
+  Result := BaseName;
+
+  while ImageMan.ImageExists(Result) do
+  begin
+    Result := BaseName + IntToStr(n);
+    Inc(n);
+
+    if Utf8Length(Result) > 50 then
+    begin
+      BaseName := Utf8Copy(BaseName, 1, 50 - Length(IntToStr(n)));
+      Result := BaseName;
+      n := 1;
+    end;
+  end;
+end;
+
+procedure TImagesFm.SetPopupState;
+begin
+  MenuItem2.Enabled := (Tree.Selected <> nil) and not FAddOnly;
+  MenuItem3.Enabled := (Tree.Selected <> nil) and not FAddOnly;
+  MenuItem2.Visible := not FAddOnly;
+  MenuItem3.Visible := not FAddOnly;
 end;
 
 procedure TImagesFm.FormCreate(Sender: TObject);
@@ -558,8 +655,13 @@ var
 begin
   P := Tree.ScreenToClient(Mouse.CursorPos);
   N := Tree.GetNodeAt(P.x, P.y);
-  if (N <> nil) and N.Selected and ButtonPanel1.OkButton.Visible then
-    ModalResult := mrOk;
+  if (N <> nil) and N.Selected then
+  begin
+    if ButtonPanel1.OkButton.Visible then
+      ModalResult := mrOk
+    else
+      MenuItem2.Click;
+  end;
 end;
 
 procedure TImagesFm.TreeSelectionChanged(Sender: TObject);
@@ -578,11 +680,13 @@ begin
   if ASelect then
   begin
     KeyPreview := False;
+    MenuItem2.Default := False;
     ButtonPanel1.ShowButtons := [pbOk, pbCancel, pbHelp]
   end
   else
   begin
     KeyPreview := True;
+    MenuItem2.Default := True;
     ButtonPanel1.ShowButtons := [pbClose, pbHelp];
   end;
 
@@ -600,6 +704,9 @@ begin
       if N <> nil then N.Selected := True;
     end;
   end;
+
+  SetPopupState;
+
   Result := ShowModal;
   //if FChangeList.Count > 0 then UpdateImages;
 end;

@@ -37,6 +37,7 @@ type
     FFieldName: String;
     FFieldSize: Integer;
     FId: Integer;
+    FIsQuery: Boolean;
     FOldSize: Integer;
     FRequired: Boolean;
     FStopTab: Boolean;
@@ -73,6 +74,7 @@ type
     property SourceFileName: String read GetSourceFileName;
     property StoredFileName: String read GetStoredFileName;
     property Description: String read GetDescription write SetDescription;
+    property IsQuery: Boolean read FIsQuery write FIsQuery;
   published
     property Id: Integer read FId write FId;
     property FieldName: String read FFieldName write FFieldName;
@@ -177,24 +179,27 @@ end;
 
 function GetFileStream(aFile: TdxFile; DS: TDataSet): TStream;
 var
-  FNm, FlName: String;
+  FlNm, FileName: String;
 begin
   Result := nil;
-  FNm := fieldStr(aFile.Id);
+  FlNm := FieldStr(aFile.Id);
   case aFile.StorageType of
     StorageTypeDb:
-        Result := DS.CreateBlobStream(DS.FieldByName(FNm), bmRead);
+      begin
+        if aFile.IsQuery then FlNm := FlNm + 'data';
+        Result := DS.CreateBlobStream(DS.FieldByName(FlNm), bmRead);
+      end;
     StorageTypeFolder:
       begin
-        FlName := GetAbsolutePath(aFile.StorageFolder) + DS.FieldByName(FNm + 'dest').AsString;
-        if FileExists(FlName) then
-          Result := TFileStream.Create(FlName, fmOpenRead + fmShareDenyNone);
+        FileName := GetAbsolutePath(aFile.StorageFolder) + DS.FieldByName(FlNm + 'dest').AsString;
+        if FileExists(FileName) then
+          Result := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
       end;
     StorageTypeLink:
       begin
-        FlName := DS.FieldByName(FNm + 'src').AsString;
-        if FileExists(FlName) then
-          Result := TFileStream.Create(FlName, fmOpenRead + fmShareDenyNone);
+        FileName := DS.FieldByName(FlNm + 'src').AsString;
+        if FileExists(FileName) then
+          Result := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
       end;
   end;
   if (Result <> nil) and (Result.Size = 0) then FreeAndNil(Result);
@@ -258,8 +263,13 @@ begin
 end;
 
 function TdxFile.GetDescription: String;
+var
+  FlNm: String;
 begin
-  Result := DS.FieldByName(FieldStr(FId) + 'd').AsString;
+  FlNm := FieldStr(FId);
+  if not FIsQuery then FlNm := FlNm + 'd';
+
+  Result := DS.FieldByName(FlNm).AsString;
 end;
 
 function TdxFile.GetStoredFileName: String;

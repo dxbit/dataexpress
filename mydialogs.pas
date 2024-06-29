@@ -422,6 +422,7 @@ begin
   FImages.AddLazarusResource('counter16');
   FImages.AddLazarusResource('file16');
   FImages.AddLazarusResource('key16');
+  FImages.AddLazarusResource('dbimage16');
   FTree := TTreeViewEx.Create(Self);
   with FTree do
 	begin
@@ -675,7 +676,7 @@ begin
   FImages.AddLazarusResource('combobox16');
   FImages.AddLazarusResource('object16');
   FImages.AddLazarusResource('objectfield16');
-  FImages.AddLazarusResource('image16');
+  FImages.AddLazarusResource('dbimage16');
   FImages.AddLazarusResource('file16');
   FImages.AddLazarusResource('key16');
   FTree := TTreeViewEx.Create(Self);

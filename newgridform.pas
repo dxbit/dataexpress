@@ -1672,7 +1672,8 @@ function TGrdFm.ShowRpForm(QGrid: TdxQueryGrid; RD: TReportData): Integer;
         begin
           if RpFieldIsCheckBox(RD, Col.FieldNameDS) then Result := cdtBool
           else Result := cdtNumber;
-        end
+        end;
+      flImage: Result := cdtImage;
       else
         Result := cdtText;
     end;
@@ -1680,7 +1681,7 @@ function TGrdFm.ShowRpForm(QGrid: TdxQueryGrid; RD: TReportData): Integer;
 
 var
   G: TRpGrid;
-  i, x: Integer;
+  i: Integer;
   C: TRpGridColumn;
   Col: TMyGridColumn;
   L: TList;

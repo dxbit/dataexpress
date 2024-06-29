@@ -51,6 +51,8 @@ type
     procedure GridDblClick(Sender: TObject);
     procedure GridDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure GridPrepareCanvas(sender: TObject; DataCol: Integer;
+      Column: TColumn; AState: TGridDrawState);
     procedure GridSortChange(Sender: TObject);
     procedure ReportMenuClick(Sender: TObject);
     procedure ReportsMnuPopup(Sender: TObject);
@@ -113,8 +115,8 @@ function ShowReportWindow(aId: Integer): Integer;
 implementation
 
 uses
-  sqlgen, apputils, reportmanager, dxusers, expressions,
-  LazUtf8, Variants, lists, reportexportform, helpviewform, mainform, StrUtils;
+  apputils, reportmanager, dxusers, expressions, myctrls,
+  LazUtf8, Variants, reportexportform, helpviewform, mainform, StrUtils;
 
 function ShowReportWindow(aId: Integer): Integer;
 var
@@ -201,7 +203,25 @@ begin
   end;
 end;
 
-procedure CalcQueryColor(RD: TReportData; RDS: TDataSet; const TargetField: String;
+procedure TReportWindow.GridDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  FlNm: String;
+  ThumbF: TField;
+  Col: TMyDBGridColumn;
+begin
+  Col := TMyDBGridColumn(Column);
+  if Col.Field = nil then Exit;
+
+  if Col.IsImage then
+  begin
+    FlNm := Column.Field.FieldName;
+    ThumbF := Column.Field.DataSet.FieldByName(FlNm + 'thumb');
+    DrawImageFieldIntoGrid(TDBGrid(Sender), Column, ThumbF, Rect);
+  end;
+end;
+
+(*procedure CalcQueryColor(RD: TReportData; RDS: TDataSet; const TargetField: String;
   var FieldName: String; var Color: TColor);
 var
   EB: TExpressionBuilder;
@@ -243,45 +263,6 @@ begin
   end;
 end;
 
-{procedure TReportWindow.GridDrawColumnCell(Sender: TObject; const Rect: TRect;
-  DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var
-  CD: TQueryColorData;
-  Clr: TColor;
-  FlNm: String;
-  RecNo: Integer;
-begin
-  if (FDataSet.RecordCount > 0) and (not (gdSelected in State)) and (FRD.Coloring.Count > 0) then
-  begin
-    RecNo := FQGrid.Row; //FDataSet.ActiveBuffer;
-    Clr := clNone;
-    CD := FColors.FindColor(Column.Title.Caption, RecNo);
-    if CD = nil then
-    begin
-      CalcQueryColor(FRD, FDataSet, Column.Title.Caption, FlNm, Clr);
-      if Clr = clNone then
-      begin
-        CD := FColors.FindColor('', RecNo);
-        if CD = nil then
-          CalcQueryColor(FRD, FDataSet, '', FlNm, Clr);
-      end;
-      if Clr <> clNone then
-      begin
-        CD := FColors.AddColor;
-        CD.RecNo:=RecNo;
-        CD.Color := Clr;
-        CD.FieldName := FlNm;
-      end;
-    end;
-    if CD <> nil then
-    begin
-      FQGrid.Canvas.Brush.Color:=CD.Color;
-      FQGrid.Canvas.FillRect(Rect);
-    end;
-  end;
-  FQGrid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end; }
-
 procedure TReportWindow.GridDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
@@ -302,6 +283,26 @@ begin
     end;
   end;
   FQGrid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;       *)
+
+procedure TReportWindow.GridPrepareCanvas(sender: TObject; DataCol: Integer;
+  Column: TColumn; AState: TGridDrawState);
+var
+  Clr: TColor;
+  FlNm: String;
+begin
+  if Column.Field = nil then Exit;
+  if (FDataSet.RecordCount > 0) and not (gdSelected in AState) and (FRD.Coloring.Count > 0) then
+  begin
+    CalcQueryColor(RD, nil, FDataSet, nil, Column.FieldName, FlNm, Clr);
+    if Clr = clNone then
+      CalcQueryColor(RD, nil, FDataSet, nil, '', FlNm, Clr);
+    if Clr <> clNone then
+    begin
+      if gdRowHighlight in AState then Clr := ColorToRGB(Clr) xor $1F1F1F;
+	    FQGrid.Canvas.Brush.Color:=Clr;
+    end;
+  end;
 end;
 
 procedure TReportWindow.GridSortChange(Sender: TObject);
@@ -997,6 +998,7 @@ begin
     DataSource := FDataSource;
     OnSortColumnChange:=@GridSortChange;
     OnDrawColumnCell:=@GridDrawColumnCell;
+    OnPrepareCanvas:=@GridPrepareCanvas;
     OnDblClick:=@GridDblClick;
     RpWnd := Self;
   end;

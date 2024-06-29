@@ -97,6 +97,7 @@ function GetTimeStamp(D, T: Variant): Variant;
 function CaseOf(const AValue, AItems: String): String;
 function GetTypedText(AIndex: Integer): Variant;
 procedure SetTypedText(S: String);
+function IsWebServer: Boolean;
 
 var
   VarList: TVarList;
@@ -1531,6 +1532,8 @@ var
 
 begin
   Result := '';
+  if Fm = nil then raise Exception.Create(rsFormNotAvail);
+
   State := stText;
   i := 1; Len := Length(S);
   while i <= Len do
@@ -1676,6 +1679,11 @@ procedure SetTypedText(S: String);
 begin
   S := Trim(S);
   SetVar('__TypedText__', IIF(S <> '', S, Null));
+end;
+
+function IsWebServer: Boolean;
+begin
+  Result := False;
 end;
 
 {function Fmt(Args: array of Variant): String;

@@ -977,7 +977,7 @@ resourcestring
   rsCloseListWindowHint = 'Close window <Esc>';
   rsShowHelpHint = 'Show help <F1>';
   rsFieldDateDetailCantParam = 'A field can not be a parameter, because it is used in grouping by date.';
-  rsOnlyTextFieldCanBeParamWithMergeFunc = 'Only the text field can be a parameter with function [%s].';
+  //rsOnlyTextFieldCanBeParamWithMergeFunc = 'Only the text field can be a parameter with function [%s].';
   rsAbort = 'Abort';
   rsAbortOperation = 'Abort operation?';
   rsDonate = 'Donate';
@@ -1819,6 +1819,14 @@ resourcestring
   rsListSourceNotReady = 'The list source is not configured correctly.';
   rsSetWidthToAutoWidth = '*Set width to 0 for auto width';
   rsAllowResizeEditWindow = 'Allow resize edit window';
+  rsFieldNotFileImage = 'Field is not a file or image: %s';
+  rsFieldNotImage = 'Field is not a image: %s';
+  rsFuncNotImageFiles = 'The function cannot be applied to files and images.';
+  rsRenameAddedImagesMsg = 'When added, some images were renamed due to the '
+    +'following possible reasons: the name already exists, the name is longer '
+    +'than 50 characters, or contains invalid characters.';
+  rsImageRenameItem = 'Old name:'#13#10'%0:s'#13#10'New name:'#13#10'%1:s'#13#10;
+  //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 
 implementation

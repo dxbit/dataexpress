@@ -375,7 +375,7 @@ begin
     for i := 0 to FQry.DataSet.Fields.Count - 1 do
     begin
       F := FQry.DataSet.Fields[i];
-      if F.IsBlob then F.OnGetText:=@FieldGetText;
+      if F.DataType = ftMemo then F.OnGetText:=@FieldGetText;
     end;
 
     SetColWidths;

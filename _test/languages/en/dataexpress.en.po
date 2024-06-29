@@ -2495,6 +2495,11 @@ msgstr ""
 msgid "Field [%s] not date."
 msgstr ""
 
+#: strconsts.rsfieldnotfileimage
+#, object-pascal-format
+msgid "Field is not a file or image: %s"
+msgstr ""
+
 #: strconsts.rsfieldnotfound
 #, object-pascal-format
 msgid "Field not found: %s"
@@ -2502,6 +2507,11 @@ msgstr ""
 
 #: strconsts.rsfieldnotfounderror
 msgid "Field not found. Unable to determine field type."
+msgstr ""
+
+#: strconsts.rsfieldnotimage
+#, object-pascal-format
+msgid "Field is not a image: %s"
 msgstr ""
 
 #: strconsts.rsfieldnotobject
@@ -2925,6 +2935,10 @@ msgstr ""
 msgid "Function [%s] not found in module [%s]."
 msgstr ""
 
+#: strconsts.rsfuncnotimagefiles
+msgid "The function cannot be applied to files and images."
+msgstr ""
+
 #: strconsts.rsfuncnotsel
 msgid "Function not selected."
 msgstr ""
@@ -3303,6 +3317,15 @@ msgstr ""
 
 #: strconsts.rsimageprops
 msgid "Image properties"
+msgstr ""
+
+#: strconsts.rsimagerenameitem
+#, object-pascal-format
+msgid ""
+"Old name:\n"
+"%0:s\n"
+"New name:\n"
+"%1:s\n"
 msgstr ""
 
 #: strconsts.rsimages
@@ -4380,11 +4403,6 @@ msgstr ""
 msgid "Only values from the list"
 msgstr ""
 
-#: strconsts.rsonlytextfieldcanbeparamwithmergefunc
-#, object-pascal-format
-msgid "Only the text field can be a parameter with function [%s]."
-msgstr ""
-
 #: strconsts.rsonlyview
 msgid "Only viewing"
 msgstr ""
@@ -4931,6 +4949,10 @@ msgstr ""
 
 #: strconsts.rsrename
 msgid "Rename"
+msgstr ""
+
+#: strconsts.rsrenameaddedimagesmsg
+msgid "When added, some images were renamed due to the following possible reasons: the name already exists, the name is longer than 50 characters, or contains invalid characters."
 msgstr ""
 
 #: strconsts.rsrenamegroup

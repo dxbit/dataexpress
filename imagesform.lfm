@@ -11,7 +11,7 @@ object ImagesFm: TImagesFm
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 4
     Height = 456
@@ -133,7 +133,6 @@ object ImagesFm: TImagesFm
     end
   end
   object PopupMenu1: TPopupMenu
-    OnPopup = PopupMenu1Popup
     Left = 119
     Top = 229
     object MenuItem1: TMenuItem

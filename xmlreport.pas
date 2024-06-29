@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Db, dxctrls, ExtCtrls, dialogs, expressions, strconsts,
-  DXReports, datasetprocessor, mytypes;
+  DXReports, datasetprocessor, mytypes, dximages;
 
 const
   ttEof = #0;
@@ -124,6 +124,8 @@ type
     function FindGroup(D: TDataRec; const S: String): PGroupRec;
     procedure CheckGroupPos(D: TDataRec; P: Integer);
     procedure CheckBandPos(pCurD: PDataRec; P: Integer; const BnNm, BnKd: String);
+    procedure PrintImage(C: TdxDBImage; DS: TDataSet);
+    procedure PrintImageQ(RD: TReportData; FieldIndex: Integer; DS: TDataSet);
   public
     constructor Create;
     destructor Destroy; override;
@@ -166,7 +168,7 @@ implementation
 
 uses
   LazUtf8, formmanager, apputils, sqlgen, dbengine, appsettings, zipper,
-  fileutil, StrUtils, dximages, dxfiles, Forms,
+  fileutil, StrUtils, dxfiles, Forms,
   Variants, reportmanager, DateUtils, DOM, XmlRead, XmlWrite, pivotgrid, base64,
   Math, dxcharts;
 
@@ -1330,14 +1332,14 @@ end;
 function TXmlReport.LookupFieldValue(Form: TdxForm; const FieldName: String; DataSet: TDataSet): String;
 var
   i, pr: Integer;
-  S, FldNm, Dir, Tmp: String;
+  S, FldNm, Tmp: String;
   SL: TStringList;
   DS: TDataSet;
   Fm: TdxForm;
   C: TComponent;
-  BlankImage, NeedConvert: Boolean;
+  //BlankImage, NeedConvert: Boolean;
   Lbl: TdxLabel;
-  dt: String;
+  dt, FlList: String;
   Cbx: TdxLookupComboBox;
 begin
   Result := '';
@@ -1381,13 +1383,15 @@ begin
       // ------------------ IMAGE --------------------
       if C is TdxDBImage then
       begin
-        if i > 0 then
+        {if i > 0 then
         begin
           S := DS.FieldByName(FldNm + 'src').AsString;
           Break;
-        end;
+        end;  }
 
-        S := GetImageFileName(TdxDBImage(C), DS);
+        PrintImage(TdxDBImage(C), DS);
+
+        {S := GetImageFileName(TdxDBImage(C), DS);
         BlankImage := S = '';
         if BlankImage then
         begin
@@ -1427,7 +1431,8 @@ begin
             FImgSize := FImgSize.Zero;
           end;
         end;
-        S := '';
+        S := ''; }
+
         Break;
       end
       // ---------------------------------------------
@@ -1461,7 +1466,11 @@ begin
         if Tmp <> '' then Tmp := '(' + Tmp + ')'
         else Tmp := TableStr(Fm.Id);
 
-        DS := DBase.OpenDataSet('select ' + GetComponentDataSetFieldName(C)
+        FlList := GetComponentDataSetFieldName(C);
+        if C is TdxDBImage then
+          FlList := FlList + ',' + FieldStr(C) + 'dest,' + FieldStr(C);
+
+        DS := DBase.OpenDataSet('select ' + FlList
           {FieldStr(C)} + ' from ' + Tmp + ' where id=' + S);
       end
       else if C is TdxCheckBox then
@@ -1628,17 +1637,21 @@ end;
 function TXmlReport.LookupQueryFieldValue(D: TDataRec; const FieldName: String
   ): String;
 var
-  Col: TRpGridColumn;
+  //Col: TRpGridColumn;
   F: TField;
   dt: String;
-  pr: Integer;
+  pr, idx: Integer;
 begin
   Result := ''; dt := ''; pr := 0;
-  Col := D.RD.Grid.FindColumnByTitle(FieldName);
-  if Col <> nil then
+  idx := D.RD.IndexOfName(FieldName);
+  //Col := D.RD.Grid.FindColumnByTitle(FieldName);
+  //if Col <> nil then
+  if idx >= 0 then
   begin
-    F := D.DataSet.FieldByName(Col.FieldNameDS);
-    if F.IsNull then
+    F := D.DataSet.FieldByName( D.RD.GetFieldNameDS(idx) );
+    if D.RD.GetFieldType(idx) = flImage then
+      PrintImageQ(D.RD, idx, D.DataSet)
+    else if F.IsNull then
       Exit
     else if F is TNumericField then
     begin
@@ -1715,6 +1728,86 @@ begin
       raise Exception.CreateFmt(rsInvalidUseTagForm, [pCurD^.BandName, BnNm])
     else if BnKd = 'grid' then
       raise Exception.CreateFmt(rsInvalidUseTagGrid, [pCurD^.BandName, BnNm]);
+  end;
+end;
+
+procedure TXmlReport.PrintImage(C: TdxDBImage; DS: TDataSet);
+var
+  FileName, Dir, Ext, FlNm: String;
+  BlankImage, NeedConvert: Boolean;
+begin
+  //Ext := ExtractFileExt(GetImageFileName(C, DS));
+  FlNm := FieldStr(C);
+  if not C.IsQuery then FlNm := FlNm + 'src';
+  Ext := ExtractFileExt(DS.FieldByName(FlNm).AsString);
+  BlankImage := Ext = '';
+  Dir := FImagesFolder;
+
+  if BlankImage then
+  begin
+    FileName := Dir + '__blank__.png';
+  end
+  else
+  begin
+    // Преобразуем в png, если формат отличается от поддерживаемых
+    NeedConvert := Pos(';' + Ext + ';', ';.jpg;.jpeg;.png;.tif;.tiff;') = 0;
+    if NeedConvert then Ext := '.png';
+    FileName := Dir + 'img' + IntToStr(FImageId) + Ext;
+  end;
+
+  FImageFileName := FileName;
+  FImageFiles.Add(FileName);
+  FIsImageFound := True;
+  FIsImageSize := True;
+  FIsAltImageSize := FAltImageSizeTag <> '';
+  Inc(FImageId);
+
+  if ForceDirectories(Dir) then
+  begin
+    if not BlankImage then
+    begin
+      if C.PrintSize > 0 then
+        SaveImageToFile(FileName, C.PrintSize, C, DS)
+      else if NeedConvert then
+        SaveImageToFileConvert(FileName, C, DS)
+      else
+        SaveImageToFile(FileName, C, DS);
+      GetImageSize(FileName, FImgSize);
+    end
+    else
+    begin
+      CreateBlankImage(FileName);
+      FImgSize := FImgSize.Zero;
+    end;
+  end;
+end;
+
+procedure TXmlReport.PrintImageQ(RD: TReportData; FieldIndex: Integer;
+  DS: TDataSet);
+var
+  pF: PRpField;
+  SrcImg, TmpImg: TdxDBImage;
+begin
+  pF := RD.TryGetRpField(FieldIndex);
+  if pF = nil then Exit;
+
+  SrcImg := TdxDBImage(GetRpFieldComponent(pF^, True));
+  {pF := GetLowField(pF);
+  SrcFm := FormMan.FindForm(pF^.TId);
+  SrcImg := TdxDBImage(FindById(SrcFm, pF^.FId));}
+
+  TmpImg := TdxDBImage.Create(nil);
+  TmpImg.DataSource := DS.DataSource;
+  TmpImg.Id := pF^.Id;
+  TmpImg.StorageType := SrcImg.StorageType;
+  TmpImg.StorageFolder := SrcImg.StorageFolder;
+  TmpImg.PrintSize := SrcImg.PrintSize;
+  TmpImg.IsQuery := True;
+
+  try
+    PrintImage(TmpImg, DS);
+  finally
+    TmpImg.Free;
   end;
 end;
 
@@ -2165,7 +2258,7 @@ begin
             if (not Accept) and (pD^.DataSet <> nil) then
             begin
               if (pD^.Form <> nil) and pD^.Form.IsHide then pD^.Form.RequeryIfNeed
-              else if pD^.RD <> nil then pD^.QGrid.RequeryIfNeed(True);
+              else if (pD^.RD <> nil) and (pD^.RD.Kind = rkQuery) then pD^.QGrid.RequeryIfNeed(True);
 	            pD^.DataSet.First;
             end;
           end

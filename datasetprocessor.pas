@@ -145,6 +145,8 @@ type
     procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LCbxKeyMatch(Sender: TObject);
     procedure ListFieldSetText(Sender: TField; const aText: string);
+    procedure QueryGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure QueryGridKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure QueryGridPrepareCanvas(sender: TObject; DataCol: Integer;
@@ -242,8 +244,8 @@ type
     procedure ApplyQuickFilter(AClearFilter: Boolean);
     procedure ClearAllFilters;
     function CalcColor(Fm: TdxForm; DS: TDataSet): TColor;
-    procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
-      const TargetField: String; out FieldName: String; out Color: TColor);
+    //procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
+    //  const TargetField: String; out FieldName: String; out Color: TColor);
     procedure InsertObjectValues(Obj: TdxLookupComboBox);
     procedure FillTableFromObject(Obj: TdxLookupComboBox);
     procedure RefreshLookupsWithParams(const FieldName: String);
@@ -846,6 +848,23 @@ begin
   end
 end;
 
+procedure TDataSetProcessor.QueryGridDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  FlNm: String;
+  ThumbF: TField;
+  Col: TMyDBGridColumn;
+begin
+  Col := TMyDBGridColumn(Column);
+  if Col.Field = nil then Exit;
+  if Col.IsImage then
+  begin
+    FlNm := Column.Field.FieldName;
+    ThumbF := Column.Field.DataSet.FieldByName(FlNm + 'thumb');
+    DrawImageFieldIntoGrid(TDBGrid(Sender), Column, ThumbF, Rect);
+  end;
+end;
+
 procedure TDataSetProcessor.QueryGridKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
@@ -1438,6 +1457,17 @@ end;
 
 procedure TDataSetProcessor.GridDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  Col: TMyDBGridColumn;
+begin
+  if Column.Field = nil then Exit;
+  Col := TMyDBGridColumn(Column);
+  if Col.IsImage then
+    DrawImageFieldIntoGrid(TDBGrid(Sender), Col, Column.Field, Rect);
+end;
+
+(*procedure TDataSetProcessor.GridDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 
   procedure GetImagePos(Col: TMyDBGridColumn; Bmp: TBGRABitmap; out x, y: Integer);
   var
@@ -1445,9 +1475,7 @@ procedure TDataSetProcessor.GridDrawColumnCell(Sender: TObject;
     lay: TTextLayout;
   begin
     al := Col.Alignment;
-    //if Col.AutoAlignment then al := taCenter;
     lay := Col.Layout;
-    //if Col.AutoLayout then lay := tlCenter;
     case al of
       taLeftJustify: x := Rect.Left + ScaleToScreen(2);
       taCenter: x := Rect.Left + Rect.Width div 2 - Bmp.Width div 2;
@@ -1482,11 +1510,8 @@ begin
         St := Column.Field.DataSet.CreateBlobStream(Column.Field, bmRead);
         Bmp := TBGRABitmap.Create(0, 0);
         try
-          if (St <> nil) and (St.Size > 0) then
-          Bmp.LoadFromStream(St);
+          if (St <> nil) and (St.Size > 0) then Bmp.LoadFromStream(St);
           GetImagePos(TMyDBGridColumn(Column), Bmp, x, y);
-          //x := (Rect.Right - Rect.Left) div 2 + Rect.Left - Bmp.Width div 2;
-          //y := (Rect.Bottom - Rect.Top) div 2 + Rect.Top - Bmp.Height div 2;
           Bmp.Draw(TdxGrid(Sender).Canvas, x, y, True);
         finally
           Bmp.Free;
@@ -1498,12 +1523,8 @@ begin
         end;
       end
     end;
-  end
-  else
-  begin
-    //TdxGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
   end;
-end;
+end; *)
 
 procedure TDataSetProcessor.GridKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -2989,7 +3010,6 @@ begin
       begin
         DataField := FieldStr(C) + 'l';
         KeyField := FieldStr(C);
-        //OnKeyDown:=@LCbxKeyDown;
       end
     else if not (C is TdxFile) then SetDataField(C, FieldStr(C))
     // Это TdxFile
@@ -2997,26 +3017,26 @@ begin
 
     if HasExpression(C) and (Trim(GetExpression(C)) <> '') and (not GetEditable(C)) then
     begin
-      SetReadOnly(C, True);//not GetEditable(C));
+      SetReadOnly(C, True);
       if C is TdxComboBox then TdxComboBox(C).Style:=csSimple;
     end;
 
     if (Fm.PId = 0) and (C is TdxLookupComboBox) and (FGotoEnable) and (FFm.ViewType <> vtGridOnly) then
       TdxLookupComboBox(C).OnCtrlClick:=@LookupCtrlClick;
 
-    //if HasMaxLength(C) then SetMaxLength(C, GetFieldSize(C));
-
     if C is TdxObjectField then
     begin
       TdxObjectField(C).ReadOnly:=True;
-      {Col := FindGridColumn(DSR.Grid, GetId(C));
-      Col.ReadOnly := True; }
-    end;
-    {else if C is TdxFile then
+    end
+    else if C is TdxDBImage then
     begin
       Col := FindGridColumn(DSR.Grid, GetId(C));
-      Col.ReadOnly := True;
-    end; }
+      with TMyDBGridColumn(Col) do
+      begin
+        IsImage := True;
+        ThumbSize := TdxDBImage(C).ThumbSize;
+      end;
+    end;
 
     // !!! Доступ
     if not UserMan.CheckControlEditing(Fm.Id, C.Name) then
@@ -3336,6 +3356,7 @@ begin
   pDS^.NeedRefresh:=True;
   pDS^.NewRecord := False;
   pDS^.RowsExchanged := False;
+  pDS^.DetailsChanged := False;
 end;
 
 function TDataSetProcessor.GetDataSet(Index: Integer): PDataSetRec;
@@ -3861,6 +3882,7 @@ begin
   pQ^.DSProc := Self;
   pQ^.Grid := QG;
   pQ^.Colors := TQueryColorList.Create;
+  pQ^.NeedRefresh := False;
   FQueries.Add(pQ);
 
   FMaster := pDS;
@@ -3873,17 +3895,18 @@ var
 begin
   pQ := PQueryRec(FQueries[0]);
   pQ^.Colors.Free;
-  //pQ^.DataSource.Free;
+  pQ^.DataSource.Free;
   Dispose(pQ);
   FQueries.Clear;
   pD := PDataSetRec(FItems[0]);
   pD^.EditFm.Free;
   pD^.LblExprList.Free;
   pD^.ExprList.Free;
-  //pD^.DataSource.Free;
+  pD^.DataSource.Free;
   pD^.DataSet.Free;
   Dispose(pD);
   FItems.Clear;
+  FFm.Free;
 end;
 
 procedure TDataSetProcessor.UnBind;
@@ -5425,7 +5448,7 @@ begin
   end;
 end;
 
-procedure TDataSetProcessor.CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS,
+(*procedure TDataSetProcessor.CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS,
   DS: TDataSet; const TargetField: String; out FieldName: String; out
   Color: TColor);
 var
@@ -5469,7 +5492,7 @@ begin
     EB.Free;
     FreeAndNil(E);
   end;
-end;
+end;    *)
 
 procedure TDataSetProcessor.InsertObjectValues(Obj: TdxLookupComboBox);
 var
@@ -6668,6 +6691,7 @@ begin
   QG.OnSortColumnChange:=@QueryGridSortChange;
   //QG.OnDrawColumnCell:=@QueryGridDrawColumnCell;
   QG.OnPrepareCanvas:=@QueryGridPrepareCanvas;
+  QG.OnDrawColumnCell:=@QueryGridDrawColumnCell;
   if pQ^.Simple then QG.OnKeyDown:=@QueryGridKeyDown;
   pQ^.Colors := TQueryColorList.Create;
   pQ^.NeedRefresh:=True;

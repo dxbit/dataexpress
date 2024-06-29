@@ -286,6 +286,8 @@ type
   private
     FAutoAlignment: Boolean;
     FAutoLayout: Boolean;
+    FIsImage: Boolean;
+    FThumbSize: Integer;
     function IsAlignmentStored: Boolean;
     function IsLayoutStored: Boolean;
     procedure SetAutoAlignment(AValue: Boolean);
@@ -295,6 +297,8 @@ type
     function GetDefaultLayout: TTextLayout; override;
   public
     constructor Create(ACollection: TCollection); override;
+    property IsImage: Boolean read FIsImage write FIsImage;
+    property ThumbSize: Integer read FThumbSize write FThumbSize;
   published
     property AutoAlignment: Boolean read FAutoAlignment write SetAutoAlignment default True;
     property AutoLayout: Boolean read FAutoLayout write SetAutoLayout default True;
@@ -631,7 +635,8 @@ function TMyDBGridColumn.GetDefaultAlignment: TAlignment;
 begin
   if FAutoAlignment then
   begin
-    if (Field <> nil) and (Field.DataType = ftBlob) then
+    //if (Field <> nil) and (Field.DataType = ftBlob) then
+    if FIsImage then
       Result := taCenter
     else
       Result := inherited GetDefaultAlignment
@@ -645,7 +650,7 @@ begin
   Result := inherited GetDefaultLayout;
   if FAutoLayout then
   begin
-    if (ButtonStyle = cbsCheckboxColumn) or ((Field <> nil) and (Field.DataType = ftBlob)) then
+    if (ButtonStyle = cbsCheckboxColumn) or FIsImage {((Field <> nil) and (Field.DataType = ftBlob))} then
       Result := tlCenter
     else if TMyDBGrid(Collection.Owner).WordWrap then
       Result := tlTop

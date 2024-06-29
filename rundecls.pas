@@ -1147,10 +1147,8 @@ procedure TdxQueryGridAsI_R(Self: TdxQueryGrid; var T: Integer; I: String); begi
 procedure TdxQueryGridAsF_R(Self: TdxQueryGrid; var T: Extended; I: String); begin T := Self.AsF[I]; end;
 procedure TdxQueryGridAsDT_R(Self: TdxQueryGrid; var T: TDateTime; I: String); begin T := Self.AsDT[I]; end;
 procedure TdxQueryGridAsS_R(Self: TdxQueryGrid; var T: String; I: String); begin T := Self.AsS[I]; end;
-
 procedure TdxQueryGridOnCreateForm_R(Self: TdxQueryGrid; var T: TCreateFormEvent); begin T := Self.OnCreateForm; end;
 procedure TdxQueryGridOnCreateForm_W(Self: TdxQueryGrid; T: TCreateFormEvent); begin Self.OnCreateForm := T; end;
-
 procedure TdxQueryGridEditable_R(Self: TdxQueryGrid; var T: Boolean); begin T := Self.Editable; end;
 
 procedure RIRegister_dxQueryGrid(Cl: TPSRuntimeClassImporter);
@@ -1189,6 +1187,12 @@ begin
     RegisterEventPropertyHelper(@TdxQueryGridOnCreateForm_R, @TdxQueryGridOnCreateForm_W,
       'OnCreateForm');
     RegisterPropertyHelper(@TdxQueryGridEditable_R, nil, 'Editable');
+
+    RegisterMethod(@TdxQueryGrid.GetSourceFileName, 'GetSourceFileName');
+    RegisterMethod(@TdxQueryGrid.GetStoredFileName, 'GetStoredFileName');
+    RegisterMethod(@TdxQueryGrid.SaveBlobToStream, 'SaveToStream');
+    RegisterMethod(@TdxQueryGrid.SaveBlobToFile, 'SaveToFile');
+    RegisterMethod(@TdxQueryGrid.SaveThumbnailToStream, 'SaveThumbnailToStream');
   end;
 end;
 

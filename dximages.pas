@@ -101,6 +101,7 @@ type
     FDataSource: TDataSource;
     FFieldName: String;
     FId: Integer;
+    FIsQuery: Boolean;
     FOnImageLoad: TImageLoadEvent;
     FPrintSize: Integer;
     FReadOnly: Boolean;
@@ -138,6 +139,7 @@ type
     function WasChanged: Boolean;
     property SourceFileName: String read GetSourceFileName;
     property StoredFileName: String read GetStoredFileName;
+    property IsQuery: Boolean read FIsQuery write FIsQuery;
   published
     property Id: Integer read FId write FId;
     property FieldName: String read FFieldName write SetFieldName;
@@ -272,27 +274,31 @@ end;
 
 function GetImageStream(Image: TdxDBImage; DS: TDataSet): TStream;
 var
-  FNm, FlName: String;
+  FlNm, FileName: String;
   Tp: Integer;
 begin
   Result := nil;
-  FNm := fieldStr(Image.Id);
+  FlNm := FieldStr(Image.Id);
   Tp := Image.StorageType;
   //if (Tp = StorageTypeDB) and (DS.State in [dsInsert, dsEdit]) then Tp := StorageTypeLink;
   case Tp of
     StorageTypeDb:
-        Result := DS.CreateBlobStream(DS.FieldByName(FNm), bmRead);
+      begin
+        if Image.IsQuery then FlNm := FlNm + 'data';
+        Result := DS.CreateBlobStream(DS.FieldByName(FlNm), bmRead)
+      end;
     StorageTypeFolder:
       begin
-        FlName := GetAbsolutePath(Image.StorageFolder) + DS.FieldByName(FNm + 'dest').AsString;
-        if FileExists(FlName) then
-          Result := TFileStream.Create(FlName, fmOpenRead + fmShareDenyNone);
+        FileName := GetAbsolutePath(Image.StorageFolder) + DS.FieldByName(FlNm + 'dest').AsString;
+        if FileExists(FileName) then
+          Result := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
       end;
     StorageTypeLink:
       begin
-        FlName := DS.FieldByName(FNm + 'src').AsString;
-        if FileExists(FlName) then
-          Result := TFileStream.Create(FlName, fmOpenRead + fmShareDenyNone);
+        if not Image.IsQuery then FlNm := FlNm + 'src';
+        FileName := DS.FieldByName(FlNm).AsString;
+        if FileExists(FileName) then
+          Result := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
       end;
   end;
   if (Result <> nil) and (Result.Size = 0) then FreeAndNil(Result);
@@ -300,13 +306,15 @@ end;
 
 function GetImageFileName(Image: TdxDBImage; DS: TDataSet): String;
 var
-  S: String;
+  S, FlNm: String;
 begin
   Result := '';
+  FlNm := FieldStr(Image.Id);
   case Image.StorageType of
     StorageTypeDB:
       begin
-        S := DS.FieldByName(FieldStr(Image.Id) + 'src').AsString;
+        if not Image.IsQuery then FlNm := FlNm + 'src';
+        S := DS.FieldByName(FlNm).AsString;
         if S <> '' then
           Result := ExtractFilePath(S) + GetUniqueFileName(DS.FieldByName('id').AsInteger,
             Image.Id, ExtractFileName(S));
@@ -314,12 +322,15 @@ begin
     StorageTypeFolder:
       if Image.StorageFolder <> '' then
       begin
-        S := DS.FieldByName(FieldStr(Image.Id) + 'dest').AsString;
+        S := DS.FieldByName(FlNm + 'dest').AsString;
         if S <> '' then
 	        Result := GetAbsolutePath(Image.StorageFolder) + S;
       end;
     StorageTypeLink:
-      Result := DS.FieldByName(FieldStr(Image.Id) + 'src').AsString;
+      begin
+        if not Image.IsQuery then FlNm := FlNm + 'src';
+        Result := DS.FieldByName(FlNm).AsString;
+      end;
   end;
 end;
 
@@ -792,8 +803,12 @@ begin
 end;
 
 function TdxDBImage.GetSourceFileName: String;
+var
+  FlNm: String;
 begin
-  Result := DS.FieldByName(FieldStr(FId) + 'src').AsString;
+  FlNm := FieldStr(FId);
+  if not FIsQuery then FlNm := FlNm + 'src';
+  Result := DS.FieldByName(FlNm).AsString;
 end;
 
 function TdxDBImage.GetStoredFileName: String;

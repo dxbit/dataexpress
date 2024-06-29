@@ -664,6 +664,8 @@ begin
   end;
   if (MI.Count > 0) and (MI.Items[MI.Count - 1].Caption = '-') then
     MI.Items[MI.Count - 1].Free;
+  if (MI.Count > 0) and (MI.Items[0].Caption = '-') then
+    MI.Items[0].Free;
   for j := MI.Count - 1 downto 0 do
   begin
     if (TdxMenuItem(MI.Items[j].Tag).Kind = miMenu) and (MI.Items[j].Count = 0) then

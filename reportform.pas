@@ -128,7 +128,7 @@ type
     procedure ExprEditingDone(Sender: TObject);
     procedure FieldNameEditingDone(Sender: TObject);
     function FindFirstCell(r: Integer): Integer;
-    function FindFirstCmp(r: Integer): TComponent;
+    function GetFirstFieldType(r: Integer): TRpFieldType;
     procedure Load;
     procedure PickListKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
       );
@@ -169,7 +169,7 @@ implementation
 
 uses
   formmanager, apputils, exprform, LazUtf8, helpmanager, mainform, mytypes,
-  sqlform;
+  sqlform, dxfiles, dximages;
 
 {$R *.lfm}
 
@@ -562,14 +562,23 @@ begin
   if FFieldNameEd.Modified then SetModified;
 end;
 
-function TReportFm.FindFirstCmp(r: Integer): TComponent;
+function TReportFm.GetFirstFieldType(r: Integer): TRpFieldType;
 var
   i: Integer;
+  C: TComponent;
+  S: String;
 begin
-  Result := nil;
+  Result := flNone;
   for i := 1 to Grid.ColCount - 5 do
   begin
-    if Grid.Objects[i, r] <> nil then Exit(TComponent(Grid.Objects[i, r]));
+    if Grid.Objects[i, r] <> nil then
+    begin
+      S := Grid.Cells[i, r];
+      if S[1] = '!' then Delete(S, 1, 1);
+      C := TComponent(Grid.Objects[i, r]);
+      C := LookupComponent(TdxForm(C.Owner), S);
+      Exit( GetTypeByComponent(C) );
+    end;
   end;
 end;
 
@@ -657,7 +666,7 @@ begin
     FirstParentForm := True;
     ShowFieldsOfObject := True;
     ShowParFormPrefix := True;
-    ShowImages := False;
+    //ShowImages := False;
     OnPickUp:=@SelFieldFmPickUp;
   end;
   FOldFieldNames := TStringList.Create;
@@ -1033,6 +1042,7 @@ var
   pSr: PRpSource;
   pFl: PRpField;
   Cmp: TComponent;
+  Tp: TRpFieldType;
 begin
   DeleteOldFieldsReferences;
 
@@ -1066,8 +1076,8 @@ begin
       if Cmp = nil then
       begin
         pFl^.Zero := True;
-        Cmp := FindFirstCmp(j);
-        if (Cmp <> nil) then pFl^.Tp := GetTypeByComponent(Cmp)
+        Tp := GetFirstFieldType(j);
+        if Tp <> flNone then pFl^.Tp := Tp
         else pFl^.Tp:=flNumber;
       end
       else
@@ -1402,6 +1412,12 @@ begin
               Grid.Row := i; Grid.Col := j;
               Exit;
             end;
+          end
+          else if (C1 is TdxDBImage) or (C1 is TdxFile) then
+          begin
+            ErrMsg(rsFuncNotImageFiles);
+            Grid.Row := i; Grid.Col := j;
+            Exit;
           end;
           {else if (Fn in [tfMerge, tfMergeAll]) and (Grid.Cells[c-1, i] = '1') then
           begin

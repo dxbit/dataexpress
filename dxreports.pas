@@ -44,7 +44,7 @@ type
 
   TRpSourceKind = (skNone, skIncome, skOutcome);
   TRpFieldType = (flNone, flText, flNumber, flDate, flBool, flObject, flTime,
-    flCounter, flFile, flRecId);
+    flCounter, flFile, flRecId, flImage);
   TRpFieldTypes = set of TRpFieldType;
   TRpTotalFunc = (tfNone, tfSum, tfAvg, tfMax, tfMin, tfCount, tfProfit, tfDistCount,
     tfMergeAll, tfMerge);
@@ -431,7 +431,6 @@ type
     property SearchText: String read FSearchText write FSearchText;
   end;
 
-  //TdxQueryLinkType = (lkNone, lkForm, lkField);
 
   { TdxQueryGrid }
 
@@ -490,6 +489,12 @@ type
     procedure RequeryIfNeed(All: Boolean = False);
     function ScrollEventsDisabled: Boolean;
     procedure SortColsToRpGridSortCols;
+    function GetSourceFileName(const aName: String): String;
+    function GetStoredFileName(const aName: String): String;
+    procedure SaveBlobToStreamOrFile(const aName: String; St: TStream; const AFileName: String);
+    procedure SaveBlobToStream(const aName: String; St: TStream);
+    procedure SaveBlobToFile(const aName, AFileName: String);
+    procedure SaveThumbnailToStream(const aName: String; St: TStream);
     property DSP: TObject read FDSP write FDSP;
     property QRi: Integer read FQRi write FQRi;
     property RpWnd: TObject read FRpWnd write FRpWnd;
@@ -693,12 +698,14 @@ end;
 procedure InitGrid(Grid: TMyDBGrid; RD: TReportData);
 var
   L: TList;
-  i, n: Integer;
+  i, n, idx: Integer;
   C: TRpGridColumn;
   Col: TMyDBGridColumn;
   G: TRpGrid;
   L1: TRpGridSortList;
   L2: TSortColumns;
+  pF: PRpField;
+  Img: TdxDBImage;
 begin
   L := TList.Create;
   G := RD.Grid;
@@ -730,6 +737,18 @@ begin
     Col.Title.Layout:=C.TitleLayout;
     if {not C.IsCalcField and }RpFieldIsCheckBox(RD, C.FieldNameDS) then
       Col.ButtonStyle := cbsCheckboxColumn;
+
+    idx := RD.IndexOfNameDS(C.FieldNameDS);
+    if RD.GetFieldType(idx) = flImage then
+    begin
+      Col.IsImage := True;
+      pF := RD.TryGetRpField(idx);
+      if pF <> nil then
+      begin
+        Img := TdxDBImage(GetRpFieldComponent(pF^, True));
+        Col.ThumbSize := Img.ThumbSize;
+      end;
+    end;
   end;
   L.Free;
   Grid.Color := G.Color;
@@ -797,7 +816,7 @@ begin
   else if C is TdxFile then
     Result := flFile
   else if C is TdxDBImage then
-    Result := flText
+    Result := flImage
   else if C is TdxRecordId then
     Result := flRecId
 end;
@@ -806,7 +825,7 @@ end;
 function RpFieldTypeToStr(Tp: TRpFieldType): String;
 const
   TpS: array [TRpFieldType] of String = ('', rsText, rsNumber, rsDate,
-  	rsCheckBox, rsObject, rsTime, rsCounter, rsFile, rsRecordId);
+  	rsCheckBox, rsObject, rsTime, rsCounter, rsFile, rsRecordId, rsImage);
 begin
   Result := TpS[Tp];
 end;
@@ -1090,7 +1109,7 @@ var
 
   procedure ProcessField(const TopFl, Fl: TRpField);
   var
-    TblNm, FlNm: String;
+    TblNm, FlNm, TopFlNm: String;
   begin
     if Fl.Parent <> nil then ProcessJoin(Fl);
 
@@ -1108,13 +1127,36 @@ var
           FStr := FStr + '0 as income' + IntToStr(TopFl.Id) + ',' + TblNm + '.' + FieldStr(Fl.FId) +
             ' as outcome' + IntToStr(TopFl.Id) + ',';
       end
+      else if Fl.Tp = flRecId then
+      begin
+        FStr := FStr + TblNm + '.id as ' + FieldStr(TopFl.Id) + ',';
+      end
+      else if Fl.Tp = flFile then
+      begin
+        FlNm := TblNm + '.' + FieldStr(Fl.FId);
+        TopFlNm := FieldStr(TopFl.Id);
+        FStr := FStr +
+          FlNm + 'd as ' + TopFlNm + ',' +
+          FlNm + 'src as ' + TopFlNm + 'src,' +
+          FlNm + 'dest as ' + TopFlNm + 'dest,' +
+          FlNm + ' as ' + TopFlNm + 'data,';
+      end
+      else if Fl.Tp = flImage then
+      begin
+        FlNm := TblNm + '.' + FieldStr(Fl.FId);
+        TopFlNm := FieldStr(TopFl.Id);
+        FStr := FStr +
+          FlNm + 'src as ' + TopFlNm + ',' +
+          FlNm + 'dest as ' + TopFlNm + 'dest,' +
+          FlNm + 'thumb as ' + TopFlNm + 'thumb,' +
+          FlNm + ' as ' + TopFlNm + 'data,';
+      end
       else
       begin
-        FlNm := FieldStr(Fl.FId);
+        {FlNm := FieldStr(Fl.FId);
         if Fl.Tp = flFile then FlNm := FlNm + 'd'
-        else if Fl.Tp = flRecId then FlNm := 'id';
-        FStr := FStr + TblNm + '.' + FlNm;
-        FStr := FStr + ' as ' + FieldStr(TopFl.Id) + ',';
+        else if Fl.Tp = flRecId then FlNm := 'id';}
+        FStr := FStr + TblNm + '.' + FieldStr(Fl.FId) + ' as ' + FieldStr(TopFl.Id) + ',';
       end;
     end;
   end;
@@ -1130,20 +1172,38 @@ var
   end;  }
 
   procedure ProcessZero(Fl: TRpField);
+  var
+    FlNm: String;
   begin
     if Fl.Func = tfProfit then
       FStr := FStr + '0 as income' + IntToStr(Fl.Id) + ', 0 as outcome' + IntToStr(Fl.Id) + ','
     else
     begin
+      FlNm := FieldStr(Fl.Id);
       case Fl.Func of
-        tfSum: FStr := FStr + '0 as f' + IntToStr(Fl.Id) + ',';
+        tfSum: FStr := FStr + '0 as ' + FlNm + ',';
         tfCount:
           if Fl.AllZeros then
-            FStr := FStr + '0 as f' + IntToStr(Fl.Id) + ','
+            FStr := FStr + '0 as ' + FlNm + ','
           else
-	          FStr := FStr + 'null as f' + IntToStr(Fl.Id) + ',';
+	          FStr := FStr + 'null as ' + FlNm + ',';
         else
-          FStr := FStr + 'null as f' + IntToStr(Fl.Id) + ',';
+        begin
+          if Fl.Tp = flFile then
+            FStr := FStr +
+              'null as ' + FlNm + ',' +
+              'null as ' + FlNm + 'src,' +
+              'null as ' + FlNm + 'dest,' +
+              'null as ' + FlNm + 'data,'
+          else if Fl.Tp = flImage then
+            FStr := FStr +
+              'null as ' + FlNm + ',' +
+              'null as ' + FlNm + 'dest,' +
+              'null as ' + FlNm + 'thumb,' +
+              'null as ' + FlNm + 'data,'
+          else
+            FStr := FStr + 'null as ' + FlNm + ',';
+        end;
       end;
     end;
   end;
@@ -1396,7 +1456,7 @@ begin
     S := SL[i];
     if S = '' then Continue;
     case Tp of
-      flText, flFile:
+      flText, flFile, flImage:
         begin
           S := UnEscapeSemicolon(S);
           W := W + FlNm + ' containing ''' + EscapeSQuotes(S) + ''' or ';
@@ -1538,7 +1598,7 @@ begin
     S := SL[i];
     if S = '' then Continue;
     case Tp of
-      flText, flFile:
+      flText, flFile, flImage:
         begin
           S := UnEscapeSemicolon(S);
           W := W + FlNm + ' containing ''' + EscapeSQuotes(S) + ''' or ';
@@ -1664,6 +1724,7 @@ var
   Fl: TRpField;
   Sim, NeedGroup: Boolean;
   Col: TRpGridSortData;
+  Tp: TRpFieldType;
 begin
   Result := '';
   if RD.IsEmpty then Exit;
@@ -1734,6 +1795,17 @@ begin
     begin
       FStr := FStr + Nm + ',';
       GStr := GStr + Nm + ',';
+      Tp := GetLowField(@Fl)^.Tp;
+      if Tp = flFile then
+      begin
+        FStr := FStr + Nm + 'src,' + Nm + 'dest,' + Nm + 'data,';
+        GStr := GStr + Nm + 'src,' + Nm + 'dest,' + Nm + 'data,';
+      end
+      else if Tp = flImage then
+      begin
+        FStr := FStr + Nm + 'dest,' + Nm + 'thumb,' + Nm + 'data,';
+        GStr := GStr + Nm + 'dest,' + Nm + 'thumb,' + Nm + 'data,' ;
+      end;
     end
     else
     begin
@@ -2988,8 +3060,8 @@ end;
 
 function TdxQueryGrid.GetFields(aName: String): Variant;
 var
-  RD: TReportData;
   C: TRpGridColumn;
+  RD: TReportData;
 begin
   RD := ReportMan.FindReport(FId);
   C := RD.Grid.FindColumnByTitle(aName);
@@ -3257,6 +3329,160 @@ begin
     C := RD.Grid.FindColumnByFieldName(TColumn(CD.Col).FieldName);
     RD.Grid.SortCols.AddCol(C, CD.Desc);
   end;
+end;
+
+function TdxQueryGrid.GetSourceFileName(const aName: String): String;
+var
+  RD: TReportData;
+  Tp: TRpFieldType;
+  FlNm: String;
+  idx: Integer;
+begin
+  RD := ReportMan.FindReport(FId);
+  idx := RD.IndexOfName(aName);
+  if idx < 0 then
+    raise Exception.CreateFmt(rsFieldNotFound, [aName]);
+  Tp := RD.GetFieldType(idx);
+  if not (Tp in [flFile, flImage]) then
+    raise Exception.CreateFmt(rsFieldNotFileImage, [aName]);
+
+  FlNm := RD.GetFieldNameDS(idx);
+  if Tp = flFile then FlNm := FlNm + 'src';
+
+  RequeryIfNeed;
+  Result := DataSource.DataSet.FieldByName(FlNm).AsString;
+end;
+
+function TdxQueryGrid.GetStoredFileName(const aName: String): String;
+var
+  RD: TReportData;
+  Tp: TRpFieldType;
+  FlNm: String;
+  idx: Integer;
+begin
+  RD := ReportMan.FindReport(FId);
+  idx := RD.IndexOfName(aName);
+  if idx < 0 then
+    raise Exception.CreateFmt(rsFieldNotFound, [aName]);
+  Tp := RD.GetFieldType(idx);
+  if not (Tp in [flFile, flImage]) then
+    raise Exception.CreateFmt(rsFieldNotFileImage, [aName]);
+
+  FlNm := RD.GetFieldNameDS(idx) + 'dest';
+
+  RequeryIfNeed;
+  Result := DataSource.DataSet.FieldByName(FlNm).AsString;
+end;
+
+procedure TdxQueryGrid.SaveBlobToStreamOrFile(const aName: String; St: TStream;
+  const AFileName: String);
+var
+  RD: TReportData;
+  Tp: TRpFieldType;
+  idx: Integer;
+  pF: PRpField;
+  SrcImg, TmpImg: TdxDBImage;
+  C: TComponent;
+  SrcFile, TmpFile: TdxFile;
+begin
+  RD := ReportMan.FindReport(FId);
+  idx := RD.IndexOfName(aName);
+  if idx < 0 then
+    raise Exception.CreateFmt(rsFieldNotFound, [aName]);
+  Tp := RD.GetFieldType(idx);
+  if not (Tp in [flFile, flImage]) then
+    raise Exception.CreateFmt(rsFieldNotFileImage, [aName]);
+
+  pF := RD.TryGetRpField(idx);
+  if pF = nil then Exit;
+
+  C := GetRpFieldComponent(pF^, True);
+
+  RequeryIfNeed;
+
+  if C is TdxDBImage then
+  begin
+
+    SrcImg := TdxDBImage(C);
+
+    TmpImg := TdxDBImage.Create(nil);
+    with TmpImg do
+    begin
+      Id := pF^.Id;
+      StorageType := SrcImg.StorageType;
+      StorageFolder := SrcImg.StorageFolder;
+      IsQuery := True;
+      DataSource := Self.DataSource;
+    end;
+
+    try
+      if St <> nil then
+        TmpImg.SaveToStream(St)
+      else if AFileName <> '' then
+        TmpImg.SaveToFile(AFileName);
+    finally
+      TmpImg.Free;
+    end;
+
+  end
+  else
+  begin
+
+    SrcFile := TdxFile(C);
+
+    TmpFile := TdxFile.Create(nil);
+    with TmpFile do
+    begin
+      Id := pF^.Id;
+      StorageType := SrcFile.StorageType;
+      StorageFolder := SrcFile.StorageFolder;
+      IsQuery := True;
+      DataSource := Self.DataSource;
+    end;
+
+    try
+      if St <> nil then
+        TmpFile.SaveToStream(St)
+      else if AFileName <> '' then
+        TmpFile.SaveToFile(AFileName);
+    finally
+      TmpFile.Free;
+    end;
+
+  end;
+end;
+
+procedure TdxQueryGrid.SaveBlobToStream(const aName: String; St: TStream);
+begin
+  SaveBlobToStreamOrFile(aName, St, '');
+end;
+
+procedure TdxQueryGrid.SaveBlobToFile(const aName, AFileName: String);
+begin
+  SaveBlobToStreamOrFile(aName, nil, AFileName);
+end;
+
+procedure TdxQueryGrid.SaveThumbnailToStream(const aName: String; St: TStream);
+var
+  RD: TReportData;
+  Tp: TRpFieldType;
+  FlNm: String;
+  idx: Integer;
+begin
+  RD := ReportMan.FindReport(FId);
+  idx := RD.IndexOfName(aName);
+  if idx < 0 then
+    raise Exception.CreateFmt(rsFieldNotFound, [aName]);
+  Tp := RD.GetFieldType(idx);
+  if Tp <> flImage then
+    raise Exception.CreateFmt(rsFieldNotImage, [aName]);
+
+  FlNm := RD.GetFieldNameDS(idx) + 'thumb';
+
+  RequeryIfNeed;
+
+  with DataSource.DataSet do
+    TBlobField(FieldByName(FlNm)).SaveToStream(St);
 end;
 
 { TRpTotalList }
@@ -4288,7 +4514,8 @@ begin
   CheckFieldIndex(AIndex);
 
   pF := TryGetRpField(AIndex);
-  if pF <> nil then Exit('f' + IntToStr(pF^.Id));
+  if pF <> nil then
+    Exit('f' + IntToStr(pF^.Id));
 
   SqlF := TryGetSQLField(AIndex);
   if SqlF <> nil then Exit(SqlF.FieldNameDS);

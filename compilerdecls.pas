@@ -1067,6 +1067,12 @@ begin
       RegisterMethod('procedure DisableControls');
       RegisterMethod('function ControlsDisabled: Boolean');
     end;
+
+    RegisterMethod('function GetSourceFileName(const FieldName: String): String');
+    RegisterMethod('function GetStoredFileName(const FieldName: String): String');
+    RegisterMethod('procedure SaveToStream(const FieldName: String; St: TStream)');
+    RegisterMethod('procedure SaveToFile(const FieldName, FileName: String)');
+    RegisterMethod('procedure SaveThumbnailToStream(const FieldName: String; St: TStream)');
   end;
 
   with Cl.FindClass('TdxForm') do

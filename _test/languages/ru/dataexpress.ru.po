@@ -2537,6 +2537,11 @@ msgstr "Поле с таким именем уже существует."
 msgid "Field [%s] not date."
 msgstr "Поле [%s] не является датой."
 
+#: strconsts.rsfieldnotfileimage
+#, object-pascal-format
+msgid "Field is not a file or image: %s"
+msgstr "Поле не является файлом или изображением: %s"
+
 #: strconsts.rsfieldnotfound
 #, object-pascal-format
 msgid "Field not found: %s"
@@ -2545,6 +2550,11 @@ msgstr "Поле не найдено: %s"
 #: strconsts.rsfieldnotfounderror
 msgid "Field not found. Unable to determine field type."
 msgstr "Поле не найдено. Невозможно определить тип поля."
+
+#: strconsts.rsfieldnotimage
+#, object-pascal-format
+msgid "Field is not a image: %s"
+msgstr "Поле не является изображением: %s"
 
 #: strconsts.rsfieldnotobject
 #, object-pascal-format
@@ -2973,6 +2983,10 @@ msgstr "Функция не найдена: %s"
 msgid "Function [%s] not found in module [%s]."
 msgstr "Функция [%s] не найдена в модуле [%s]."
 
+#: strconsts.rsfuncnotimagefiles
+msgid "The function cannot be applied to files and images."
+msgstr "Функцию нельзя применить к файлам и изображениям."
+
 #: strconsts.rsfuncnotsel
 msgctxt "strconsts.rsfuncnotsel"
 msgid "Function not selected."
@@ -3355,6 +3369,19 @@ msgstr "Поле изображения [%s] не найдено."
 #: strconsts.rsimageprops
 msgid "Image properties"
 msgstr "Свойства изображения"
+
+#: strconsts.rsimagerenameitem
+#, object-pascal-format
+msgid ""
+"Old name:\n"
+"%0:s\n"
+"New name:\n"
+"%1:s\n"
+msgstr ""
+"Прежнее имя:\n"
+"%0:s\n"
+"Новое имя:\n"
+"%1:s\n"
 
 #: strconsts.rsimages
 msgid "Images"
@@ -4438,11 +4465,6 @@ msgstr "Только редактирование"
 msgid "Only values from the list"
 msgstr "Только значения из списка"
 
-#: strconsts.rsonlytextfieldcanbeparamwithmergefunc
-#, object-pascal-format
-msgid "Only the text field can be a parameter with function [%s]."
-msgstr "Только текстовые поля могут быть параметрами с функцией [%s]"
-
 #: strconsts.rsonlyview
 msgid "Only viewing"
 msgstr "Только просмотр"
@@ -4994,6 +5016,10 @@ msgstr "Убрать из группы"
 #: strconsts.rsrename
 msgid "Rename"
 msgstr "Переименовать"
+
+#: strconsts.rsrenameaddedimagesmsg
+msgid "When added, some images were renamed due to the following possible reasons: the name already exists, the name is longer than 50 characters, or contains invalid characters."
+msgstr "При добавлении некоторые изображения были переименованы из-за следующих возможных причин: такие имя уже существует, длина имени превышает 50 символов или содержит недопустимые символы."
 
 #: strconsts.rsrenamegroup
 msgid "Rename group"

@@ -83,6 +83,7 @@ type
     function GetFullName(U: TdxUser): String;
     procedure SetControlState;
     function CheckDeleteRole(R: TdxRole): Boolean;
+    procedure UpdateUserList;
     procedure FillUsers;
     procedure FillRoles;
     procedure FillIntfs;
@@ -347,12 +348,17 @@ end;
 procedure TUsersFm.ToolButton5Click(Sender: TObject);
 var
   R: TdxRole;
+  OldName: String;
 begin
   R := TdxRole(Roles.Items.Objects[Roles.ItemIndex]);
+  OldName := R.Name;
   if ShowRoleForm(R) = mrOk then
   begin
     Roles.Items[Roles.ItemIndex] := R.Name;
     FModified := True;
+
+    if OldName <> R.Name then
+      UpdateUserList;
   end;
 end;
 
@@ -486,6 +492,23 @@ begin
     end;
   end;
   Result := True;
+end;
+
+procedure TUsersFm.UpdateUserList;
+var
+  i: Integer;
+  U: TdxUser;
+begin
+  with Users do
+  begin
+    Items.BeginUpdate;
+    for i := 0 to Items.Count - 1 do
+    begin
+      U := TdxUser(Items.Objects[i]);
+      Items[i] := GetFullName(U);
+    end;
+    Items.EndUpdate;
+  end;
 end;
 
 procedure TUsersFm.FillUsers;

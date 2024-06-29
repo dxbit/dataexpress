@@ -248,6 +248,7 @@ begin
     flCounter: n := 10;
     flFile: n := 16;
     flRecId: n := 20;
+    flImage: n := 14;
   end;
   Result := n;
 end;

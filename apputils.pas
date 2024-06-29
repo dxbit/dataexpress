@@ -56,6 +56,7 @@ function GetOutputDir: String;
 function GetAbsolutePath(const Path: String): String;
 function CopyToStorageFolder(const Src, Dir, Dest: String): String;
 function OpenPictureDialog(OnlyPNG: Boolean = False): String;
+function OpenPictureDialogMulti(AFiles: TStrings): Boolean;
 function SavePictureDialog(DefaultFileName: String; OnlyPNG: Boolean = False): String;
 function SaveFileDialog(const aTitle: String; DefaultFileName: String): String;
 //procedure ShowImages(Fm: TdxForm);
@@ -246,6 +247,9 @@ function GetComponentDisplayFormat(Fm: TdxForm; C: TComponent): String;
 procedure SetDSFieldDisplayFormat(F: TField; Fmt: String);
 procedure DeleteLCbxListSourceField(Fm: TdxForm; RDId: Integer; const FieldNameDS: String);
 function IsTextComponent(C: TComponent): Boolean;
+procedure DrawImageFieldIntoGrid(Grid: TDBGrid; Column: TColumn; ImageField: TField; R: TRect);
+procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
+  const TargetField: String; out FieldName: String; out Color: TColor);
 
 implementation
 
@@ -457,6 +461,20 @@ begin
       Filter := rsOpenPicturesFilter;
     Options := Options + [ofFileMustExist];
     if Execute then Result := FileName;
+  finally
+    Free;
+  end;
+end;
+
+function OpenPictureDialogMulti(AFiles: TStrings): Boolean;
+begin
+  with TOpenDialog.Create(nil) do
+  try
+    Title := rsLoadImage;
+    Filter := rsOpenPicturesFilter;
+    Options := Options + [ofFileMustExist, ofAllowMultiSelect];
+    Result := Execute;
+    if Result then AFiles.Assign(Files);
   finally
     Free;
   end;
@@ -4132,6 +4150,105 @@ function IsTextComponent(C: TComponent): Boolean;
 begin
   Result := (C is TdxMemo) or (C is TdxEdit) or (C is TdxComboBox) or
     (C is TdxFile);
+end;
+
+procedure DrawImageFieldIntoGrid(Grid: TDBGrid; Column: TColumn;
+  ImageField: TField; R: TRect);
+
+  procedure GetImagePos(Col: TMyDBGridColumn; Bmp: TBGRABitmap; out x, y: Integer);
+  var
+    al: TAlignment;
+    lay: TTextLayout;
+  begin
+    al := Col.Alignment;
+    lay := Col.Layout;
+    case al of
+      taLeftJustify: x := R.Left + ScaleToScreen(2);
+      taCenter: x := R.Left + R.Width div 2 - Bmp.Width div 2;
+      taRightJustify: x := R.Right - Bmp.Width - ScaleToScreen(2);
+    end;
+    case lay of
+      tlTop: y := R.Top + ScaleToScreen(2);
+      tlCenter: y := R.Top + R.Height div 2 - Bmp.Height div 2;
+      tlBottom: y:= R.Bottom - Bmp.Height - ScaleToScreen(2);
+    end;
+  end;
+
+var
+  St: TStream;
+  Bmp: TBGRABitmap;
+  Col: TMyDBGridColumn;
+  x, y: Integer;
+begin
+  Grid.Canvas.FillRect(R);
+
+  Col := TMyDBGridColumn(Column);
+  if (Col.ThumbSize = 0) or ImageField.IsNull then Exit;
+
+  try
+
+  St := ImageField.DataSet.CreateBlobStream(ImageField, bmRead);
+  Bmp := TBGRABitmap.Create(0, 0);
+  try
+    if (St <> nil) and (St.Size > 0) then Bmp.LoadFromStream(St);
+    GetImagePos(Col, Bmp, x, y);
+    Bmp.Draw(Grid.Canvas, x, y, True);
+  finally
+    Bmp.Free;
+    FreeAndNil(St);
+  end;
+
+  except
+    ;
+  end;
+end;
+
+procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
+  const TargetField: String; out FieldName: String; out Color: TColor);
+var
+  EB: TExpressionBuilder;
+  i: Integer;
+  E: TExpression;
+  V: Variant;
+  CD: TRpColoringData;
+begin
+  FieldName := ''; Color := clNone;
+  EB := TExpressionBuilder.Create;
+  EB.RD := RD;
+  EB.RDSet := RDS;
+  EB.Form := Fm;
+  if (Fm <> nil) and (Fm.ParentForm <> nil) then
+    EB.ParentForm := Fm.ParentForm
+  else
+    EB.ParentForm := Fm;
+  EB.DataSet := DS;
+  EB.SkipLabels := True;
+  E := nil;
+  try try
+    for i := 0 to RD.Coloring.Count - 1 do
+    begin
+      CD := RD.Coloring[i];
+      if CompareText(CD.FieldNameDS, TargetField) <> 0 then Continue;
+      FreeAndNil(E);
+      E := EB.Build(CD.Expr);
+      if E <> nil then
+      begin
+        V := E.Calc;
+        if VarIsBool(V) and (V = True) then
+        begin
+          Color := CD.Color;
+          FieldName := CD.FieldNameDS;
+          Exit;
+        end;
+      end;
+    end;
+  except
+    Exit; // Глушим ошибку, чтобы программа не упала
+  end;
+  finally
+    EB.Free;
+    FreeAndNil(E);
+  end;
 end;
 
 end.
