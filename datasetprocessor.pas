@@ -153,8 +153,6 @@ type
       Column: TColumn; AState: TGridDrawState);
     procedure TimerTimer(Sender: TObject);
     procedure QueryGridButtonClick2(Sender: TObject; Bn: TGridButtonType);
-    //procedure QueryGridDrawColumnCell(Sender: TObject; const Rect: TRect;
-    //  DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DataSetAfterOpen(DataSet: TDataSet);
     procedure DataSetBeforePost(DataSet: TDataSet);
     procedure FieldChange(Sender: TField);
@@ -1390,6 +1388,9 @@ begin
   Grid.EndUpdate;
 
   DSFields.Free;
+
+  if Grid.RowCount = Grid.FixedRows then
+    Grid.RowCount := Grid.RowCount + 1;
 end;
 
 procedure TDataSetProcessor.LCbxSetDisplayFormat(LCbx: TdxLookupComboBox;
