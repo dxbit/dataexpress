@@ -1150,6 +1150,8 @@ TdxQueryGrid = class(TControl)
 	procedure DisableScrollEvents
 	function EOF: Boolean
 	procedure EnableScrollEvents
+	function GetSourceFileName(const FieldName: String): String
+	function GetStoredFileName(const FieldName: String): String
 	function GotoRecord(RecId: Integer): Boolean
 	function Locate(const FieldNames: String; FieldValues: array of Variant; Options: TLocateOptions): Boolean
 	procedure MoveBy(Distance: Integer)
@@ -1162,6 +1164,9 @@ TdxQueryGrid = class(TControl)
 	function RecNo: Integer
 	function RecordCount: Integer
 	procedure Refresh
+	procedure SaveThumbnailToStream(const FieldName: String; St: TStream)
+	procedure SaveToFile(const FieldName, AFileName: String)
+	procedure SaveToStream(const FieldName: String; St: TStream)
 	function ScrollEventsDisabled: Boolean
 	property AsDT[Name: String]: TDateTime [r]
 	property AsF[Name: String]: Double [r]
