@@ -1388,9 +1388,6 @@ begin
   Grid.EndUpdate;
 
   DSFields.Free;
-
-  if Grid.RowCount = Grid.FixedRows then
-    Grid.RowCount := Grid.RowCount + 1;
 end;
 
 procedure TDataSetProcessor.LCbxSetDisplayFormat(LCbx: TdxLookupComboBox;

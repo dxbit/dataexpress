@@ -167,6 +167,7 @@ type
     function CreateColumns: TGridColumns; override;
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String); override;
+    function GetTruncCellHintText(ACol, ARow: Integer): string; override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure DrawText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
@@ -800,6 +801,15 @@ begin
   Canvas.TextStyle := ts;
 
   inherited DrawCellText(aCol, aRow, aRect, aState, aText);
+end;
+
+function TDropDownList.GetTruncCellHintText(ACol, ARow: Integer): string;
+begin
+  // Когда грид пустой, возникает ошибка выхода за границу массива
+  if (RowCount > 0) and (ColCount > 0) then
+    Result:=inherited GetTruncCellHintText(ACol, ARow)
+  else
+    Result := '';
 end;
 
 constructor TDropDownList.Create(AOwner: TComponent);

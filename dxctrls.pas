@@ -2356,9 +2356,13 @@ var
 begin
   with FGrid do
   begin
-	  //id := PtrInt(Objects[0, Row]);
-    id := RecId[Row];
-    txt := Cells[0, Row];
+	  if (RowCount > 0) and (ColCount > 0) then
+    begin
+      id := RecId[Row];
+      txt := Cells[0, Row];
+    end
+    else
+      id := 0;
   end;
   Hide;
   if (id > 0) and (FControl.DataSource.DataSet.State in [dsInsert, dsEdit]) then
