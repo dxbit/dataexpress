@@ -146,6 +146,7 @@ type
 
   TdxChart = class(TChart)
   private
+    FHidden: Boolean;
     FNeedBuild: Boolean;
     FSaveImageHeight: Integer;
     FSaveImageWidth: Integer;
@@ -189,6 +190,7 @@ type
     property SaveImageWidth: Integer read FSaveImageWidth write FSaveImageWidth;
     property SaveImageHeight: Integer read FSaveImageHeight write FSaveImageHeight;
     property SaveOriginalSize: Boolean read FSaveOriginalSize write FSaveOriginalSize;
+    property Hidden: Boolean read FHidden write FHidden default False;
 
     property PopupMenu stored False;
   end;
@@ -196,7 +198,7 @@ type
 implementation
 
 uses
-  dxctrls, apputils, sqlgen;
+  dxctrls, apputils;
 
 { TdxFieldYItem }
 

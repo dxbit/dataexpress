@@ -47,7 +47,7 @@ type
     FOnSelectComponent: TSelectComponentEvent;
     FMemo: TMemo;
     FDefValNode, FExprNode, FCheckExprNode, FReqNode, FLblNode,
-      FListFltNode: TTreeNode;
+      FListFltNode, FHiddenNode: TTreeNode;
     FForm: TdxForm;
     FData: TList;
 
@@ -76,7 +76,7 @@ type
 implementation
 
 uses
-  apputils, LazUtf8, appsettings;
+  apputils, LazUtf8, dxreports, dximages, dxfiles, dxcharts, pivotgrid;
 
 function HasDefVal(C: TComponent): Boolean;
 var
@@ -112,7 +112,7 @@ begin
   Result := Trim(GetComboFilter(C)) <> '';
 end;
 
-function GetImageIdx(C: TComponent): Integer;
+{function GetImageIdx(C: TComponent): Integer;
 var
   n: Integer;
 begin
@@ -128,6 +128,21 @@ begin
   else if C is TdxLabel then n := 9
   else if C is TdxCounter then n := 10;
   Result := n;
+end;   }
+
+function GetImageIdx(C: TComponent): Integer;
+const
+  Cls: array [1..24] of TClass = (TdxEdit, TdxCalcEdit, TdxDateEdit, TdxTimeEdit,
+    TdxMemo, TdxCheckBox, TdxComboBox, TdxLookupComboBox, TdxLabel, TdxCounter,
+    TdxObjectField, TdxShape, TdxButton, TdxQueryGrid, TdxGrid, TdxDBImage,
+    TdxImage, TdxTabSheet, TdxPageControl, TdxPivotGrid, TdxGroupBox, TdxFile,
+    TdxChart, TdxRecordId);
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := Low(Cls) to High(Cls) do
+    if C.ClassType = Cls[i] then Exit(i);
 end;
 
 procedure SetImageIdx(N: TTreeNode; i: Integer);
@@ -168,7 +183,8 @@ begin
     if PN = FDefValNode then ep := epDefaultValue
 		else if (PN = FExprNode) or (PN = FLblNode) then ep := epExpression
     else if PN = FCheckExprNode then ep := epCheckExpression
-    else if PN = FListFltNode then ep := epListFilter;
+    else if PN = FListFltNode then ep := epListFilter
+    else Exit;
   	FOnEditComponent(Self, C, ep);
     UpdateMemo(N);
   end;
@@ -246,7 +262,31 @@ begin
     AddLazarusResource('object16');
     AddLazarusResource('label16');
     AddLazarusResource('counter16');
-    AddLazarusResource('form16');
+    AddLazarusResource('objectfield16');
+    AddLazarusResource('shape16');
+    AddLazarusResource('button16');
+    AddLazarusResource('query16');
+    AddLazarusResource('grid16');
+    AddLazarusResource('dbimage16');
+    AddLazarusResource('image16');
+    AddLazarusResource('tab16');
+    AddLazarusResource('tabs16');
+    AddLazarusResource('pivottable16');
+    AddLazarusResource('groupbox16');
+    AddLazarusResource('file16');
+    AddLazarusResource('chart16');
+    AddLazarusResource('key16');
+    {AddLazarusResource('text16');
+    AddLazarusResource('calc16');
+    AddLazarusResource('date16');
+    AddLazarusResource('clock16');
+    AddLazarusResource('memo16');
+    AddLazarusResource('checkbox16');
+    AddLazarusResource('combobox16');
+    AddLazarusResource('object16');
+    AddLazarusResource('label16');
+    AddLazarusResource('counter16');
+    AddLazarusResource('form16'); }
   end;
 
   with TSplitter.Create(Self) do
@@ -314,6 +354,7 @@ begin
   FReqNode := nil;
   FLblNode := nil;
   FListFltNode := nil;
+  FHiddenNode := nil;
   FMemo.Text := '';
 end;
 
@@ -336,8 +377,11 @@ var
 
     if Cmp is TdxLabel then
     	S := TdxLabel(Cmp).FieldName
+    else if HasFId(Cmp) then
+	    S := GetFieldName(Cmp)
     else
-	    S := GetFieldName(Cmp);
+      S := GetComponentName(Cmp);
+
     for j := 0 to AParent.Count - 1 do
     begin
       if MyUtf8CompareText(S, AParent.Items[j].Text) < 0 then
@@ -366,9 +410,13 @@ begin
   FReqNode := Tree.Items.AddChild(N, rsRequired);
   FLblNode := Tree.Items.AddChild(N, rsCalcLabels);
   FListFltNode := Tree.Items.AddChild(N, rsListFilter);
+  FHiddenNode := Tree.Items.AddChild(N, rsHiddenComponents);
   for i := 0 to FForm.ComponentCount - 1 do
   begin
     C := FForm.Components[i];
+
+    if GetHidden(C) then
+      AddTreeNode(FHiddenNode, C);
     if not HasFId(C) then
     begin
       if (C is TdxLabel) and (Trim(TdxLabel(C).Expression) <> '') then

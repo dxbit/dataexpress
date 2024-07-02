@@ -1269,6 +1269,10 @@ object DesignFr: TDesignFr
       ImageIndex = 12
       OnClick = MenuItem1Click
     end
+    object HideMnu: TMenuItem
+      Caption = 'Скрыть компонент'
+      OnClick = HideMnuClick
+    end
     object MenuItem29: TMenuItem
       Caption = '-'
     end

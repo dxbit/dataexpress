@@ -47,6 +47,7 @@ type
     MenuItem17: TMenuItem;
     MenuItem18: TMenuItem;
     MenuItem19: TMenuItem;
+    HideMnu: TMenuItem;
     MenuItem20: TMenuItem;
     MenuItem21: TMenuItem;
     MenuItem22: TMenuItem;
@@ -124,6 +125,7 @@ type
     procedure DesignMnuClick(Sender: TObject);
     procedure FormDesignKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure HideMnuClick(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem27Click(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
@@ -644,6 +646,21 @@ begin
   end;
 end;
 
+procedure TDesignFr.HideMnuClick(Sender: TObject);
+var
+  i: Integer;
+  C: TControl;
+  V: Boolean;
+begin
+  V := not HideMnu.Checked;
+  for i := 0 to High(FormDesign.Selected) do
+  begin
+    C := FormDesign.Selection[i];
+    SetHidden(C, V);
+  end;
+  FSummaryTree.UpdateTree;
+end;
+
 procedure TDesignFr.MenuItem1Click(Sender: TObject);
 var
   i: Integer;
@@ -921,10 +938,18 @@ begin
   	ResetDesigner;
 end;
 
+function GetFirstComponentHiddenState: Integer;
+begin
+  if FormDesign.Count = 0 then Exit(-1);
+  if GetHidden(FormDesign.Selection[0]) then Result := 1
+  else Result := 0;
+end;
+
 procedure TDesignFr.UpdateDesignMenuState;
 var
   C, DummyCtrl: TControl;
   MI: TMenuItem;
+  n: Integer;
 begin
   MenuItem3.Enabled:=FormDesign.Count > 0;
   MenuItem4.Enabled := FormDesign.Count > 0;
@@ -949,6 +974,10 @@ begin
   MenuItem33.Enabled:=(FormDesign.Count = 1) and ((C is TdxEdit) or (C is TdxComboBox));
   MenuItem34.Enabled:=(FormDesign.Count = 1) and ((C is TdxMemo) or (C is TdxEdit));
   MenuItem37.Enabled := (FormDesign.Count > 0) and HasAnchors(FormDesign.Control);
+
+  n := GetFirstComponentHiddenState;
+  HideMnu.Enabled := n >= 0;
+  HideMnu.Checked := n = 1;
 
   // "Скрыть кнопку"
   MI := MenuItem1;
@@ -1872,6 +1901,7 @@ begin
   MenuItem33.Caption := rsMemo;
   MenuItem34.Caption := rsList;
   MenuItem37.Caption := rsAnchors;
+  HideMnu.Caption := rsHideComponent;
 
   DateEditMnu := TDateEditMenu.Create(nil);
   //CalcEditMnu := TCalcEditMenu.Create(nil);

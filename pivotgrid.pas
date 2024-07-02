@@ -135,6 +135,7 @@ type
     FGrandTotalFixedFont: TFont;
     FGrandTotalFont: TFont;
     FGrandTotalWidth: Integer;
+    FHidden: Boolean;
     FId: Integer;
     FIndent: Integer;
     FNeedBuild: Boolean;
@@ -200,6 +201,7 @@ type
 
     property PopupMenu stored False;
     property TabStop stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
 function PivotGridToHtml(Grid: TdxPivotGrid): String;

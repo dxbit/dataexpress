@@ -3201,6 +3201,10 @@ msgstr "ЧЧ:ММ"
 msgid "HH:MM:SS"
 msgstr "ЧЧ:ММ:СС"
 
+#: strconsts.rshiddencomponents
+msgid "Hidden components"
+msgstr "Скрытые компоненты"
+
 #: strconsts.rshideancestors
 msgid "Hide ancestors"
 msgstr "Скрыть предков"
@@ -3216,6 +3220,10 @@ msgstr "Скрыть кнопку"
 #: strconsts.rshidecolumn
 msgid "Hide column"
 msgstr "Скрыть столбец"
+
+#: strconsts.rshidecomponent
+msgid "Hide component"
+msgstr "Скрыть компонент"
 
 #: strconsts.rshidecontexthelp
 msgid "Hide context help"

@@ -1664,6 +1664,7 @@ begin
   if Fm <> nil then
   begin
     Active := True;
+
     {$ifndef windows}
     for i := 0 to Fm.ComponentCount - 1 do
       AssignDesignMenu(Fm.Components[i]);

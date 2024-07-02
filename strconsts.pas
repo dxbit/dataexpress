@@ -1826,6 +1826,8 @@ resourcestring
     +'following possible reasons: the name already exists, the name is longer '
     +'than 50 characters, or contains invalid characters.';
   rsImageRenameItem = 'Old name:'#13#10'%0:s'#13#10'New name:'#13#10'%1:s'#13#10;
+  rsHiddenComponents = 'Hidden components';
+  rsHideComponent = 'Hide component';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

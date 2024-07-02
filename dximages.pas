@@ -37,6 +37,7 @@ type
   private
     FBmp: TBGRABitmap;
     FCenter: Boolean;
+    FHidden: Boolean;
     FImageName: String;
     FKeepSize: Boolean;
     FProportional: Boolean;
@@ -74,6 +75,7 @@ type
     property Quality: Integer read FQuality write SetQuality;
     property KeepSize: Boolean read FKeepSize write SetKeepSize;
     property ImageName: String read FImageName write SetImageName;
+    property Hidden: Boolean read FHidden write FHidden default False;
 
     property OnDblClick;
     property OnMouseDown;

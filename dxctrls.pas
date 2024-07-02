@@ -113,6 +113,7 @@ type
   private
     FExpr: String;
     FFieldName: String;
+    FHidden: Boolean;
     //FOldValue: Variant;
     FValue: Variant;
   protected
@@ -126,6 +127,7 @@ type
   published
     property PopupMenu stored False;
     property Expression: String read FExpr write FExpr;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxEdit }
@@ -285,6 +287,7 @@ type
     FFieldName: String;
     FFieldSize: Integer;
     FFilter: String;
+    FHidden: Boolean;
     FId: Integer;
     FOldSize: Integer;
     FOnButtonClick: TNotifyEvent;
@@ -318,6 +321,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure UpdateButtonVisible;
     procedure EnableButton(AValue: Boolean);
     procedure Change; override;
     property OldSize: Integer read FOldSize write FOldSize;
@@ -344,6 +348,7 @@ type
     property UpdateTree: Boolean read FUpdateTree write FUpdateTree;
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxCheckBox }
@@ -356,6 +361,7 @@ type
     FEditable: Boolean;
     FExpression: String;
     FFieldName: String;
+    FHidden: Boolean;
     FId: Integer;
     FStopTab: Boolean;
     FUnCheckedText: String;
@@ -374,6 +380,7 @@ type
     property DefaultValue: String read FDefaultValue write FDefaultValue;
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxComboBox }
@@ -388,6 +395,7 @@ type
     FFieldName: String;
     FFieldSize: Integer;
     FFilter: String;
+    FHidden: Boolean;
     FId: Integer;
     FOldSize: Integer;
     //FOnMyUtf8KeyPress: TMyUtf8KeyPressEvent;
@@ -439,6 +447,7 @@ type
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
     property OnMeasureItem;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   TInsertValueData = class
@@ -769,6 +778,7 @@ type
 
   TdxGroupBox = class(TGroupBox)
   private
+    FHidden: Boolean;
     FStopTab: Boolean;
   protected
     procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
@@ -781,12 +791,14 @@ type
     property PopupMenu stored False;
     property ClientWidth stored False;
     property ClientHeight stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxPageControl }
 
   TdxPageControl = class(TPageControl)
   private
+    FHidden: Boolean;
     FStopTab: Boolean;
   protected
     procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
@@ -802,12 +814,14 @@ type
     property TabStop stored False;
     property PopupMenu stored False;
     property Options stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxTabSheet }
 
   TdxTabSheet = class(TTabSheet)
   private
+    FHidden: Boolean;
     FNeedUpdate: Boolean;
     FStopTab: Boolean;
   protected
@@ -821,14 +835,18 @@ type
     property PopupMenu stored False;
     property ClientWidth stored False;
     property ClientHeight stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TdxShape }
 
   TdxShape = class(TShape)
+  private
+    FHidden: Boolean;
   public
     constructor Create(TheOwner: TComponent); override;
   published
+    property Hidden: Boolean read FHidden write FHidden default False;
     property PopupMenu stored False;
   end;
 
@@ -1234,6 +1252,7 @@ type
     FActionProps: String;
     FActionType: TdxActionType;
     FButtonName: String;
+    FHidden: Boolean;
     FImageName: String;
     FResName: String;
     FStopTab: Boolean;
@@ -1254,6 +1273,8 @@ type
     property ImageName: String read FImageName write SetImageName;
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
+
 
     property PopupMenu stored False;
     property ButtonName: String read FButtonName write FButtonName stored False;
@@ -1473,6 +1494,8 @@ function GetImageName(C: TComponent): String;
 procedure SetImageName(C: TComponent; const S: String);
 function GetStopTab(C: TComponent): Boolean;
 procedure SetStopTab(C: TComponent; Value: Boolean);
+function GetHidden(C: TComponent): Boolean;
+procedure SetHidden(C: TComponent; Value: Boolean);
 
 implementation
 
@@ -2101,6 +2124,16 @@ end;
 procedure SetStopTab(C: TComponent; Value: Boolean);
 begin
   SetInt(C, 'StopTab', Integer(Value));
+end;
+
+function GetHidden(C: TComponent): Boolean;
+begin
+  Result := Boolean(GetInt(C, 'Hidden'));
+end;
+
+procedure SetHidden(C: TComponent; Value: Boolean);
+begin
+  SetInt(C, 'Hidden', Integer(Value));
 end;
 
 function _GetSourceFieldName(Obj: TComponent): String;
@@ -4599,9 +4632,9 @@ end;
 
 procedure TdxLookupComboBox.SetButtonState;
 begin
-  FDropDownButton.Visible := Visible and (not FHideList);
+  FDropDownButton.Visible := ((csDesigning in ComponentState) or Visible) and not FHideList;
   FDropDownButton.Enabled := (not ReadOnly) and Enabled;
-  FButton.Visible := Visible and (not FHideButton);
+  FButton.Visible := ((csDesigning in ComponentState) or Visible) and not FHideButton;
   FButton.Enabled := (not ReadOnly) and Enabled;
 end;
 
@@ -5373,7 +5406,7 @@ end;
 procedure TdxMemo.SetVisible(Value: Boolean);
 begin
   inherited SetVisible(Value);
-  FButton.Visible:=Value and (FSourceTId > 0);
+  UpdateButtonVisible;
 end;
 
 procedure TdxMemo.SetEnabled(Value: Boolean);
@@ -5484,6 +5517,11 @@ destructor TdxMemo.Destroy;
 begin
   FreeAndNil(FButton);
   inherited Destroy;
+end;
+
+procedure TdxMemo.UpdateButtonVisible;
+begin
+  FButton.Visible := ((csDesigning in ComponentState) or Visible) and (FSourceTId > 0);
 end;
 
 procedure TdxMemo.EnableButton(AValue: Boolean);

@@ -2959,6 +2959,22 @@ begin
   end;
 end;
 
+procedure SelectFirstVisiblePage(Pages: TPageControl);
+var
+  i: Integer;
+  T: TTabSheet;
+begin
+  for i := 0 to Pages.PageCount - 1 do
+  begin
+    T := Pages.Pages[i];
+    if T.TabVisible then
+    begin
+      Pages.ActivePage := T;
+      Exit;
+    end;
+  end;
+end;
+
 procedure TDataSetProcessor.BindControls(DSR: TDataSetRec);
 var
   i: Integer;
@@ -2995,6 +3011,19 @@ begin
       end;
     end;
     //
+
+    if GetHidden(C) then
+    begin
+      TControl(C).Visible := False;
+      if C is TdxTabSheet then
+        with TdxTabSheet(C) do
+        begin
+          TabVisible := False;
+          if PageControl.ActivePage = C then
+            SelectFirstVisiblePage(PageControl);
+        end;
+    end;
+
     if C is TdxButton then
     	with TdxButton(C) do
 	    begin

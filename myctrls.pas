@@ -323,6 +323,7 @@ type
   TMyDBGrid = class(TDBGrid)
   private
     FAllowChangeSort: Boolean;
+    FHidden: Boolean;
     FInactiveSelectedTextColor: TColor;
     FAlignButtons: TAlignment;
     FHideButtons: Boolean;
@@ -436,6 +437,7 @@ type
     property TabStop stored False;
     property PopupMenu stored False;
     property ParentFont stored False;
+    property Hidden: Boolean read FHidden write FHidden default False;
   end;
 
   { TTreeSearchForm }
@@ -1510,7 +1512,7 @@ begin
   inherited Loaded;
   Options := Options + [dgHeaderHotTracking, dgHeaderPushedLook, dgDisplayMemoText];
   PositionButtons;
-  FButtons.Visible:=not FHideButtons;
+  FButtons.Visible := ((csDesigning in ComponentState) or Visible) and not FHideButtons;
 end;
 
 procedure TMyDBGrid.DefineProperties(Filer: TFiler);

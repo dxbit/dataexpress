@@ -3151,6 +3151,10 @@ msgstr ""
 msgid "HH:MM:SS"
 msgstr ""
 
+#: strconsts.rshiddencomponents
+msgid "Hidden components"
+msgstr ""
+
 #: strconsts.rshideancestors
 msgid "Hide ancestors"
 msgstr ""
@@ -3165,6 +3169,10 @@ msgstr ""
 
 #: strconsts.rshidecolumn
 msgid "Hide column"
+msgstr ""
+
+#: strconsts.rshidecomponent
+msgid "Hide component"
 msgstr ""
 
 #: strconsts.rshidecontexthelp
