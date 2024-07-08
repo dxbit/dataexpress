@@ -72,7 +72,7 @@ type
     property Center: Boolean read FCenter write SetCenter;
     property Proportional: Boolean read FProportional write SetProportional;
     property Stretch: Boolean read FStretch write SetStretch;
-    property Quality: Integer read FQuality write SetQuality;
+    property Quality: Integer read FQuality write SetQuality stored False;
     property KeepSize: Boolean read FKeepSize write SetKeepSize;
     property ImageName: String read FImageName write SetImageName;
     property Hidden: Boolean read FHidden write FHidden default False;

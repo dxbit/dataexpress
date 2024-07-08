@@ -4396,7 +4396,10 @@ end;
 
 function TdxLookupComboBox.GetKeyValue: Variant;
 begin
-  Result := DataSource.DataSet.FieldByName(FKeyField).Value;
+  if DataSource.DataSet.Active then
+    Result := DataSource.DataSet.FieldByName(FKeyField).Value
+  else
+    Result := Null;
 end;
 
 procedure TdxLookupComboBox.DoDropDownButtonClick(Sender: TObject);

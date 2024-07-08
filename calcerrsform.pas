@@ -46,7 +46,7 @@ type
     procedure MemoStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   private
     { private declarations }
-    FErrs: TStrings;
+    //FErrs: TStrings;
     FCE: TCalcError;
     procedure FillGrid;
   public
@@ -64,7 +64,7 @@ implementation
 procedure ShowCalcErrsForm(CE: TCalcError);
 begin
   if CalcErrsFm = nil then
-  	CalcErrsFm := TCalcErrsFm.Create(Application);
+    CalcErrsFm := TCalcErrsFm.Create(Application);
   CalcErrsFm.ShowForm(CE);
 end;
 

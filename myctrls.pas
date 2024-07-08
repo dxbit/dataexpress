@@ -505,6 +505,7 @@ begin
     Pen.Color:=clGray;
     Parent := aControl.Parent;
     BoundsRect := aControl.BoundsRect;
+    Anchors := aControl.Anchors;
   end;
   aControl.Visible:=False;
 end;

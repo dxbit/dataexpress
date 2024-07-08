@@ -1465,6 +1465,10 @@ msgctxt "strconsts.rsdatabaseconnectlost"
 msgid "Unable to establish a connection to the database. Make sure that the database server is available and run the application again."
 msgstr "Не удается установить связь с базой данных. Убедитесь в доступности сервера баз данных и запустите приложение снова."
 
+#: strconsts.rsdatacantgroupbyfilesimages
+msgid "Data cannot be grouped by file or image."
+msgstr "Данные не могут быть сгруппированы по файлу или изображению."
+
 #: strconsts.rsdatadelimiter
 msgid "Data delimiter"
 msgstr "Разделитель данных"

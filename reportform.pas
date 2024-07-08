@@ -1233,6 +1233,12 @@ end;
 
 function TReportFm.Validate: Boolean;
 
+  function _LookupCmp(Fm: TdxForm; FlNm: String): TComponent;
+  begin
+    if Copy(FlNm, 1, 1) = '!' then Delete(FlNm, 1, 1);
+    Result := LookupComponent(Fm, FlNm);
+  end;
+
   function IsBalanceExists: Boolean;
   var
     m: Integer;
@@ -1243,6 +1249,38 @@ function TReportFm.Validate: Boolean;
       if TRpTotalFunc(PtrInt(Grid.Objects[Grid.ColCount - 3, m])) = tfProfit then
         Exit(True);
     end;
+  end;
+
+  function IsFuncExists: Boolean;
+  var
+    m: Integer;
+  begin
+    Result := False;
+    for m := 5 to Grid.RowCount - 1 do
+    begin
+      if Grid.Objects[Grid.ColCount - 3, m] <> nil then
+        Exit(True);
+    end;
+  end;
+
+  function IsFileOrImageExists: Boolean;
+  var
+    i, j: Integer;
+    C: TComponent;
+  begin
+    Result := False;
+    for i := 5 to Grid.Rowcount - 1 do
+      for j := 1 to Grid.ColCount - 5 do
+      begin
+        C := TComponent(Grid.Objects[j, i]);
+        if C = nil then Continue;
+        C := _LookupCmp(TdxForm(C.Owner), Grid.Cells[j, i]);
+        if (C is TdxDBImage) or (C is TdxFile) then
+        begin
+          Grid.Col := j; Grid.Row := i;
+          Exit(True);
+        end;
+      end;
   end;
 
   function CheckValidName(idx: Integer): Boolean;
@@ -1345,12 +1383,6 @@ function TReportFm.Validate: Boolean;
         Exit(False);
       end;
     end;
-  end;
-
-  function _LookupCmp(Fm: TdxForm; FlNm: String): TComponent;
-  begin
-    if Copy(FlNm, 1, 1) = '!' then Delete(FlNm, 1, 1);
-    Result := LookupComponent(Fm, FlNm);
   end;
 
 var
@@ -1536,6 +1568,13 @@ begin
       Grid.Row := n + 5; Grid.Col := c - 3;
       Exit;
     end;
+  end;
+
+  // Нельзя группировать по изображению или файлу
+  if IsFuncExists and IsFileOrImageExists then
+  begin
+    ErrMsg(rsDataCantGroupByFilesImages);
+    Exit;
   end;
 
   if not CanOldSqlFieldsDeleted then Exit;

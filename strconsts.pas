@@ -1828,6 +1828,7 @@ resourcestring
   rsImageRenameItem = 'Old name:'#13#10'%0:s'#13#10'New name:'#13#10'%1:s'#13#10;
   rsHiddenComponents = 'Hidden components';
   rsHideComponent = 'Hide component';
+  rsDataCantGroupByFilesImages = 'Data cannot be grouped by file or image.';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

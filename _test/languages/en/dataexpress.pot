@@ -1430,6 +1430,10 @@ msgstr ""
 msgid "Unable to establish a connection to the database. Make sure that the database server is available and run the application again."
 msgstr ""
 
+#: strconsts.rsdatacantgroupbyfilesimages
+msgid "Data cannot be grouped by file or image."
+msgstr ""
+
 #: strconsts.rsdatadelimiter
 msgid "Data delimiter"
 msgstr ""
