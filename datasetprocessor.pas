@@ -3564,6 +3564,7 @@ begin
       LCbx.FieldName := FieldName;
       LCbx.SourceTId := SourceTId;
       LCbx.SourceFId := SourceFId;
+      LCbx.Filter := Filter;
       LCbx.KeyField := KeyField;
       LCbx.ListFields.Assign(ListFields);
       LCbx.DropDownCount := DropDownCount;
