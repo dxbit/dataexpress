@@ -2812,6 +2812,8 @@ begin
     Cl.AddDelphiFunction('function GetCurrentDatabase: String');
     Cl.AddDelphiFunction('function GetTemplatesDir: String');
     Cl.AddDelphiFunction('function GetOutputDir: String');
+    Cl.AddDelphiFunction('function SetExprVar(const aName: String; aValue: Variant): Variant');
+    Cl.AddDelphiFunction('function GetExprVar(const aName: String): Variant');
   end
   else
     Cl.AddDelphiFunction('function GetAppDir: String');
@@ -2917,7 +2919,10 @@ begin
   Cl.AddDelphiFunction('function TryStrToDateTime(const S: string; out Value: TDateTime): Boolean');
   Cl.AddDelphiFunction('function TryStrToInt(const s: string; Out i : LongInt) : boolean');
   Cl.AddDelphiFunction('function TryStrToInt64(const s: string; Out i : Int64) : boolean');
-  Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Extended): Boolean');
+  if not Web then
+    Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Extended): Boolean')
+  else
+    Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Double): Boolean');
   Cl.AddDelphiFunction('function StrToDateTime(const S: String): TDateTime');
   Cl.AddDelphiFunction('function IntToHex(Value: Int64; Digits: Integer): String');
 
@@ -2994,9 +2999,6 @@ begin
 
   Cl.AddDelphiFunction('function IIF(Cond, V1, V2: Variant): Variant');
   Cl.AddDelphiFunction('function CreateGUIDString: String');
-
-  Cl.AddDelphiFunction('function SetExprVar(const aName: String; aValue: Variant): Variant');
-  Cl.AddDelphiFunction('function GetExprVar(const aName: String): Variant');
 end;
 
 procedure SIRegister_dxControlsWeb(Cl: TPSPascalCompiler);
@@ -3221,6 +3223,9 @@ begin
     RegisterMethod('function GetCurrentRole: String');
     RegisterMethod('function GetCurrentDatabase: String');
     RegisterMethod('function GetTemplatesDir: String');
+    RegisterMethod('function SetExprVar(const aName: String; aValue: Variant): Variant');
+    RegisterMethod('function GetExprVar(const aName: String): Variant');
+
     RegisterProperty('FormCount', 'Integer', iptR);
     RegisterProperty('Forms', 'TdxForm Integer', iptR);
     RegisterProperty('Request', 'TFPHTTPConnectionRequest', iptR);

@@ -221,7 +221,7 @@ const
     ('+', '-', '', '', '', ''), ('*', '/', '', '', '', ''),
     ('', '', '', '', '', ''));
 
-  Funcs: array [0..140, 0..2] of String =
+  Funcs: array [0..141, 0..2] of String =
     (('COUNT', 's', 'n'),
     ('SUM', 'ss', 'n'),
     ('LENGTH', 's', 'n'),
@@ -368,7 +368,8 @@ const
     ('FRACTOWORDS', 'n', 's'),
 
     ('TYPEDTEXT', 'n', 'v'),
-    ('ISWEB', '', 'b')
+    ('ISWEB', '', 'b'),
+    ('ISSERVICE', '', 'b')
 
     );
 
@@ -519,6 +520,7 @@ const
 
     FUNC_TYPEDTEXT = 139;
     FUNC_ISWEB = 140;
+    FUNC_ISSERVICE = 141;
 
 
 function FindFunc(const Func: String): Integer;
@@ -776,6 +778,7 @@ begin
 
     FUNC_TYPEDTEXT: V := GetTypedText(Vals[0]);
     FUNC_ISWEB: V := IsWebServer;
+    FUNC_ISSERVICE: V := False;
   end;
   Result := V;
 end;

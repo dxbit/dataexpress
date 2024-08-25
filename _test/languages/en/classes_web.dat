@@ -346,14 +346,12 @@ Procedures & Functions
 		function GetBuildDate: TDateTime
 		function GetComponentFieldName(C: TComponent): String
 		function GetFormatSettings: TFormatSettings
-		function GetExprVar(const AName: String): Variant
 		function High(Var: Ordinal): Int64
 		procedure Inc(Var: Ordinal)
 		procedure Include(var S: Set; X: Ordinal); 
 		function Low(Var: Ordinal): Int64
 		function Ord(X: Ordinal): Byte
 		procedure SetFormatSettings(Settings: TFormatSettings)
-		function SetExprVar(const aName: String; aValue: Variant): Variant
 		function SizeOf(Identifier): LongInt
 	Strings
 		function AnsiLowerCase(S: string): string
@@ -805,9 +803,11 @@ TSession = class(TObject)
 	function GetCurrentDatabase: String
 	function GetCurrentRole: String
 	function GetCurrentUser: String
+	function GetExprVar(const AName: String): Variant
 	function GetTemplatesDir: String
 	procedure SQLExecute(const SQL: String)
 	function SQLSelect(const SQL: String): TdxSQLQuery
+	function SetExprVar(const aName: String; aValue: Variant): Variant
 	property FormCount: Integer [r]
 	property Forms[Index: Integer]: TdxForm [r]
 	property Request: TFPHTTPConnectionRequest [r]

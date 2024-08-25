@@ -718,7 +718,7 @@ Calculates the amount by the form field. <br><br>
 <b> Result: </b> number. <br><br>
 <b> Example: </b><br>
 <center><code> DBSUM ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
-Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not fall into the filter, 0 is returned. When calculating the sum, fields with a NULL value are ignored. <br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not fall into the filter, 0 is returned. When calculating the sum, fields with a NULL value are ignored. <br><br>
 Unlike the SUM function, which summarizes the values ​​in the data set, the DBSUM function accesses the database directly (the function is a complete analogue of the sum function in the query selection). In this regard, the result of the DBSUM and SUM functions may differ. If you need to calculate the amount in a subordinate form within the entire database, use DBSUM, if within the framework of one current edited parent record, use the SUM function.
 
 [DBAVG]
@@ -729,7 +729,7 @@ Calculates the arithmetic average of a form field. <br><br>
 <b> Result: </b> number. <br><br>
 <b> Example: </b><br>
 <center><code> DBAVG ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
-Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not get into the filter, 0 is returned. When calculating the average, fields with a NULL value are ignored. <br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. The function always returns a number - even if records do not get into the filter, 0 is returned. When calculating the average, fields with a NULL value are ignored. <br><br>
 Unlike the AVG function, which calculates the average value in a data set, the DBAVG function accesses the database directly (the function is a complete analogue of the final "Average" function in query selection). In this regard, the result of the DBAVG and AVG functions may differ. If you need to calculate the average in a subordinate form within the entire database, use DBAVG, if within the framework of one current edited parent record - the AVG function.
 
 [DBMAX]
@@ -740,7 +740,7 @@ Calculates the maximum value from a form field. <br><br>
 <b> Result: </b> any type. <br><br>
 <b> Example: </b><br>
 <center><code> DBMAX ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
-Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
 Unlike the MAX function, which searches for the maximum in the data set, the DBMAX function accesses the database directly (the function is a complete analogue of the final "Maximum" function in query selection). In this regard, the result of DBMAX and MAX functions may differ. If you need to find the maximum value in a subordinate form within the entire database, use DBMAX, if within the limits of one current edited parent record, use the MAX function.
 
 [DBMIN]
@@ -751,7 +751,7 @@ Calculates the minimum field value. <br><br>
 <b> Result: </b> any type. <br><br>
 <b> Example: </b><br>
 <center><code> DBMIN ('Sales', 'Amount', '[!date] <= [date]') </code></center><br><br>
-Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. If records do not fall into the filter or one of the values ​​contains NULL, NULL is returned. <br><br>
 Unlike the MIN function, which searches for the minimum in the data set, the DBMIN function accesses the database directly (the function is a complete analogue of the final "Minimum" function in query selection). In this regard, the result of the DBMIN and MIN functions may differ. If you need to find the maximum value in the subordinate form within the entire database, use DBMIN, if within the current parent editable record - the MIN function.
 
 [DBCOUNT]
@@ -762,7 +762,7 @@ Calculates the number of records in a form. <br><br>
 <b> Result: </b> number. <br><br>
 <b> Example: </b><br>
 <center><code> DBCOUNT ('Sales', '[!date] <= [date]') </code></center><br><br>
-Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. <br><br>
+Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database. <br><br>
 Unlike the COUNT function, which returns the number of records in the data set, the DBCOUNT function accesses the database directly (the function is a complete analogue of the final "Count" function in query selection). Therefore, the result of the DBCOUNT and COUNT functions may differ. If you need to find the number of records in a subordinate form within the entire database, use DBCOUNT, if the COUNT function is used within the same current edited parent record.
 
 [DBGET]
@@ -773,7 +773,7 @@ Returns the value of a form field. <br><br>
 <b> Result: </b> any type. <br><br>
 <b> Example: </b><br>
 <center><code> DBGET ('Sales', 'Amount', '[!date] = [date]') </code></center><br><br>
-There can be several records in the database that match the filter, the function takes the first record. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
+There can be several records in the database that match the filter, the function takes the first record. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
 
 [DBGETID]
 6
@@ -783,7 +783,7 @@ Returns the identifier of the form entry. <br><br>
 <b> Result: </b> number or NULL (any type). <br><br>
 <b> Example: </b><br>
 <center><code> DBGETID ('Sales', '[!date] = [date]') </code></center><br><br>
-A database may have several records matching the filter. The function takes the first record. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
+A database may have several records matching the filter. The function takes the first record. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>. The function can be applied to any form of the database.
 
 [DBGETBYID]
 6
@@ -967,7 +967,7 @@ Calculates the number of unique values ​​in a form field. <br><br>
 <b> Result: </b> number. <br><br>
 <b> Example: </b><br>
 <center><code> DBCOUNTD ('Applications', 'Date', '[!date] <= [date]') </code></center><br><br>
-The function can be applied to any form of the database. It is an analogue of the selection function "Distinct count". The function does not consider fields with a NULL value. Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+The function can be applied to any form of the database. It is an analogue of the selection function "Distinct count". The function does not consider fields with a NULL value. Only records that satisfy the filter conditions are included in the calculation. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>.
 
 [OLDVALUE]
 7
@@ -987,7 +987,7 @@ Concatenates field values ​​in one line, separating values ​​with a semi
 <b> Example: </b><br>
 <center><code> DBMERGE ('Orders', 'Number', '[!Customer] = [Customer]') <br>
 Result: 3; 5; 12; 16 </code></center><br><br>
-The function can be applied to any form of the database. It is an analogue of the "Merge" selection function. The result of the function does not include duplicate values. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+The function can be applied to any form of the database. It is an analogue of the "Merge" selection function. The result of the function does not include duplicate values. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>.
 
 [DBMERGEALL]
 6
@@ -998,7 +998,7 @@ Concatenates field values ​​in one line, separating values ​​with a semi
 <b> Example: </b><br>
 <center><code> DBMERGEALL ('Orders', 'Number', '[!Customer] = [Customer]') <br>
 Result: 3; 3; 5; 12; 16; 16; 16 </code></center><br><br>
-Unlike DBMERGE, the result includes all field values, including duplicate ones. The function can be applied to any form of the database. It is an analogue of the "Merge All" selection function. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="http://dataexpress.wiki/rukovodstvo_po_polzovaniu_dx:otchjot:otchjot#filtr_istochnika">source filter</a>.
+Unlike DBMERGE, the result includes all field values, including duplicate ones. The function can be applied to any form of the database. It is an analogue of the "Merge All" selection function. The result includes only those records that satisfy the filter conditions. The filter syntax is the same as in the <a href="https://wiki.mydataexpress.ru/rukovodstvo_po_polzovaniu_dx:otchjot#filtr_istochnika">source filter</a>.
 
 [BEGINYEAR]
 3
@@ -1478,4 +1478,10 @@ If index is 0, then all text is returned. If greater than 0, then the fragment i
 4
 The function returns true if the user is working with the database in the browser. If the user is using a desktop application, the function returns false.<br><br>
 <center><code>ISWEB</code></center><br><br>
+The function has no parameters.
+
+[ISSERVICE]
+4
+The function returns true if the web server is running in service mode. In the desktop version, it always returns false.<br><br>
+<center><code>ISSERVICE</code></center><br><br>
 The function has no parameters.

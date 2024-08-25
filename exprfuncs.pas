@@ -1645,7 +1645,7 @@ begin
   end;
 end;
 
-function CaseOf(const AValue, AItems: String): String;
+{function CaseOf(const AValue, AItems: String): String;
 var
   SL: TStringListUtf8;
 begin
@@ -1653,6 +1653,16 @@ begin
   SL.Delimiter:=';';
   SL.StrictDelimiter:=True;
   SL.DelimitedText := AItems;
+  Result := SL.Values[AValue];
+  SL.Free;
+end; }
+
+function CaseOf(const AValue, AItems: String): String;
+var
+  SL: TStringListUtf8;
+begin
+  SL := TStringListUtf8.Create;
+  SplitStr(AItems, ';', SL);
   Result := SL.Values[AValue];
   SL.Free;
 end;
