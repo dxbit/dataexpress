@@ -1079,15 +1079,8 @@ begin
   FCache := THelpCache.Create;
 
   IL := TImageList.Create(Self);
-  with IL do
-  begin
-    AddLazarusResource('item_grey16');
-    AddLazarusResource('item_yellow16');
-    AddLazarusResource('item_blue16');
-    AddLazarusResource('item_green16');
-    AddLazarusResource('item_red16');
-    AddLazarusResource('items16');
-  end;
+  SetupImageList(IL, ['item_grey16', 'item_yellow16', 'item_blue16', 'item_green16',
+    'item_red16', 'items16']);
 
   Pop := TPopupMenu.Create(Self);
   Pop.Items.Add(CreateMenuItem(Pop, rsGoToHelp, 0, ShortCut(VK_F1, []), @MenuItemClick, -1));

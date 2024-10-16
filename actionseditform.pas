@@ -49,24 +49,25 @@ type
 
   TActionsEditFm = class(TForm)
     ButtonPanel1: TButtonPanel;
+    MenuImages: TImageList;
     Link: TLabel;
     Help: TIpHtmlPanel;
-    Image1: TImage;
-    ImageList1: TImageList;
+    TitleImg: TImage;
+    TreeImages: TImageList;
     Grp: TLabel;
-    MenuItem1: TMenuItem;
-    MenuItem10: TMenuItem;
+    ActionMnu: TMenuItem;
+    PasteMnu: TMenuItem;
     MenuItem11: TMenuItem;
-    MenuItem12: TMenuItem;
+    DisabledMnu: TMenuItem;
     N1: TMenuItem;
-    MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
-    MenuItem4: TMenuItem;
-    MenuItem5: TMenuItem;
+    IfMnu: TMenuItem;
+    ElseIfMnu: TMenuItem;
+    ElseMnu: TMenuItem;
+    CommentMnu: TMenuItem;
     MenuItem6: TMenuItem;
-    MenuItem7: TMenuItem;
-    MenuItem8: TMenuItem;
-    MenuItem9: TMenuItem;
+    DelMnu: TMenuItem;
+    CutMnu: TMenuItem;
+    CopyMnu: TMenuItem;
     HelpPan: TPanel;
     Panel5: TPanel;
     PopupMenu1: TPopupMenu;
@@ -84,16 +85,16 @@ type
     procedure FormShow(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
     procedure LinkClick(Sender: TObject);
-    procedure MenuItem10Click(Sender: TObject);
-    procedure MenuItem12Click(Sender: TObject);
-    procedure MenuItem1Click(Sender: TObject);
-    procedure MenuItem2Click(Sender: TObject);
-    procedure MenuItem3Click(Sender: TObject);
-    procedure MenuItem4Click(Sender: TObject);
-    procedure MenuItem5Click(Sender: TObject);
-    procedure MenuItem7Click(Sender: TObject);
-    procedure MenuItem8Click(Sender: TObject);
-    procedure MenuItem9Click(Sender: TObject);
+    procedure PasteMnuClick(Sender: TObject);
+    procedure DisabledMnuClick(Sender: TObject);
+    procedure ActionMnuClick(Sender: TObject);
+    procedure IfMnuClick(Sender: TObject);
+    procedure ElseIfMnuClick(Sender: TObject);
+    procedure ElseMnuClick(Sender: TObject);
+    procedure CommentMnuClick(Sender: TObject);
+    procedure DelMnuClick(Sender: TObject);
+    procedure CutMnuClick(Sender: TObject);
+    procedure CopyMnuClick(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
     procedure TreeCustomDrawItem(Sender: TCustomTreeView; Node: TTreeNode;
       State: TCustomDrawState; var DefaultDraw: Boolean);
@@ -256,34 +257,24 @@ begin
   ButtonPanel1.OkButton.Default := False;
   ButtonPanel1.CancelButton.Cancel := False;
 
-  MenuItem1.Caption := rsAction;
-  MenuItem2.Caption := rsIf;
-  MenuItem3.Caption := rsElseIf;
-  MenuItem4.Caption := rsElseCondition;
-  MenuItem5.Caption := rsComment;
-  MenuItem7.Caption := rsDelete;
-  MenuItem8.Caption := rsCut;
-  MenuItem9.Caption := rsCopy;
-  MenuItem10.Caption := rsPaste;
-  MenuItem12.Caption := rsDisabled;
+  ActionMnu.Caption := rsAction;
+  IfMnu.Caption := rsIf;
+  ElseIfMnu.Caption := rsElseIf;
+  ElseMnu.Caption := rsElseCondition;
+  CommentMnu.Caption := rsComment;
+  DelMnu.Caption := rsDelete;
+  CutMnu.Caption := rsCut;
+  CopyMnu.Caption := rsCopy;
+  PasteMnu.Caption := rsPaste;
+  DisabledMnu.Caption := rsDisabled;
 
-  SetMenuItemImage(MenuItem1, 'line_action16');
-  SetMenuItemImage(MenuItem2, 'line_if16');
-  SetMenuItemImage(MenuItem3, 'line_elseif16');
-  SetMenuItemImage(MenuItem4, 'line_else16');
-  SetMenuItemImage(MenuItem5, 'line_comment16');
-  SetMenuItemImage(MenuItem7, 'delete16');
-  SetMenuItemImage(MenuItem8, 'cut16');
-  SetMenuItemImage(MenuItem9, 'copy16');
-  SetMenuItemImage(MenuItem10, 'paste16');
+  SetupImageList(MenuImages, ['line_action16', 'line_if16', 'line_elseif16',
+    'line_else16', 'line_comment16', 'cut16', 'copy16', 'paste16', 'delete16']);
+  SetupImageList(TreeImages, ['line_action16', 'line_if16', 'line_elseif16',
+    'line_else16', 'line_comment16']);
+  SetupPicture(TitleImg.Picture, 'help24');
 
   Params.Caption := rsActionNotSelected;
-
-  ImageList1.AddLazarusResource('line_action8');
-  ImageList1.AddLazarusResource('line_if16');
-  ImageList1.AddLazarusResource('line_elseif16');
-  ImageList1.AddLazarusResource('line_else16');
-  ImageList1.AddLazarusResource('line_comment16');
 
   FActionRunner := TActionRunner.Create;
   FHunter := TChangeEventHunter.Create;
@@ -356,7 +347,7 @@ begin
   OpenUrl(SD.HomePage);
 end;
 
-procedure TActionsEditFm.MenuItem10Click(Sender: TObject);
+procedure TActionsEditFm.PasteMnuClick(Sender: TObject);
 begin
   if ValidateCurrentAction then
   begin
@@ -365,7 +356,7 @@ begin
   end;
 end;
 
-procedure TActionsEditFm.MenuItem12Click(Sender: TObject);
+procedure TActionsEditFm.DisabledMnuClick(Sender: TObject);
 var
   A: TBaseAction;
 begin
@@ -374,32 +365,32 @@ begin
     SetActionsDisabled(not A.Disabled);
 end;
 
-procedure TActionsEditFm.MenuItem1Click(Sender: TObject);
+procedure TActionsEditFm.ActionMnuClick(Sender: TObject);
 begin
   NewAction;
 end;
 
-procedure TActionsEditFm.MenuItem2Click(Sender: TObject);
+procedure TActionsEditFm.IfMnuClick(Sender: TObject);
 begin
   NewIfCondition;
 end;
 
-procedure TActionsEditFm.MenuItem3Click(Sender: TObject);
+procedure TActionsEditFm.ElseIfMnuClick(Sender: TObject);
 begin
   NewElseIfCondition;
 end;
 
-procedure TActionsEditFm.MenuItem4Click(Sender: TObject);
+procedure TActionsEditFm.ElseMnuClick(Sender: TObject);
 begin
   NewElseCondition;
 end;
 
-procedure TActionsEditFm.MenuItem5Click(Sender: TObject);
+procedure TActionsEditFm.CommentMnuClick(Sender: TObject);
 begin
   NewComment;
 end;
 
-procedure TActionsEditFm.MenuItem7Click(Sender: TObject);
+procedure TActionsEditFm.DelMnuClick(Sender: TObject);
 var
   N: TTreeNode;
 begin
@@ -415,7 +406,7 @@ begin
   Tree.ClearSelection(True);
 end;
 
-procedure TActionsEditFm.MenuItem8Click(Sender: TObject);
+procedure TActionsEditFm.CutMnuClick(Sender: TObject);
 begin
   if ValidateCurrentAction then
   begin
@@ -425,7 +416,7 @@ begin
   end;
 end;
 
-procedure TActionsEditFm.MenuItem9Click(Sender: TObject);
+procedure TActionsEditFm.CopyMnuClick(Sender: TObject);
 begin
   if ValidateCurrentAction then
   begin
@@ -938,18 +929,18 @@ begin
   Buf := Clipboard.AsText;
   ae := Copy(Buf, 1, 9) = '<actions>';
 
-  MenuItem1.Enabled := sc1 and ne;
-  MenuItem2.Enabled := sc1 and ne;
-  MenuItem3.Enabled := sc1 and ((alk in [alkIf, alkElseIf, alkElse]) or ife);
-  MenuItem4.Enabled := sc1 and ((alk in [alkIf, alkElseIf]) or ife) and
+  ActionMnu.Enabled := sc1 and ne;
+  IfMnu.Enabled := sc1 and ne;
+  ElseIfMnu.Enabled := sc1 and ((alk in [alkIf, alkElseIf, alkElse]) or ife);
+  ElseMnu.Enabled := sc1 and ((alk in [alkIf, alkElseIf]) or ife) and
   	(not CheckElseExists(N));
-  MenuItem5.Enabled := sc1 and ne;
-  MenuItem7.Enabled := sc1 and (alk <> alkNone);
-  MenuItem8.Enabled := cms;
-	MenuItem9.Enabled := cms;
-  MenuItem10.Enabled := sc1 and ne and ae;
-  MenuItem12.Enabled := Act <> nil;
-  MenuItem12.Checked := (Act <> nil) and Act.Disabled;
+  CommentMnu.Enabled := sc1 and ne;
+  DelMnu.Enabled := sc1 and (alk <> alkNone);
+  CutMnu.Enabled := cms;
+	CopyMnu.Enabled := cms;
+  PasteMnu.Enabled := sc1 and ne and ae;
+  DisabledMnu.Enabled := Act <> nil;
+  DisabledMnu.Checked := (Act <> nil) and Act.Disabled;
 end;
 
 procedure TActionsEditFm.SetShortCutMenuState;
@@ -961,8 +952,8 @@ begin
   N := Tree.Selected;
   alk := GetNodeLineKind(N);
   sc1 := Tree.SelectionCount = 1;
-  MenuItem7.Enabled := sc1 and (alk <> alkNone);
-  MenuItem12.Enabled := True;
+  DelMnu.Enabled := sc1 and (alk <> alkNone);
+  DisabledMnu.Enabled := True;
 end;
 
 procedure TActionsEditFm.UpdateNodeText(N: TTreeNode);

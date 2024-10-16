@@ -33,7 +33,8 @@ type
   { TScriptFm }
 
   TScriptFm = class(TForm)
-    ImageList3: TImageList;
+    EditMenuImages: TImageList;
+    ToolbarImages: TImageList;
     MenuItem10: TMenuItem;
     GotoFormMnu: TMenuItem;
     MenuItem11: TMenuItem;
@@ -83,7 +84,7 @@ type
     Panel3: TPanel;
     PopupMenu1: TPopupMenu;
     FindPopup: TPopupMenu;
-    PopupMenu3: TPopupMenu;
+    EditMenu: TPopupMenu;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     Splitter3: TSplitter;
@@ -152,7 +153,7 @@ type
     procedure ModulesSelectionChanged(Sender: TObject);
     procedure MsgsClick(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
-    procedure PopupMenu3Popup(Sender: TObject);
+    procedure EditMenuPopup(Sender: TObject);
     procedure FullScreenBnClick(Sender: TObject);
     procedure Splitter3ChangeBounds(Sender: TObject);
     procedure ToolButton17Click(Sender: TObject);
@@ -403,7 +404,7 @@ begin
   M.Align := alClient;
   M.OnStatusChange:=@MemoStatusChange;
   M.OnKeyDown:=@MemoKeyDown;
-  M.PopupMenu := PopupMenu3;
+  M.PopupMenu := EditMenu;
   M.LoadData(SD);
 end;
 
@@ -1042,7 +1043,7 @@ begin
   MenuItem11.Enabled := (N <> nil) and (ScriptMan.FindScriptByName('WebMain') = nil);
 end;
 
-procedure TScriptFm.PopupMenu3Popup(Sender: TObject);
+procedure TScriptFm.EditMenuPopup(Sender: TObject);
 begin
   SetControlState;
 end;
@@ -1196,33 +1197,12 @@ begin
 
   StaticText2.Caption := rsCompilerMsgs;
 
-  SetMenuItemImage(MenuItem12, 'cut16');
-  SetMenuItemImage(MenuItem13, 'copy16');
-  SetMenuItemImage(MenuItem14, 'paste16');
-  SetMenuItemImage(MenuItem16, 'undo16');
-  SetMenuItemImage(MenuItem17, 'goto16');
-  SetMenuItemImage(MenuItem19, 'find16');
-  SetMenuItemImage(MenuItem24, 'play16');
-  SetMenuItemImage(MenuItem28, 'test16');
+  SetupImageList(EditMenuImages, ['cut16', 'copy16', 'paste16', 'undo16',
+    'goto16', 'find16', 'play16', 'test16']);
+  SetupImageList(ToolbarImages, ['save24', 'form24', 'user24', 'cut24', 'copy24',
+    'paste24', 'undo24', 'redo24', 'find24', 'replace24', 'compile24', 'test24',
+    'sql24', 'fullscreen24', 'breakpoint24']);
 
-  with ImageList3 do
-  begin
-    AddLazarusResource('cut24');
-    AddLazarusResource('copy24');
-    AddLazarusResource('paste24');
-    AddLazarusResource('undo24');
-    AddLazarusResource('redo24');
-    AddLazarusResource('find24');
-    AddLazarusResource('replace24');
-    AddLazarusResource('compile24');
-    AddLazarusResource('form24');
-    AddLazarusResource('user24');
-    AddLazarusResource('sql24');
-    AddLazarusResource('save24');
-    AddLazarusResource('test24');
-    AddLazarusResource('fullscreen24');
-    AddLazarusResource('breakpoint24');
-  end;
   ToolButton9.Hint := rsAddFormModule;
   ToolButton10.Hint := rsAddUserModule;
   ToolButton1.Hint := rsCut;
@@ -1239,12 +1219,7 @@ begin
   FullScreenBn.Hint := rsMaximizeEditor;
   ToolButton17.Hint := rsBreakpoints;
 
-  with MsgImgs do
-  begin
-    AddLazarusResource('exprcheck16');
-    AddLazarusResource('hint16');
-    AddLazarusResource('check16');
-  end;
+  SetupImageList(MsgImgs, ['exprcheck16', 'hint16', 'check16']);
   FModules.Tree.IsWine := AppConfig.IsWine;
 end;
 

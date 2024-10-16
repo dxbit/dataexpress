@@ -33,6 +33,7 @@ type
 
   TNewRoleFm = class(TForm)
     ButtonPanel1: TButtonPanel;
+    Images: TImageList;
     Intfs: TComboBox;
     Edit1: TEdit;
     FRGrid: TStringGrid;
@@ -69,8 +70,6 @@ type
   private
     { private declarations }
     FRole, FOldRole: TdxRole;
-    FViewBmp, FEditBmp, FFullBmp, FDelBmp, FErrBmp, FKeyBmp, FCbxBmp, FChkBmp,
-      FCmpBmp, FExprBmp, FYelBmp: TCustomBitmap;
     FModified: Boolean;
     //function GetAccess(FR: TdxFormRight): Integer;
     //procedure SetAccess(FR: TdxFormRight; Value: Integer);
@@ -138,28 +137,16 @@ begin
   FRGrid.Columns[0].Title.Caption := rsForm;
   MenuItem4.Caption := rsNoAccess;
   MenuItem1.Caption := rsOnlyView;
-  SetMenuItemImage(MenuItem1, 'eyes16');
   MenuItem2.Caption := rsOnlyEdit;
-  SetMenuItemImage(MenuItem2, 'edit16');
   MenuItem3.Caption := rsFullAccess;
-  SetMenuItemImage(MenuItem3, 'add16');
   FRGrid.Hint := rsDblClickChange;
   RRGrid.Hint := rsDblClickChange;
   ButtonPanel1.OKButton.Caption := rsOk;
   ButtonPanel1.CancelButton.Caption := rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
 
-  FViewBmp := CreateBitmapFromLazarusResource('eyes16');
-  FEditBmp := CreateBitmapFromLazarusResource('edit16');
-  FFullBmp := CreateBitmapFromLazarusResource('add16');
-  FDelBmp := CreateBitmapFromLazarusResource('delete16');
-  FErrBmp := CreateBitmapFromLazarusResource('question16');
-  FKeyBmp := CreateBitmapFromLazarusResource('key16');
-  FCbxBmp := CreateBitmapFromLazarusResource('cbx16');
-  FChkBmp := CreateBitmapFromLazarusResource('check16');
-  FCmpBmp := CreateBitmapFromLazarusResource('bricks16');
-  FExprBmp := CreateBitmapFromLazarusResource('sum16');
-  FYelBmp := CreateBitmapFromLazarusResource('yellow16');
+  SetupImageList(Images, ['eyes16', 'edit16', 'add16', 'delete16', 'question16',
+    'key16', 'combobox16', 'check16', 'bricks16', 'sum16', 'yellow16']);
 end;
 
 procedure TNewRoleFm.AccessMnuClick(Sender: TObject);
@@ -228,17 +215,6 @@ end;
 
 procedure TNewRoleFm.FormDestroy(Sender: TObject);
 begin
-  FViewBmp.Free;
-  FEditBmp.Free;
-  FFullBmp.Free;
-  FDelBmp.Free;
-  FErrBmp.Free;
-  FKeyBmp.Free;
-  FCbxBmp.Free;
-  FChkBmp.Free;
-  FCmpBmp.Free;
-  FExprBmp.Free;
-  FYelBmp.Free;
   FRole.Free;
 end;
 
@@ -332,7 +308,7 @@ procedure TNewRoleFm.FRGridDrawCell(Sender: TObject; aCol, aRow: Integer;
 var
   FR: TdxFormRight;
   Cv: TCanvas;
-  x, y: Integer;
+  x, y, n: Integer;
   Bmp: TCustomBitmap;
   FillClr: TColor;
   Fm: TdxForm;
@@ -340,8 +316,8 @@ begin
   if aCol = 0 then Exit;
 
   Cv := FRGrid.Canvas;
-  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - 8);
-  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - 8);
+  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - Images.Width div 2);
+  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - Images.Height div 2);
   if aRow = 0 then FillClr := FRGrid.FixedColor
   else if gdSelected in aState then FillClr := FRGrid.SelectedColor
   else if Odd(aRow) then FillClr := FRGrid.Color
@@ -349,14 +325,15 @@ begin
   Cv.Brush.Color:=FillClr;
   Cv.FillRect(aRect);
 
+  n := -1;
   if aRow = 0 then
     case aCol of
-      1: Cv.Draw(x, y, FKeyBmp);
-      2: Cv.Draw(x, y, FViewBmp);
-      3: Cv.Draw(x, y, FEditBmp);
-      4: Cv.Draw(x, y, FDelBmp);
-      5: Cv.Draw(x, y, FCbxBmp);
-      6: Cv.Draw(x, y, FCmpBmp);
+      1: n := 5;  // key
+      2: n := 0;  // eyes
+      3: n := 1;  // edit
+      4: n := 3;  // delete
+      5: n := 6;  // combobox
+      6: n := 8;  // bricks
     end
   else
   begin
@@ -366,21 +343,22 @@ begin
       1:
         begin
           case FR.GetAccess of
-            0: Bmp := nil;
-            1: Bmp := FViewBmp;
-            2: Bmp := FEditBmp;
-            3: Bmp := FFullBmp;
-            else Bmp := FErrBmp;
+            0: n := -1;
+            1: n := 0;
+            2: n := 1;
+            3: n := 2;
+            else n := 4;    // question
           end;
-          if Bmp <> nil then Cv.Draw(x, y, Bmp);
         end;
-      2: if Trim(FR.SelCond) <> '' then Cv.Draw(x, y, FExprBmp);
-      3: if Trim(FR.EditCond) <> '' then Cv.Draw(x, y, FExprBmp);
-      4: if Trim(FR.DelCond) <> '' then Cv.Draw(x, y, FExprBmp);
-      5: if (Fm.PId = 0) and FR.ApplySelCondToObj then Cv.Draw(x, y, FChkBmp);
-      6: if FRGrid.Objects[aCol, aRow] <> nil then Cv.Draw(x, y, FYelBmp);
+      2: if Trim(FR.SelCond) <> '' then n := 9;   // sum
+      3: if Trim(FR.EditCond) <> '' then n := 9;
+      4: if Trim(FR.DelCond) <> '' then n := 9;
+      5: if (Fm.PId = 0) and FR.ApplySelCondToObj then n := 7;  // check
+      6: if FRGrid.Objects[aCol, aRow] <> nil then n := 10;   // yellow
     end;
   end;
+
+  if n >= 0 then Images.Draw(Cv, x, y, n);
 end;
 
 procedure TNewRoleFm.FRGridGetCellHint(Sender: TObject; ACol, ARow: Integer;
@@ -467,8 +445,8 @@ var
 begin
   if aCol = 0 then Exit;
   Cv := RRGrid.Canvas;
-  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - 8);
-  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - 8);
+  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - Images.Width div 2);
+  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - Images.Height div 2);
 
   if aRow = 0 then Clr := RRGrid.FixedColor
   else if gdSelected in aState then Clr := RRGrid.SelectedColor
@@ -479,14 +457,14 @@ begin
 
   if aRow = 0 then
   begin
-    if aCol = 1 then Cv.Draw(x, y, FKeyBmp);
+    if aCol = 1 then Images.Draw(Cv, x, y, 5);  // key
   end
   else
   begin
     RR := TdxReportRight(RRGrid.Objects[0, aRow]);
     if aCol = 1 then
     begin
-      if RR.Visible then Cv.Draw(x, y, FViewBmp);
+      if RR.Visible then Images.Draw(Cv, x, y, 0);  // eyes
     end;
   end;
 end;

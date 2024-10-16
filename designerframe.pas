@@ -32,8 +32,8 @@ type
   { TDesignFr }
 
   TDesignFr = class(TFrame)
-    ImageList1: TImageList;
-    ImageList2: TImageList;
+    ToolbarImages: TImageList;
+    MenuImages: TImageList;
     DummyX: TLabel;
     DummyY: TLabel;
     MenuItem1: TMenuItem;
@@ -83,41 +83,41 @@ type
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButton10: TToolButton;
-    ToolButton11: TToolButton;
-    ToolButton12: TToolButton;
-    ToolButton13: TToolButton;
-    ToolButton14: TToolButton;
-    ToolButton15: TToolButton;
-    ToolButton16: TToolButton;
+    DBImageBn: TToolButton;
+    CheckBoxBn: TToolButton;
+    ListBn: TToolButton;
+    ObjectBn: TToolButton;
+    TableBn: TToolButton;
+    GroupBn: TToolButton;
+    PagesBn: TToolButton;
+    ShapeBn: TToolButton;
     SaveBn: TToolButton;
     AddFieldsBn: TToolButton;
     ToolButton17: TToolButton;
     AddFmBn: TToolButton;
     DelFmBn: TToolButton;
     StyleBn: TToolButton;
-    ToolButton18: TToolButton;
-    ToolButton19: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButton20: TToolButton;
-    ToolButton21: TToolButton;
-    ToolButton22: TToolButton;
-    ToolButton23: TToolButton;
-    ToolButton24: TToolButton;
+    QueryBn: TToolButton;
+    ObjectFieldBn: TToolButton;
+    ImageBn: TToolButton;
+    TimeBn: TToolButton;
+    CounterBn: TToolButton;
+    ButtonBn: TToolButton;
+    PivotBn: TToolButton;
+    ScriptBn: TToolButton;
     TestBn: TToolButton;
-    ToolButton25: TToolButton;
-    ToolButton26: TToolButton;
-    ToolButton27: TToolButton;
+    MainActBn: TToolButton;
+    ChartBn: TToolButton;
+    KeyBn: TToolButton;
     VsblFmBn: TToolButton;
     ToolButton3: TToolButton;
     CursorBn: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton5: TToolButton;
-    ToolButton6: TToolButton;
-    ToolButton7: TToolButton;
-    ToolButton8: TToolButton;
-    ToolButton9: TToolButton;
+    FileBn: TToolButton;
+    LabelBn: TToolButton;
+    TextBn: TToolButton;
+    NumBn: TToolButton;
+    DateBn: TToolButton;
+    MemoBn: TToolButton;
     ScrollBox1: TScrollBox;
     procedure AddFieldsBnClick(Sender: TObject);
     procedure AddFmBnClick(Sender: TObject);
@@ -137,8 +137,8 @@ type
     procedure SaveBnClick(Sender: TObject);
     procedure StyleBnClick(Sender: TObject);
     procedure TestBnClick(Sender: TObject);
-    procedure ToolButton24Click(Sender: TObject);
-    procedure ToolButton25Click(Sender: TObject);
+    procedure ScriptBnClick(Sender: TObject);
+    procedure MainActBnClick(Sender: TObject);
     procedure ToolButtonClick(Sender: TObject);
     procedure VsblFmBnClick(Sender: TObject);
   private
@@ -846,7 +846,7 @@ begin
   TestForm(FCurForm.FormCaption);
 end;
 
-procedure TDesignFr.ToolButton24Click(Sender: TObject);
+procedure TDesignFr.ScriptBnClick(Sender: TObject);
 begin
   if (ScriptFm <> nil) and ScriptFm.Visible and (ScriptFm.WindowState <> wsMinimized) then
     ScriptFm.Close
@@ -854,7 +854,7 @@ begin
     ShowScriptForm;
 end;
 
-procedure TDesignFr.ToolButton25Click(Sender: TObject);
+procedure TDesignFr.MainActBnClick(Sender: TObject);
 var
   mr: Integer;
 begin
@@ -1004,8 +1004,8 @@ procedure TDesignFr.UpdateToolbarState;
 begin
   if FormDesign.Active then
   begin
-    ToolButton13.Enabled := FormDesign.Form.PId = 0;
-    //ToolButton18.Enabled := FormDesign.Form.PId = 0;
+    TableBn.Enabled := FormDesign.Form.PId = 0;
+    //QueryBn.Enabled := FormDesign.Form.PId = 0;
   end;
   DelFmBn.Enabled := FCurForm <> nil;
   TestBn.Enabled := FCurForm <> nil;
@@ -1330,8 +1330,8 @@ begin
   MainFm.ExpertMnu.Checked := Value;
   if Value then
   begin
-    ToolButton24.Visible:=True;
-    ToolButton24.Left := 32;
+    ScriptBn.Visible:=True;
+    ScriptBn.Left := 32;
     //ReCreateScriptForm;
   end
   else
@@ -1342,7 +1342,7 @@ begin
       if ScriptFm.Visible then ScriptFm.Close;
       FreeAndNil(ScriptFm);
     end;
-    ToolButton24.Visible := False;
+    ScriptBn.Visible := False;
   end;
   FFormsTree.ExpertMode:=Value;
 end;
@@ -1846,33 +1846,33 @@ begin
   VsblFmBn.Hint := rsOrderVisibleForms;
   StyleBn.Hint := rsCopyFormStyle;
   CursorBn.Hint:=rsSelectComponents;
-  ToolButton5.Hint := rsLabel;
-  ToolButton6.Hint := rsText;
-  ToolButton7.Hint := rsNumber;
-  ToolButton8.Hint := rsDate;
-  ToolButton9.Hint := rsMemo;
-  ToolButton10.Hint := rsCheckBox;
-  ToolButton11.Hint := rsList;
-  ToolButton12.Hint := rsObject;
-  ToolButton13.Hint := rsTable;
-  ToolButton14.Hint := rsGroup;
-  ToolButton15.Hint := rsPages;
-  ToolButton16.Hint := rsShape;
-  ToolButton1.Hint := rsImage;
-  ToolButton2.Hint := rsDsgnBackImage;
-  Toolbutton4.Hint := rsDsgnFile;
-  ToolButton18.Hint := rsQuery;
-  ToolButton19.Hint := rsObjField;
-  ToolButton20.Hint := rsTime;
-  ToolButton21.Hint := rsCounter;
-  ToolButton22.Hint := rsButton;
-  ToolButton23.Hint := rsPivotTable;
+  LabelBn.Hint := rsLabel;
+  TextBn.Hint := rsText;
+  NumBn.Hint := rsNumber;
+  DateBn.Hint := rsDate;
+  MemoBn.Hint := rsMemo;
+  CheckBoxBn.Hint := rsCheckBox;
+  ListBn.Hint := rsList;
+  ObjectBn.Hint := rsObject;
+  TableBn.Hint := rsTable;
+  GroupBn.Hint := rsGroup;
+  PagesBn.Hint := rsPages;
+  ShapeBn.Hint := rsShape;
+  DBImageBn.Hint := rsImage;
+  ImageBn.Hint := rsDsgnBackImage;
+  FileBn.Hint := rsDsgnFile;
+  QueryBn.Hint := rsQuery;
+  ObjectFieldBn.Hint := rsObjField;
+  TimeBn.Hint := rsTime;
+  CounterBn.Hint := rsCounter;
+  ButtonBn.Hint := rsButton;
+  PivotBn.Hint := rsPivotTable;
   AddFieldsBn.Hint := rsAddFields;
-  ToolButton24.Hint := rsScriptEditorBn;
+  ScriptBn.Hint := rsScriptEditorBn;
   TestBn.Hint := rsTestForm;
-  ToolButton25.Hint := rsStartupActions;
-  ToolButton26.Hint := rsChart;
-  ToolButton27.Hint := rsRecordId;
+  MainActBn.Hint := rsStartupActions;
+  ChartBn.Hint := rsChart;
+  KeyBn.Hint := rsRecordId;
 
   MenuItem3.Caption := rsMoveComponents;
   MenuItem4.Caption := rsCopy;
@@ -1947,6 +1947,16 @@ begin
 
   Panel1.Width := AppConfig.LeftPanelWidth;
   PageControl1.Width := AppConfig.RightPanelWidth;
+
+  SetupImageList(ToolbarImages, ['save24', 'script24', 'mainactions24', 'addform24',
+    'deleteform24', 'test24', 'view24', 'style24', 'magic24', 'cursor24', 'label24',
+    'text24', 'calc24', 'date24', 'clock24', 'memo24', 'checkbox24', 'combobox24',
+    'object24', 'objectfield24', 'dbimage24', 'file24', 'key24', 'counter24',
+    'grid24', 'query24', 'pivottable24', 'chart24', 'image24', 'shape24',
+    'button24', 'groupbox24', 'tabs24']);
+  SetupImageList(MenuImages, ['align_bottom16', 'align_vcenter16', 'align_left16',
+    'align_hcenter16', 'align_right16', 'align_top16', 'copy16', 'toback16',
+    'tofront16', 'paste16', 'delete16', 'anchors16', 'editbn16']);
 end;
 
 destructor TDesignFr.Destroy;

@@ -171,13 +171,7 @@ begin
   CopyBn.Hint := rsCopyToPasteScript;
   PasteBn.Hint := rsPasteFromScript;
   BuilderBn.Hint := rsSwitchToBuilderMode;
-  with ImageList1 do
-	begin
-    AddLazarusResource('play16');
-    AddLazarusResource('copy16');
-    AddLazarusResource('paste16');
-    AddLazarusResource('query16');
-  end;
+  SetupImageList(ImageList1, ['play16', 'copy16', 'paste16', 'query16']);
   Buttons.OKButton.Caption := rsOk;
   Buttons.CancelButton.Caption := rsCancel;
   Buttons.HelpButton.Caption := rsHelp;
@@ -766,11 +760,7 @@ begin
     FProps.OnPropChange := @PropsChange;
     FProps.OnPropEditing := @PropsEditing;
 
-    FieldImages.AddLazarusResource('text16');
-    FieldImages.AddLazarusResource('calc16');
-    FieldImages.AddLazarusResource('date16');
-    FieldImages.AddLazarusResource('clock16');
-    FieldImages.AddLazarusResource('checkbox16');
+    SetupImageList(FieldImages, ['text16', 'calc16', 'date16', 'clock16', 'checkbox16']);
   end
   else
   begin

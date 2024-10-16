@@ -1,7 +1,7 @@
 object ImagesFm: TImagesFm
-  Left = 386
+  Left = 1050
   Height = 498
-  Top = 216
+  Top = 239
   Width = 703
   BorderIcons = [biSystemMenu]
   Caption = 'Изображения'
@@ -133,39 +133,51 @@ object ImagesFm: TImagesFm
     end
   end
   object PopupMenu1: TPopupMenu
+    Images = Images
     Left = 119
     Top = 229
     object MenuItem1: TMenuItem
       Caption = 'Добавить'
+      ImageIndex = 0
       ShortCut = 45
       OnClick = MenuItem1Click
     end
     object MenuItem2: TMenuItem
       Caption = 'Переименовать'
+      ImageIndex = 1
       ShortCut = 32
       OnClick = MenuItem2Click
     end
     object MenuItem3: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 2
       ShortCut = 46
       OnClick = MenuItem3Click
     end
   end
   object PopupMenu2: TPopupMenu
+    Images = Images
     OnPopup = PopupMenu2Popup
     Left = 400
     Top = 232
     object MenuItem4: TMenuItem
       Caption = 'Загрузить с диска'
+      ImageIndex = 3
       OnClick = MenuItem4Click
     end
     object MenuItem5: TMenuItem
       Caption = 'Сохранить на диск'
+      ImageIndex = 4
       OnClick = MenuItem5Click
     end
     object MenuItem6: TMenuItem
       Caption = 'Очистить'
+      ImageIndex = 5
       OnClick = MenuItem6Click
     end
+  end
+  object Images: TImageList
+    Left = 361
+    Top = 319
   end
 end

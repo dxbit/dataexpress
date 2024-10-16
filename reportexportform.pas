@@ -112,9 +112,9 @@ procedure TReportExportFm.FormCreate(Sender: TObject);
 begin
   Caption := rsReportExport;
   Label1.Caption := rsSelectFields;
-  CheckAll.LoadGlyphFromLazarusResource('checkall16');
+  SetupSpeedButton(CheckAll, 'checkall16');
   CheckAll.Hint := rsCheckAll;
-  UncheckAll.LoadGlyphFromLazarusResource('uncheckall16');
+  SetupSpeedButton(UncheckAll, 'uncheckall16');
   UncheckAll.Hint := rsUncheckAll;
   Label2.Caption := rsReportExportFilename;
   ExpEncode.Caption := rsEncoding;

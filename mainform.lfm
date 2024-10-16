@@ -16,6 +16,7 @@ object MainFm: TMainFm
   Position = poScreenCenter
   LCLVersion = '3.2.0.0'
   object MainMenu1: TMainMenu
+    Images = MenuImages
     Left = 36
     Top = 142
     object FileMnu: TMenuItem
@@ -229,5 +230,9 @@ object MainFm: TMainFm
     OnTimer = Timer2Timer
     Left = 216
     Top = 52
+  end
+  object MenuImages: TImageList
+    Left = 112
+    Top = 170
   end
 end

@@ -265,7 +265,7 @@ begin
   Caption := rsFindInModules;
   Label1.Caption := rsSearchedText;
   FindBn.Caption := rsFind;
-  FindBn.LoadGlyphFromLazarusResource('find16');
+  SetupBitBtn(FindBn, 'find16');
   with ModulesGrp do
   begin
     Items.Clear;

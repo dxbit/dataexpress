@@ -61,6 +61,9 @@ procedure ShowCalcErrsForm(CE: TCalcError);
 
 implementation
 
+uses
+  apputils;
+
 procedure ShowCalcErrsForm(CE: TCalcError);
 begin
   if CalcErrsFm = nil then
@@ -78,7 +81,7 @@ begin
   ButtonPanel1.CloseButton.Caption := rsClose;
   ButtonPanel1.HelpButton.Kind:=bkCustom;
   ButtonPanel1.HelpButton.Caption := rsClear;
-  ButtonPanel1.HelpButton.LoadGlyphFromLazarusResource('delete16');
+  SetupBitBtn(ButtonPanel1.HelpButton, 'delete16');
 end;
 
 procedure TCalcErrsFm.FormShow(Sender: TObject);

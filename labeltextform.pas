@@ -74,6 +74,7 @@ end;
 
 procedure TLabelTextFm.FormCreate(Sender: TObject);
 begin
+  SetupImageList(ImageList1, ['leftjustify16', 'centertext16', 'rightjustify16']);
   Caption := rsLblText;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;

@@ -64,6 +64,9 @@ type
 
 implementation
 
+uses
+  apputils;
+
 const
   IDX_BREAKPOINT = 10;
   IDX_RUNLINE = 11;
@@ -183,21 +186,10 @@ begin
 
   Font.Size:=10;
   FImageList := TImageList.Create(Self);
-  with FImageList do
-  begin
-    AddLazarusResource('0');
-    AddLazarusResource('1');
-    AddLazarusResource('2');
-    AddLazarusResource('3');
-    AddLazarusResource('4');
-    AddLazarusResource('5');
-    AddLazarusResource('6');
-    AddLazarusResource('7');
-    AddLazarusResource('8');
-    AddLazarusResource('9');
-    AddLazarusResource('breakpoint16');
-    AddLazarusResource('runline16');
-  end;
+  FImageList.Width := 11;
+  FImageList.Height := 11;
+  SetupImageList(FImageList, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    'breakpoint11', 'runline11']);
   Options:=Options - [eoSmartTabs] + [eoTabIndent];
   TabWidth:=2;
   Highlighter := TSynPasSyn.Create(Self);

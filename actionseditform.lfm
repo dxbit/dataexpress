@@ -1,7 +1,7 @@
 object ActionsEditFm: TActionsEditFm
-  Left = 481
+  Left = 968
   Height = 578
-  Top = 234
+  Top = 221
   Width = 885
   BorderIcons = [biSystemMenu]
   Caption = 'Редактор действий'
@@ -65,12 +65,12 @@ object ActionsEditFm: TActionsEditFm
       ParentColor = False
       ParentShowHint = False
       TabOrder = 1
-      object Image1: TImage
+      object TitleImg: TImage
         Left = 8
         Height = 24
         Top = 8
         Width = 24
-        AutoSize = True
+        Center = True
         Picture.Data = {
           1754506F727461626C654E6574776F726B477261706869633503000089504E47
           0D0A1A0A0000000D494844520000001800000018080600000197700D6E000000
@@ -241,7 +241,7 @@ object ActionsEditFm: TActionsEditFm
     Font.Height = -12
     Font.Name = 'Courier New'
     HideSelection = False
-    Images = ImageList1
+    Images = TreeImages
     MultiSelect = True
     MultiSelectStyle = [msControlSelect, msShiftSelect]
     ParentFont = False
@@ -262,63 +262,77 @@ object ActionsEditFm: TActionsEditFm
     Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand]
   end
   object PopupMenu1: TPopupMenu
+    Images = MenuImages
     OnPopup = PopupMenu1Popup
     Left = 194
     Top = 130
-    object MenuItem1: TMenuItem
+    object ActionMnu: TMenuItem
       Caption = 'Действие'
-      OnClick = MenuItem1Click
+      ImageIndex = 0
+      OnClick = ActionMnuClick
     end
-    object MenuItem2: TMenuItem
+    object IfMnu: TMenuItem
       Caption = 'Если'
-      OnClick = MenuItem2Click
+      ImageIndex = 1
+      OnClick = IfMnuClick
     end
-    object MenuItem3: TMenuItem
+    object ElseIfMnu: TMenuItem
       Caption = 'Иначе Если'
-      OnClick = MenuItem3Click
+      ImageIndex = 2
+      OnClick = ElseIfMnuClick
     end
-    object MenuItem4: TMenuItem
+    object ElseMnu: TMenuItem
       Caption = 'Иначе'
-      OnClick = MenuItem4Click
+      ImageIndex = 3
+      OnClick = ElseMnuClick
     end
-    object MenuItem5: TMenuItem
+    object CommentMnu: TMenuItem
       Caption = 'Комментарий'
-      OnClick = MenuItem5Click
+      ImageIndex = 4
+      OnClick = CommentMnuClick
     end
     object MenuItem6: TMenuItem
       Caption = '-'
     end
-    object MenuItem12: TMenuItem
+    object DisabledMnu: TMenuItem
       Caption = 'Отключено'
       ShortCut = 68
-      OnClick = MenuItem12Click
+      OnClick = DisabledMnuClick
     end
     object N1: TMenuItem
       Caption = '-'
     end
-    object MenuItem8: TMenuItem
+    object CutMnu: TMenuItem
       Caption = 'Вырезать'
-      OnClick = MenuItem8Click
+      ImageIndex = 5
+      OnClick = CutMnuClick
     end
-    object MenuItem9: TMenuItem
+    object CopyMnu: TMenuItem
       Caption = 'Копировать'
-      OnClick = MenuItem9Click
+      ImageIndex = 6
+      OnClick = CopyMnuClick
     end
-    object MenuItem10: TMenuItem
+    object PasteMnu: TMenuItem
       Caption = 'Вставить'
-      OnClick = MenuItem10Click
+      ImageIndex = 7
+      OnClick = PasteMnuClick
     end
     object MenuItem11: TMenuItem
       Caption = '-'
     end
-    object MenuItem7: TMenuItem
+    object DelMnu: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 8
       ShortCut = 46
-      OnClick = MenuItem7Click
+      OnClick = DelMnuClick
     end
   end
-  object ImageList1: TImageList
+  object TreeImages: TImageList
     Left = 82
     Top = 79
+  end
+  object MenuImages: TImageList
+    Left = 93
+    Top = 279
   end
 end

@@ -500,36 +500,12 @@ begin
   MenuItem5.Caption := rsCopyTagGroup;
   MenuItem4.Caption := rsCopyTagEnd;
 
-  ToolImages.AddLazarusResource('form16');
-  ToolImages.AddLazarusResource('folder16');
-  ToolImages.AddLazarusResource('doc16');
-  SrcImages.AddLazarusResource('form16');
-  SrcImages.AddLazarusResource('grid16');
-  SrcImages.AddLazarusResource('query16');
-  with FieldsImages do
-	begin
-    AddLazarusResource('form16');
-    AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    AddLazarusResource('label16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('objectfield16');
-    AddLazarusResource('query16');
-    AddLazarusResource('grid16');
-    AddLazarusResource('dbimage16');
-    AddLazarusResource('pivottable16');
-    AddLazarusResource('file16');
-    AddLazarusResource('sum16');
-    AddLazarusResource('calcfield16');
-    AddLazarusResource('chart16');
-    AddLazarusResource('key16')
-  end;
+  SetupImageList(ToolImages, ['form16', 'folder16', 'doc16']);
+  SetupImageList(SrcImages, ['form16', 'grid16', 'query16']);
+  SetupImageList(FieldsImages, ['form16', 'text16', 'calc16', 'date16',
+    'clock16', 'memo16', 'checkbox16', 'combobox16', 'object16', 'label16',
+    'counter16', 'objectfield16', 'query16', 'grid16', 'dbimage16',
+    'pivottable16', 'file16', 'sum16', 'calcfield16', 'chart16', 'key16']);
 
   AppConfig.LoadTemplateWizard;
   Left := AppConfig.TWLeft;

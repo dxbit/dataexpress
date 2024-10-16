@@ -65,7 +65,7 @@ function ShowStyleForm(aForm: TdxForm): Integer;
 implementation
 
 uses
-  helpmanager, formmanager;
+  apputils, helpmanager, formmanager;
 
 function ShowStyleForm(aForm: TdxForm): Integer;
 begin
@@ -87,8 +87,7 @@ begin
   ButtonPanel1.HelpButton.Caption:=rsHelp;
   MenuItem1.Caption:=rsCheckAll;
   MenuItem2.Caption := rsUncheckAll;
-  ImageList1.AddLazarusResource('checkall16');
-  ImageList1.AddLazarusResource('uncheckall16');
+  SetupImageList(ImageList1, ['checkall16', 'uncheckall16']);
   ToolButton1.Caption := rsCheckAll;
   ToolButton2.Caption := rsUncheckAll;
 end;

@@ -288,6 +288,8 @@ var
   //OldSqlMode: Boolean;
 begin
   RD := ReportMan.FindReport(GetId(C));
+  if RD = nil then Exit;
+
   Fm := TdxForm(C.Owner);
   Result := ShowReportForm(RD, Fm, TdxQueryGrid(C), True);
 

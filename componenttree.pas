@@ -56,7 +56,8 @@ type
 implementation
 
 uses
-  dxreports, dxfiles, dximages, pivotgrid, JvDesignImp, LazUtf8, dxcharts;
+  dxreports, dxfiles, dximages, pivotgrid, JvDesignImp, LazUtf8, dxcharts,
+  apputils;
 
 function GetImageIdx(C: TComponent): Integer;
 var
@@ -237,34 +238,10 @@ begin
   end;
 
   Tree.Images := TImageList.Create(Self);
-  with Tree.Images do
-	begin
-    AddLazarusResource('form16');
-    AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    AddLazarusResource('label16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('objectfield16');
-    AddLazarusResource('shape16');
-    AddLazarusResource('button16');
-    AddLazarusResource('query16');
-    AddLazarusResource('grid16');
-    AddLazarusResource('dbimage16');
-    AddLazarusResource('image16');
-    AddLazarusResource('tab16');
-    AddLazarusResource('tabs16');
-    AddLazarusResource('pivottable16');
-    AddLazarusResource('groupbox16');
-    AddLazarusResource('file16');
-    AddLazarusResource('chart16');
-    AddLazarusResource('key16');
-  end;
+  SetupImageList(Tree.Images, ['form16', 'text16', 'calc16', 'date16', 'clock16', 'memo16',
+    'checkbox16', 'combobox16', 'object16', 'label16', 'counter16', 'objectfield16',
+    'shape16', 'button16', 'query16', 'grid16', 'dbimage16', 'image16', 'tab16',
+    'tabs16', 'pivottable16', 'groupbox16', 'file16', 'chart16', 'key16']);
 end;
 
 procedure TComponentTree.UpdateTree;

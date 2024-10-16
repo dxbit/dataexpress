@@ -374,7 +374,7 @@ begin
   Pop.OnPopup:=@MenuPopup;
 
   IL := TImageList.Create(Self);
-  IL.AddLazarusResource('folder16');
+  SetupImageList(IL, ['folder16']);
 
   Tree.PopupMenu := Pop;
   Tree.Images := IL;

@@ -126,15 +126,8 @@ end;
 procedure TIntfFm.FormCreate(Sender: TObject);
 begin
   FIntf := TdxIntf.Create;
-  Images.AddLazarusResource('add16');
-  Images.AddLazarusResource('edit16');
-  Images.AddLazarusResource('delete16');
-  Images.AddLazarusResource('up16');
-  Images.AddLazarusResource('down16');
-  Images.AddLazarusResource('folder16');
-  Images.AddLazarusResource('div16');
-  Images.AddLazarusResource('form16');
-  Images.AddLazarusResource('grid16');
+  SetupImageList(Images, ['add16', 'edit16', 'delete16', 'up16', 'down16',
+    'folder16', 'div16', 'form16', 'grid16']);
   Caption := rsInterface;
   Label1.Caption := rsName;
   Dflt.Caption := rsDefault;

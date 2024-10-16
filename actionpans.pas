@@ -213,11 +213,9 @@ begin
   inherited Create(TheOwner);
   FImage := TImage.Create(Self);
   FImage.Parent := Self;
-  FImage.Picture.LoadFromLazarusResource('error16');
+  SetupPicture(FImage.Picture, 'exprcheck16');
   FImage.AutoSize := True;
   AutoSize := True;
-  //Width := FImage.Width;
-  //Height := FImage.Height;
 end;
 
 { TShowMessageActionPanel }
@@ -1465,8 +1463,6 @@ begin
   Caption := '';
   FProblemIcon := TProblemIcon.Create(Self);
   FProblemIcon.Parent := Self;
-  //FProblemIcon.Picture.LoadFromLazarusResource('error16');
-  //FProblemIcon.AutoSize := True;
   FProblemIcon.Visible := False;
   FTimer := TTimer.Create(Self);
   FTimer.Enabled := False;

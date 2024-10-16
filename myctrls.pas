@@ -80,7 +80,6 @@ type
     FOnGetCellText: TGetCellTextEvent;
     FSelectedTextColor: TColor;
     FSortCols: TSortColumns;
-    FUp, FDown: TBitmap;
     FBorderLinePos: Integer;
     FWordWrap: Boolean;
     function GetColumns: TMyGridColumns;
@@ -1186,7 +1185,6 @@ begin
       B.ShowHint:=not B.ShowCaption;
       B.Images := Images16;
       B.ImageIndex := Ord(i);
-      //B.LoadGlyphFromLazarusResource(ImgRes[i]);
     end
     else
     begin
@@ -1404,19 +1402,6 @@ var
   CD: TSortColumn;
   i, num: Integer;
   C: TColumn;
-
-  procedure DrawArrowUp(X1, Y1: Integer);
-  begin
-    //Canvas.Draw(X, Y, FUp);
-    Images16.Draw(Canvas, X, Y, IMG16_UP8);
-  end;
-
-  procedure DrawArrowDown(X1, Y1: Integer);
-  begin
-    //Canvas.Draw(X, Y, FDown);
-    Images16.Draw(Canvas, X, Y, IMG16_DOWN8);
-  end;
-
 begin
   inherited DrawCell(aCol, aRow, aRect, aState);
 
@@ -1426,13 +1411,13 @@ begin
     CD := FSortCols.FindCol(C);
     if CD <> nil then
     begin
-      X := aRect.Right - 16;
-      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - 8;
+      X := aRect.Right - ScaleToScreen(16);
+      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - Images16.Height div 2;
       num := FSortCols.IndexOf(CD);
       for i := 0 to num do
       begin
-        if CD.Desc then DrawArrowDown(X, Y)
-        else DrawArrowUp(X, Y);
+        if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
+        else Images16.Draw(Canvas, X, Y, IMG16_UP8);
         X := X - 10;
       end;
     end;
@@ -1547,8 +1532,6 @@ begin
   FocusColor := SelectedColor;
   FSortCols := TSortColumns.Create;
   FSortCols.Grid := Self;
-  //FUp := LoadBitmapFromLazarusResource('up8');
-  //FDown := LoadBitmapFromLazarusResource('down8');
   FButtons := TGridButtons.Create(Self);
   FButtons.OnButtonClick:=@ButtonClick;
   FMemo := TMemoCellEditor.Create(nil);
@@ -1909,17 +1892,6 @@ var
   CD: TSortColumn;
   i, num: Integer;
   C: TGridColumn;
-
-  procedure DrawArrowUp(X1, Y1: Integer);
-  begin
-    Canvas.Draw(X, Y, FUp);
-  end;
-
-  procedure DrawArrowDown(X1, Y1: Integer);
-  begin
-    Canvas.Draw(X, Y, FDown);
-  end;
-
 begin
   inherited DrawCell(aCol, aRow, aRect, aState);
 
@@ -1929,13 +1901,13 @@ begin
     CD := FSortCols.FindCol(C);
     if CD <> nil then
     begin
-      X := aRect.Right - 16;
-      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - 8;
+      X := aRect.Right - ScaleToScreen(16);
+      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - Images16.Height div 2;
       num := FSortCols.IndexOf(CD);
       for i := 0 to num do
       begin
-        if CD.Desc then DrawArrowDown(X, Y)
-        else DrawArrowUp(X, Y);
+        if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
+        else Images16.Draw(Canvas, X, Y, IMG16_UP8); ;
         X := X - 10;
       end;
     end;
@@ -2070,8 +2042,6 @@ begin
   inherited Create(AOwner);
   ShowHint := True;
   FSortCols := TSortColumns.Create;
-  FUp := LoadBitmapFromLazarusResource('up8');
-  FDown := LoadBitmapFromLazarusResource('down8');
   FocusRectVisible := False;
   FSelectedTextColor:=clHighlightText;
   FInactiveSelectedColor:=clSilver;
@@ -2085,8 +2055,6 @@ end;
 
 destructor TMyGrid.Destroy;
 begin
-  FreeAndNil(FUp);
-  FreeAndNil(FDown);
   FSortCols.Free;
   inherited Destroy;
 end;

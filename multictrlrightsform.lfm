@@ -11,7 +11,7 @@ object MultiCtrlRightsFm: TMultiCtrlRightsFm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Grid: TStringGrid
     Left = 4
     Height = 364
@@ -36,9 +36,9 @@ object MultiCtrlRightsFm: TMultiCtrlRightsFm
     OnGetCellHint = GridGetCellHint
     OnKeyDown = GridKeyDown
     ColWidths = (
+      193
+      193
       192
-      192
-      194
     )
   end
   object ButtonPanel1: TButtonPanel
@@ -59,22 +59,29 @@ object MultiCtrlRightsFm: TMultiCtrlRightsFm
     ShowBevel = False
   end
   object CmpMnu: TPopupMenu
+    Images = Images
     OnPopup = CmpMnuPopup
     Left = 260
     Top = 260
-    object MenuItem5: TMenuItem
+    object NoMnu: TMenuItem
       Caption = 'Нет доступа'
       OnClick = CmpMnuClick
     end
-    object MenuItem6: TMenuItem
+    object ViewMnu: TMenuItem
       Tag = 1
       Caption = 'Только просмотр'
+      ImageIndex = 0
       OnClick = CmpMnuClick
     end
-    object MenuItem7: TMenuItem
+    object EditMnu: TMenuItem
       Tag = 2
       Caption = 'Редактирование'
+      ImageIndex = 1
       OnClick = CmpMnuClick
     end
+  end
+  object Images: TImageList
+    Left = 129
+    Top = 208
   end
 end

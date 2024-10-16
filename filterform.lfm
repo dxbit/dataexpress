@@ -12,7 +12,7 @@ object FilterFm: TFilterFm
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
@@ -44,7 +44,7 @@ object FilterFm: TFilterFm
     ButtonWidth = 23
     Caption = 'ToolBar1'
     EdgeBorders = []
-    Images = ImageList1
+    Images = Images
     List = True
     ParentShowHint = False
     ShowCaptions = True
@@ -57,30 +57,30 @@ object FilterFm: TFilterFm
       ImageIndex = 0
     end
     object ToolButton2: TToolButton
-      Left = 109
+      Left = 112
       Top = 0
       ImageIndex = 1
     end
     object ToolButton3: TToolButton
-      Left = 135
+      Left = 141
       Height = 25
       Top = 0
       Caption = 'ToolButton3'
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
-      Left = 140
+      Left = 146
       Top = 0
       Caption = 'Добавить значение'
       ImageIndex = 0
     end
     object ToolButton5: TToolButton
-      Left = 272
+      Left = 281
       Top = 0
       ImageIndex = 1
     end
   end
-  object ImageList1: TImageList
+  object Images: TImageList
     Left = 280
     Top = 72
   end

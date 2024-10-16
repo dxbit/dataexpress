@@ -184,6 +184,8 @@ begin
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
 
+  SetupSpeedButton(InfoLangBn, 'info16');
+
   AddFormHeight(Self);
 end;
 

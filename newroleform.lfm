@@ -1,7 +1,7 @@
 object NewRoleFm: TNewRoleFm
-  Left = 390
+  Left = 308
   Height = 487
-  Top = 243
+  Top = 199
   Width = 406
   Caption = 'Настройка роли'
   ClientHeight = 487
@@ -11,7 +11,7 @@ object NewRoleFm: TNewRoleFm
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.1.0.0'
+  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -29,9 +29,9 @@ object NewRoleFm: TNewRoleFm
     Width = 390
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
-    OnChange = Edit1Change
     TabOrder = 0
     Text = 'Edit1'
+    OnChange = Edit1Change
   end
   object PageControl1: TPageControl
     AnchorSideTop.Control = Intfs
@@ -136,7 +136,7 @@ object NewRoleFm: TNewRoleFm
           item
             ReadOnly = True
             Title.Caption = 'Отчет'
-            Width = 343
+            Width = 326
           end        
           item
             SizePriority = 0
@@ -154,7 +154,7 @@ object NewRoleFm: TNewRoleFm
         OnGetCellHint = RRGridGetCellHint
         OnKeyDown = GridKeyDown
         ColWidths = (
-          343
+          326
           40
         )
       end
@@ -199,13 +199,14 @@ object NewRoleFm: TNewRoleFm
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
     ItemHeight = 15
-    OnChange = IntfsChange
     Style = csDropDownList
     TabOrder = 1
+    OnChange = IntfsChange
   end
   object AccessMnu: TPopupMenu
-    left = 68
-    top = 197
+    Images = Images
+    Left = 68
+    Top = 197
     object MenuItem4: TMenuItem
       Caption = 'Нет доступа'
       OnClick = AccessMnuClick
@@ -213,17 +214,24 @@ object NewRoleFm: TNewRoleFm
     object MenuItem1: TMenuItem
       Tag = 1
       Caption = 'Только просмотр'
+      ImageIndex = 0
       OnClick = AccessMnuClick
     end
     object MenuItem2: TMenuItem
       Tag = 2
       Caption = 'Только редактирование'
+      ImageIndex = 1
       OnClick = AccessMnuClick
     end
     object MenuItem3: TMenuItem
       Tag = 3
       Caption = 'Полный доступ'
+      ImageIndex = 2
       OnClick = AccessMnuClick
     end
+  end
+  object Images: TImageList
+    Left = 131
+    Top = 239
   end
 end

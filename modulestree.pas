@@ -50,7 +50,7 @@ type
 implementation
 
 uses
-  scriptmanager, formmanager;
+  apputils, scriptmanager, formmanager;
 
 { TModulesTree }
 
@@ -60,14 +60,7 @@ var
 begin
   inherited Create(AOwner);
   Images := TImageList.Create(Self);
-  with Images do
-  begin
-    AddLazarusResource('form16');
-    AddLazarusResource('user16');
-    AddLazarusResource('ext16');
-    AddLazarusResource('webform16');
-    AddLazarusResource('webext16');
-  end;
+  SetupImageList(Images, ['form16', 'user16', 'ext16', 'webform16', 'webext16']);
   Tree.Images := Images;
   Filter.TextHint := rsFindModule;
 end;

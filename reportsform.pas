@@ -47,6 +47,7 @@ type
     BitBtn8: TBitBtn;
     BitBtn9: TBitBtn;
     ButtonPanel1: TButtonPanel;
+    Images: TImageList;
     List: TListBox;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
@@ -389,26 +390,21 @@ begin
   ButtonPanel1.CloseButton.Caption:=rsClose;
   ButtonPanel1.HelpButton.Caption:=rsHelp;
   MenuItem1.Caption := rsAppend;
-  SetMenuItemImage(MenuItem1, 'add16');
   MenuItem2.Caption := rsDelete;
-  SetMenuItemImage(MenuItem2, 'delete16');
   MenuItem4.Caption := rsRename;
   MenuItem5.Caption := rsSelection;
-  SetMenuItemImage(MenuItem5, 'query16');
   MenuItem7.Caption := rsTable;
-  SetMenuItemImage(MenuItem7, 'grid16');
   MenuItem9.Caption := rsCopyReportStyle;
-  SetMenuItemImage(MenuItem9, 'copy16');
   MenuItem10.Caption := rsCalcFields;
-  SetMenuItemImage(MenuItem10, 'sum16');
   MenuItem6.Caption := rsOutputFilter;
-  SetMenuItemImage(MenuItem6, 'filter16');
   MenuItem11.Caption := rsTotals;
   MenuItem12.Caption := rsHelpText;
   MenuItem13.Caption:=rsCopy;
   MenuItem14.Caption := rsColoring;
   MenuItem15.Caption := rsTemplates;
   MenuItem16.Caption := rsWhenPrinting;
+  SetupImageList(Images, ['add16', 'copy16', 'delete16', 'query16', 'grid16',
+    'sum16', 'filter16']);
   BitBtn1.Caption := rsAppend;
   BitBtn6.Caption := rsDelete;
   BitBtn2.Caption := rsRename;

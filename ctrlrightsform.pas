@@ -34,6 +34,7 @@ type
     ButtonPanel1: TButtonPanel;
     Grid: TStringGrid;
     AccessMnu: TPopupMenu;
+    Images: TImageList;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -53,7 +54,6 @@ type
     { private declarations }
     FFm: TdxForm;
     FFR: TdxFormRight;
-    FViewBmp, FEditBmp, FKeyBmp: TCustomBitmap;
     FModified: Boolean;
     //procedure InitRights;
     procedure FillRights;
@@ -110,13 +110,9 @@ begin
   ButtonPanel1.HelpButton.Caption := rsHelp;
   MenuItem1.Caption := rsNoAccess;
   MenuItem2.Caption := rsOnlyView;
-  SetMenuItemImage(MenuItem2, 'eyes16');
   MenuItem3.Caption := rsEditing;
-  SetMenuItemImage(MenuItem3, 'edit16');
   FFR := TdxFormRight.Create;
-  FViewBmp := CreateBitmapFromLazarusResource('eyes16');
-  FEditBmp := CreateBitmapFromLazarusResource('edit16');
-  FKeyBmp := CreateBitmapFromLazarusResource('key16');
+  SetupImageList(Images, ['eyes16', 'edit16', 'key16']);
 end;
 
 procedure TCtrlRightsFm.AccessMnuClick(Sender: TObject);
@@ -180,9 +176,6 @@ end;
 
 procedure TCtrlRightsFm.FormDestroy(Sender: TObject);
 begin
-  FViewBmp.Free;
-  FEditBmp.Free;
-  FKeyBmp.Free;
   FFR.Free;
 end;
 
@@ -218,12 +211,12 @@ begin
   Cv.Brush.Color := Clr;
   Cv.FillRect(aRect);
 
-  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - 8);
-  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - 8);
+  x := aRect.Left + ((aRect.Right - aRect.Left) div 2 - Images.Width div 2);
+  y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2 - Images.Height div 2);
 
   if aRow = 0 then
   begin
-    if aCol = 2 then Cv.Draw(x, y, FKeyBmp);
+    if aCol = 2 then Images.Draw(Cv, x, y, 2);
   end
   else
   begin
@@ -236,8 +229,8 @@ begin
     end  }
     else
     begin
-      if CR.Editing and CR.Visible then Cv.Draw(x, y, FEditBmp)
-      else if CR.Visible then Cv.Draw(x, y, FViewBmp);
+      if CR.Editing and CR.Visible then Images.Draw(Cv, x, y, 1)
+      else if CR.Visible then Images.Draw(Cv, x, y, 0);
     end;
   end;
 end;

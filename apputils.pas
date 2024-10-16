@@ -24,8 +24,8 @@ interface
 
 uses
   Classes, {Windows, }SysUtils, strconsts, Menus, DBGrids, dxctrls, DXReports,
-  Lists, Db, Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls,
-  SynEdit, LclType, formmanager, reportmanager, process,
+  Lists, Db, Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons,
+  SynEdit, LclType, ImgList, formmanager, reportmanager, process,
   TypInfo, Types, IBConnection, crossapi;
 
 //const
@@ -44,7 +44,7 @@ procedure ErrMsg(const Msg: String; Log: Boolean = False; const Context: String 
 procedure ErrMsgFmt(const Msg: String; Params: array of const; Log: Boolean = False; const Context: String = '');
 procedure ClearList(L: TList);
 function ConfirmDelete: Boolean;
-procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
+//procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
 function CreateMenuItem(aMenu: TMenu; const Caption: String; Tag: PtrInt; aShortCut: TShortCut;
   Handler: TNotifyEvent; ImageIndex: Integer = -1): TMenuItem;
 function SortColumnToId(Gr: TdxGrid): Integer;
@@ -250,13 +250,19 @@ function IsTextComponent(C: TComponent): Boolean;
 procedure DrawImageFieldIntoGrid(Grid: TDBGrid; Column: TColumn; ImageField: TField; R: TRect);
 procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
   const TargetField: String; out FieldName: String; out Color: TColor);
+function GetPPIndex: Integer;
+procedure SetupImageList(IL: TCustomImageList; ResNames: array of String);
+procedure SetupPicture(Pic: TPicture; const ResName: String);
+procedure SetupBitBtn(Bn: TCustomBitBtn; const ResName: String);
+procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
+function CreateBitmapFromRes(const ResName: String): TCustomBitmap;
 
 implementation
 
 uses
   Dialogs, LazUtf8, {$ifdef windows}ShellApi,{$endif} appsettings, FileUtil, dximages,
   expressions, dbengine, Math, sqlgen, dxusers,
-  pivotgrid, Variants, maskedit, outputform, mytypes, StrUtils, buttons,
+  pivotgrid, Variants, maskedit, outputform, mytypes, StrUtils,
   BGRABitmap, LConvEncoding, dxfiles, myctrls, dateutils, scriptmanager,
   uPSRuntime, SQLDb, appimagelists, dxactions, dxmains, LazFileUtils, imagemanager,
   scriptfuncs, msgform, mainframe, designerframe, mylogger;
@@ -314,14 +320,14 @@ begin
   Result := MessageDlg(rsWarning, rsConfirmDelete, mtWarning, [mbYes, mbNo], 0) = mrYes;
 end;
 
-procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
+{procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
 var
   B: TCustomBitmap;
 begin
   B := CreateBitmapFromLazarusResource(ResName);
   MI.Bitmap.Assign(B);
   B.Free;
-end;
+end;      }
 
 function CreateMenuItem(aMenu: TMenu; const Caption: String; Tag: PtrInt;
   aShortCut: TShortCut; Handler: TNotifyEvent; ImageIndex: Integer): TMenuItem;
@@ -331,7 +337,6 @@ begin
   Result.Tag := Tag;
   Result.ShortCut:=aShortCut;
   Result.OnClick:=Handler;
-  //if ResName <> '' then SetMenuItemImage(Result, ResName);
   Result.ImageIndex:=ImageIndex;
 end;
 
@@ -4249,6 +4254,84 @@ begin
     EB.Free;
     FreeAndNil(E);
   end;
+end;
+
+{procedure SetupImageList(IL: TCustomImageList; ResNames: array of String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+  Sz16: array of Integer = (16, 24, 32);
+  Sz24: array of Integer = (24, 32, 48);
+var
+  i, n, Sz: Integer;
+begin
+  n := ImageMan.GetPPIndex;
+  if IL.Width = 16 then Sz := Sz16[n]
+  else if IL.Width = 24 then Sz := Sz24[n]
+  else raise Exception.Create('SetupImageList: unknown width = ' + IntToStr(IL.Width));
+
+  IL.Clear;
+  IL.Scaled := False;
+  IL.Width := Sz;
+  IL.Height := Sz;
+  for i := 0 to High(ResNames) do
+    IL.AddLazarusResource(ResNames[i] + Sfx[n]);
+end;}
+
+function GetPPIndex: Integer;
+var
+  PPI, i: Integer;
+begin
+  PPI := Screen.PixelsPerInch;
+  if PPI >= 168{192} then i := 2
+  else if PPI >= 144 then i := 1
+  else i := 0;
+  Result := i;
+end;
+
+procedure SetupImageList(IL: TCustomImageList; ResNames: array of String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+  Mul: array of Double = (1, 1.5, 2);
+var
+  i, n: Integer;
+begin
+  n := GetPPIndex;
+
+  IL.Clear;
+  IL.Scaled := False;
+  IL.Width := Trunc(IL.Width * Mul[n]);
+  IL.Height := Trunc(IL.Height * Mul[n]);
+
+  for i := 0 to High(ResNames) do
+    IL.AddLazarusResource(ResNames[i] + Sfx[n]);
+end;
+
+procedure SetupPicture(Pic: TPicture; const ResName: String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+begin
+  Pic.LoadFromLazarusResource(ResName + Sfx[GetPPIndex]);
+end;
+
+procedure SetupBitBtn(Bn: TCustomBitBtn; const ResName: String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+begin
+  Bn.LoadGlyphFromLazarusResource(ResName + Sfx[GetPPIndex]);
+end;
+
+procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+begin
+  Bn.LoadGlyphFromLazarusResource(ResName + Sfx[GetPPIndex]);
+end;
+
+function CreateBitmapFromRes(const ResName: String): TCustomBitmap;
+const
+  Sfx: array of String = ('', '_150', '_200');
+begin
+  Result := CreateBitmapFromLazarusResource(ResName + Sfx[GetPPIndex]);
 end;
 
 end.

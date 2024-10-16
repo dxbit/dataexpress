@@ -13,7 +13,7 @@ object FindActionsFm: TFindActionsFm
   OnShow = FormShow
   Position = poOwnerFormCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     AnchorSideTop.Control = ModuleCbx
     AnchorSideTop.Side = asrCenter
@@ -35,10 +35,10 @@ object FindActionsFm: TFindActionsFm
     BorderSpacing.Left = 8
     DropDownCount = 16
     ItemHeight = 15
-    OnKeyUp = ValueEdKeyUp
-    OnSelect = ModuleCbxSelect
     Style = csDropDownList
     TabOrder = 0
+    OnKeyUp = ValueEdKeyUp
+    OnSelect = ModuleCbxSelect
   end
   object Label2: TLabel
     AnchorSideTop.Control = ActionCbx
@@ -62,9 +62,9 @@ object FindActionsFm: TFindActionsFm
     BorderSpacing.Top = 8
     DropDownCount = 16
     ItemHeight = 15
-    OnKeyUp = ValueEdKeyUp
     Style = csDropDownList
     TabOrder = 3
+    OnKeyUp = ValueEdKeyUp
   end
   object Label3: TLabel
     AnchorSideTop.Control = ValueEd
@@ -86,8 +86,8 @@ object FindActionsFm: TFindActionsFm
     Width = 549
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 8
-    OnKeyUp = ValueEdKeyUp
     TabOrder = 4
+    OnKeyUp = ValueEdKeyUp
   end
   object Label4: TLabel
     AnchorSideTop.Control = ValueEd
@@ -182,10 +182,10 @@ object FindActionsFm: TFindActionsFm
     Width = 219
     BorderSpacing.Top = 8
     ItemHeight = 15
-    OnKeyUp = ValueEdKeyUp
-    OnSelect = KindCbxSelect
     Style = csDropDownList
     TabOrder = 1
+    OnKeyUp = ValueEdKeyUp
+    OnSelect = KindCbxSelect
   end
   object NothingPan: TPanel
     AnchorSideLeft.Control = Grid
@@ -203,6 +203,7 @@ object FindActionsFm: TFindActionsFm
     Font.Height = -16
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
+    ParentBackground = False
     ParentColor = False
     ParentFont = False
     TabOrder = 7
@@ -215,7 +216,7 @@ object FindActionsFm: TFindActionsFm
     Left = 368
     Height = 19
     Top = 41
-    Width = 101
+    Width = 99
     BorderSpacing.Left = 16
     Caption = 'Искать в ЕСЛИ'
     TabOrder = 2

@@ -34,6 +34,7 @@ type
   TMultiRolesFm = class(TForm)
     AccessMnu: TPopupMenu;
     ButtonPanel1: TButtonPanel;
+    Images: TImageList;
     RpGrid: TStringGrid;
     MenuItem8: TMenuItem;
     N1: TMenuItem;
@@ -84,7 +85,6 @@ type
   private
     FRoles: TList;
     FFormList, FAllFormList: TStringList;
-    FViewBmp, FEditBmp, FFullBmp, FErrBmp, FChkBmp: TCustomBitmap;
     FModified: Boolean;
     function GetFormRight(Grid: TStringGrid; aCol, aRow: Integer): TdxFormRight;
     function GetReportRight(Grid: TStringGrid; aCol, aRow: Integer): TdxReportRight;
@@ -125,15 +125,7 @@ begin
   FFormList := TStringList.Create;
   FAllFormList := TStringList.Create;
 
-  FViewBmp := CreateBitmapFromLazarusResource('eyes16');
-  FEditBmp := CreateBitmapFromLazarusResource('edit16');
-  FFullBmp := CreateBitmapFromLazarusResource('add16');
-  FErrBmp := CreateBitmapFromLazarusResource('question16');
-  FChkBmp := CreateBitmapFromLazarusResource('check16');
-
-  SetMenuItemImage(MenuItem1, 'eyes16');
-  SetMenuItemImage(MenuItem2, 'edit16');
-  SetMenuItemImage(MenuItem3, 'add16');
+  SetupImageList(Images, ['eyes16', 'edit16', 'add16', 'question16', 'check16']);
 
   FormsGrid.FocusRectVisible := False;
   SelGrid.FocusRectVisible := False;
@@ -285,11 +277,6 @@ end;
 
 procedure TMultiRolesFm.FormDestroy(Sender: TObject);
 begin
-  FChkBmp.Free;
-  FViewBmp.Free;
-  FEditBmp.Free;
-  FFullBmp.Free;
-  FErrBmp.Free;
   FAllFormList.Free;
   FFormList.Free;
   FRoles.Free;
@@ -316,25 +303,21 @@ var
   FR: TdxFormRight;
   Cv: TCanvas;
   Bmp: TCustomBitmap;
-  x, y: Integer;
+  x, y, n: Integer;
   Grid: TStringGrid;
 begin
   if (aCol = 0) or (aRow = 0) then Exit;
 
   Grid := TStringGrid(Sender);
-  x := aRect.Left + (aRect.Width div 2 - 8);
-  y := aRect.Top + (aRect.Height div 2 - 8);
+  x := aRect.Left + (aRect.Width div 2 - Images.Width div 2);
+  y := aRect.Top + (aRect.Height div 2 - Images.Height div 2);
   Cv := Grid.Canvas;
   FR := GetFormRight(Grid, aCol, aRow);
 
-  case FR.GetAccess of
-    0: Bmp := nil;
-    1: Bmp := FViewBmp;
-    2: Bmp := FEditBmp;
-    3: Bmp := FFullBmp;
-    else Bmp := FErrBmp;
-  end;
-  if Bmp <> nil then Cv.Draw(x, y, Bmp);
+  n := FR.GetAccess;
+  if n = 0 then
+  else if n in [1..3] then Images.Draw(Cv, x, y, n - 1)
+  else Images.Draw(Cv, x, y, 3);
 end;
 
 procedure TMultiRolesFm.FormsGridGetCellHint(Sender: TObject; ACol,
@@ -412,7 +395,7 @@ begin
   y := aRect.Top + (aRect.Height div 2 - 8);
   Cv := Grid.Canvas;
   FR := GetFormRight(Grid, aCol, aRow);
-  if FR.ApplySelCondToObj then Cv.Draw(x, y, FChkBmp);
+  if FR.ApplySelCondToObj then Images.Draw(Cv, x, y, 4);
 end;
 
 procedure TMultiRolesFm.RpGridDblClick(Sender: TObject);
@@ -443,11 +426,11 @@ begin
   if (aCol = 0) or (aRow = 0) then Exit;
 
   Grid := TStringGrid(Sender);
-  x := aRect.Left + (aRect.Width div 2 - 8);
-  y := aRect.Top + (aRect.Height div 2 - 8);
+  x := aRect.Left + (aRect.Width div 2 - Images.Width div 2);
+  y := aRect.Top + (aRect.Height div 2 - Images.Height div 2);
   Cv := Grid.Canvas;
   RR := GetReportRight(Grid, aCol, aRow);
-  if RR.Visible then Cv.Draw(x, y, FViewBmp);
+  if RR.Visible then Images.Draw(Cv, x, y, 0);
 end;
 
 procedure TMultiRolesFm.RpGridGetCellHint(Sender: TObject; ACol, ARow: Integer;

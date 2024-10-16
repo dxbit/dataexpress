@@ -463,11 +463,9 @@ begin
   begin
     Width := 24;
     Height:=24;
-    AddLazarusResource('add24');
-    AddLazarusResource('edit_24');
-    AddLazarusResource('eyes24');
-    AddLazarusResource('delete24');
   end;
+  SetupImageList(FToolbar.Images, ['add24', 'edit24', 'eyes24', 'delete24']);
+
   FAppendBn := CreateToolButton(FToolbar, 0, rsAppend, 0, @ToolButtonClick);
   FEditBn := CreateToolButton(FToolbar, 1, rsEdit, 1, @ToolButtonClick);
   FDeleteBn := CreateToolButton(FToolbar, 3, rsDelete, 2, @ToolButtonClick);

@@ -44,7 +44,6 @@ type
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect;
       aState: TGridDrawState);
@@ -58,7 +57,6 @@ type
   private
     { private declarations }
     FModified: Boolean;
-    FExtBmp, FWebExtBmp: TBitmap;
     procedure FillModules(FocusModule: TScriptData);
     procedure UpdateHelp;
     procedure SetControlState;
@@ -146,27 +144,13 @@ begin
   ToolButton3.Caption := rsExportModule;
   ToolButton4.Caption := rsDownload;
   ToolButton6.Caption := rsHomepage;
-  with ImageList1 do
-  begin
-    AddLazarusResource('add16');
-    AddLazarusResource('delete16');
-    AddLazarusResource('save16');
-    AddLazarusResource('down16');
-    AddLazarusResource('home16');
-  end;
+  SetupImageList(ImageList1, ['add16', 'delete16', 'save16', 'down16', 'home16',
+    'ext16', 'webext16']);
   ButtonPanel1.CloseButton.Caption := rsClose;
   ButtonPanel1.HelpButton.Caption := rsHelp;
   HtmlPan.DataProvider := THtmlProvider.Create(Self);
   HtmlPan.BorderSpacing.Left := 4;
   HtmlPan.BorderSpacing.Right := 4;
-  FExtBmp := LoadBitmapFromLazarusResource('ext16');
-  FWebExtBmp := LoadBitmapFromLazarusResource('webext16');
-end;
-
-procedure TModulesFm.FormDestroy(Sender: TObject);
-begin
-  FExtBmp.Free;
-  FWebExtBmp.Free;
 end;
 
 procedure TModulesFm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -179,15 +163,16 @@ procedure TModulesFm.GridDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
   SD: TScriptData;
-  Bmp: TBitmap;
+  n: Integer;
 begin
   if (aCol = 3) and (aRow > 0) then
   begin
     SD := TScriptData(Grid.Objects[0, aRow]);
-    if SD.Kind = skExpr then Bmp := FExtBmp
-    else Bmp := FWebExtBmp;
-    Grid.Canvas.Draw(aRect.Left + aRect.Width div 2 - Bmp.Width div 2,
-      aRect.Top + aRect.Height div 2 - Bmp.Height div 2, Bmp);
+    if SD.Kind = skExpr then n := 5
+    else n := 6;
+    with ImageList1 do
+      Draw(Grid.Canvas, aRect.Left + aRect.Width div 2 - Width div 2,
+        aRect.Top + aRect.Height div 2 - Height div 2, n);
   end;
 end;
 

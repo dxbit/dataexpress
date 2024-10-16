@@ -55,21 +55,25 @@ const
   IMG16_IMAGE = 22;
   IMG16_UP8 = 23;
   IMG16_DOWN8 = 24;
+  IMG16_FILE = 25;
 
   IMG24_DATE = 0;
   IMG24_CLOCK = 1;
   IMG24_FORM = 2;
   IMG24_CALC = 3;
+  IMG24_FILE = 4;
 
   IMG32_DATE = 0;
   IMG32_CLOCK = 1;
   IMG32_FORM = 2;
   IMG32_CALC = 3;
+  IMG32_FILE = 4;
 
   IMG48_DATE = 0;
   IMG48_CLOCK = 1;
   IMG48_FORM = 2;
   IMG48_CALC = 3;
+  IMG48_FILE = 4;
 
 var
   Images16: TImageList;
@@ -79,15 +83,18 @@ var
 
 implementation
 
+uses
+  apputils;
+
 const
-  Img16: array [0..24] of String = ('add16', 'edit16', 'delete16', 'copy16',
+  Img16: array [0..25] of String = ('add16', 'edit16', 'delete16', 'copy16',
     'shopping16', 'up16', 'down16', 'refresh16', 'goto16', 'cut16', 'paste16',
     'calc16', 'date16', 'cbx_dropdown16', 'form16', 'eyes16', 'db16', 'save16',
     'clock16', 'filter16', 'folder_add16', 'folder_delete16', 'image16', 'up8',
-    'down8');
-  Img24: array [0..3] of String = ('date24', 'clock24', 'form24', 'calc24');
-  Img32: array [0..3] of String = ('date32', 'clock32', 'form32', 'calc32');
-  Img48: array [0..3] of String = ('date48', 'clock48', 'form48', 'calc48');
+    'down8', 'file16');
+  Img24: array [0..4] of String = ('date24', 'clock24', 'form24', 'calc24', 'file24');
+  Img32: array [0..4] of String = ('date16_200', 'clock16_200', 'form16_200', 'calc16_200', 'file16_200');
+  Img48: array [0..4] of String = ('date24_200', 'clock24_200', 'form24_200', 'calc24_200', 'file24_200');
 
 procedure CreateImageLists;
 var
@@ -96,8 +103,7 @@ begin
   Images16 := TImageList.Create(nil);
   Images16.Width := 16;
   Images16.Height := 16;
-  for i := 0 to High(Img16) do
-    Images16.AddLazarusResource(Img16[i]);
+  SetupImageList(Images16, Img16);
 
   Images24 := TImageList.Create(nil);
   Images24.Width := 24;

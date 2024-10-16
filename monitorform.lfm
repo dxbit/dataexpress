@@ -1,7 +1,7 @@
 object MonitorFm: TMonitorFm
-  Left = 350
+  Left = 831
   Height = 385
-  Top = 319
+  Top = 380
   Width = 670
   ActiveControl = PageControl1
   BorderIcons = [biSystemMenu]
@@ -11,7 +11,7 @@ object MonitorFm: TMonitorFm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poOwnerFormCenter
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '3.2.0.0'
   object PageControl1: TPageControl
     Left = 4
     Height = 343
@@ -166,21 +166,29 @@ object MonitorFm: TMonitorFm
     ShowBevel = False
   end
   object PopupMenu1: TPopupMenu
+    Images = Images
     Left = 135
     Top = 167
     object MenuItem1: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 0
       ShortCut = 46
       OnClick = MenuItem1Click
     end
   end
   object PopupMenu2: TPopupMenu
+    Images = Images
     Left = 224
     Top = 168
     object MenuItem2: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 0
       ShortCut = 46
       OnClick = MenuItem2Click
     end
+  end
+  object Images: TImageList
+    Left = 319
+    Top = 158
   end
 end

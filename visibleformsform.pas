@@ -58,7 +58,7 @@ function ShowVisibleFormsForm: Integer;
 implementation
 
 uses
-  helpmanager, formmanager;
+  apputils, helpmanager, formmanager;
 
 function ShowVisibleFormsForm: Integer;
 begin
@@ -73,6 +73,8 @@ end;
 
 procedure TVisibleFormsFm.FormCreate(Sender: TObject);
 begin
+  SetupSpeedButton(UpBn, 'up16');
+  SetupSpeedButton(DownBn, 'down16');
   Caption := rsOrderVisibleForms;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;

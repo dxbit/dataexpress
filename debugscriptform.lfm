@@ -1,7 +1,7 @@
 object DebugScriptFm: TDebugScriptFm
-  Left = 304
+  Left = 486
   Height = 401
-  Top = 378
+  Top = 413
   Width = 794
   Caption = 'DebugScriptFm'
   ClientHeight = 401
@@ -23,7 +23,7 @@ object DebugScriptFm: TDebugScriptFm
     ButtonWidth = 32
     Caption = 'ToolBar1'
     EdgeBorders = []
-    Images = ImageList2
+    Images = Images
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
@@ -63,7 +63,7 @@ object DebugScriptFm: TDebugScriptFm
       end>
     SimplePanel = False
   end
-  object ImageList2: TImageList
+  object Images: TImageList
     Height = 24
     Width = 24
     Left = 154

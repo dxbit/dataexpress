@@ -74,6 +74,8 @@ type
     procedure MenuHandler(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
   protected
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
     function RealGetText: TCaption; override;
     procedure RealSetText(const AValue: TCaption); override;
     procedure EditChange; override;
@@ -97,6 +99,8 @@ type
     procedure MenuHandler(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
   protected
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
     function RealGetText: TCaption; override;
     procedure RealSetText(const AValue: TCaption); override;
     procedure EditChange; override;
@@ -122,6 +126,8 @@ type
     procedure MenuHandler(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
   protected
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
     procedure EditChange; override;
     procedure EditKeyDown(var Key : Word; Shift : TShiftState); override;
     procedure msg_SetValue(var Msg: TGridMessage); message GM_SETVALUE;
@@ -501,7 +507,7 @@ end;
 constructor TActionImage.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Button.LoadGlyphFromLazarusResource('image16');
+  SetupSpeedButton(Button, 'image16');
   Button.ShowHint := True;
   Button.Hint := rsSelectFromGallery;
 end;
@@ -702,6 +708,14 @@ procedure TExprCellEditor.MenuPopup(Sender: TObject);
 begin
   PopupMenu.Items[0].Enabled := SelText <> '';
   PopupMenu.Items[1].Enabled := SelText <> '';
+end;
+
+procedure TExprCellEditor.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
+begin
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
 end;
 
 procedure TExprCellEditor.EditChange;
@@ -1040,8 +1054,7 @@ constructor TActionFilterExpr.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   ButtonCaption:='';
-  Button.LoadGlyphFromLazarusResource('filter16');
-  //FOnlySourceForm:=True;
+  SetupSpeedButton(Button, 'filter16');
 end;
 
 { TActionDivider }
@@ -1297,7 +1310,7 @@ constructor TActionExpr.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   ButtonCaption:='';
-  Button.LoadGlyphFromLazarusResource('sum16');
+  SetupSpeedButton(Button, 'sum16');
 end;
 
 function TActionExpr.GetSourceForm: TdxForm;
@@ -1327,6 +1340,14 @@ procedure TActionFolder.MenuPopup(Sender: TObject);
 begin
   PopupMenu.Items[0].Enabled := SelText <> '';
   PopupMenu.Items[1].Enabled := SelText <> '';
+end;
+
+procedure TActionFolder.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
+begin
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
 end;
 
 function TActionFolder.RealGetText: TCaption;
@@ -1483,6 +1504,14 @@ procedure TActionFile.MenuPopup(Sender: TObject);
 begin
   PopupMenu.Items[0].Enabled := SelText <> '';
   PopupMenu.Items[1].Enabled := SelText <> '';
+end;
+
+procedure TActionFile.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
+begin
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
 end;
 
 function TActionFile.RealGetText: TCaption;

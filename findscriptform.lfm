@@ -13,7 +13,7 @@ object FindScriptFm: TFindScriptFm
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     AnchorSideTop.Control = TextCbx
     AnchorSideTop.Side = asrCenter
@@ -36,8 +36,8 @@ object FindScriptFm: TFindScriptFm
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     BorderSpacing.Left = 8
     ItemHeight = 15
-    OnKeyUp = TextCbxKeyUp
     TabOrder = 0
+    OnKeyUp = TextCbxKeyUp
   end
   object FindBn: TBitBtn
     Left = 743
@@ -157,6 +157,7 @@ object FindScriptFm: TFindScriptFm
     Font.Height = -16
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
+    ParentBackground = False
     ParentColor = False
     ParentFont = False
     TabOrder = 5

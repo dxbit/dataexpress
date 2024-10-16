@@ -74,7 +74,6 @@ type
     function SetImage(const AName: String; AIndex: Integer; const AFileName: String): Boolean;
     function SetImageStream(const AName: String; AIndex: Integer; St: TStream): Boolean;
     procedure ClearImage(const AName: String; AIndex: Integer);
-    function GetPPIndex: Integer;
     function MakeUniqueImageName(const AnyName: String): String;
     property DataSet: TSQLQuery read FDataSet;
   end;
@@ -457,17 +456,6 @@ begin
     FDataSet.Fields[AIndex + 2].SetData(nil);
     FDataSet.Post;
   end;
-end;
-
-function TImageManager.GetPPIndex: Integer;
-var
-  PPI, i: Integer;
-begin
-  PPI := Screen.PixelsPerInch;
-  if PPI >= 192 then i := 2
-  else if PPI >= 144 then i := 1
-  else i := 0;
-  Result := i;
 end;
 
 function TImageManager.MakeUniqueImageName(const AnyName: String): String;

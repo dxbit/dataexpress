@@ -214,32 +214,17 @@ begin
   FilesGrp.Caption := rsAppFolder;
   DBGrp.Caption := rsUpdateDBContent;
   UploadBn.Hint := rsUploadSelectedFilesIntoDB;
-  UploadBn.LoadGlyphFromLazarusResource('right24');
+  SetupBitBtn(UploadBn, 'right24');
   MoreBn.Hint := rsUpdateSettings;
-  MoreBn.LoadGlyphFromLazarusResource('more24');
+  SetupBitBtn(MoreBn, 'more24');
   CheckAllMnu.Caption := rsCheckAll;
   UnCheckAllMnu.Caption := rsUnCheckAll;
   CheckDbMnu.Caption := rsCheckBoxDBFiles;
   ButtonPanel1.HelpButton.Caption := rsHelp;
   ButtonPanel1.CloseButton.Caption := rsClose;
-  with FilesImages do
-  begin
-    AddLazarusResource('folder16');
-    AddLazarusResource('dx16');
-    AddLazarusResource('app16');
-    AddLazarusResource('dll16');
-    AddLazarusResource('textfile16');
-    AddLazarusResource('word16');
-    AddLazarusResource('excel16');
-    AddLazarusResource('db16');
-    AddLazarusResource('anyfile16');
-  end;
-  with MnuImages do
-  begin
-    AddLazarusResource('checkall16');
-    AddLazarusResource('uncheckall16');
-    AddLazarusResource('magic16');
-  end;
+  SetupImageList(FilesImages, ['folder16', 'dx16', 'app16', 'dll16',
+    'textfile16', 'word16', 'excel16', 'db16', 'anyfile16']);
+  SetupImageList(MnuImages, ['checkall16', 'uncheckall16', 'magic16']);
 end;
 
 procedure TUpdateManFm.FormShow(Sender: TObject);

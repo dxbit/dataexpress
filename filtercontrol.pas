@@ -115,6 +115,8 @@ type
   protected
     procedure DoEnter; override;
     procedure ButtonClick; override;
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
   public
     constructor Create(AOwner: TComponent); override;
     function Validate: Boolean;
@@ -1086,10 +1088,6 @@ begin
   FPopup.Items.Add( CreateMenuItem(FPopup, '-', 5, 0, @MenuClick));
   FPopup.Items.Add( CreateMenuItem(FPopup, rsClearValue, 6, 0, @MenuClick));
   FPopup.Items.Add( CreateMenuItem(FPopup, rsClearAllValues, 7, 0, @MenuClick));
-  {SetMenuItemImage(FPopup.Items[0], 'add16');
-  SetMenuItemImage(FPopup.Items[1], 'delete16');
-  SetMenuItemImage(FPopup.Items[3], 'add16');
-  SetMenuItemImage(FPopup.Items[4], 'delete16');}
   PopupMenu := FPopup;
 
   FixedCols := 0;
@@ -1394,10 +1392,18 @@ begin
   inherited ButtonClick;
 end;
 
+procedure TFilterDate.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
+begin
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
+end;
+
 constructor TFilterDate.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Button.LoadGlyphFromLazarusResource('date16');
+  SetupSpeedButton(Button, 'date16');
   Flat := True;
   PopupMenu := TPopupMenu.Create(Self);
   PopupMenu.Images := Images16;

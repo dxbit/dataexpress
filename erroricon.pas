@@ -126,7 +126,7 @@ begin
   FImage := TImage.Create(Self);
   FImage.Align := alClient;
   FImage.Parent := Self;
-  FImage.Picture.LoadFromLazarusResource('error16');
+  SetupPicture(FImage.Picture, 'exprcheck16');
   FImage.ShowHint:=True;
   FImage.Hint := rsErrorsOccured;
   FImage.OnClick := @ImageClick;

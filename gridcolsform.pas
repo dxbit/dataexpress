@@ -62,6 +62,9 @@ function ShowGridColsForm(aCols: TGridColumns; aForm: TdxForm): Integer;
 
 implementation
 
+uses
+  apputils;
+
 function ShowGridColsForm(aCols: TGridColumns; aForm: TdxForm): Integer;
 begin
   if GridColsFm = nil then
@@ -78,10 +81,7 @@ begin
   Caption := rsOrderVisibleColumns;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
-  ImageList1.AddLazarusResource('checkall16');
-  ImageList1.AddLazarusResource('uncheckall16');
-  ImageList1.AddLazarusResource('up16');
-  ImageList1.AddLazarusResource('down16');
+  SetupImageList(ImageList1, ['checkall16', 'uncheckall16', 'up16', 'down16']);
   ToolButton1.Caption := rsCheckAll;
   ToolButton2.Caption := rsUncheckAll;
   ToolButton3.Caption := rsMoveUp;

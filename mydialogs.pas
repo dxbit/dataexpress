@@ -413,16 +413,8 @@ constructor TSelectQFieldForm.CreateNew(AOwner: TComponent; Num: Integer);
 begin
   inherited CreateNew(AOwner, Num);
   FImages := TImageList.Create(Self);
-  FImages.AddLazarusResource('text16');
-  FImages.AddLazarusResource('calc16');
-  FImages.AddLazarusResource('date16');
-  FImages.AddLazarusResource('checkbox16');
-  FImages.AddLazarusResource('object16');
-  FImages.AddLazarusResource('clock16');
-  FImages.AddLazarusResource('counter16');
-  FImages.AddLazarusResource('file16');
-  FImages.AddLazarusResource('key16');
-  FImages.AddLazarusResource('dbimage16');
+  SetupImageList(FImages, ['text16', 'calc16', 'date16', 'checkbox16', 'object16',
+    'clock16', 'counter16', 'file16', 'key16', 'dbimage16']);
   FTree := TTreeViewEx.Create(Self);
   with FTree do
 	begin
@@ -665,20 +657,9 @@ begin
   FShowImages := True;
 
   FImages := TImageList.Create(Self);
-  FImages.AddLazarusResource('label16');
-  FImages.AddLazarusResource('text16');
-  FImages.AddLazarusResource('calc16');
-  FImages.AddLazarusResource('date16');
-  FImages.AddLazarusResource('clock16');
-  FImages.AddLazarusResource('memo16');
-  FImages.AddLazarusResource('counter16');
-  FImages.AddLazarusResource('checkbox16');
-  FImages.AddLazarusResource('combobox16');
-  FImages.AddLazarusResource('object16');
-  FImages.AddLazarusResource('objectfield16');
-  FImages.AddLazarusResource('dbimage16');
-  FImages.AddLazarusResource('file16');
-  FImages.AddLazarusResource('key16');
+  SetupImageList(Fimages, ['label16', 'text16', 'calc16', 'date16', 'clock16',
+    'memo16', 'counter16', 'checkbox16', 'combobox16', 'object16',
+    'objectfield16', 'dbimage16', 'file16', 'key16']);
   FTree := TTreeViewEx.Create(Self);
   with FTree do
 	begin

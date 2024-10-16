@@ -132,7 +132,7 @@ end;   }
 
 function GetImageIdx(C: TComponent): Integer;
 const
-  Cls: array [1..24] of TClass = (TdxEdit, TdxCalcEdit, TdxDateEdit, TdxTimeEdit,
+  Cls: array [2..25] of TClass = (TdxEdit, TdxCalcEdit, TdxDateEdit, TdxTimeEdit,
     TdxMemo, TdxCheckBox, TdxComboBox, TdxLookupComboBox, TdxLabel, TdxCounter,
     TdxObjectField, TdxShape, TdxButton, TdxQueryGrid, TdxGrid, TdxDBImage,
     TdxImage, TdxTabSheet, TdxPageControl, TdxPivotGrid, TdxGroupBox, TdxFile,
@@ -249,45 +249,11 @@ begin
   end;
 
   Tree.Images := TImageList.Create(Self);
-  with Tree.Images do
-	begin
-    AddLazarusResource('folder16');
-    AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    AddLazarusResource('label16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('objectfield16');
-    AddLazarusResource('shape16');
-    AddLazarusResource('button16');
-    AddLazarusResource('query16');
-    AddLazarusResource('grid16');
-    AddLazarusResource('dbimage16');
-    AddLazarusResource('image16');
-    AddLazarusResource('tab16');
-    AddLazarusResource('tabs16');
-    AddLazarusResource('pivottable16');
-    AddLazarusResource('groupbox16');
-    AddLazarusResource('file16');
-    AddLazarusResource('chart16');
-    AddLazarusResource('key16');
-    {AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    AddLazarusResource('label16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('form16'); }
-  end;
+  SetupImageList(Tree.Images, ['form16', 'folder16', 'text16', 'calc16', 'date16',
+    'clock16', 'memo16', 'checkbox16', 'combobox16', 'object16', 'label16',
+    'counter16', 'objectfield16', 'shape16', 'button16', 'query16', 'grid16',
+    'dbimage16', 'image16', 'tab16', 'tabs16', 'pivottable16', 'groupbox16',
+    'file16', 'chart16', 'key16']);
 
   with TSplitter.Create(Self) do
   begin
@@ -403,7 +369,7 @@ begin
   if FForm = nil then Exit;
   Tree.BeginUpdate;
   N := Tree.Items.AddChild(nil, FForm.FormCaption);
-  SetImageIdx(N, 11);
+  SetImageIdx(N, 0);
   FDefValNode := Tree.Items.AddChild(N, rsDefaultValue);
   FExprNode := Tree.Items.AddChild(N, rsExpression);
   FCheckExprNode := Tree.Items.AddChild(N, rsCheckValue);
@@ -442,7 +408,7 @@ begin
 		if NN.Count = 0 then
     	NN.Delete
     else
-    	SetImageIdx(NN, 0);
+    	SetImageIdx(NN, 1);
   end;
   N.Expand(True);
   Tree.EndUpdate;

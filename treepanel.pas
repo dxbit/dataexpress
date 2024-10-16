@@ -55,7 +55,7 @@ type
 implementation
 
 uses
-  appsettings;
+  apputils, appsettings;
 
 { TTreeFilterEditEx }
 
@@ -166,11 +166,11 @@ begin
     Width := 25;
     Align := alLeft;
     Flat := True;
-    LoadGlyphFromLazarusResource('right16_2');
     Hint := rsGoToNextItem;
     ShowHint := True;
     OnClick:=@ButtonClick;
   end;
+  SetupSpeedButton(FNextBn, 'right16');
 
   FBackBn := TSpeedButton.Create(Self);
   with FBackBn do
@@ -179,11 +179,11 @@ begin
     Width := 25;
     Align := alLeft;
     Flat := True;
-    LoadGlyphFromLazarusResource('left16_2');
     Hint := rsReturnToPrevItem;
     ShowHint := True;
     OnClick := @ButtonClick;
   end;
+  SetupSpeedButton(FBackBn, 'left16');
 end;
 
 procedure TTreePanel.BuildTree;

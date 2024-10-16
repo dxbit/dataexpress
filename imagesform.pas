@@ -34,6 +34,7 @@ type
   TImagesFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     Filter: TTreeFilterEdit;
+    Images: TImageList;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -611,13 +612,8 @@ begin
   MenuItem4.Caption := rsLoadImage;
   MenuItem5.Caption := rsSaveImage;
   MenuItem6.Caption := rsClear;
-  SetMenuItemImage(MenuItem1, 'add16');
-  SetMenuItemImage(MenuItem2, 'edit16');
-  SetMenuItemImage(MenuItem3, 'delete16');
-  SetMenuItemImage(MenuItem4, 'db16');
-  SetMenuItemImage(MenuItem5, 'save16');
-  SetMenuItemImage(MenuItem6, 'delete16');
-  AddBn.LoadGlyphFromLazarusResource('add16');
+  SetupImageList(Images, ['add16', 'edit16', 'delete16', 'db16', 'save16', 'delete16']);
+  SetupSpeedButton(AddBn, 'add16');
   AddBn.Hint := rsAppend;
 
   ButtonPanel1.OKButton.Caption := rsOk;
@@ -674,7 +670,7 @@ function TImagesFm.ShowForm(ASelect: Boolean; ASelImageName: String;
 var
   N: TTreeNode;
 begin
-  FPPIndex := ImageMan.GetPPIndex;
+  FPPIndex := GetPPIndex;
   FAddOnly := AddOnly;
 
   if ASelect then

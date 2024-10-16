@@ -12,7 +12,7 @@ object IntfFm: TIntfFm
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object PageControl1: TPageControl
     Left = 4
     Height = 421
@@ -54,7 +54,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton1Click
         end
         object ToolButton2: TToolButton
-          Left = 79
+          Left = 82
           Top = 0
           AutoSize = True
           Caption = 'Переименовать'
@@ -62,7 +62,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton2Click
         end
         object ToolButton3: TToolButton
-          Left = 192
+          Left = 198
           Top = 0
           AutoSize = True
           Caption = 'Удалить'
@@ -70,7 +70,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton3Click
         end
         object ToolButton7: TToolButton
-          Left = 262
+          Left = 271
           Top = 0
           AutoSize = True
           Caption = 'Вверх'
@@ -78,7 +78,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton7Click
         end
         object ToolButton8: TToolButton
-          Left = 320
+          Left = 332
           Top = 0
           AutoSize = True
           Caption = 'Вниз'
@@ -127,7 +127,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton4Click
         end
         object ToolButton6: TToolButton
-          Left = 79
+          Left = 82
           Top = 0
           AutoSize = True
           Caption = 'Удалить'
@@ -135,7 +135,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton6Click
         end
         object ToolButton9: TToolButton
-          Left = 149
+          Left = 155
           Top = 0
           AutoSize = True
           Caption = 'Вверх'
@@ -143,7 +143,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton9Click
         end
         object ToolButton10: TToolButton
-          Left = 207
+          Left = 216
           Top = 0
           AutoSize = True
           Caption = 'Вниз'
@@ -226,9 +226,9 @@ object IntfFm: TIntfFm
       Width = 456
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Top = 1
-      OnChange = NmChange
       TabOrder = 0
       Text = 'Nm'
+      OnChange = NmChange
     end
     object Dflt: TCheckBox
       AnchorSideTop.Control = Nm
@@ -236,11 +236,11 @@ object IntfFm: TIntfFm
       Left = 8
       Height = 19
       Top = 55
-      Width = 107
+      Width = 105
       BorderSpacing.Top = 8
       Caption = 'По-умолчанию'
-      OnChange = DfltChange
       TabOrder = 1
+      OnChange = DfltChange
     end
   end
   object Images: TImageList

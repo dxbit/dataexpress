@@ -37,6 +37,7 @@ type
 
   TMonitorFm = class(TForm)
     ButtonPanel1: TButtonPanel;
+    Images: TImageList;
     MenuItem2: TMenuItem;
     PopupMenu2: TPopupMenu;
     UGrid: TStringGrid;
@@ -124,9 +125,8 @@ begin
   RGrid.Columns[4].Title.Caption := rsStarted;
   RGrid.Columns[5].Title.Caption := rsElapsedTime;
   MenuItem1.Caption := rsDelete;
-  SetMenuItemImage(MenuItem1, 'delete16');
   MenuItem2.Caption := rsDelete;
-  SetMenuItemImage(MenuItem2, 'delete16');
+  SetupImageList(Images, ['delete16']);
   ButtonPanel1.HelpButton.Caption := rsHelp;
   ButtonPanel1.CloseButton.Caption := rsClose;;
   FRecs := TList.Create;

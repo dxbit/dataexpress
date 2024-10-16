@@ -34,21 +34,22 @@ type
   TTabOrderFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     CheckBox1: TCheckBox;
-    ImageList1: TImageList;
-    SpeedButton4: TSpeedButton;
+    BnImages: TImageList;
+    TreeImages: TImageList;
+    DisableBn: TSpeedButton;
     Tree: TCheckTreeView;
     Panel1: TPanel;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    SpeedButton3: TSpeedButton;
+    UpBn: TSpeedButton;
+    DownBn: TSpeedButton;
+    AutoBn: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
-    procedure SpeedButton2Click(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
-    procedure SpeedButton4Click(Sender: TObject);
+    procedure UpBnClick(Sender: TObject);
+    procedure DownBnClick(Sender: TObject);
+    procedure AutoBnClick(Sender: TObject);
+    procedure DisableBnClick(Sender: TObject);
     procedure TreeCheckChange(Sender: TObject; ANode: TTreeNode; AValue: Boolean
       );
     procedure TreeSelectionChanged(Sender: TObject);
@@ -133,39 +134,17 @@ begin
   Caption := rsTabOrder;
   ButtonPanel1.CloseButton.Caption := rsClose;
   ButtonPanel1.HelpButton.Caption:=rsHelp;
-  SpeedButton1.Hint := rsMoveUp;
-  SpeedButton2.Hint := rsMoveDown;
-  SpeedButton3.Hint := rsAutoTabOrder;
-  SpeedButton4.Hint := rsDisableTabStopMsg;
+  UpBn.Hint := rsMoveUp;
+  DownBn.Hint := rsMoveDown;
+  AutoBn.Hint := rsAutoTabOrder;
+  DisableBn.Hint := rsDisableTabStopMsg;
   CheckBox1.Caption := rsTabStop;
 
-  with ImageList1 do
-	begin
-    AddLazarusResource('form16');
-    AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    //AddLazarusResource('label16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('objectfield16');
-    //AddLazarusResource('shape16');
-    AddLazarusResource('button16');
-    AddLazarusResource('query16');
-    AddLazarusResource('grid16');
-    //AddLazarusResource('dbimage16');
-    //AddLazarusResource('image16');
-    AddLazarusResource('tab16');
-    AddLazarusResource('tabs16');
-    AddLazarusResource('pivottable16');
-    AddLazarusResource('groupbox16');
-    AddLazarusResource('file16');
-    AddLazarusResource('key16');
-  end;
+  SetupImageList(TreeImages, ['form16', 'text16', 'calc16', 'date16', 'clock16',
+    'memo16', 'checkbox16', 'combobox16', 'object16', 'counter16', 'objectfield16',
+    'button16', 'query16', 'grid16', 'tab16', 'tabs16', 'pivottable16',
+    'groupbox16', 'file16', 'key16']);
+  SetupImageList(BnImages, ['up16', 'down16', 'autotaborder16', 'uncheck16']);
 end;
 
 procedure TTabOrderFm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -174,7 +153,7 @@ begin
   if Key = VK_ESCAPE then ModalResult := mrClose;
 end;
 
-procedure TTabOrderFm.SpeedButton1Click(Sender: TObject);
+procedure TTabOrderFm.UpBnClick(Sender: TObject);
 var
   N, PN: TTreeNode;
 begin
@@ -185,7 +164,7 @@ begin
   UpdateControlState;
 end;
 
-procedure TTabOrderFm.SpeedButton2Click(Sender: TObject);
+procedure TTabOrderFm.DownBnClick(Sender: TObject);
 var
   N, NN: TTreeNode;
 begin
@@ -196,7 +175,7 @@ begin
   UpdateControlState;
 end;
 
-procedure TTabOrderFm.SpeedButton3Click(Sender: TObject);
+procedure TTabOrderFm.AutoBnClick(Sender: TObject);
 var
   C, TopC: Pointer;
 begin
@@ -210,7 +189,7 @@ begin
   Tree.Selected := Tree.Items.FindNodeWithData(C);
 end;
 
-procedure TTabOrderFm.SpeedButton4Click(Sender: TObject);
+procedure TTabOrderFm.DisableBnClick(Sender: TObject);
 var
   i: Integer;
   N: TTreeNode;
@@ -328,9 +307,9 @@ end;
 
 procedure TTabOrderFm.UpdateControlState;
 begin
-  SpeedButton1.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.GetPrevSibling <> nil);
-  SpeedButton2.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.GetNextSibling <> nil);
-  SpeedButton3.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.Count > 0);
+  UpBn.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.GetPrevSibling <> nil);
+  DownBn.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.GetNextSibling <> nil);
+  AutoBn.Enabled:=(Tree.Selected <> nil) and (Tree.Selected.Count > 0);
 end;
 
 procedure TTabOrderFm.SetComponentsIndex;

@@ -177,8 +177,7 @@ begin
   EditBn.Hint := rsChangeConnectOrGroup;
   DelBn.Hint := rsDeleteConnectOrEmptyGroup;
 
-	Images.AddLazarusResource('folder16');
-  Images.AddLazarusResource('db16');
+  SetupImageList(Images, ['folder16', 'db16']);
   Tree.IsWine := AppConfig.IsWine;
   Load;
 end;

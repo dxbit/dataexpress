@@ -84,7 +84,7 @@ function ShowFindForm(aForm: TdxForm; aDS: TDataSet): Integer;
 implementation
 
 uses
-  sqlgen, LazUtf8, dximages, dxfiles, DBCtrls, helpmanager, mytypes;
+  apputils, sqlgen, LazUtf8, dximages, dxfiles, DBCtrls, helpmanager, mytypes;
 
 function ShowFindForm(aForm: TdxForm; aDS: TDataSet): Integer;
 begin
@@ -100,7 +100,7 @@ end;
 constructor TFindPointer.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Picture.LoadFromLazarusResource('right16');
+  SetupPicture(Picture, 'right16');
   AutoSize:=True;
 end;
 

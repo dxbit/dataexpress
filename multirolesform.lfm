@@ -11,7 +11,7 @@ object MultiRolesFm: TMultiRolesFm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
@@ -66,9 +66,9 @@ object MultiRolesFm: TMultiRolesFm
         OnGetCellHint = FormsGridGetCellHint
         OnKeyDown = GridKeyDown
         ColWidths = (
+          180
+          180
           179
-          179
-          181
         )
       end
     end
@@ -228,6 +228,7 @@ object MultiRolesFm: TMultiRolesFm
     end
   end
   object AccessMnu: TPopupMenu
+    Images = Images
     Left = 96
     Top = 225
     object MenuItem4: TMenuItem
@@ -237,16 +238,19 @@ object MultiRolesFm: TMultiRolesFm
     object MenuItem1: TMenuItem
       Tag = 1
       Caption = 'Только просмотр'
+      ImageIndex = 0
       OnClick = AccessMnuClick
     end
     object MenuItem2: TMenuItem
       Tag = 2
       Caption = 'Только редактирование'
+      ImageIndex = 1
       OnClick = AccessMnuClick
     end
     object MenuItem3: TMenuItem
       Tag = 3
       Caption = 'Полный доступ'
+      ImageIndex = 2
       OnClick = AccessMnuClick
     end
     object N1: TMenuItem
@@ -256,5 +260,9 @@ object MultiRolesFm: TMultiRolesFm
       Caption = 'Компоненты'
       OnClick = MenuItem8Click
     end
+  end
+  object Images: TImageList
+    Left = 211
+    Top = 237
   end
 end

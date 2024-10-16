@@ -52,7 +52,8 @@ type
     GridTitleFontI: TToggleBox;
     GridTitleFontU: TToggleBox;
     ButtonPanel1: TButtonPanel;
-    ImageList1: TImageList;
+    GridImages: TImageList;
+    Images: TImageList;
     InSelColor: TColorButtonEx;
     InSelTextColor: TColorButtonEx;
     ColorBnMnu: TPopupMenu;
@@ -110,7 +111,6 @@ type
     procedure DefRowHeightChange(Sender: TObject);
     procedure FlatStyleChange(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormDestroy(Sender: TObject);
     procedure GridLineStyleChange(Sender: TObject);
     procedure GridOptionsClickCheck(Sender: TObject);
     procedure GridTitleFontSelect(Sender: TObject);
@@ -146,7 +146,6 @@ type
     FRowSelect, FReadOnly, FAllowChangeSort, FColMove, FShowRowDeleteButton: Boolean;
     FModified: Boolean;
     FPopupColorBn: TColorButtonEx;
-    FSampleBmp: TBitmap;
     FStopChangeEvents: Boolean;
     { private declarations }
     function IsCellSelected(ACol: Integer): Boolean;
@@ -455,7 +454,7 @@ begin
       tlCenter: y := aRect.Top + aRect.Height div 2 - IMG_SIZE div 2;
       tlBottom: y:= aRect.Bottom - IMG_SIZE - ScaleToScreen(2);
     end;
-    Grid.Canvas.Draw(x, y, FSampleBmp);
+    GridImages.Draw(Grid.Canvas, x, y, 0);
   end;
 end;
 
@@ -545,11 +544,6 @@ begin
     if FModified then
       CanClose := Confirm(rsWarning, rsCancelChangesMsg) = mrYes;
   end;
-end;
-
-procedure TGrdFm.FormDestroy(Sender: TObject);
-begin
-  FSampleBmp.Free;
 end;
 
 procedure TGrdFm.GridLineStyleChange(Sender: TObject);
@@ -1004,7 +998,7 @@ begin
   GridColor.ButtonColor := clSilver;
   with GridLineStyle do
     ItemIndex := 0;
-  DefRowHeight.Value := 20;
+  DefRowHeight.Value := ScaleToScreen(20);
   // Область данных
   CellColor.ButtonColor := clWindow;
   AltCellColor.ButtonColor := clWindow;
@@ -1048,7 +1042,7 @@ begin
 
 	Grid.GridLineColor:=clSilver;
   Grid.GridLineStyle := psSolid;
-  Grid.DefaultRowHeight := 20;
+  Grid.DefaultRowHeight := ScaleToScreen(20);
   Grid.Color := clWindow;
   Grid.AlternateColor := clWindow;
   Grid.SelectedColor := clHighlight;
@@ -1201,11 +1195,14 @@ begin
   GridTitleFont.Items := Screen.Fonts;
 
   ResetCellFontBn.Hint := rsResetFontToDefault;
-  ResetCellFontBn.LoadGlyphFromLazarusResource('delete16');
+  SetupSpeedButton(ResetCellFontBn, 'delete16');
   ResetTitleFontBn.Hint := rsResetFontToDefault;
-  ResetTitleFontBn.LoadGlyphFromLazarusResource('delete16');
+  SetupSpeedButton(ResetTitleFontBn, 'delete16');
 
-  FSampleBmp := LoadBitmapFromLazarusResource('smile24');
+  SetupImageList(Images, ['color24', 'font24', 'autoalign16', 'leftjustify16',
+    'centertext16', 'rightjustify16', 'toplayout16', 'centerlayout16',
+    'bottomlayout16', 'edit16', 'columnwidth16', 'hidecolumn16', 'clear16']);
+  SetupImageList(GridImages, ['smile24']);
 end;
 
 procedure TGrdFm.FormShow(Sender: TObject);

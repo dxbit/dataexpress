@@ -54,7 +54,7 @@ function ShowDeleteRecsForm: Integer;
 implementation
 
 uses
-  helpmanager;
+  apputils, helpmanager;
 
 function ShowDeleteRecsForm: Integer;
 begin
@@ -80,6 +80,7 @@ begin
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
+  SetupPicture(Image1.Picture, 'alert64');
 end;
 
 procedure TDeleteRecsFm.FormShow(Sender: TObject);

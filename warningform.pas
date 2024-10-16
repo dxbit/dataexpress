@@ -55,6 +55,9 @@ procedure ShowWarnInfo(const ATitle, Msg: String);
 
 implementation
 
+uses
+  apputils;
+
 function ShowWarnForm(const ATitle, Msg, AButtonCaption: String): Integer;
 begin
   if WarnFm = nil then
@@ -79,6 +82,7 @@ begin
   CheckBox1.Caption := rsIknow;
   //ButtonPanel1.OKButton.Caption:=rsYes;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
+  SetupPicture(Image1.Picture, 'alert64');
 end;
 
 procedure TWarnFm.CheckBox1Change(Sender: TObject);

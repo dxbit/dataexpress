@@ -11,7 +11,7 @@ object FindFrm: TFindFrm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     AnchorSideTop.Control = Edit1
     AnchorSideTop.Side = asrCenter
@@ -52,19 +52,19 @@ object FindFrm: TFindFrm
     Width = 400
     Anchors = [akTop, akLeft, akRight]
     ItemHeight = 15
-    OnSelect = ComboBox1Select
     Style = csDropDownList
     TabOrder = 1
+    OnSelect = ComboBox1Select
   end
   object CheckBox1: TCheckBox
     AnchorSideLeft.Control = ComboBox1
     Left = 89
     Height = 19
     Top = 88
-    Width = 141
+    Width = 139
     Caption = 'Поиск по всем полям'
-    OnChange = CheckBox1Change
     TabOrder = 2
+    OnChange = CheckBox1Change
   end
   object BitBtn1: TBitBtn
     Left = 158

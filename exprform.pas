@@ -49,7 +49,8 @@ type
 
   TExprFm = class(TForm)
     ButtonPanel1: TButtonPanel;
-    ImageList1: TImageList;
+    MenuImages: TImageList;
+    ToolImages: TImageList;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
@@ -290,15 +291,10 @@ begin
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
   MenuItem1.Caption := rsCut;
-  SetMenuItemImage(MenuItem1, 'cut16');
   MenuItem2.Caption := rsCopy;
-  SetMenuItemImage(MenuItem2, 'copy16');
   MenuItem3.Caption := rsPaste;
-  SetMenuItemImage(MenuItem3, 'paste16');
   MenuItem6.Caption := rsUndo;
-  SetMenuItemImage(MenuItem6, 'undo16');
   MenuItem7.Caption := rsRedo;
-  SetMenuItemImage(MenuItem7, 'goto16');
   MenuItem5.Caption := rsSelectAll;
   Width := AppConfig.ExprFormWidth;
   Height := AppConfig.ExprFormHeight;
@@ -312,6 +308,10 @@ begin
   MenuItem12.Caption := rsFunctionGET;
   MenuItem13.Caption := rsIDCurrentRec;
   MenuItem14.Caption := rsCondition;
+
+  SetupImageList(ToolImages, ['magic16', 'func16', 'formfields16', 'exprcheck16',
+    'grid16']);
+  SetupImageList(MenuImages, ['cut16', 'copy16', 'paste16', 'undo16', 'goto16']);
 
   // Открывается второй редактор выражений
   if ExprFm <> nil then

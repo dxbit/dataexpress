@@ -566,15 +566,15 @@ const
   Glyphs: array [1..74] of String = ('id24', 'color24', 'font24', 'form24',
     'list24', 'listsource24', 'print24', 'id24', 'prec24', 'date24', 'grid24',
     'label24', 'tab_add24', 'tab_remove24', 'left24', 'right24', 'label24',
-    'label24', 'shape24', 'box24', 'rect24', 'open24', 'save24', 'delete24',
+    'label24', 'shape24', 'box24', 'thumbsize24', 'open24', 'save24', 'delete24',
     'layout24', 'checkbox24', 'sum24', 'sum24', 'filter24', 'counter24',
     'id24', 'source24', 'filter24', 'listsource24', 'help24', 'grid24', 'filter24',
-    'link24', 'clock24', 'view24', 'colors24', 'size24', 'equal', 'style24',
-    'required24', 'lock24', 'text24', 'range24', 'shopping24', 'sum24',
+    'object24', 'clock24', 'view24', 'colors24', 'size24', 'equal', 'style24',
+    'required24', 'lock24', 'multiline24', 'range24', 'shopping24', 'sum24',
     'default24', 'help24', 'parent24', 'tree24', 'gridbuttons24', 'colors24',
-    'action24', 'image24', 'id24', 'pivotgrid24', 'query24', 'id24',
+    'action24', 'image24', 'id24', 'pivottable24', 'query24', 'id24',
     'scrollbars24', 'editmask24', 'more24', 'more24', 'action24', 'more24',
-    'link24', 'imagesize24', 'chart24', 'print24', 'image24', 'more24');
+    'object24', 'printimage24', 'chart24', 'print24', 'image24', 'more24');
 var
   Hints: array [1..74] of String;
 begin
@@ -660,7 +660,7 @@ begin
   Result.Tag := aKind;
   Result.ShowHint:=True;
   Result.Hint:=Hints[aKind];
-  Result.LoadGlyphFromLazarusResource(Glyphs[aKind]);
+  SetupSpeedButton(Result, Glyphs[aKind]);
   Result.OnClick:=@ButtonClick;
 end;
 

@@ -12,7 +12,7 @@ object TabOrderFm: TTabOrderFm
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 339
     Height = 353
@@ -23,7 +23,7 @@ object TabOrderFm: TTabOrderFm
     ClientHeight = 353
     ClientWidth = 48
     TabOrder = 1
-    object SpeedButton1: TSpeedButton
+    object UpBn: TSpeedButton
       Left = 10
       Height = 35
       Top = 56
@@ -104,11 +104,13 @@ object TabOrderFm: TTabOrderFm
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
-      OnClick = SpeedButton1Click
+      Images = BnImages
+      ImageIndex = 0
+      OnClick = UpBnClick
       ShowHint = True
       ParentShowHint = False
     end
-    object SpeedButton2: TSpeedButton
+    object DownBn: TSpeedButton
       Left = 10
       Height = 32
       Top = 96
@@ -189,11 +191,13 @@ object TabOrderFm: TTabOrderFm
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
-      OnClick = SpeedButton2Click
+      Images = BnImages
+      ImageIndex = 1
+      OnClick = DownBnClick
       ShowHint = True
       ParentShowHint = False
     end
-    object SpeedButton3: TSpeedButton
+    object AutoBn: TSpeedButton
       Left = 8
       Height = 38
       Top = 144
@@ -263,11 +267,13 @@ object TabOrderFm: TTabOrderFm
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00
       }
-      OnClick = SpeedButton3Click
+      Images = BnImages
+      ImageIndex = 2
+      OnClick = AutoBnClick
       ShowHint = True
       ParentShowHint = False
     end
-    object SpeedButton4: TSpeedButton
+    object DisableBn: TSpeedButton
       Left = 8
       Height = 38
       Top = 192
@@ -308,7 +314,9 @@ object TabOrderFm: TTabOrderFm
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = SpeedButton4Click
+      Images = BnImages
+      ImageIndex = 3
+      OnClick = DisableBnClick
       ShowHint = True
       ParentShowHint = False
     end
@@ -338,7 +346,7 @@ object TabOrderFm: TTabOrderFm
     Align = alClient
     BorderSpacing.Left = 4
     BorderSpacing.Top = 4
-    Images = ImageList1
+    Images = TreeImages
     ReadOnly = True
     TabOrder = 0
     OnSelectionChanged = TreeSelectionChanged
@@ -360,8 +368,12 @@ object TabOrderFm: TTabOrderFm
     State = cbChecked
     TabOrder = 2
   end
-  object ImageList1: TImageList
+  object TreeImages: TImageList
     Left = 144
     Top = 217
+  end
+  object BnImages: TImageList
+    Left = 117
+    Top = 91
   end
 end

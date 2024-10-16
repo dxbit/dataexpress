@@ -344,25 +344,4 @@ object ReportFm: TReportFm
     Left = 214
     Top = 142
   end
-  object FieldNameMnu: TPopupMenu
-    Left = 407
-    Top = 216
-    object MenuItem9: TMenuItem
-      Caption = 'Вырезать'
-      ShortCut = 16472
-      OnClick = FieldNameMnuClick
-    end
-    object MenuItem10: TMenuItem
-      Tag = 1
-      Caption = 'Копировать'
-      ShortCut = 16451
-      OnClick = FieldNameMnuClick
-    end
-    object MenuItem11: TMenuItem
-      Tag = 2
-      Caption = 'Вставить'
-      ShortCut = 16470
-      OnClick = FieldNameMnuClick
-    end
-  end
 end

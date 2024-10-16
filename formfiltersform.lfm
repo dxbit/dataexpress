@@ -1,7 +1,7 @@
 object FormFiltersFm: TFormFiltersFm
-  Left = 359
+  Left = 1257
   Height = 334
-  Top = 394
+  Top = 265
   Width = 380
   BorderIcons = [biSystemMenu]
   Caption = 'FormFiltersFm'
@@ -10,7 +10,7 @@ object FormFiltersFm: TFormFiltersFm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object List: TListBox
     Left = 8
     Height = 280
@@ -20,10 +20,10 @@ object FormFiltersFm: TFormFiltersFm
     BorderSpacing.Left = 8
     BorderSpacing.Top = 8
     ItemHeight = 0
-    OnDblClick = ListDblClick
-    OnSelectionChange = ListSelectionChange
     PopupMenu = PopupMenu1
     TabOrder = 0
+    OnDblClick = ListDblClick
+    OnSelectionChange = ListSelectionChange
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
@@ -135,18 +135,22 @@ object FormFiltersFm: TFormFiltersFm
     end
   end
   object PopupMenu1: TPopupMenu
+    Images = ImageList1
     Left = 75
     Top = 132
     object MenuItem1: TMenuItem
       Caption = 'Добавить'
+      ImageIndex = 0
       OnClick = MenuItem1Click
     end
     object MenuItem4: TMenuItem
       Caption = 'Изменить'
+      ImageIndex = 1
       OnClick = MenuItem4Click
     end
     object MenuItem3: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 2
       OnClick = MenuItem3Click
     end
     object MenuItem5: TMenuItem
@@ -158,6 +162,7 @@ object FormFiltersFm: TFormFiltersFm
     end
     object MenuItem9: TMenuItem
       Caption = 'Копировать'
+      ImageIndex = 3
       OnClick = MenuItem9Click
     end
     object MenuItem6: TMenuItem
@@ -165,11 +170,17 @@ object FormFiltersFm: TFormFiltersFm
     end
     object MenuItem7: TMenuItem
       Caption = 'Вверх'
+      ImageIndex = 4
       OnClick = MenuItem7Click
     end
     object MenuItem8: TMenuItem
       Caption = 'Вниз'
+      ImageIndex = 5
       OnClick = MenuItem8Click
     end
+  end
+  object ImageList1: TImageList
+    Left = 151
+    Top = 138
   end
 end

@@ -3991,11 +3991,6 @@ begin
     Button.Images := Images16;
     Button.ImageIndex := IMG16_DATE;
   end
-  {if AHeight > 52 then S := 'date48'
-  else if AHeight > 36 then S := 'date32'
-  else if AHeight > 28 then S := 'date24'
-  else S := 'date16';
-  Button.LoadGlyphFromLazarusResource(S); }
 end;
 
 procedure TdxDateEdit.KeyDown(var Key: Word; Shift: TShiftState);
@@ -4105,11 +4100,6 @@ begin
     Button.Images := Images16;
     Button.ImageIndex := IMG16_CALC;
   end
-  {if AHeight > 52 then S := 'calc48'
-  else if AHeight > 36 then S := 'calc32'
-  else if AHeight > 28 then S := 'calc24'
-  else S := 'calc16';
-  Button.LoadGlyphFromLazarusResource(S);  }
 end;
 
 procedure TdxCalcEdit.UTF8KeyPress(var UTF8Key: TUTF8Char);
@@ -4979,11 +4969,6 @@ begin
     Button.Images := Images16;
     Button.ImageIndex := IMG16_FORM;
   end;
-  {if Height > 52 then S := 'form48'
-  else if Height > 36 then S := 'form32'
-  else if Height > 28 then S := 'form24'
-  else S := 'form16';
-  Button.LoadGlyphFromLazarusResource(S);  }
 
 	DropDownButton.Height := Height;
 end;
@@ -5045,7 +5030,7 @@ begin
   FStopTab := True;
 
   FDropDownButton := TSpeedButton.Create(Self);
-  FDropDownButton.Width := 18;//Self.Height;
+  FDropDownButton.Width := ScaleToScreen(18);//Self.Height;
   FDropDownButton.Height := 23;//Self.Height;
   //FDropDownButton.FreeNotification(Self);
   FDropDownButton.OnClick:=@DoDropDownButtonClick;
@@ -5053,7 +5038,6 @@ begin
   FDropDownButton.ControlStyle := FDropDownButton.ControlStyle + [csNoDesignSelectable, csNoDesignVisible];
   FDropDownButton.Images := Images16;
   FDropDownButton.ImageIndex := IMG16_DROPDOWN;
-  //FDropDownButton.LoadGlyphFromLazarusResource('cbx_dropdown16');
   FDropDownButton.Flat := True;
   FDropDownButton.OnMouseDown:=@DropDownButtonMouseDown;
 
@@ -5063,7 +5047,6 @@ begin
   FButton.OnClick:=@DoButtonClick;
   FButton.Cursor := crArrow;
   FButton.ControlStyle := FButton.ControlStyle + [csNoDesignSelectable, csNoDesignVisible];
-  //FButton.LoadGlyphFromLazarusResource('form16');
   FButton.Images := Images16;
   FButton.ImageIndex := IMG16_FORM;
   FButton.Flat := True;
@@ -5492,7 +5475,7 @@ begin
   FStopTab := True;
 
   FButton := TSpeedButton.Create(Self);
-  FButton.Width := 23;
+  FButton.Width := ScaleToScreen(23);
   FButton.Height := Height;
   FButton.FreeNotification(Self);
   FButton.OnClick:=@DoButtonClick;
@@ -5500,7 +5483,6 @@ begin
   FButton.ControlStyle := FButton.ControlStyle + [csNoDesignSelectable, csNoDesignVisible];
   FButton.Images := Images16;
   FButton.ImageIndex := IMG16_ADD;
-  //FButton.LoadGlyphFromLazarusResource('add16');
   FButton.Flat := True;
   FButton.Visible := False;
 

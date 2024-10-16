@@ -210,18 +210,22 @@ object ReportsFm: TReportsFm
     end
   end
   object PopupMenu1: TPopupMenu
+    Images = Images
     Left = 104
     Top = 137
     object MenuItem1: TMenuItem
       Caption = 'Добавить'
+      ImageIndex = 0
       OnClick = MenuItem1Click
     end
     object MenuItem13: TMenuItem
       Caption = 'Копировать'
+      ImageIndex = 1
       OnClick = MenuItem13Click
     end
     object MenuItem2: TMenuItem
       Caption = 'Удалить'
+      ImageIndex = 2
       OnClick = MenuItem2Click
     end
     object MenuItem4: TMenuItem
@@ -234,19 +238,23 @@ object ReportsFm: TReportsFm
     object MenuItem5: TMenuItem
       Caption = 'Свойства'
       Default = True
+      ImageIndex = 3
       ShortCut = 13
       OnClick = MenuItem5Click
     end
     object MenuItem7: TMenuItem
       Caption = 'Таблица'
+      ImageIndex = 4
       OnClick = MenuItem7Click
     end
     object MenuItem10: TMenuItem
       Caption = 'Вычисления'
+      ImageIndex = 5
       OnClick = MenuItem10Click
     end
     object MenuItem6: TMenuItem
       Caption = 'Выходной фильтр'
+      ImageIndex = 6
       OnClick = MenuItem6Click
     end
     object MenuItem14: TMenuItem
@@ -276,5 +284,9 @@ object ReportsFm: TReportsFm
       Caption = 'Стиль'
       OnClick = MenuItem9Click
     end
+  end
+  object Images: TImageList
+    Left = 180
+    Top = 258
   end
 end

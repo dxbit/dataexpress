@@ -32,22 +32,22 @@ type
   TAboutFm = class(TForm)
     MailLbl: TLabel;
     WebSiteLbl: TLabel;
-    Image2: TImage;
-    Image3: TImage;
+    MailImg: TImage;
+    WebImg: TImage;
     Licensed: TLabel;
     Label2: TLabel;
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
+    LicenseBn: TBitBtn;
+    DonateBn: TBitBtn;
+    CloseBn: TBitBtn;
     AppVersion: TLabel;
     Copyright: TLabel;
     GroupBox1: TGroupBox;
-    Image1: TImage;
+    LogoImg: TImage;
     Label1: TLabel;
     AppDescript: TLabel;
-    procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
-    procedure BitBtn3Click(Sender: TObject);
+    procedure LicenseBnClick(Sender: TObject);
+    procedure DonateBnClick(Sender: TObject);
+    procedure CloseBnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MailLblClick(Sender: TObject);
     procedure WebSiteLblClick(Sender: TObject);
@@ -86,12 +86,15 @@ begin
   AppVersion.Caption := BuildDateToStr;
   Copyright.Caption := rsCopyrightText;
   Licensed.Caption := rsLicensedApache;
-  BitBtn1.Caption := rsAgreement;
-  BitBtn2.Caption := rsDonate;
-  BitBtn3.Caption := rsClose;
-  BitBtn1.LoadGlyphFromLazarusResource('hands16');
-  BitBtn2.LoadGlyphFromLazarusResource('money16');
-  BitBtn3.LoadGlyphFromLazarusResource('delete16');
+  LicenseBn.Caption := rsAgreement;
+  DonateBn.Caption := rsDonate;
+  CloseBn.Caption := rsClose;
+  SetupBitBtn(LicenseBn, 'hands16');
+  SetupBitBtn(DonateBn, 'money16');
+  SetupBitBtn(CloseBn, 'delete16');
+  SetupPicture(LogoImg.Picture, 'logo64');
+  SetupPicture(MailImg.Picture, 'mail16');
+  SetupPicture(WebImg.Picture, 'web16');
 end;
 
 procedure TAboutFm.MailLblClick(Sender: TObject);
@@ -104,17 +107,17 @@ begin
   OpenUrl('https://mydataexpress.ru');
 end;
 
-procedure TAboutFm.BitBtn2Click(Sender: TObject);
+procedure TAboutFm.DonateBnClick(Sender: TObject);
 begin
   OpenUrl('http://mydataexpress.ru/donate/');
 end;
 
-procedure TAboutFm.BitBtn3Click(Sender: TObject);
+procedure TAboutFm.CloseBnClick(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TAboutFm.BitBtn1Click(Sender: TObject);
+procedure TAboutFm.LicenseBnClick(Sender: TObject);
 begin
   ShowLicenseForm;
 end;

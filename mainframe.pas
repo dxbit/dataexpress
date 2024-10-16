@@ -25,16 +25,16 @@ interface
 uses
   Classes, SysUtils, Types, FileUtil, Forms, Controls, ComCtrls, Menus, dxctrls,
   formview, sqldb, strconsts, DXReports, DatasetProcessor, Dialogs, ExtCtrls,
-  dbgrids, myctrls, StdCtrls;
+  dbgrids;
 
 type
 
   { TMainFr }
 
   TMainFr = class(TFrame)
-    ImageList1: TImageList;
+    ToolbarImages: TImageList;
     CloseTabMnu: TMenuItem;
-    ImageList2: TImageList;
+    SmallImages: TImageList;
     PageControl1: TPageControl;
     EmptyMnu: TPopupMenu;
     FilterMnu: TPopupMenu;
@@ -100,9 +100,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Init;
-    procedure Done;
     procedure RefreshAllLookups(TId: Integer);
-    procedure UnBindForms;
     procedure SaveCurrentDataSet;
     function GotoRec(FormId, RecId: Integer): Boolean;
     procedure GotoRec(FormId: Integer; const FieldName, FieldValue: String); overload;
@@ -125,7 +123,7 @@ implementation
 uses
   mainform, formmanager, Db, apputils, dbengine, findform, reportmanager, reportwindow,
   dxusers, ExprFuncs, helpviewform, scriptmanager, mydialogs,
-  debugscriptform, mytypes, dxmains, imagemanager, appimagelists, appsettings;
+  debugscriptform, mytypes, dxmains, appimagelists, appsettings;
 
 {$R *.lfm}
 
@@ -190,29 +188,6 @@ begin
   FmId := TMenuItem(Sender).Tag;
   OpenOrFindTab(FmId);
 end;
-
-{procedure TMainFr.CloseTabMnuClick(Sender: TObject);
-var
-  P: TPoint;
-  i: Integer;
-  Page: TTabSheet;
-begin
-  P := FOldMousePos;
-  P := PageControl1.ScreenToClient(P);
-  Page := nil;
-  for i := 0 to PageControl1.PageCount - 1 do
-  begin
-    if PageControl1.TabRect(i).Contains(P) then
-    begin
-      Page := PageControl1.Pages[i];
-      Break;
-    end;
-  end;
-  if Page = nil then Exit;
-
-  if (Page = PageControl1.ActivePage) and not ValidateAndSave then Exit;
-  CloseTab(Page);
-end;  }
 
 procedure TMainFr.CloseTabMnuClick(Sender: TObject);
 var
@@ -302,10 +277,9 @@ var
 begin
   if (Panel.Index = 3) and (Panel.Text = '1') then
   begin
-	  Y := (Rect.Bottom - Rect.Top) div 2 - 8 + Rect.Top;
-    X := Rect.Left + 2;
-  	//X := (Rect.Right - Rect.Left) div 2 - 8 + Rect.Left;
- 		ImageList2.Draw(StatusBar.Canvas, X, Y, 0);
+	  Y := (Rect.Bottom - Rect.Top) div 2 - SmallImages.Height div 2 + Rect.Top;
+    X := Rect.Left + ScaleToScreen(2);
+ 		SmallImages.Draw(StatusBar.Canvas, X, Y, 0);
   end;
 end;
 
@@ -316,7 +290,6 @@ end;
 
 procedure TMainFr.TblFilterMnuHandler(Sender: TObject);
 begin
-  //if not FCurView.DataSetProc.Validate(0) then Exit;
   if not ValidateAndSave then Exit;
   FCurView.DataSetProc.OpenFilter(TMenuItem(Sender).Tag);
 end;
@@ -355,7 +328,7 @@ begin
       begin
         FCurView.DataSetProc.ForceChangeFields(0);
         if FCurView.Form.ConfirmCancelEditing and
-          	FCurView.DataSetProc.AnyDataSetModified(0) {MasterSet.Modified} then
+          	FCurView.DataSetProc.AnyDataSetModified(0) then
         begin
         	if MessageDlg(rsWarning, rsConfirmCancelEditMsg, mtConfirmation,
           	[mbYes, mbNo], 0) <> mrYes then Exit;
@@ -366,7 +339,7 @@ begin
       begin
         FCurView.DataSetProc.ForceChangeFields(0);
         if FCurView.Form.ConfirmSaveRecord and
-	        FCurView.DataSetProc.AnyDataSetModified(0) {MasterSet.Modified} then
+	        FCurView.DataSetProc.AnyDataSetModified(0) then
         begin
         	if MessageDlg(rsWarning, rsConfirmSaveMsg, mtConfirmation,
           	[mbYes, mbNo], 0) <> mrYes then Exit;
@@ -425,12 +398,6 @@ begin
     begin
       Fm := FormMan.FindForm(FmId);
       ErrMsgFmt(rsErrorCreatingTab, [Fm.FormCaption, ExceptionToString(E, True, False)]);
-      {if ScriptLastError.ExObj = E then
-        ErrMsg(Format(rsErrorCreatingTab, [Fm.FormCaption]) +
-          LineEnding + LineEnding + ScriptLastErrorToString)
-      else
-        ErrMsg(Format(rsErrorCreatingTab, [Fm.FormCaption]) +
-          LineEnding + LineEnding + E.Message); }
       CloseTab(Tb);
       if MainFm.SelectedFormId = FmId then MainFm.SelectedFormId := 0;
     end;
@@ -456,16 +423,6 @@ begin
       if Fm.AutoOpen then OpenTab(Fm.Id);
     end;
     SL.Free;
-
-    {SL := TStringList.Create;
-    FormMan.FormsToList(SL);
-    for i := 0 to SL.Count - 1 do
-    begin
-      Fm := TdxForm(SL.Objects[i]);
-      if Fm.AutoOpen then
-        OpenTab(Fm.Id);
-    end;
-    SL.Free;     }
   end
   else
   begin
@@ -501,12 +458,12 @@ begin
 
     if DSR.CanEdit then
     begin
-      EditBn.ImageIndex := 0;
+      EditBn.ImageIndex := 5;
       EditBn.Hint := rsEdit;
     end
     else
     begin
-      EditBn.ImageIndex := 17;
+      EditBn.ImageIndex := 14;
       EditBn.Hint := rsLook;
     end;
   end;
@@ -650,9 +607,9 @@ begin
     PMI.Add(MI);
   MI.Tag:=PtrInt(dxMI);
   if dxMI.Kind = miForm then
-    SetMenuItemImage(MI, 'form16')
+    MI.ImageIndex := 0
   else if dxMI.Kind = miReport then
-    SetMenuItemImage(MI, 'grid16');
+    MI.ImageIndex := 1;
   MI.OnClick:=Handler;
   for i := 0 to dxMI.Items.Count - 1 do
     _BuildMenu(MI, dxMI.Items[i], Handler);
@@ -733,7 +690,7 @@ begin
 
   CurView.DataSetProc.ForceChangeFields(0);
   DS := CurView.DataSetProc.MasterSet;
-  if CurView.Form.ConfirmAutoSaveRecord and CurView.DataSetProc.AnyDataSetModified(0) {DS.Modified} then
+  if CurView.Form.ConfirmAutoSaveRecord and CurView.DataSetProc.AnyDataSetModified(0) then
   begin
     case MessageDlg(rsWarning, rsConfirmAutoSaveMsg,	mtConfirmation,
     	[mbYes, mbNo, mbCancel], 0) of
@@ -744,8 +701,6 @@ begin
 		        end;
       else Exit(False);
     end;
-    {if MessageDlg(rsWarning, rsConfirmAutoSaveMsg,	mtConfirmation,
-    	[mbYes, mbNo], 0) = mrNo then Exit(False);}
   end;
   Result := CurView.DataSetProc.Validate(0, False);
   if Result then SaveCurrentDataSet;
@@ -844,12 +799,10 @@ end;
 procedure TMainFr.DoOnResize;
 begin
   inherited DoOnResize;
-  StatusBar1.Panels[0].Width:=ClientWidth - 280;
+  StatusBar1.Panels[0].Width := ClientWidth - ScaleToScreen(280);
 end;
 
 procedure TMainFr.CloseTab(Pg: TTabSheet);
-var
-  IsCurrent: Boolean;
 begin
   if Pg = nil then Exit;
   //IsCurrent := PageControl1.ActivePage = Pg;
@@ -935,8 +888,11 @@ begin
   PostBn.Hint := rsSaveChanges;
   HelpBn.Hint := rsHelp;
   CloseTabMnu.Caption:=rsClose;
-  SetMenuItemImage(CloseTabMnu, 'delete16');
-  ImageList2.AddLazarusResource('filter16');
+
+  SetupImageList(ToolbarImages, ['movefirst24', 'moveprior24', 'movenext24',
+    'movelast24', 'add24', 'edit24', 'undo24', 'save24', 'delete24', 'refresh24',
+    'print24', 'filter24', 'find24', 'help24']);
+  SetupImageList(SmallImages, ['filter16', 'delete16']);
 
   VarList := TVarList.Create;
   MainFr := Self;
@@ -963,7 +919,6 @@ begin
   MainFm.RestoreFormatSettings;
   MainFm.Params.Clear;
 
-  //FreeAndNil(CompilerErrorsDlg);
   FreeAndNil(DebugScriptFm);
   FreeAndNil(ExtRunMan);
   FreeAndNil(MainModule);
@@ -1029,14 +984,6 @@ begin
         DataSetStateChange;
 end;
 
-procedure TMainFr.Done;
-begin
- { MainFm.SelectedFormId:=0;
-  if FCurView <> nil then
-  	MainFm.SelectedFormId:=FCurView.Form.Id;
-  FreeAndNil(CompilerErrorsDlg); }
-end;
-
 procedure TMainFr.DataSetStateChange;
 begin
   UpdateToolButtonState;
@@ -1085,12 +1032,6 @@ begin
     Vw := TFormView(PageControl1.Pages[i].Controls[0]);
     Vw.DataSetProc.RefreshLookups(TId);
   end;
-end;
-
-procedure TMainFr.UnBindForms;
-begin
-  {for i := 0 to PageControl1.PageCount - 1 do
-    TFormView(PageControl1.Pages[i].Controls[0]).DataSetProc.UnBind;   }
 end;
 
 end.

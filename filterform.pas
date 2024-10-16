@@ -32,7 +32,7 @@ type
 
   TFilterFm = class(TForm)
     ButtonPanel1: TButtonPanel;
-    ImageList1: TImageList;
+    Images: TImageList;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -59,7 +59,7 @@ type
 implementation
 
 uses
-  helpmanager;
+  apputils, helpmanager;
 
 {$R *.lfm}
 
@@ -79,8 +79,7 @@ begin
   ButtonPanel1.HelpButton.Caption:=rsHelp;
   ButtonPanel1.OKButton.Hint:=rsApplyFilter;
   ButtonPanel1.OKButton.Default := False;
-  ImageList1.AddLazarusResource('add16');
-  ImageList1.AddLazarusResource('delete16');
+  SetupImageList(Images, ['add16', 'delete16']);
   ToolButton1.Caption:=rsAddField;
   ToolButton2.Hint:=rsDeleteField;
   ToolButton4.Caption:=rsAddValue;

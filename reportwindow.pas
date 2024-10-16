@@ -913,21 +913,10 @@ begin
   begin
     Width := 24;
     Height := 24;
-    AddLazarusResource('reports24');
-    AddLazarusResource('datedetail24');
-    AddLazarusResource('movefirst24');
-    AddLazarusResource('moveprior24');
-    AddLazarusResource('movenext24');
-    AddLazarusResource('movelast24');
-    AddLazarusResource('add24');
-    AddLazarusResource('edit_24');
-    AddLazarusResource('delete24');
-    AddLazarusResource('refresh24');
-    AddLazarusResource('print24');
-    AddLazarusResource('export24');
-    AddLazarusResource('help24');
-    AddLazarusResource('eyes24');
   end;
+  SetupImageList(FImages, ['more24', 'datedetail24', 'movefirst24',
+    'moveprior24', 'movenext24', 'movelast24', 'add24', 'edit24', 'delete24',
+    'refresh24', 'print24', 'export24', 'help24', 'eyes24']);
 
   FDetailMnu := TPopupMenu.Create(Self);
   with FDetailMnu do

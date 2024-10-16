@@ -142,7 +142,8 @@ type
     procedure MenuHandler(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
   protected
-    function GetDefaultGlyphName: string; override;
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
     procedure EditChange; override;
     procedure EditKeyDown(var Key : Word; Shift : TShiftState); override;
     procedure msg_SetValue(var Msg: TGridMessage); message GM_SETVALUE;
@@ -281,13 +282,72 @@ resourcestring
   rsCopyCells = 'Copy cells';
   rsPasteCells = 'Paste cells';
 
+procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
+
 implementation
 
 uses
-  LazUtf8;
+  LazUtf8, ImgList, Forms;
 
 type
   THackGrid = class(TCustomGrid);
+
+function GetPPIndex: Integer;
+var
+  PPI, i: Integer;
+begin
+  PPI := Screen.PixelsPerInch;
+  if PPI >= {192}168 then i := 2
+  else if PPI >= 144 then i := 1
+  else i := 0;
+  Result := i;
+end;
+
+procedure SetupImageList(IL: TCustomImageList; ResNames: array of String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+  Mul: array of Double = (1, 1.5, 2);
+var
+  i, n: Integer;
+begin
+  n := GetPPIndex;
+
+  IL.Clear;
+  IL.Scaled := False;
+  IL.Width := Trunc(IL.Width * Mul[n]);
+  IL.Height := Trunc(IL.Height * Mul[n]);
+
+  for i := 0 to High(ResNames) do
+    IL.AddLazarusResource(ResNames[i] + Sfx[n]);
+end;
+
+{procedure SetupImageList(IL: TCustomImageList; ResNames: array of String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+  Sz16: array of Integer = (16, 24, 32);
+  Sz24: array of Integer = (24, 32, 48);
+var
+  i, n, Sz: Integer;
+begin
+  n := GetPPIndex;
+  if IL.Width = 16 then Sz := Sz16[n]
+  else if IL.Width = 24 then Sz := Sz24[n]
+  else raise Exception.Create('SetupImageList: unknown width = ' + IntToStr(IL.Width));
+
+  IL.Clear;
+  IL.Scaled := False;
+  IL.Width := Sz;
+  IL.Height := Sz;
+  for i := 0 to High(ResNames) do
+    IL.AddLazarusResource(ResNames[i] + Sfx[n]);
+end; }
+
+procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
+const
+  Sfx: array of String = ('', '_150', '_200');
+begin
+  Bn.LoadGlyphFromLazarusResource(ResName + Sfx[GetPPIndex]);
+end;
 
 function CreateMenuItem(AOwner: TComponent; const Caption: String; aShortCut: TShortCut;
 	ImgIdx, Tag: Integer; Handler: TNotifyEvent): TMenuItem;
@@ -377,9 +437,7 @@ var
 begin
   inherited Create(Aowner);
   IL := TImageList.Create(Self);
-  IL.AddLazarusResource('_cut16');
-  IL.AddLazarusResource('_copy16');
-  IL.AddLazarusResource('_paste16');
+  SetupImageList(IL, ['_cut16', '_copy16', '_paste16']);
 
   PopupMenu := TPopupMenu.Create(Self);
   PopupMenu.Items.Add( CreateMenuItem(PopupMenu, rsCut, ShortCut(VK_X, [ssCtrl]), 0, 0, @MenuHandler) );
@@ -406,9 +464,12 @@ begin
   PopupMenu.Items[1].Enabled := SelText <> '';
 end;
 
-function TExpressionCellEditor.GetDefaultGlyphName: string;
+procedure TExpressionCellEditor.ChangeBounds(ALeft, ATop, AWidth,
+  AHeight: Integer; KeepBase: Boolean);
 begin
-  Result:='sum24';
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
 end;
 
 procedure TExpressionCellEditor.EditChange;
@@ -538,9 +599,8 @@ var
 begin
   inherited Create(AOwner);
   IL := TImageList.Create(Self);
-  IL.AddLazarusResource('_cut16');
-  IL.AddLazarusResource('_copy16');
-  IL.AddLazarusResource('_paste16');
+  SetupSpeedButton(Button, '_sum16');
+  SetupImageList(IL, ['_cut16', '_copy16', '_paste16']);
 
   PopupMenu := TPopupMenu.Create(Self);
   PopupMenu.Items.Add( CreateMenuItem(PopupMenu, rsCut, ShortCut(VK_X, [ssCtrl]), 0, 0, @MenuHandler) );
@@ -647,7 +707,7 @@ begin
     Bn := TSpeedButton.Create(Self);
     Bn.ControlStyle:=Bn.ControlStyle + [csNoDesignSelectable];
     Bn.Parent := Self;
-    Bn.LoadGlyphFromLazarusResource(Glp[i]);
+    SetupSpeedButton(Bn, Glp[i]);
     Bn.Caption := Cap[i];
     Bn.ShowCaption := True;
     Bn.Flat := True;
@@ -1765,16 +1825,8 @@ begin
   Flat := True;
 
   FImages := TImageList.Create(Self);
-  with FImages do
-  begin
-    AddLazarusResource('_add16');
-    AddLazarusResource('_edit16');
-    AddLazarusResource('_delete16');
-    AddLazarusResource('_up16');
-    AddLazarusResource('_down16');
-    AddLazarusResource('_copy16');
-    AddLazarusResource('_paste16');
-  end;
+  SetupImageList(FImages, ['_add16', '_edit16', '_delete16', '_up16', '_down16',
+    '_copy16', '_paste16']);
 
   Pop := TPopupMenu.Create(Self);
   Pop.Items.Add( CreateMenuItem(Pop, rsAppend, ShortCut(VK_INSERT, []), 0, 0, @MenuClick) );

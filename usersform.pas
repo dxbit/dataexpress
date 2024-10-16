@@ -137,11 +137,7 @@ begin
   ButtonPanel1.CancelButton.Caption := rsCancel;
   ButtonPanel1.CloseButton.Caption := rsClose;
   ButtonPanel1.HelpButton.Caption := rsHelp;
-  Images.AddLazarusResource('add16');
-  Images.AddLazarusResource('edit16');
-  Images.AddLazarusResource('delete16');
-  Images.AddLazarusResource('copy16');
-  Images.AddLazarusResource('magic16');
+  SetupImageList(Images, ['add16', 'edit16', 'delete16', 'copy16', 'magic16']);
   SetControlState;
 end;
 

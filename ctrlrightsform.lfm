@@ -12,7 +12,7 @@ object CtrlRightsFm: TCtrlRightsFm
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object Grid: TStringGrid
     Left = 4
     Height = 413
@@ -76,6 +76,7 @@ object CtrlRightsFm: TCtrlRightsFm
     ShowBevel = False
   end
   object AccessMnu: TPopupMenu
+    Images = Images
     OnPopup = AccessMnuPopup
     Left = 86
     Top = 112
@@ -86,12 +87,18 @@ object CtrlRightsFm: TCtrlRightsFm
     object MenuItem2: TMenuItem
       Tag = 1
       Caption = 'Только просмотр'
+      ImageIndex = 0
       OnClick = AccessMnuClick
     end
     object MenuItem3: TMenuItem
       Tag = 2
       Caption = 'Редактирование'
+      ImageIndex = 1
       OnClick = AccessMnuClick
     end
+  end
+  object Images: TImageList
+    Left = 113
+    Top = 205
   end
 end

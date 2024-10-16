@@ -52,14 +52,15 @@ type
     function DS: TDataSet;
     procedure SetDescription(AValue: String);
   protected
-    function GetDefaultGlyphName: String; override;
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
     procedure DoButtonClick(Sender: TObject); override;
     procedure Loaded; override;
     procedure SetReadOnly(AValue: Boolean); override;
     procedure SetEnabled(Value: Boolean); override;
     procedure WMPaint(var Msg: TLMPaint); message LM_PAINT;
     procedure PaintWindow(DC: HDC); override;
-    function GetDrawText: String; virtual;
+    function GetDrawText: String; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -330,9 +331,33 @@ begin
     else SetData(nil);
 end;
 
-function TdxFile.GetDefaultGlyphName: String;
+procedure TdxFile.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
 begin
-  Result:='file16';
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  if Button = nil then Exit;
+  Button.Width:=AHeight;
+  Button.Height := AHeight;
+  if AHeight > 52 then
+  begin
+    Button.Images := Images48;
+    Button.ImageIndex := IMG48_FILE;
+  end
+  else if AHeight > 36 then
+  begin
+    Button.Images := Images32;
+    Button.ImageIndex := IMG32_FILE;
+  end
+  else if AHeight > 28 then
+  begin
+    Button.Images := Images24;
+    Button.ImageIndex := IMG24_FILE;
+  end
+  else
+  begin
+    Button.Images := Images16;
+    Button.ImageIndex := IMG16_FILE;
+  end
 end;
 
 procedure TdxFile.DoButtonClick(Sender: TObject);
@@ -415,6 +440,8 @@ begin
   FPopup.Items.Add( CreateMenuItem(FPopup, '-', 4, 0, nil) );
   FPopup.Items.Add( CreateMenuItem(FPopup, rsCopy, 5, ShortCut(VK_C, [ssCtrl]), @PopupHandler, IMG16_COPY) );
   FFieldSize := 50; FOldSize := 50;
+  Button.Images := Images16;
+  Button.ImageIndex := IMG16_FILE;
   Button.PopupMenu := FPopup;
   PopupMenu := FPopup;
   ReadOnly := True;

@@ -83,9 +83,9 @@ procedure TExportFm.FormCreate(Sender: TObject);
 begin
   Caption := rsExportData;
   Label1.Caption := rsSelectFields;
-  CheckAll.LoadGlyphFromLazarusResource('checkall16');
+  SetupSpeedButton(CheckAll, 'checkall16');
   CheckAll.Hint := rsCheckAll;
-  UncheckAll.LoadGlyphFromLazarusResource('uncheckall16');
+  SetupSpeedButton(UncheckAll, 'uncheckall16');
   UncheckAll.Hint := rsUncheckAll;
   Label2.Caption := rsFileName;
   RadioGroup1.Caption := rsEncoding;

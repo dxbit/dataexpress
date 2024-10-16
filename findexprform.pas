@@ -224,9 +224,8 @@ begin
   Label1.Caption := rsValue;
   ValueEd.TextHint := rsAllExpressions;
   FindBn.Caption := rsFind;
-  FindBn.LoadGlyphFromLazarusResource('find16');
+  SetupBitBtn(FindBn, 'find16');
   FilterBn.Caption := rsFilter;
-  //FilterBn.LoadGlyphFromLazarusResource('filter16');
   with FmFilter do
   begin
     Caption := rsForms;
@@ -294,22 +293,9 @@ begin
   RpNothingPan.Caption := rsNothingFound;
 
   FImages := TImageList.Create(Self);
-  with FImages do
-  begin
-    AddLazarusResource('label16');
-    AddLazarusResource('text16');
-    AddLazarusResource('calc16');
-    AddLazarusResource('date16');
-    AddLazarusResource('clock16');
-    AddLazarusResource('counter16');
-    AddLazarusResource('memo16');
-    AddLazarusResource('checkbox16');
-    AddLazarusResource('combobox16');
-    AddLazarusResource('object16');
-    AddLazarusResource('dbimage16');
-    AddLazarusResource('file16');
-    AddLazarusResource('calcfield16');
-  end;
+  SetupImageList(FImages, ['label16', 'text16', 'calc16', 'date16', 'clock16',
+    'counter16', 'memo16', 'checkbox16', 'combobox16', 'object16', 'dbimage16',
+    'file16', 'calcfield16']);
 end;
 
 procedure TFindExprFm.FormDestroy(Sender: TObject);

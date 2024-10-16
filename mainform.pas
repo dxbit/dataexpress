@@ -36,6 +36,7 @@ type
   { TMainFm }
 
   TMainFm = class(TForm)
+    MenuImages: TImageList;
     MainMenu1: TMainMenu;
     FileMnu: TMenuItem;
     FindActionsDivMnu: TMenuItem;
@@ -388,7 +389,6 @@ begin
   FreeAndNil(HelpMnu);
   {$ENDIF}
 
-  CreateImageLists;
   ImageCache := TImageCache.Create;
 
   FBLoader := TFBLoader.Create(nil);
@@ -401,6 +401,9 @@ begin
   DXMain := TDXMain.Create;
 
   HelpMan := THelpMan.Create;
+
+  CreateImageLists;
+  SetupImageList(MenuImages, ['form16', 'grid16']);
 
   Left := AppConfig.FormLeft;
   Top := AppConfig.FormTop;

@@ -39,6 +39,7 @@ type
     BitBtn6: TBitBtn;
     BitBtn7: TBitBtn;
     ButtonPanel1: TButtonPanel;
+    ImageList1: TImageList;
     Label1: TLabel;
     List: TListBox;
     MenuItem1: TMenuItem;
@@ -223,18 +224,13 @@ procedure TFormFiltersFm.FormCreate(Sender: TObject);
 begin
   Caption := rsFilterPresets;
   MenuItem1.Caption := rsAppend;
-  SetMenuItemImage(MenuItem1, 'add16');
   MenuItem2.Caption := rsRename;
   MenuItem3.Caption := rsDelete;
-  SetMenuItemImage(MenuItem3, 'delete16');
   MenuItem4.Caption := rsEdit;
-  SetMenuItemImage(MenuItem4, 'edit16');
   MenuItem7.Caption := rsMoveUp;
-  SetMenuItemImage(MenuItem7, 'up16');
   MenuItem8.Caption := rsMoveDown;
-  SetMenuItemImage(MenuItem8, 'down16');
   MenuItem9.Caption := rsCopy;
-  SetMenuItemImage(MenuItem9, 'copy16');
+  SetupImageList(ImageList1, ['add16', 'delete16', 'edit16', 'copy16', 'up16', 'down16']);
   BitBtn1.Caption := rsAppend;
   BitBtn2.Caption := rsRename;
   BitBtn3.Caption := rsDelete;

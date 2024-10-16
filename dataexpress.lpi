@@ -935,7 +935,9 @@
       <Unit112>
         <Filename Value="newroleform.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="NewRoleFm"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <UnitName Value="NewRoleForm"/>
       </Unit112>
       <Unit113>

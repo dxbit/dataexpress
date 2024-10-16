@@ -91,17 +91,10 @@ begin
   ToolButton1.Caption := rsDelete;
   ToolButton2.Caption := rsDeleteAll;
   ToolButton4.Caption := rsGoTo;
-  with Images do
-	begin
-    AddLazarusResource('delete16');
-    AddLazarusResource('goto16');
-  end;
   MenuItem1.Caption:=rsDelete;
   MenuItem2.Caption:=rsDeleteAll;
   MenuItem4.Caption:=rsGoTo;
-  SetMenuItemImage(MenuItem1, 'delete16');
-  SetMenuItemImage(MenuItem2, 'delete16');
-  SetMenuItemImage(MenuItem4, 'goto16');
+  SetupImageList(Images, ['delete16', 'goto16']);
 end;
 
 procedure TBreakpointsFm.FormShow(Sender: TObject);

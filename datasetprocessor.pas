@@ -2605,13 +2605,11 @@ begin
 
     if bCanEdit then
     begin
-      //SetMenuItemImage(Pop.Items[1], 'edit16');
       Pop.Items[1].ImageIndex := IMG16_EDIT;
       Pop.Items[1].Caption := rsEdit;
     end
     else
     begin
-      //SetMenuItemImage(Pop.Items[1], 'eyes16');
       Pop.Items[1].ImageIndex := IMG16_EYES;
       Pop.Items[1].Caption := rsLook;
     end;
@@ -5937,13 +5935,11 @@ begin
   begin
     Pop.Items[1].Caption:=rsEdit;
     Pop.Items[1].ImageIndex := IMG16_EDIT;
-    //SetMenuItemImage(Pop.Items[1], 'edit16');
   end
   else
   begin
     Pop.Items[1].Caption := rsLook;
     Pop.Items[1].ImageIndex := IMG16_EYES;
-    //SetMenuItemImage(Pop.Items[1], 'eyes16');
   end;
 
   if DSR.Form.PId = 0 then
@@ -5968,7 +5964,6 @@ begin
     begin
       Pop.Items[1].Caption := rsLook;
       Pop.Items[1].ImageIndex := IMG16_EYES;
-	    //SetMenuItemImage(Pop.Items[1], 'eyes16');
     end;
     Pop.Items[0].Visible := DSR.Adding;
     Pop.Items[0].Enabled := DSR.Adding and bNotEdit and bMasterEdit and hf;
@@ -6684,7 +6679,6 @@ begin
         or Items[3].Visible;
       if CanE = False then
       begin
-        //SetMenuItemImage(Items[1], 'eyes16');
         Items[1].ImageIndex := IMG16_EYES;
         Items[1].Caption := rsLook;
       end;

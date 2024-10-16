@@ -277,7 +277,7 @@ begin
   FButton.OnClick:=@DoButtonClick;
   FButton.Cursor := crArrow;
   FButton.ControlStyle := FButton.ControlStyle + [csNoDesignSelectable];
-  FButton.LoadGlyphFromLazarusResource('_delete16');
+  SetupSpeedButton(FButton, '_delete16');
   FButton.Flat := True;
   FDefaultColor := clDefault;
   ShowHint := True;
@@ -330,8 +330,9 @@ begin
 end;     }
 
 initialization
-  CustColors := TStringList.Create;
   {$i dxcomponents.lrs}
+  CustColors := TStringList.Create;
+
 
 finalization
   FreeAndNil(CustColors);

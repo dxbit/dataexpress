@@ -152,7 +152,7 @@ begin
   ButtonPanel1.OKButton.Caption := rsOk;
   ButtonPanel1.CancelButton.Caption := rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
-  Pwd.Button.LoadGlyphFromLazarusResource('edit16');
+  SetupSpeedButton(Pwd.Button, 'edit16');
   Pwd.Button.Hint:=rsChangePwd;
   Pwd.Button.ShowHint:=True;
   Pwd.Button.OnClick:=@PwdButtonClick;

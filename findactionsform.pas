@@ -87,7 +87,7 @@ procedure ShowFindActionsForm;
 implementation
 
 uses
-  formmanager, designerframe, actionseditform;
+  apputils, formmanager, designerframe, actionseditform;
 
 procedure ShowFindActionsForm;
 begin
@@ -211,7 +211,7 @@ begin
   Label3.Caption := rsValue;
   ValueEd.TextHint := rsAllValues;
   FindBn.Caption := rsFind;
-  FindBn.LoadGlyphFromLazarusResource('find16');
+  SetupBitBtn(FindBn, 'find16');
   Label4.Caption := rsSearchResult;
   Grid.Columns[0].Title.Caption := rsForm;
   Grid.Columns[1].Title.Caption := rsButton;

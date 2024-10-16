@@ -35,10 +35,6 @@ type
     Bevel1: TBevel;
     ButtonPanel1: TButtonPanel;
     Grid: TStringGridEx;
-    MenuItem10: TMenuItem;
-    MenuItem11: TMenuItem;
-    MenuItem9: TMenuItem;
-    FieldNameMnu: TPopupMenu;
     ShowFirstRecords: TCheckBox;
     DateFl: TComboBox;
     ImageList1: TImageList;
@@ -73,7 +69,6 @@ type
     procedure BtnClick(Sender: TObject);
     procedure DateFlChange(Sender: TObject);
     procedure DateFlDropDown(Sender: TObject);
-    procedure FieldNameMnuClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -640,14 +635,8 @@ begin
   FExprEd.OnEditingDone:=@ExprEditingDone;
   FFieldNameEd := TActionText.Create(Self);
   FFieldNameEd.OnEditingDone:=@FieldNameEditingDone;
-  ImageList1.AddLazarusResource('add16');
-  ImageList1.AddLazarusResource('delete16');
-  ImageList1.AddLazarusResource('up16');
-  ImageList1.AddLazarusResource('down16');
-  ImageList1.AddLazarusResource('left16_2');
-  ImageList1.AddLazarusResource('right16_2');
-  ImageList1.AddLazarusResource('magic16');
-  ImageList1.AddLazarusResource('sql16');
+  SetupImageList(ImageList1, ['add16', 'delete16', 'up16', 'down16', 'left16',
+    'right16', 'magic16', 'sql16']);
   ToolButton1.Caption := rsAppendField;
   ToolButton2.Caption := rsDeleteField;
   ToolButton4.Caption := rsAppendSource;
@@ -873,11 +862,6 @@ end;
 procedure TReportFm.DateFlDropDown(Sender: TObject);
 begin
   FillDateFl;
-end;
-
-procedure TReportFm.FieldNameMnuClick(Sender: TObject);
-begin
-  //
 end;
 
 procedure TReportFm.FormCloseQuery(Sender: TObject; var CanClose: boolean);

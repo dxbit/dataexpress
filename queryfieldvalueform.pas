@@ -57,7 +57,7 @@ function ShowQueryFieldValueForm(Fm: TdxForm; var Res: String): Integer;
 implementation
 
 uses
-  dxreports, reportmanager, formmanager, mydialogs;
+  apputils, dxreports, reportmanager, formmanager, mydialogs;
 
 function ShowQueryFieldValueForm(Fm: TdxForm; var Res: String): Integer;
 begin
@@ -116,7 +116,7 @@ begin
   Caption := rsFunctionGET;
   Label1.Caption := rsTableOrQuery;
   Label2.Caption := rsField;
-  Field.Button.LoadGlyphFromLazarusResource('grid24');
+  SetupSpeedButton(Field.Button, 'grid16');
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
 end;

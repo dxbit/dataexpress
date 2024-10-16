@@ -32,7 +32,7 @@ uses
 
 type
   TDebugScriptFm = class(TForm)
-    ImageList2: TImageList;
+    Images: TImageList;
     MenuItem1: TMenuItem;
     PopupMenu1: TPopupMenu;
     StatusBar: TStatusBar;
@@ -524,12 +524,7 @@ begin
   Edit.OnKeyDown:=@EditKeyDown;
   Edit.OnBreakpointChanged:=@EditBreakpointChanged;
   Edit.PopupMenu := PopupMenu1;
-  with ImageList2 do
-	begin
-    AddLazarusResource('compile24');
-    AddLazarusResource('stepinto24');
-    AddLazarusResource('stepover24');
-  end;
+  SetupImageList(Images, ['compile24', 'stepinto24', 'stepover24']);
   ToolButton1.Hint := rsContinueRunBn;
   ToolButton2.Hint := rsStepIntoBn;
   ToolButton3.Hint := rsStepOverBn;

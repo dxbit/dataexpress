@@ -10,10 +10,9 @@ object ModulesFm: TModulesFm
   ClientWidth = 566
   KeyPreview = True
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object ToolBar1: TToolBar
     Left = 0
     Height = 22
@@ -36,35 +35,35 @@ object ModulesFm: TModulesFm
       OnClick = ToolButton1Click
     end
     object ToolButton2: TToolButton
-      Left = 79
+      Left = 82
       Top = 0
       Caption = 'Удалить'
       ImageIndex = 1
       OnClick = ToolButton2Click
     end
     object ToolButton3: TToolButton
-      Left = 149
+      Left = 155
       Top = 0
       Caption = 'Экспорт'
       ImageIndex = 2
       OnClick = ToolButton3Click
     end
     object ToolButton4: TToolButton
-      Left = 365
+      Left = 377
       Top = 0
       Caption = 'Скачать'
       ImageIndex = 3
       OnClick = ToolButton4Click
     end
     object ToolButton5: TToolButton
-      Left = 360
+      Left = 372
       Height = 22
       Top = 0
       Caption = 'ToolButton5'
       Style = tbsDivider
     end
     object ToolButton6: TToolButton
-      Left = 220
+      Left = 229
       Top = 0
       Caption = 'Домашняя страница'
       ImageIndex = 4
@@ -85,7 +84,7 @@ object ModulesFm: TModulesFm
     Columns = <    
       item
         Title.Caption = 'Имя файла'
-        Width = 218
+        Width = 219
       end    
       item
         Title.Caption = 'Автор'
@@ -109,7 +108,7 @@ object ModulesFm: TModulesFm
     OnDrawCell = GridDrawCell
     OnSelection = GridSelection
     ColWidths = (
-      218
+      219
       218
       80
       40

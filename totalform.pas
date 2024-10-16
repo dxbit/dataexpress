@@ -94,8 +94,8 @@ begin
   Label2.Caption := rsField;
   Label3.Caption := rsFunction;
   Label4.Caption := rsFilter;
-  Field.Button.LoadGlyphFromLazarusResource('formfields16');
-  Filter.Button.LoadGlyphFromLazarusResource('filter16');
+  SetupSpeedButton(Field.Button, 'formfields16');
+  SetupSpeedButton(Filter.Button, 'filter16');
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption:=rsHelp;

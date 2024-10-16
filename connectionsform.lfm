@@ -1,7 +1,7 @@
 object ConnectsFm: TConnectsFm
-  Left = 607
+  Left = 608
   Height = 421
-  Top = 181
+  Top = 182
   Width = 496
   BorderIcons = [biSystemMenu]
   Caption = 'Подключиться к БД'
@@ -10,7 +10,7 @@ object ConnectsFm: TConnectsFm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 4
     Height = 390

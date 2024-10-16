@@ -34,9 +34,10 @@ type
     ButtonPanel1: TButtonPanel;
     CmpMnu: TPopupMenu;
     Grid: TStringGrid;
-    MenuItem5: TMenuItem;
-    MenuItem6: TMenuItem;
-    MenuItem7: TMenuItem;
+    Images: TImageList;
+    NoMnu: TMenuItem;
+    ViewMnu: TMenuItem;
+    EditMnu: TMenuItem;
     procedure CmpMnuClick(Sender: TObject);
     procedure CmpMnuPopup(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -52,7 +53,6 @@ type
     FModified: Boolean;
     FForm: TdxForm;
     FRoles: TList;
-    FViewBmp, FEditBmp: TCustomBitmap;
     procedure GetCtrlRight(aCol, aRow: Integer; out FR: TdxFormRight; out CR: TdxControlRight);
     procedure FillGrid;
   public
@@ -96,7 +96,7 @@ var
   C: TComponent;
 begin
   C := TComponent(Grid.Objects[0, Grid.Row]);
-  MenuItem7.Visible := HasFId(C);
+  EditMnu.Visible := HasFId(C);
 end;
 
 procedure TMultiCtrlRightsFm.CmpMnuClick(Sender: TObject);
@@ -141,24 +141,19 @@ end;
 procedure TMultiCtrlRightsFm.FormCreate(Sender: TObject);
 begin
   FRoles := TList.Create;
-  FViewBmp := CreateBitmapFromLazarusResource('eyes16');
-  FEditBmp := CreateBitmapFromLazarusResource('edit16');
-  SetMenuItemImage(MenuItem6, 'eyes16');
-  SetMenuItemImage(MenuItem7, 'edit16');
+  SetupImageList(Images, ['eyes16', 'edit16']);
   Grid.FocusRectVisible := False;
 
   Caption := rsAccessToCmp;
-  MenuItem5.Caption := rsNoAccess;
-  MenuItem6.Caption := rsOnlyView;
-  MenuItem7.Caption := rsEditing;
+  NoMnu.Caption := rsNoAccess;
+  ViewMnu.Caption := rsOnlyView;
+  EditMnu.Caption := rsEditing;
   ButtonPanel1.OKButton.Caption := rsOk;
   ButtonPanel1.CancelButton.Caption := rsCancel;
 end;
 
 procedure TMultiCtrlRightsFm.FormDestroy(Sender: TObject);
 begin
-  FEditBmp.Free;
-  FViewBmp.Free;
   FRoles.Free;
 end;
 
@@ -209,8 +204,8 @@ begin
   end  }
   else
   begin
-    if CR.Editing and CR.Visible then Cv.Draw(x, y, FEditBmp)
-    else if CR.Visible then Cv.Draw(x, y, FViewBmp);
+    if CR.Editing and CR.Visible then Images.Draw(Cv, x, y, 1)
+    else if CR.Visible then Images.Draw(Cv, x, y, 0);
   end;
 end;
 

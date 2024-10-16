@@ -37,7 +37,6 @@ type
   private
     FForm: TTimeForm;
   protected
-    function GetDefaultGlyphName: String; override;
     procedure DoButtonClick(Sender: TObject); override;
     procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: integer; KeepBase: boolean);
       override;
@@ -59,6 +58,8 @@ type
     procedure DoEnter; override;
     procedure ButtonClick; override;
     procedure EditEditingDone; override;
+    procedure ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer; KeepBase: Boolean);
+      override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -313,11 +314,9 @@ constructor TTimeEditEx.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Button.Flat:=True;
-  Button.Width := 23;
-  Button.Height := 23;
-  Button.LoadGlyphFromLazarusResource('clock16');
-  // Блокируем системное меню
-  //Button.PopupMenu := TPopupMenu.Create(Self);
+  //Button.Width := 23;
+  //Button.Height := 23;
+  SetupSpeedButton(Button, 'clock16');
 
   PopupMenu := TPopupMenu.Create(Self);
   PopupMenu.Images := Images16;
@@ -353,6 +352,14 @@ begin
   inherited EditEditingDone;
 end;
 
+procedure TTimeEditEx.ChangeBounds(ALeft, ATop, AWidth, AHeight: Integer;
+  KeepBase: Boolean);
+begin
+  inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
+  Button.Width := Height;
+  Button.Height := Height;
+end;
+
 { TDBTimeEdit }
 
 procedure TDBTimeEdit.FormHide(Sender: TObject);
@@ -369,11 +376,6 @@ begin
         Field.AsDateTime:=FForm.Time;
     end;
   end;
-end;
-
-function TDBTimeEdit.GetDefaultGlyphName: String;
-begin
-  Result:='clock16';
 end;
 
 procedure TDBTimeEdit.DoButtonClick(Sender: TObject);
@@ -433,11 +435,6 @@ begin
     Button.Images := Images16;
     Button.ImageIndex := IMG16_CLOCK;
   end
-  {if AHeight > 52 then S := 'clock48'
-  else if AHeight > 36 then S := 'clock32'
-  else if AHeight > 28 then S := 'clock24'
-  else S := 'clock16';
-  Button.LoadGlyphFromLazarusResource(S);  }
 end;
 
 constructor TDBTimeEdit.Create(AOwner: TComponent);

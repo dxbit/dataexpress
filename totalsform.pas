@@ -114,10 +114,7 @@ begin
   ToolButton2.Caption := rsDelete;
   ToolButton3.Caption := rsMoveUp;
   ToolButton4.Caption := rsMoveDown;
-  Images.AddLazarusResource('add16');
-  Images.AddLazarusResource('delete16');
-  Images.AddLazarusResource('up16');
-  Images.AddLazarusResource('down16');
+  SetupImageList(Images, ['add16', 'delete16', 'up16', 'down16']);
   FillFuncs;
 end;
 
