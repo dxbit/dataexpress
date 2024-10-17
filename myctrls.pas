@@ -1418,7 +1418,7 @@ begin
       begin
         if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
         else Images16.Draw(Canvas, X, Y, IMG16_UP8);
-        X := X - 10;
+        X := X - ScaleToScreen(10);
       end;
     end;
   end;
@@ -1908,7 +1908,7 @@ begin
       begin
         if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
         else Images16.Draw(Canvas, X, Y, IMG16_UP8); ;
-        X := X - 10;
+        X := X - ScaleToScreen(10);
       end;
     end;
   end;

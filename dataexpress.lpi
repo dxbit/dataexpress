@@ -27,10 +27,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="24"/>
-      <MinorVersionNr Value="8"/>
-      <RevisionNr Value="25"/>
+      <MinorVersionNr Value="10"/>
+      <RevisionNr Value="17"/>
       <Language Value="0419"/>
-      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.8.25"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.10.17"/>
     </VersionInfo>
     <BuildModes Count="4">
       <Item1 Name="Win32" Default="True"/>
