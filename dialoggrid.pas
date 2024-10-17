@@ -297,7 +297,7 @@ var
   PPI, i: Integer;
 begin
   PPI := Screen.PixelsPerInch;
-  if PPI >= {192}168 then i := 2
+  if PPI >= 192 then i := 2
   else if PPI >= 144 then i := 1
   else i := 0;
   Result := i;
