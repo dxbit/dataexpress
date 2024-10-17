@@ -53,9 +53,7 @@ const
   IMG16_FOLDER_ADD = 20;
   IMG16_FOLDER_DELETE = 21;
   IMG16_IMAGE = 22;
-  IMG16_UP8 = 23;
-  IMG16_DOWN8 = 24;
-  IMG16_FILE = 25;
+  IMG16_FILE = 23;
 
   IMG24_DATE = 0;
   IMG24_CLOCK = 1;
@@ -87,11 +85,10 @@ uses
   apputils;
 
 const
-  Img16: array [0..25] of String = ('add16', 'edit16', 'delete16', 'copy16',
+  Img16: array [0..23] of String = ('add16', 'edit16', 'delete16', 'copy16',
     'shopping16', 'up16', 'down16', 'refresh16', 'goto16', 'cut16', 'paste16',
     'calc16', 'date16', 'cbx_dropdown16', 'form16', 'eyes16', 'db16', 'save16',
-    'clock16', 'filter16', 'folder_add16', 'folder_delete16', 'image16', 'up8',
-    'down8', 'file16');
+    'clock16', 'filter16', 'folder_add16', 'folder_delete16', 'image16', 'file16');
   Img24: array [0..4] of String = ('date24', 'clock24', 'form24', 'calc24', 'file24');
   Img32: array [0..4] of String = ('date16_200', 'clock16_200', 'form16_200', 'calc16_200', 'file16_200');
   Img48: array [0..4] of String = ('date24_200', 'clock24_200', 'form24_200', 'calc24_200', 'file24_200');

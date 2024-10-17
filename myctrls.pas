@@ -509,6 +509,29 @@ begin
   aControl.Visible:=False;
 end;
 
+procedure DrawArrowDown(C: TCanvas; X, Y: Integer; AColor: TColor);
+begin
+  if AColor = clDefault then AColor := clBlack;
+  C.Pen.Width := 0;
+  C.Brush.Color := AColor;
+  C.Pen.Color := AColor;
+
+  C.Polygon([Point(X, Y), Point(X + ScaleToScreen(8), Y),
+    Point(X + ScaleToScreen(4), Y + ScaleToScreen(4))]);
+end;
+
+procedure DrawArrowUp(C: TCanvas; X, Y: Integer; AColor: TColor);
+begin
+  if AColor = clDefault then AColor := clBlack;
+  C.Pen.Width := 0;
+  C.Brush.Color := AColor;
+  C.Pen.Color := AColor;
+
+  C.Polygon([Point(X + ScaleToScreen(4), Y),
+    Point(X + ScaleToScreen(8), Y + ScaleToScreen(4)),
+    Point(X, Y + ScaleToScreen(4))]);
+end;
+
 { TMyGridColumns }
 
 function TMyGridColumns.GetItems(Index: Integer): TMyGridColumn;
@@ -1399,6 +1422,7 @@ procedure TMyDBGrid.DrawCell(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState);
 var
   X, Y: Integer;
+  R: TRect;
   CD: TSortColumn;
   i, num: Integer;
   C: TColumn;
@@ -1411,13 +1435,20 @@ begin
     CD := FSortCols.FindCol(C);
     if CD <> nil then
     begin
-      X := aRect.Right - ScaleToScreen(16);
-      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - Images16.Height div 2;
       num := FSortCols.IndexOf(CD);
+
+      R.Left := aRect.Right - ScaleToScreen(18) - num * ScaleToScreen(10);
+      R.Top := aRect.Top;
+      R.Right := aRect.Right - ScaleToScreen(1);
+      R.Bottom := aRect.Bottom - ScaleToScreen(1);
+      Canvas.FillRect(R);
+
+      X := aRect.Right - ScaleToScreen(16);
+      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - ScaleToScreen(4) div 2;
       for i := 0 to num do
       begin
-        if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
-        else Images16.Draw(Canvas, X, Y, IMG16_UP8);
+        if CD.Desc then DrawArrowDown(Canvas, X, Y, TitleFont.Color)
+        else DrawArrowUp(Canvas, X, Y, TitleFont.Color);
         X := X - ScaleToScreen(10);
       end;
     end;
@@ -1432,7 +1463,7 @@ end;
 procedure TMyDBGrid.UTF8KeyPress(var UTF8Key: TUTF8Char);
 begin
   inherited UTF8KeyPress(UTF8Key);
-  if ReadOnly and (Utf8Key >= ' ') then
+  if {ReadOnly and} not (DataSource.DataSet.State in [dsInsert, dsEdit]) and (Utf8Key >= ' ') then
     ShowQuickSearchForm(Utf8Key, Self);
 end;
 
@@ -1889,6 +1920,7 @@ procedure TMyGrid.DrawCell(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState);
 var
   X, Y: Integer;
+  R: TRect;
   CD: TSortColumn;
   i, num: Integer;
   C: TGridColumn;
@@ -1901,13 +1933,20 @@ begin
     CD := FSortCols.FindCol(C);
     if CD <> nil then
     begin
-      X := aRect.Right - ScaleToScreen(16);
-      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - Images16.Height div 2;
       num := FSortCols.IndexOf(CD);
+
+      R.Left := aRect.Right - ScaleToScreen(18) - num * ScaleToScreen(10);
+      R.Top := aRect.Top;
+      R.Right := aRect.Right - ScaleToScreen(1);
+      R.Bottom := aRect.Bottom - ScaleToScreen(1);
+      Canvas.FillRect(R);
+
+      X := aRect.Right - ScaleToScreen(16);
+      Y := aRect.Top + ((aRect.Bottom - aRect.Top) div 2) - ScaleToScreen(4) div 2;
       for i := 0 to num do
       begin
-        if CD.Desc then Images16.Draw(Canvas, X, Y, IMG16_DOWN8)
-        else Images16.Draw(Canvas, X, Y, IMG16_UP8); ;
+        if CD.Desc then DrawArrowDown(Canvas, X, Y, TitleFont.Color)
+        else DrawArrowUp(Canvas, X, Y, TitleFont.Color);
         X := X - ScaleToScreen(10);
       end;
     end;
