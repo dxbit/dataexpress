@@ -1438,8 +1438,8 @@ begin
       num := FSortCols.IndexOf(CD);
 
       R.Left := aRect.Right - ScaleToScreen(18) - num * ScaleToScreen(10);
-      R.Top := aRect.Top;
-      R.Right := aRect.Right - ScaleToScreen(1);
+      R.Top := aRect.Top + ScaleToScreen(1);
+      R.Right := aRect.Right - ScaleToScreen(2);
       R.Bottom := aRect.Bottom - ScaleToScreen(1);
       Canvas.FillRect(R);
 
@@ -1936,8 +1936,8 @@ begin
       num := FSortCols.IndexOf(CD);
 
       R.Left := aRect.Right - ScaleToScreen(18) - num * ScaleToScreen(10);
-      R.Top := aRect.Top;
-      R.Right := aRect.Right - ScaleToScreen(1);
+      R.Top := aRect.Top + ScaleToScreen(1);
+      R.Right := aRect.Right - ScaleToScreen(2);
       R.Bottom := aRect.Bottom - ScaleToScreen(1);
       Canvas.FillRect(R);
 

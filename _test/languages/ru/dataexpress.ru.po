@@ -1746,9 +1746,8 @@ msgid "I confirm deletion"
 msgstr "Я подтверждаю удаление"
 
 #: strconsts.rsdelrecsmsg
-#, object-pascal-format
-msgid "Warning!%sDo you want to delete all records selected current filters. The data will be deleted forever.%sAre you sure?"
-msgstr "Внимание!%sВы хотите удалить все записи, выбранные текущим фильтром. Данные будут удалены навсегда.%sВы уверены?"
+msgid "Do you want to delete all records selected current filters. The data will be deleted forever. Are you sure?"
+msgstr "Вы хотите удалить все записи, выбранные текущим фильтром. Данные будут удалены навсегда. Вы уверены?"
 
 #: strconsts.rsdensityperc
 msgid "Density, %"
@@ -2840,6 +2839,10 @@ msgstr "Действие формы"
 msgid "Form actions"
 msgstr "Действия формы"
 
+#: strconsts.rsformalreadyselected
+msgid "This form has already been selected."
+msgstr "Эта форма уже была выбрана."
+
 #: strconsts.rsformat
 msgid "Format"
 msgstr "Формат"
@@ -2995,6 +2998,11 @@ msgstr "Функцию нельзя применить к файлам и изо
 msgctxt "strconsts.rsfuncnotsel"
 msgid "Function not selected."
 msgstr "Функция не выбрана."
+
+#: strconsts.rsfunconlynumber
+#, object-pascal-format
+msgid "The \"%s\" function must have a data type of number."
+msgstr "Для функции \"%s\" должен быть выбран числовой тип данных."
 
 #: strconsts.rsfunction
 msgid "Function"

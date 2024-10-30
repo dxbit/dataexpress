@@ -240,6 +240,7 @@ begin
       S := Intf.Name;
     Intfs.ItemIndex := Intfs.Items.AddObject(S, Intf);
     FModified := True;
+    UserMan.SetIntfsChanged;
   end
   else UserMan.Intfs.DeleteIntf(Intf);
   SetControlState;
@@ -255,7 +256,10 @@ begin
     if Roles.Selected[i] then
       RoleList.Add(Roles.Items.Objects[i]);
   if ShowMultiRolesForm(RoleList) = mrOk then
+  begin
     FModified := True;
+    UserMan.SetRolesChanged;
+  end;
   RoleList.Free;
 end;
 
@@ -274,6 +278,7 @@ begin
     Roles.Items.AddObject(R.Name, R);
     Roles.ItemIndex := Roles.Items.Count - 1;
     FModified := True;
+    UserMan.SetRolesChanged;
   end
   else UserMan.Roles.DeleteRole(R);
   SetControlState;
@@ -289,6 +294,7 @@ begin
   begin
     Users.Items.AddObject(GetFullName(U), U);
     Users.ItemIndex := Users.Items.Count - 1;
+    UserMan.SetUsersChanged;
     FModified := True;
   end
   else UserMan.Users.DeleteUser(U);
@@ -303,6 +309,7 @@ begin
   if ShowUserForm(U, False) = mrOk then
   begin
     Users.Items[Users.ItemIndex] := GetFullName(U);
+    UserMan.SetUsersChanged;
     FModified := True;
   end;
 end;
@@ -322,6 +329,7 @@ begin
     Users.ItemIndex := i;
     SetControlState;
     FModified := True;
+    UserMan.SetUsersChanged;
   end;
 end;
 
@@ -335,6 +343,7 @@ begin
     Roles.Items.AddObject(R.Name, R);
     Roles.ItemIndex := Roles.Items.Count - 1;
     Roles.Selected[Roles.ItemIndex] := True;
+    UserMan.SetRolesChanged;
     FModified := True;
   end
   else UserMan.Roles.DeleteRole(R);
@@ -352,6 +361,7 @@ begin
   begin
     Roles.Items[Roles.ItemIndex] := R.Name;
     FModified := True;
+    UserMan.SetRolesChanged;
 
     if OldName <> R.Name then
       UpdateUserList;
@@ -374,6 +384,7 @@ begin
     if (Roles.SelCount = 0) and (i >= 0) then Roles.Selected[i] := True;
     SetControlState;
     FModified := True;
+    UserMan.SetRolesChanged;
   end;
 end;
 
@@ -394,6 +405,7 @@ begin
       S := Intf.Name;
     Intfs.ItemIndex := Intfs.Items.AddObject(S, Intf);
     FModified := True;
+    UserMan.SetIntfsChanged;
   end
   else UserMan.Intfs.DeleteIntf(Intf);
   SetControlState;
@@ -417,6 +429,7 @@ begin
       S := Intf.Name;
     Intfs.Items[Intfs.ItemIndex] := S;
     FModified := True;
+    UserMan.SetIntfsChanged;
   end;
 end;
 
@@ -435,6 +448,7 @@ begin
     Intfs.ItemIndex := i;
     SetControlState;
     FModified := True;
+    UserMan.SetIntfsChanged;
   end;
 end;
 
@@ -579,8 +593,11 @@ begin
   end
   else
   begin
+    UserMan.UsersChanged := False;
+    UserMan.RolesChanged := False;
+    UserMan.IntfsChanged := False;
     CloneUserMan := UserMan.CloneManager;
-    KeyPReview := False;
+    KeyPreview := False;
     ButtonPanel1.ShowButtons:=[pbOk, pbCancel, pbHelp];
     ButtonPanel1.CancelButton.Caption := rsCancel;
 	  Result := ShowModal;

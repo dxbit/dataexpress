@@ -103,6 +103,7 @@ type
     procedure ChangeFieldIdInReports(aReports: TQueryFormList; OldId, NewId: Integer);
     procedure ChangeFieldId(aForm: TdxForm; OldId, NewId: Integer);
     procedure ChangeAllFieldId(aForms: TFormScriptList; OldId, NewId: Integer);
+    procedure ChangeFormIdInMain(OldId, NewId: Integer);
     procedure ChangeFormIdInReports(aReports: TQueryFormList; OldId, NewId: Integer);
     procedure ChangeFormId(aForms: TFormScriptList; OldId, NewId: Integer);
     procedure SelReportsToList(aForms: TFormScriptList; L: TQueryFormList);
@@ -848,10 +849,11 @@ end;
 
 procedure TMergeProjectsFm.ClearBrokenLinks(aForms: TFormScriptList; aReports: TQueryFormList);
 var
-  i, j: Integer;
+  i, j, V: Integer;
   Fm: TdxForm;
   C: TComponent;
   QItem: TQueryFormItem;
+  G: TFormGroup;
 begin
   for i := 0 to aForms.Count - 1 do
   begin
@@ -875,6 +877,22 @@ begin
             end;
           end;
       end;
+    end;
+  end;
+
+  for i := FMain.Tabs.Count - 1 downto 0 do
+  begin
+    V := FMain.Tabs[i];
+    if aForms.FindForm(V) = nil then FMain.Tabs.DeleteValue(V);
+  end;
+
+  for i := FMain.Groups.Count - 1 downto 0 do
+  begin
+    G := FMain.Groups[i];
+    for j := G.IdList.Count - 1 downto 0 do
+    begin
+      V := G.IdList[j];
+      if aForms.FindForm(V) = nil then G.IdList.DeleteValue(V);
     end;
   end;
 end;
@@ -1031,6 +1049,23 @@ begin
     ChangeFieldId(aForms[i].Form, OldId, NewId);
 end;
 
+procedure TMergeProjectsFm.ChangeFormIdInMain(OldId, NewId: Integer);
+var
+  i, n: Integer;
+begin
+  n := FMain.Tabs.FindValue(OldId);
+  if n >= 0 then FMain.Tabs[n] := NewId;
+  for i := 0 to FMain.Groups.Count - 1 do
+  begin
+    n := FMain.Groups[i].IdList.FindValue(OldId);
+    if n >= 0 then
+    begin
+      FMain.Groups[i].IdList[n] := NewId;
+      Exit;
+    end;
+  end;
+end;
+
 procedure TMergeProjectsFm.ChangeFormIdInReports(aReports: TQueryFormList;
   OldId, NewId: Integer);
 var
@@ -1054,7 +1089,6 @@ begin
   for i := 0 to aForms.Count - 1 do
   begin
     Fm := aForms[i].Form;
-    //if Fm.Id = OldId then Continue;
     for j := 0 to Fm.ComponentCount - 1 do
     begin
       C := Fm.Components[j];
@@ -1076,10 +1110,6 @@ begin
       begin
         if GetId(C) = OldId then SetId(C, NewId);
       end
-      // Команды кнопки
-      {else if C is TdxButton then
-        with TdxButton(C) do
-          BnChangeFormId(TdxButton(C), OldId, NewId) }
     end;
     // Подчиненная форма ссылается на родительскую
     if Fm.PId = OldId then Fm.PId := NewId;
@@ -1212,6 +1242,7 @@ var
   begin
     ChangeFormId(FL, Item.Form.Id, NewTId);
     ChangeFormIdInReports(RL, Item.Form.Id, NewTId);
+    ChangeFormIdInMain(Item.Form.Id, NewTId);
     Item.Form.Id := NewTId;
     if Item.SD <> nil then Item.SD.FmId := NewTId;
     if Item.WSD <> nil then Item.WSD.FmId := NewTId;
@@ -1350,6 +1381,7 @@ var
   Fm: TdxForm;
   SD, DestSD: TScriptData;
   UsedImages: TStringList;
+  GrpSrc, GrpDest: TFormGroup;
 begin
   // Модули расширений
   ParseErrors := '';
@@ -1363,7 +1395,7 @@ begin
       RenExt := RenExt + SD.Name + ' -> ' + Tmp + LineEnding;
       SD.Name := Tmp;
     end;
-    DestSD := ScriptMan.AddScript(0, SD.Name, SD.Source);
+    DestSD := ScriptMan.AddNewScript(0, SD.Name, SD.Source);
     DestSD.Kind := SD.Kind;
     DestSD.SourceData.LoadFromString(SD.SourceData.SaveToString);
     ScriptMan.ParseExprModule(DestSD);
@@ -1380,7 +1412,7 @@ begin
       RenUser := RenUser + SD.Name + ' -> ' + Tmp + LineEnding;
       SD.Name := Tmp;
     end;
-    DestSD := ScriptMan.AddScript(0, SD.Name, SD.Source);
+    DestSD := ScriptMan.AddNewScript(0, SD.Name, SD.Source);
     DestSD.Kind := skUser;
     DestSD.SourceData.LoadFromString(SD.SourceData.SaveToString);
   end;
@@ -1403,20 +1435,38 @@ begin
       RenFormNames := RenFormNames + Fm.Name + ' -> ' + Tmp + LineEnding;
       Fm.Name := Tmp;
     end;
+
     FL[i].Form := FormMan.AddCopyForm(Fm); // Подменяю на созданную копию, чтобы уже в ней переименовывать формы.
     Cache.AddFormWithComponents(Fm);
     FormChanges.AddForm(Fm.Id, 0);
+
+    // Закладки и группы
+    if FMain.Tabs.FindValue(Fm.Id) >= 0 then
+      DXMain.Tabs.AddValue(Fm.Id);
+
+    GrpSrc := FMain.Groups.FindGroupByFormId(Fm.Id);
+    if GrpSrc <> nil then
+    begin
+      GrpDest := DXMain.Groups.FindGroup(GrpSrc.Name);
+      if GrpDest = nil then
+      begin
+        GrpDest := DXMain.Groups.AddGroup;
+        GrpDest.Name := GrpSrc.Name;
+      end;
+      GrpDest.IdList.AddValue(Fm.Id);
+    end;
+
     SD := FL[i].SD;
     if SD <> nil then
     begin
-      DestSD := ScriptMan.AddScript(Fm.Id, '', SD.Source);
+      DestSD := ScriptMan.AddNewScript(Fm.Id, '', SD.Source);
       DestSD.Kind := skForm;
       DestSD.SourceData.LoadFromString(SD.SourceData.SaveToString);
     end;
     SD := FL[i].WSD;
     if SD <> nil then
     begin
-      DestSD := ScriptMan.AddScript(Fm.Id, '', SD.Source);
+      DestSD := ScriptMan.AddNewScript(Fm.Id, '', SD.Source);
       DestSD.Kind := skWebForm;
       DestSD.SourceData.LoadFromString(SD.SourceData.SaveToString);
     end;
@@ -1558,7 +1608,6 @@ begin
     FileName:=aFileName;
     OutputPath:=TempDir;
     UnZipAllFiles;
-    //RenameFileNamesCP866ToUtf8(Entries, OutputPath);
   finally
     Free;
   end;
@@ -1575,6 +1624,7 @@ begin
   FScrMan.LoadFromDir(TempDir);
   FImgMan.LoadFromDir(TempDir);
   FMain.LoadFromDir(TempDir);
+  ConvertToDXMainVersion2(FMain, FFmMan, False);
   ScaleForms(FFmMan, FMain.DesignTimePPI);
   ScaleReports(FRpMan, FMain.DesignTimePPI, Screen.PixelsPerInch);
   FillForms;

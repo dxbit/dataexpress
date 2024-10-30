@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, uPSCompiler, uPSRuntime, uPSUtils, sqldb, dxctrls, Dialogs,
-  Controls, uPSPreProcessor, uPSDebugger, strconsts, SAX, SAXBaseReader,
+  Controls, uPSPreProcessor, uPSDebugger, strconsts, SAX, SAXBaseReader, Db,
   mytypes, LazFileUtils;
 
 type
@@ -76,6 +76,7 @@ type
     FCaretX: Integer;
     FCaretY: Integer;
     FFoldState: String;
+    FId: Integer;
     FLeftChar: Integer;
     FMarks: TSourceMarks;
     FTopLine: Integer;
@@ -105,18 +106,24 @@ type
     Breakpoint: Boolean;
   end;
 
+  TScriptPartChangeType = (spcName, spcScript, spcExtra);
+  TScriptPartChanges = set of TScriptPartChangeType;
+
   { TScriptData }
   TScriptData = class
   private
     FAuthor: String;
     FDescription: String;
     FHomePage: String;
+    FLastModified: TDateTime;
     FMsgs, FLines: TList;
+    FPartChanges: TScriptPartChanges;
     FSourceData: TScriptSourceData;
     FVersion: String;
     function GetLines(Index: Integer): TLineData;
     function GetMsgs(Index: Integer): TCompilerMsg;
   public
+    Id: Integer;
     Name, Source, Bin, DebugData: String;
     FmId: Integer;
     Kind: TScriptKind;
@@ -130,6 +137,7 @@ type
     function AddLine(Line: Integer): TLineData;
     function LineCount: Integer;
     function HasBreakpoints: Boolean;
+    function GetFileName: String;
     property Lines[Index: Integer]: TLineData read GetLines;
     property Msgs[Index: Integer]: TCompilerMsg read GetMsgs;
     property SourceData: TScriptSourceData read FSourceData;
@@ -137,6 +145,9 @@ type
     property Version: String read FVersion;
     property HomePage: String read FHomePage;
     property Description: String read FDescription;
+
+    property PartChanges: TScriptPartChanges read FPartChanges write FPartChanges;
+    property LastModified: TDateTime read FLastModified write FLastModified;
   end;
 
   { TScriptCompiler }
@@ -311,19 +322,22 @@ type
     FCompiler: TScriptCompiler;
     FFuncs: TExprFuncs;
     FUseDebugInfo: Boolean;
+    FAdded, FDeleted: TIntegerList;
     function GetScripts(Index: Integer): TScriptData;
+    function GetMaxId: Integer;
   public
     constructor Create;
     destructor Destroy; override;
+    procedure Clear;
     procedure ModulesToList(SL: TStrings; Kind: TScriptKind; ClearList: Boolean = True);
     procedure LoadFromDB;
     procedure SaveToDB;
     procedure LoadFromDir(const aDir: String);
-    procedure LoadBinFromDir(const aDir: String);
+    procedure LoadFromCache(const aDir: String);
     procedure SaveToDir(const aDir: String);
-    procedure SaveBinToDir(const aDir: String);
-    procedure SaveCommentsToDir(const aDir: String);
     function AddScript(FmId: Integer; const aName, Source: String): TScriptData;
+    function AddNewScript(FmId: Integer; const aName, Source: String): TScriptData;
+    procedure ReplaceScript(OldSD, NewSD: TScriptData);
     function FindScript(FmId: Integer; Kind: TScriptKind): TScriptData;
     function FindScriptByName(const aName: String): TScriptData;
     function GetScriptIndex(SD: TScriptData): Integer;
@@ -464,7 +478,7 @@ uses
   uPSC_dll, uPSC_MyDateUtils,
   uPSR_MyStd, uPSR_MyClasses, uPSR_MyGraphics, uPSR_MyControls, uPSR_MyStdCtrls,
   uPSR_MyExtCtrls, uPSR_MyButtons, uPSR_MyForms, uPSR_MyMenus,
-  uPSR_dll, uPSR_MyDateUtils, StrUtils, findactionsform, findscriptform
+  uPSR_dll, uPSR_MyDateUtils, StrUtils, findactionsform, findscriptform, crypt
   {$ifdef windows}
   ,uPSC_ComObj, uPSR_ComObj
   {$endif};
@@ -2158,11 +2172,37 @@ begin
   	if Lines[i].Breakpoint then Exit(True);
 end;
 
+function TScriptData.GetFileName: String;
+begin
+  case Kind of
+    skMain, skWebMain, skUser: Result := Name + '.pas';
+    skForm: Result := IntToStr(FmId) + '.fpas';
+    skWebForm: Result := IntToStr(FmId) + '.wfpas';
+    skExpr: Result := Name + '.epas';
+    skWebExpr: Result := Name + '.wepas';
+    else Result := '';
+  end;
+end;
+
 { TScriptManager }
 
 function TScriptManager.GetScripts(Index: Integer): TScriptData;
 begin
   Result := TScriptData(FScripts[Index]);
+end;
+
+function TScriptManager.GetMaxId: Integer;
+var
+  i: Integer;
+  SD: TScriptData;
+begin
+  Result := 0;
+  for i := 0 to ScriptCount - 1 do
+  begin
+    SD := Scripts[i];
+    if SD.Id > Result then Result := SD.Id;
+  end;
+  Inc(Result);
 end;
 
 function TScriptManager.AddScript(FmId: Integer; const aName, Source: String
@@ -2175,20 +2215,39 @@ begin
   FScripts.Add(Result);
 end;
 
+function TScriptManager.AddNewScript(FmId: Integer; const aName, Source: String
+  ): TScriptData;
+begin
+  Result := AddScript(FmId, aName, Source);
+  Result.Id := GetMaxId;
+  FAdded.AddValue(Result.Id);
+end;
+
+procedure TScriptManager.ReplaceScript(OldSD, NewSD: TScriptData);
+var
+  i: Integer;
+begin
+  i := FScripts.IndexOf(OldSD);
+  FScripts[i] := NewSD;
+  OldSD.Free;
+end;
+
 constructor TScriptManager.Create;
 begin
   FScripts := TList.Create;
-  //FExprModule := TScriptData.Create;
-  //FExprModule.Kind := skExpr;
   FCompiler := TScriptCompiler.Create;
   FFuncs := TExprFuncs.Create;
   FActions := TExprActions.Create;
   FNeedUpdateFuncs:=True;
   FUseDebugInfo := True;
+  FAdded := TIntegerList.Create;
+  FDeleted := TIntegerList.Create;
 end;
 
 destructor TScriptManager.Destroy;
 begin
+  FAdded.Free;
+  FDeleted.Free;
   FActions.Free;
   FFuncs.Free;
   FCompiler.Free;
@@ -2196,6 +2255,13 @@ begin
   ClearList(FScripts);
   FScripts.Free;
   inherited Destroy;
+end;
+
+procedure TScriptManager.Clear;
+begin
+  ClearList(FScripts);
+  FAdded.Clear;
+  FDeleted.Clear;
 end;
 
 procedure TScriptManager.ModulesToList(SL: TStrings; Kind: TScriptKind;
@@ -2274,8 +2340,8 @@ end;
 
 procedure TScriptManager.LoadFromDB;
 begin
-  ClearList(FScripts);
-  with DBase.OpenDataSet('select id, fmid, name, script, kind, extra from dx_scripts') do
+  Clear;
+  with DBase.OpenDataSet('select id, fmid, name, script, kind, extra, lastmodified from dx_scripts') do
   begin
     while not Eof do
     begin
@@ -2292,23 +2358,176 @@ begin
           end;
           //
           SourceData.LoadFromString(Fields[5].AsString);
+          Id := Fields[0].AsInteger;
+          LastModified := Fields[6].AsDateTime;
         end;
       Next;
+
+      if DBase.IsRemote then
+        Application.ProcessMessages;
     end;
     Free;
   end;
   // Главный модуль
   if FindScriptByName('Main') = nil then
-    AddScript(0, 'Main', '').Kind:=skMain;
+    AddNewScript(0, 'Main', '').Kind:=skMain;
 end;
 
 procedure TScriptManager.SaveToDB;
 var
+  Wh: String;
+  i: Integer;
+  SD: TScriptData;
+  DS: TSQLQuery;
+begin
+  // Удаление
+
+  Debug('Удаление скриптов');
+
+  Wh := '';
+  for i := 0 to FDeleted.Count - 1 do
+  begin
+    Wh := Wh + IntToStr(FDeleted[i]) + ',';
+
+    Debug(FDeleted[i]);
+  end;
+  if Wh <> '' then
+  begin
+    SetLength(Wh, Length(Wh) - 1);
+    DS := DBase.CreateQuery('delete from dx_scripts where id in (' + Wh + ')');
+    try
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+    end;
+  end;
+  Debug('');
+
+  // Добавление
+
+  Debug('Добавление скриптов');
+
+  DS := DBase.CreateQuery('insert into dx_scripts (id, script, fmid, name, kind, extra, lastmodified) values (:id, :script, :fmid, :name, :kind, :extra, :lastmodified)');
+  try
+    DS.Prepare;
+    for i := 0 to ScriptCount - 1 do
+    begin
+      SD := Scripts[i];
+      if FAdded.FindValue(SD.Id) < 0 then Continue;
+
+      DS.Params[0].AsInteger := SD.Id;
+      DS.Params[1].AsString := SD.Source;
+      DS.Params[2].AsInteger := SD.FmId;
+      DS.Params[3].AsString := SD.Name;
+      DS.Params[4].AsInteger := Ord(SD.Kind);
+      DS.Params[5].AsString := SD.SourceData.SaveToString;
+      DS.Params[6].AsDateTime := SD.LastModified;
+
+      DBase.ExecuteQuery(DS);
+      SD.PartChanges := [];
+
+      if SD.FmId = 0 then Debug(SD.Name)
+      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+    end;
+
+  finally
+    DS.Free;
+  end;
+  Debug('');
+
+  // Изменение названия
+
+  Debug('Изменение название скрипта');
+
+  DS := DBase.CreateQuery('update dx_scripts set name=:name, lastmodified=:lastmodified where id=:id');
+  try
+    DS.Prepare;
+    for i := 0 to ScriptCount - 1 do
+    begin
+      SD := Scripts[i];
+      if (FAdded.FindValue(SD.Id) >= 0) or (SD.PartChanges * [spcName] = []) then Continue;
+
+      DS.Params[0].AsString := SD.Name;
+      DS.Params[1].AsDateTime := SD.LastModified;
+      DS.Params[2].AsInteger := SD.Id;
+
+      DBase.ExecuteQuery(DS);
+      SD.PartChanges := SD.PartChanges - [spcName];
+
+      if SD.FmId = 0 then Debug(SD.Name)
+      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+    end;
+
+  finally
+    DS.Free;
+  end;
+  Debug('');
+
+  // Изменение исходного кода
+
+  Debug('Изменение исходного кода скрипта');
+
+  DS := DBase.CreateQuery('update dx_scripts set script=:script, lastmodified=:lastmodified  where id=:id');
+  try
+    DS.Prepare;
+    for i := 0 to ScriptCount - 1 do
+    begin
+      SD := Scripts[i];
+      if (FAdded.FindValue(SD.Id) >= 0) or (SD.PartChanges * [spcScript] = []) then Continue;
+
+      DS.Params[0].AsString := SD.Source;
+      DS.Params[1].AsDateTime := SD.LastModified;
+      DS.Params[2].AsInteger := SD.Id;
+
+      DBase.ExecuteQuery(DS);
+      SD.PartChanges := SD.PartChanges - [spcScript];
+
+      if SD.FmId = 0 then Debug(SD.Name)
+      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+    end;
+
+  finally
+    DS.Free;
+  end;
+  Debug('');
+
+  // Изменение служебных данных скрипта
+
+  Debug('Изменение служебных данных скрипта');
+
+  DS := DBase.CreateQuery('update dx_scripts set extra=:extra, lastmodified=:lastmodified  where id=:id');
+  try
+    DS.Prepare;
+    for i := 0 to ScriptCount - 1 do
+    begin
+      SD := Scripts[i];
+      if (FAdded.FindValue(SD.Id) >= 0) or (SD.PartChanges * [spcExtra] = []) then Continue;
+
+      DS.Params[0].AsString := SD.SourceData.SaveToString;
+      DS.Params[1].AsDateTime := SD.LastModified;
+      DS.Params[2].AsInteger := SD.Id;
+
+      DBase.ExecuteQuery(DS);
+      SD.PartChanges := SD.PartChanges - [spcExtra];
+
+      if SD.FmId = 0 then Debug(SD.Name)
+      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+    end;
+
+  finally
+    DS.Free;
+  end;
+  Debug('');
+
+  FAdded.Clear;
+  FDeleted.Clear;
+end;
+
+{procedure TScriptManager.SaveToDB;
+var
   DS: TSQLQuery;
   i: Integer;
 begin
-  //DBase.Execute('delete from dx_scripts;');
-
   DS := DBase.OpenDataSet('select id, script, fmid, name, kind, extra from dx_scripts');
   try
     while not DS.Eof do
@@ -2325,11 +2544,10 @@ begin
       DS.Post;
     end;
     DBase.ApplyDataSet(DS);
-    //DBase.Commit;
   finally
     DS.Free;
   end;
-end;
+end; }
 
 procedure TScriptManager.LoadFromDir(const aDir: String);
 var
@@ -2338,7 +2556,7 @@ var
   S, Ext: String;
   SD: TScriptData;
 begin
-  ClearList(FScripts);
+  Clear;
   SL := TStringList.Create;
   SL2 := TStringList.Create;
   FindAllFiles(SL, aDir, '*.pas;*.fpas;*.epas;*.wfpas;*.wepas', False);
@@ -2379,6 +2597,8 @@ begin
     end;
     if (SD <> nil) and FileExists(SL[i] + '.cfg') then
     	SD.SourceData.LoadFromFile(SL[i] + '.cfg');
+
+    SD.LastModified := GetFileDateTime(SL[i]);
   end;
   SL2.Free;
   SL.Free;
@@ -2387,52 +2607,126 @@ begin
     AddScript(0, 'Main', '');
 end;
 
-procedure TScriptManager.LoadBinFromDir(const aDir: String);
+procedure TScriptManager.LoadFromCache(const aDir: String);
 var
-  SL: TStringList;
-  i: Integer;
-  FlNm, Ext, Buf: String;
-  SD: TScriptData;
-begin
-  ClearList(FScripts);
-  SL := TStringList.Create;
-  FindAllFiles(SL, aDir, '*.bin;*.fbin;*.ebin', False);
-  for i := 0 to SL.Count - 1 do
+  LastModified: TDateTime;
+
+  procedure SaveEncryptScript(DS: TSQLQuery; const FileName: String);
+  var
+    St: TStream;
+    FS: TFileStream;
   begin
-    FlNm := SL[i];
-    Buf := LoadString(FlNm);
-    FlNm := ExtractFileName(FlNm);
-    Ext := LowerCase(ExtractFileExt(FlNm));
-    FlNm := ChangeFileExt(FlNm, '');
-    SD := nil;
-    if Ext = '.bin' then
+    St := DS.CreateBlobStream(DS.Fields[3], bmRead);
+    if St <> nil then
     begin
-      if CompareText(FlNm, 'main') = 0 then
-      begin
-        SD := AddScript(0, FlNm, '');
-        SD.Bin := Buf;
-        SD.Kind := skMain
-      end;
-    end
-    else if Ext = '.fbin' then
+      FS := TFileStream.Create(FileName, fmCreate);
+      EncryptStream(St, FS, DXMain.Key);
+      SetFileDateTime(FS.Handle, LastModified);
+      FS.Free;
+      St.Free;
+    end;
+
+    St := DS.CreateBlobStream(DS.Fields[5], bmRead);
+    if St <> nil then
     begin
-      SD := AddScript(StrToInt(FlNm), '', '');
-      SD.Bin := Buf;
-      SD.Kind := skForm;
-    end
-    else if Ext = '.ebin' then
-    begin
-      SD := AddScript(0, FlNm, '');
-      SD.Bin := Buf;
-      SD.Kind := skExpr;
-      Buf := LoadString(ChangeFileExt(SL[i], '.epas'));
-      SD.Source := Buf;
-    end
+      FS := TFileStream.Create(FileName + '.cfg', fmCreate);
+      EncryptStream(St, FS, DXMain.Key);
+      SetFileDateTime(FS.Handle, LastModified);
+      FS.Free;
+      St.Free;
+    end;
   end;
-  SL.Free;
-  // Главный модуль
+
+  function AddDecryptScript(DS: TSQLQuery; const FileName: String): TScriptData;
+  var
+    SS: TStringStream;
+    FS: TFileStream;
+  begin
+    Result := AddScript(DS.Fields[1].AsInteger, DS.Fields[2].AsString, '');
+    SS := TStringStream.Create('');
+    FS := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
+    DecryptStream(FS, SS, DXMain.Key);
+    Result.Source := SS.DataString;
+    FS.Free;
+    SS.Free;
+  end;
+
+var
+  DS: TSQLQuery;
+  FlNm, Ext, Nm: String;
+  SDKind: TScriptKind;
+  SD: TScriptData;
+  SL: TStringList;
+  i, FmId: Integer;
+begin
+  Clear;
+  DS := DBase.OpenDataSet('select id, fmid, name, script, kind, extra, lastmodified from dx_scripts');
+  try
+    while not DS.Eof do
+    begin
+      SDKind := TScriptKind(DS.Fields[4].AsInteger);
+      case SDKind of
+        skForm: FlNm := DS.Fields[1].AsString + '.fpas';
+        skWebForm: FlNm := DS.Fields[1].AsString + '.wfpas';
+        skExpr: FlNm := DS.Fields[2].AsString + '.epas';
+        skWebExpr: FlNm := DS.Fields[2].AsString + '.wepas';
+        else FlNm := DS.Fields[2].AsString + '.pas';
+      end;
+      FlNm := aDir + FlNm;
+      LastModified := DS.Fields[6].AsDateTime;
+
+      if not FileExists(FlNm) or not SameFileDateTime(FlNm, LastModified) then
+      begin
+        SD := AddScript(DS.Fields[1].AsInteger, DS.Fields[2].AsString,
+          DS.Fields[3].AsString);
+        SD.SourceData.LoadFromString(DS.Fields[5].AsString);
+        SaveEncryptScript(DS, FlNm);
+        if DBase.IsRemote then
+          Application.ProcessMessages;
+      end
+      else
+      begin
+        SD := AddDecryptScript(DS, FlNm);
+      end;
+      SD.Kind := SDKind;
+      SD.LastModified := LastModified;
+      SD.Id := DS.Fields[0].AsInteger;
+
+      DS.Next;
+    end;
+
+  finally
+    DS.Free;
+  end;
+
+    // Главный модуль
   if FindScriptByName('Main') = nil then
-    AddScript(0, 'Main', '');
+    AddNewScript(0, 'Main', '').Kind:=skMain;
+
+  SL := TStringList.Create;
+  try
+    FindAllFiles(SL, aDir, '*.pas;*.fpas;*.epas;*.wfpas;*.wepas', False);
+    for i := 0 to SL.Count - 1 do
+    begin
+      Ext := LowerCase(ExtractFileExt(SL[i]));
+      Nm := ExtractFileNameOnly(SL[i]);
+      if (Ext = '.fpas') or (Ext = '.wfpas') then
+      begin
+        if TryStrToInt(Nm, FmId) then
+        begin
+          if FindScript(FmId, IIF(Ext = '.fpas', skForm, skWebForm)) = nil then
+            DeleteFile(SL[i]);
+        end;
+      end
+      else
+      begin
+        if FindScriptByName(Nm) = nil then
+          DeleteFile(SL[i]);
+      end;
+    end;
+  finally
+    SL.Free;
+  end;
 end;
 
 procedure TScriptManager.SaveToDir(const aDir: String);
@@ -2444,69 +2738,18 @@ begin
   for i := 0 to FScripts.Count - 1 do
   begin
     SD := GetScripts(i);
-    case SD.Kind of
-    	skMain, skWebMain, skUser: S := SD.Name + '.pas';
-      skForm: S := IntToStr(SD.FmId) + '.fpas';
-      skWebForm: S := IntToStr(SD.FmId) + '.wfpas';
-      skExpr: S := SD.Name + '.epas';
-      skWebExpr: S := SD.Name + '.wepas';
-    end;
+    S := SD.GetFileName;
     SD.SourceData.SaveToFile(aDir + S + '.cfg');
+    SetFileDateTime(aDir + S + '.cfg', SD.LastModified);
+
     with TFileStream.Create(aDir + S, fmCreate) do
     try
       S := SD.Source;
       WriteBuffer(Pointer(S)^, Length(S));
+      SetFileDateTime(Handle, SD.LastModified);
     finally
       Free;
     end;
-  end;
-end;
-
-procedure TScriptManager.SaveBinToDir(const aDir: String);
-var
-  i: Integer;
-  SD: TScriptData;
-  S: String;
-begin
-  for i := 0 to FScripts.Count - 1 do
-  begin
-    SD := GetScripts(i);
-    case SD.Kind of
-    	skMain: S := SD.Name + '.bin';
-      skForm: S := IntToStr(SD.FmId) + '.fbin';
-      skExpr: S := SD.Name + '.ebin';
-      else Continue;
-    end;
-    SaveString(aDir + S, SD.Bin);
-  end;
-end;
-
-procedure TScriptManager.SaveCommentsToDir(const aDir: String);
-var
-  i, j: Integer;
-  SD: TScriptData;
-  S: String;
-  Fn: TExprFunc;
-  A: TExprAction;
-begin
-  for i := 0 to FScripts.Count - 1 do
-  begin
-    SD := GetScripts(i);
-    if SD.Kind <> skExpr then Continue;
-    S := '';
-    for j := 0 to FFuncs.Count - 1 do
-    begin
-      Fn := FFuncs[j];
-      if Fn.SDi = i then
-        S := S + Copy(SD.Source, Fn.StartPos, Fn.EndPos - Fn.StartPos) + LineEnding;
-    end;
-    for j := 0 to FActions.Count - 1 do
-    begin
-      A := FActions[j];
-      if A.SDi = i then
-        S := S + Copy(SD.Source, A.StartPos, A.EndPos - A.StartPos) + LineEnding;
-    end;
-    SaveString(aDir + SD.Name + '.epas', S);
   end;
 end;
 
@@ -2547,7 +2790,9 @@ procedure TScriptManager.DeleteScript(SD: TScriptData);
 begin
   if FindScriptFm <> nil then FindScriptFm.DeleteModule(SD);
   FScripts.Remove(SD);
-  SD.Free;
+  if not FAdded.DeleteValue(SD.Id) then
+    FDeleted.AddValue(SD.Id);
+  SD.Free
 end;
 
 procedure TScriptManager.DeleteFormModule(FmId: Integer; Kind: TScriptKind);
@@ -2873,11 +3118,12 @@ begin
 
   if Result then
   begin
-    SD := ScriptMan.AddScript(0, ModuleName, Src);
+    SD := ScriptMan.AddNewScript(0, ModuleName, Src);
     if ModuleExt = '.epas' then
       SD.Kind := skExpr
     else
       SD.Kind := skWebExpr;
+    SD.LastModified := GetFileDateTime(FileName);
     NewModule := SD;
     CompileExpr;
   end;

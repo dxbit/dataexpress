@@ -157,6 +157,7 @@ begin
       Columns[i].Color:=Color;
       Columns[i].FixedColor:=FixedColor;
     end;
+  RD2.SetReportChanged;
 end;
 
 function TRpStyleFm.ShowForm(RD: TReportData; SL: TStrings; RpKind: TReportKind

@@ -290,10 +290,15 @@ type
   private
     FConnId: Integer;
     FCurUserId: Integer;
+    FIntfsChanged: Boolean;
     FIntfs: TdxIntfList;
+    FLastModified: TDateTime;
     FRoles: TdxRoleList;
+    FRolesChanged: Boolean;
     FSingleMode: Boolean;
     FUsers: TdxUserList;
+    FUsersChanged: Boolean;
+    FRecordNotExists: Boolean;
     function GetConnectionId: Integer;
     function GetFormRight(FmId: Integer): TdxFormRight;
     function GetReportRight(RpId: Integer): TdxReportRight;
@@ -306,6 +311,7 @@ type
     procedure SaveToDb;
     procedure SaveToDir(const aDir: String);
     procedure LoadFromDir(const aDir: String);
+    //procedure LoadFromCache(const aDir: String);
     function CurrentUser: TdxUser;
     function CurrentUserName: String;
     function CheckFmVisible(FmId: Integer): Boolean;
@@ -326,12 +332,19 @@ type
     function CloneManager: TdxUserManager;
     function IsUser: Boolean;
     function CanInput(C: TComponent): Boolean;
+    procedure SetUsersChanged;
+    procedure SetRolesChanged;
+    procedure SetIntfsChanged;
     property Users: TdxUserList read FUsers;
     property Roles: TdxRoleList read FRoles;
     property Intfs: TdxIntfList read FIntfs;
     property CurrentUserId: Integer read FCurUserId write FCurUserId;
     property ConnId: Integer read FConnId write FConnId;
     property SingleMode: Boolean read FSingleMode write FSingleMode;
+    property UsersChanged: Boolean read FUsersChanged write FUsersChanged;
+    property RolesChanged: Boolean read FRolesChanged write FRolesChanged;
+    property IntfsChanged: Boolean read FIntfsChanged write FIntfsChanged;
+    property LastModified: TDateTime read FLastModified write FLastModified;
   end;
 
 procedure InitRole(R: TdxRole);
@@ -1078,10 +1091,15 @@ var
   St: TStream;
 begin
   Clear;
+  FRecordNotExists := False;
   St := nil;
-  DS := DBase.OpenDataSet('select id, users, roles, intfs from dx_users');
+  DS := DBase.OpenDataSet('select id, users, roles, intfs, lastmodified from dx_users');
   try
-    if DS.RecordCount = 0 then Exit;
+    if DS.RecordCount = 0 then
+    begin
+      FRecordNotExists := True;
+      Exit;
+    end;
     St := nil;
     St := DS.CreateBlobStream(DS.Fields[1], bmRead);
     FUsers.LoadFromStream(St);
@@ -1091,6 +1109,7 @@ begin
     FreeAndNil(St);
     St := DS.CreateBlobStream(DS.Fields[3], bmRead);
     FIntfs.LoadFromStream(St);
+    FLastModified := DS.Fields[4].AsDateTime;
   finally
     FreeAndNil(St);
     DS.Free;
@@ -1098,6 +1117,120 @@ begin
 end;
 
 procedure TdxUserManager.SaveToDb;
+var
+  DS: TSQLQuery;
+  MS: TMemoryStream;
+begin
+  if FRecordNotExists then
+  begin
+    Debug('Новая запись dx_users');
+
+    MS := TMemoryStream.Create;
+    DS := DBase.CreateQuery('insert into dx_users (id, users, roles, intfs, lastmodified) ' +
+      'values (:id, :users, :roles, :intfs, :lastmodified)');
+    try
+      DS.Prepare;
+      DS.Params[0].AsInteger := 1;
+
+      MS.Size := 0;
+      FUsers.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[1].LoadFromStream(MS, ftMemo);
+
+      MS.Size := 0;
+      FRoles.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[2].LoadFromStream(MS, ftMemo);
+
+      MS.Size := 0;
+      FIntfs.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[3].LoadFromStream(MS, ftMemo);
+
+      DS.Params[4].AsDateTime := FLastModified;
+
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+      MS.Free;
+    end;
+
+    Exit;
+  end;
+
+  if FUsersChanged then
+  begin
+    Debug('Изменены пользователи');
+
+    MS := TMemoryStream.Create;
+    DS := DBase.CreateQuery('update dx_users set users=:users, lastmodified=:lastmodified where id=1');
+    try
+      DS.Prepare;
+
+      FUsers.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[0].LoadFromStream(MS, ftMemo);
+
+      DS.Params[1].AsDateTime := FLastModified;
+
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+      MS.Free;
+    end;
+  end;
+
+  if FRolesChanged then
+  begin
+    Debug('Изменены роли');
+
+    MS := TMemoryStream.Create;
+    DS := DBase.CreateQuery('update dx_users set roles=:roles, lastmodified=:lastmodified where id=1');
+    try
+      DS.Prepare;
+
+      FRoles.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[0].LoadFromStream(MS, ftMemo);
+
+      DS.Params[1].AsDateTime := FLastModified;
+
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+      MS.Free;
+    end;
+  end;
+
+  if FIntfsChanged then
+  begin
+    Debug('Изменен интерфейс');
+
+    MS := TMemoryStream.Create;
+    DS := DBase.CreateQuery('update dx_users set intfs=:intfs, lastmodified=:lastmodified where id=1');
+    try
+      DS.Prepare;
+
+      FIntfs.SaveToStream(MS);
+      MS.Position := 0;
+      DS.Params[0].LoadFromStream(MS, ftMemo);
+
+      DS.Params[1].AsDateTime := FLastModified;
+
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+      MS.Free;
+    end;
+  end;
+  Debug('');
+
+  FUsersChanged := False;
+  FRolesChanged := False;
+  FIntfsChanged := False;
+end;
+
+{procedure TdxUserManager.SaveToDb;
 var
   DS: TSQLQuery;
   St: TStream;
@@ -1125,7 +1258,7 @@ begin
     FreeAndNil(St);
     DS.Free;
   end;
-end;
+end; }
 
 procedure TdxUserManager.SaveToDir(const aDir: String);
 var
@@ -1135,12 +1268,17 @@ begin
   try
     FS := TFileStream.Create(aDir + 'users', fmCreate + fmOpenWrite);
     FUsers.SaveToStream(FS);
+    SetFileDateTime(FS.Handle, FLastModified);
     FS.Free;
+
     FS := TFileStream.Create(aDir + 'roles', fmCreate + fmOpenWrite);
     FRoles.SaveToStream(FS);
+    SetFileDateTime(FS.Handle, FLastModified);
     FS.Free;
+
     FS := TFileStream.Create(aDir + 'intfs', fmCreate + fmOpenWrite);
     FIntfs.SaveToStream(FS);
+    SetFileDateTime(FS.Handle, FLastModified);
   finally
     FreeAndNil(FS);
   end;
@@ -1166,10 +1304,26 @@ begin
       FS := TFileStream.Create(S, fmOpenRead + fmShareDenyNone);
       FIntfs.LoadFromStream(FS);
     end;
+
+    FLastModified := GetFileDateTime(aDir + 'users');
   finally
     FreeAndNil(FS);
   end;
 end;
+
+{procedure TdxUserManager.LoadFromCache(const aDir: String);
+var
+  DS: TSQLQuery;
+begin
+  DS := DBase.OpenDataSet('select lastmodified from dx_users where id=1');
+  if DS.Fields[0].AsDateTime <> FileDateToDateTime(FileAge(aDir + 'users')) then
+  begin
+    LoadFromDb;
+    SaveToDir(aDir);
+  end
+  else
+    LoadFromDir(aDir);
+end;  }
 
 function TdxUserManager.CurrentUser: TdxUser;
 begin
@@ -1455,6 +1609,24 @@ begin
     Result := CheckControlVisible(Fm.Id, C.Name) and CheckControlEditing(Fm.Id, C.Name)
   else
     Result := True;
+end;
+
+procedure TdxUserManager.SetUsersChanged;
+begin
+  FUsersChanged:=True;
+  FLastModified:=Now;
+end;
+
+procedure TdxUserManager.SetRolesChanged;
+begin
+  FRolesChanged:=True;
+  FLastModified:=Now;
+end;
+
+procedure TdxUserManager.SetIntfsChanged;
+begin
+  FIntfsChanged:=True;
+  FLastModified:=Now;
 end;
 
 { TdxUserList }

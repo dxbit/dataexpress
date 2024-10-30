@@ -1,32 +1,21 @@
 object VisibleFormsFm: TVisibleFormsFm
-  Left = 411
+  Left = 329
   Height = 412
-  Top = 342
+  Top = 286
   Width = 356
   BorderIcons = [biSystemMenu]
   Caption = 'VisibleFormsFm'
   ClientHeight = 412
   ClientWidth = 356
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
   LCLVersion = '3.2.0.0'
-  object List: TCheckListBox
-    Left = 4
-    Height = 362
-    Top = 4
-    Width = 304
-    Align = alClient
-    BorderSpacing.Left = 4
-    BorderSpacing.Top = 4
-    ItemHeight = 0
-    TabOrder = 0
-    OnSelectionChange = ListSelectionChange
-  end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 372
+    Height = 26
+    Top = 380
     Width = 344
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -37,36 +26,54 @@ object VisibleFormsFm: TVisibleFormsFm
     CloseButton.DefaultCaption = True
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
-    TabOrder = 1
+    TabOrder = 0
     ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
   end
-  object Panel1: TPanel
-    Left = 308
-    Height = 366
-    Top = 0
-    Width = 48
-    Align = alRight
-    BevelOuter = bvNone
-    ClientHeight = 366
-    ClientWidth = 48
+  object DialogGridButtons1: TDialogGridButtons
+    Left = 4
+    Height = 25
+    Top = 4
+    Width = 348
+    Grid = Grid
+    Align = alTop
+    BorderSpacing.Left = 4
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 4
+  end
+  object Grid: TDialogGrid
+    Left = 4
+    Height = 345
+    Top = 29
+    Width = 348
+    Align = alClient
+    AlternateColor = 15658734
+    AutoFillColumns = True
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
+    ColCount = 1
+    Columns = <    
+      item
+        DropDownRows = 20
+        Title.Caption = 'Title'
+        Width = 347
+        ColumnType = gctList
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    FixedRows = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goCellHints]
+    ParentShowHint = False
+    RowCount = 0
+    ShowHint = True
     TabOrder = 2
-    object DownBn: TSpeedButton
-      Left = 10
-      Height = 32
-      Top = 96
-      Width = 26
-      OnClick = DownBnClick
-      ShowHint = True
-      ParentShowHint = False
-    end
-    object UpBn: TSpeedButton
-      Left = 10
-      Height = 35
-      Top = 56
-      Width = 26
-      OnClick = UpBnClick
-      ShowHint = True
-      ParentShowHint = False
-    end
+    ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = GridCommand
+    ColWidths = (
+      347
+    )
   end
 end

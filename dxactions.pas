@@ -75,13 +75,13 @@ type
     constructor Create; virtual;
     //procedure Load(const Xml: String); virtual;
     function Execute: Variant;
-    procedure RenameForm(const OldName, NewName: String); virtual;
-    procedure RenameField(CurFm: TObject; const FormName, OldName, NewName: String); virtual;
-    procedure RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String); virtual;
-    procedure RenameQuery(const OldName, NewName: String); virtual;
-    procedure RenameReport(const OldName, NewName: String); virtual;
-    procedure RenameRpField(RD: TObject; const OldName, NewName: String); virtual;
-    procedure RenameImage(const OldName, NewName: String); virtual;
+    function RenameForm(const OldName, NewName: String): Boolean; virtual;
+    function RenameField(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
+    function RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
+    function RenameQuery(const OldName, NewName: String): Boolean; virtual;
+    function RenameReport(const OldName, NewName: String): Boolean; virtual;
+    function RenameRpField(RD: TObject; const OldName, NewName: String): Boolean; virtual;
+    function RenameImage(const OldName, NewName: String): Boolean; virtual;
     function FormExists(aName: String): Boolean; virtual;
     function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean; virtual;
     function ObjectExists(CurFm: TObject; const FormName, FieldName: String): Boolean; virtual;
@@ -114,7 +114,7 @@ type
     function InnerExecute: Variant; override;
   public
     //property FormId: Integer read FFormId write FFormId;
-    procedure RenameForm(const OldName, NewName: String); override;
+    function RenameForm(const OldName, NewName: String): Boolean; override;
     function FormExists(aName: String): Boolean; override;
     function ValueExists(AValue: String): Boolean; override;
     property FormName: String read FFormName write FFormName;
@@ -156,9 +156,9 @@ type
   protected
     function InnerExecute: Variant; override;
   public
-    procedure RenameForm(const OldName, NewName: String); override;
-    procedure RenameField(CurFm: TObject; const aFormName, OldName, NewName: String);
-      override;
+    function RenameForm(const OldName, NewName: String): Boolean; override;
+    function RenameField(CurFm: TObject; const aFormName, OldName, NewName:
+      String): Boolean; override;
     function FormExists(aName: String): Boolean; override;
     function FieldExists(CurFm: TObject; const aFormName, aFieldName: String): Boolean;
       override;
@@ -178,7 +178,7 @@ type
   protected
     function InnerExecute: Variant; override;
   public
-    procedure RenameReport(const OldName, NewName: String); override;
+    function RenameReport(const OldName, NewName: String): Boolean; override;
     function ReportExists(aName: String): Boolean; override;
     function ValueExists(AValue: String): Boolean; override;
     property RpName: String read FRpName write FRpName;
@@ -220,8 +220,8 @@ type
   public
     constructor Create; override;
     destructor Destroy; override;
-    procedure RenameField(CurFm: TObject; const FormName, OldName, NewName: String);
-      override;
+    function RenameField(CurFm: TObject; const FormName, OldName, NewName:
+      String): Boolean; override;
     function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean;
       override;
     function ValueExists(AValue: String): Boolean; override;
@@ -261,13 +261,13 @@ type
   public
     constructor Create; override;
     destructor Destroy; override;
-    procedure RenameForm(const OldName, NewName: String); override;
-    procedure RenameField(CurFm: TObject; const FormName, OldName, NewName: String); override;
-    procedure RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String); override;
-    procedure RenameQuery(const OldName, NewName: String); override;
-    procedure RenameReport(const OldName, NewName: String); override;
-    procedure RenameRpField(RD: TObject; const OldName, NewName: String); override;
-    procedure RenameImage(const OldName, NewName: String); override;
+    function RenameForm(const OldName, NewName: String): Boolean; override;
+    function RenameField(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; override;
+    function RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; override;
+    function RenameQuery(const OldName, NewName: String): Boolean; override;
+    function RenameReport(const OldName, NewName: String): Boolean; override;
+    function RenameRpField(RD: TObject; const OldName, NewName: String): Boolean; override;
+    function RenameImage(const OldName, NewName: String): Boolean; override;
     function FormExists(aName: String): Boolean; override;
     function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean; override;
     function ObjectExists(CurFm: TObject; const FormName, FieldName: String): Boolean; override;
@@ -1242,13 +1242,14 @@ begin
   end;
 end;
 
-procedure TActionCustom.RenameForm(const OldName, NewName: String);
+function TActionCustom.RenameForm(const OldName, NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameForm(Self, EA.Controls, [eacForm, eacChildForm], OldName, NewName, False);
+    Result := _RenameForm(Self, EA.Controls, [eacForm, eacChildForm], OldName, NewName, False);
 end;
 
 function _SourceExists(A: TActionCustom; Controls: TEAControls; CurFm: TdxForm;
@@ -1517,44 +1518,48 @@ begin
   end;
 end;
 
-procedure TActionCustom.RenameField(CurFm: TObject; const FormName, OldName,
-  NewName: String);
+function TActionCustom.RenameField(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameField(Self, EA.Controls, [eacField, eacObject], TdxForm(CurFm),
+    Result := _RenameField(Self, EA.Controls, [eacField, eacObject], TdxForm(CurFm),
       FormName, OldName, NewName, False)
 end;
 
-procedure TActionCustom.RenameComponent(CurFm: TObject; const FormName,
-  OldName, NewName: String);
+function TActionCustom.RenameComponent(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameField(Self, EA.Controls, [eacComponent], TdxForm(CurFm),
+    Result := _RenameField(Self, EA.Controls, [eacComponent], TdxForm(CurFm),
       FormName, OldName, NewName, False)
 end;
 
-procedure TActionCustom.RenameQuery(const OldName, NewName: String);
+function TActionCustom.RenameQuery(const OldName, NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameForm(Self, EA.Controls, [eacQuery], OldName, NewName, False);
+    Result := _RenameForm(Self, EA.Controls, [eacQuery], OldName, NewName, False);
 end;
 
-procedure TActionCustom.RenameReport(const OldName, NewName: String);
+function TActionCustom.RenameReport(const OldName, NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameForm(Self, EA.Controls, [eacReport], OldName, NewName, False);
+    Result := _RenameForm(Self, EA.Controls, [eacReport], OldName, NewName, False);
 end;
 
 function _RenameRpFieldInGrid(A: TActionCustom; ParentControls, Controls: TEAControls;
@@ -1699,24 +1704,26 @@ begin
   end;
 end;
 
-procedure TActionCustom.RenameRpField(RD: TObject; const OldName,
-  NewName: String);
+function TActionCustom.RenameRpField(RD: TObject; const OldName, NewName: String
+  ): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameRpField(Self, EA.Controls, [eacField], TReportData(RD),
+    Result := _RenameRpField(Self, EA.Controls, [eacField], TReportData(RD),
       OldName, NewName, False);
 end;
 
-procedure TActionCustom.RenameImage(const OldName, NewName: String);
+function TActionCustom.RenameImage(const OldName, NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
+  Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    _RenameForm(Self, EA.Controls, [eacImage], OldName, NewName, False);
+    Result := _RenameForm(Self, EA.Controls, [eacImage], OldName, NewName, False);
 end;
 
 function TActionCustom.FormExists(aName: String): Boolean;
@@ -1952,17 +1959,22 @@ begin
   inherited Destroy;
 end;
 
-procedure TClearFieldsAction.RenameField(CurFm: TObject; const FormName,
-  OldName, NewName: String);
+function TClearFieldsAction.RenameField(CurFm: TObject; const FormName,
+  OldName, NewName: String): Boolean;
 var
   i: Integer;
   S: String;
 begin
+  Result := False;
   if (CurFm = nil) or (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) <> 0) then Exit;
   for i := 0 to FFields.Count - 1 do
   begin
     S := FFields[i];
-    if MyUtf8CompareText(OldName, S) = 0 then FFields[i] := NewName;
+    if MyUtf8CompareText(OldName, S) = 0 then
+    begin
+      FFields[i] := NewName;
+      Result := True;
+    end;
   end;
 end;
 
@@ -2030,9 +2042,11 @@ begin
   Result := True;
 end;
 
-procedure TOpenReportAction.RenameReport(const OldName, NewName: String);
+function TOpenReportAction.RenameReport(const OldName, NewName: String
+  ): Boolean;
 begin
-  if MyUtf8CompareText(OldName, FRpName) = 0 then FRpName := NewName;
+  Result := MyUtf8CompareText(OldName, FRpName) = 0;
+  if Result then FRpName := NewName;
 end;
 
 function TOpenReportAction.ReportExists(aName: String): Boolean;
@@ -2080,18 +2094,26 @@ begin
   end;
 end;
 
-procedure TMassCalcAction.RenameForm(const OldName, NewName: String);
+function TMassCalcAction.RenameForm(const OldName, NewName: String): Boolean;
 begin
+  Result := True;
   if MyUtf8CompareText(OldName, FFormName) = 0 then FFormName := NewName
-  else if MyUtf8CompareText(OldName, FTableName) = 0 then FTableName := NewName;
+  else if MyUtf8CompareText(OldName, FTableName) = 0 then FTableName := NewName
+  else Result := False;
 end;
 
-procedure TMassCalcAction.RenameField(CurFm: TObject; const aFormName, OldName,
-  NewName: String);
+function TMassCalcAction.RenameField(CurFm: TObject; const aFormName, OldName,
+  NewName: String): Boolean;
 begin
   if ((MyUtf8CompareText(aFormName, FFormName) = 0) or
     (MyUtf8CompareText(aFormName, FTableName) = 0)) and
-    (MyUtf8CompareText(OldName, FFieldName) = 0) then FFieldName := NewName;
+    (MyUtf8CompareText(OldName, FFieldName) = 0) then
+  begin
+    FFieldName := NewName;
+    Result := True;
+  end
+  else
+    Result := False;
 end;
 
 function TMassCalcAction.FormExists(aName: String): Boolean;
@@ -2214,9 +2236,10 @@ begin
   end;
 end;
 
-procedure TGotoFormAction.RenameForm(const OldName, NewName: String);
+function TGotoFormAction.RenameForm(const OldName, NewName: String): Boolean;
 begin
-  if MyUtf8CompareText(OldName, FFormName) = 0 then FFormName := NewName;
+  Result := MyUtf8CompareText(OldName, FFormName) = 0;
+  if Result then FFormName := NewName;
 end;
 
 function TGotoFormAction.FormExists(aName: String): Boolean;
@@ -2368,42 +2391,42 @@ begin
   end;
 end;
 
-procedure TBaseAction.RenameForm(const OldName, NewName: String);
+function TBaseAction.RenameForm(const OldName, NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameField(CurFm: TObject; const FormName, OldName,
-  NewName: String);
+function TBaseAction.RenameField(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameComponent(CurFm: TObject; const FormName, OldName,
-  NewName: String);
+function TBaseAction.RenameComponent(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameQuery(const OldName, NewName: String);
+function TBaseAction.RenameQuery(const OldName, NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameReport(const OldName, NewName: String);
+function TBaseAction.RenameReport(const OldName, NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameRpField(RD: TObject; const OldName, NewName: String
-  );
+function TBaseAction.RenameRpField(RD: TObject; const OldName, NewName: String
+  ): Boolean;
 begin
-
+  Result := False;
 end;
 
-procedure TBaseAction.RenameImage(const OldName, NewName: String);
+function TBaseAction.RenameImage(const OldName, NewName: String): Boolean;
 begin
-
+  Result := False;
 end;
 
 function TBaseAction.FormExists(aName: String): Boolean;

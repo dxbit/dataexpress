@@ -406,7 +406,6 @@ end;
 
 procedure TMainFr.OpenTabs;
 var
-  SL: TStringList;
   i: Integer;
   Fm: TdxForm;
   Intf: TdxIntf;
@@ -415,14 +414,8 @@ begin
   Intf := UserMan.GetIntf;
   if Intf = nil then
   begin
-    SL := TStringList.Create;
-    FormMan.SortFormsByIndex(SL);
-    for i := 0 to SL.Count - 1 do
-    begin
-      Fm := TdxForm(SL.Objects[i]);
-      if Fm.AutoOpen then OpenTab(Fm.Id);
-    end;
-    SL.Free;
+    for i := 0 to DXMain.Tabs.Count - 1 do
+      OpenTab(DXMain.Tabs[i]);
   end
   else
   begin
@@ -934,9 +927,9 @@ begin
   BuildMenu;
   MainFm.ReportMnu.Visible := MainFm.ReportMnu.Count > 0;
 
-  if AppConfig.CacheLoaded and UserMan.IsUser then
+  {if AppConfig.CacheLoaded and UserMan.IsUser then
     ScriptMan.ParseExprModules
-  else if DXMain.AllowDynamicForms then
+  else }if DXMain.AllowDynamicForms then
   begin
     ScriptMan.CompileMain;
     ScriptMan.CompileExpr;
@@ -945,9 +938,7 @@ begin
     ScriptMan.CompileAll;
 
   if ScriptMan.HasErrors then
-    ShowCompilerErrors
-  else if CanCache and not AppConfig.CacheLoaded then
-    SaveMetaToCache;
+    ShowCompilerErrors;
 
   ExtRunMan.Init;
   MainModule.SD := ScriptMan.FindScriptByName('Main');

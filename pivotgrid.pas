@@ -1006,7 +1006,11 @@ begin
   fmt := GetValueDisplayFormat(FDS, FI);
 
   // Функция "Количество" неправильно считает итог в итоговой строке, меняем ее на "Сумма".
-  if (fn = tfCount) and IsRowTotal(r) then fn := tfSum;
+  if (fn = tfCount) and IsRowTotal(r) then
+  begin
+    fn := tfSum;
+    dt := flNumber;
+  end;
 
   Tots := TList.Create;
   for i := 0 to FColFields.Count do        { + Общий итог}

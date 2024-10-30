@@ -23,10 +23,38 @@ unit DXMains;
 interface
 
 uses
-  Classes, SysUtils, Controls, sqldb, Db, Forms, strconsts;
+  Classes, SysUtils, Controls, sqldb, Db, Forms, strconsts, mytypes;
 
 type
   TProjectChangeContext = (pccDesigner, pccReports, pccSaveReports, pccUsers, pccExt);
+
+  TFormGroupList = class;
+
+  { TFormGroup }
+
+  TFormGroup = class
+  private
+    FIdList: TIntegerList;
+    FName: String;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    property Name: String read FName write FName;
+    property IdList: TIntegerList read FIdList;
+  end;
+
+  { TFormGroupList }
+
+  TFormGroupList = class(TList)
+  private
+    function GetGroups(Index: Integer): TFormGroup;
+  public
+    function AddGroup: TFormGroup;
+    function FindGroup(const GroupName: String): TFormGroup;
+    function FindGroupByFormId(FmId: Integer): TFormGroup;
+    procedure Clear; override;
+    property Groups[Index: Integer]: TFormGroup read GetGroups; default;
+  end;
 
   { TDXMain }
 
@@ -34,8 +62,12 @@ type
   private
     FActions: String;
     FDesignTimePPI: Integer;
+    FGroups: TFormGroupList;
+    FKey: String;
     //FCanProjectChange, FClearCounter: Boolean;
     FLastModified: TDateTime;
+    FTabs: TIntegerList;
+    FVersion: Integer;
     procedure LoadSettings(St: TStream);
     procedure SaveSettings(St: TStream);
     procedure LoadActions(St: TStream);
@@ -44,6 +76,7 @@ type
     function GetLastModified: TDateTime;
   public
     constructor Create;
+    destructor Destroy; override;
     procedure LoadFromDb;
     procedure SaveToDb;
     procedure LoadFromDir(const Dir: String);
@@ -57,9 +90,15 @@ type
     procedure SetLastModified;
     function CanProjectChange: Boolean;
     function CanProjectSave: Boolean;
+    procedure AddForm(FmId: Integer);
+    procedure DeleteForm(FmId: Integer);
     property Actions: String read FActions write FActions;
     property DesignTimePPI: Integer read FDesignTimePPI write FDesignTimePPI;
     property LastModified: TDateTime read FLastModified;
+    property Tabs: TIntegerList read FTabs;
+    property Groups: TFormGroupList read FGroups;
+    property Version: Integer read FVersion;
+    property Key: String read FKey write FKey;
   end;
 
 var
@@ -68,8 +107,8 @@ var
 implementation
 
 uses
-  dbengine, dxactions, datasetprocessor, SAX, saxbasereader, dxusers,
-  apputils, warningform, appsettings;
+  dbengine, dxactions, datasetprocessor, SAX, saxbasereader, LazUtf8,
+  apputils, warningform, crypt, base64;
 
 type
 
@@ -89,11 +128,99 @@ type
 
 procedure TSettingsReader.DoStartElement(const NamespaceURI, LocalName,
   QName: SAXString; Atts: TSAXAttributes);
+var
+  SL: TStringList;
+  i: Integer;
+  G: TFormGroup;
 begin
   if LocalName = 'designer' then
   begin
     FMain.DesignTimePPI := GetInt(Atts, 'designtimeppi');
+    if AttrExists(Atts, 'tabs') then
+    begin
+      SL := TStringList.Create;
+      SplitStr(GetStr(Atts, 'tabs'), ';', SL);
+      for i := 0 to SL.Count - 1 do
+        FMain.Tabs.AddValue(StrToInt(SL[i]));
+      SL.Free;
+    end;
   end
+  else if LocalName = 'group' then
+  begin
+    G := FMain.Groups.AddGroup;
+    G.Name := GetStr(Atts, 'name');
+    SL := TStringList.Create;
+    SplitStr(GetStr(Atts, 'forms'), ';', SL);
+    for i := 0 to SL.Count - 1 do
+      G.IdList.AddValue(StrToInt(SL[i]));
+    SL.Free;
+  end
+  else if LocalName = 'settings' then
+  begin
+    FMain.FVersion := GetInt(Atts, 'version');
+    FMain.FKey := Decrypt(DecodeStringBase64(GetStr(Atts, 'key')), StartKey, MultKey, AddKey);
+  end;
+end;
+
+{ TFormGroup }
+
+constructor TFormGroup.Create;
+begin
+  FIdList := TIntegerList.Create;
+end;
+
+destructor TFormGroup.Destroy;
+begin
+  FIdList.Free;
+  inherited Destroy;
+end;
+
+{ TFormGroupList }
+
+function TFormGroupList.GetGroups(Index: Integer): TFormGroup;
+begin
+  Result := TFormGroup(Items[Index]);
+end;
+
+function TFormGroupList.AddGroup: TFormGroup;
+begin
+  Result := TFormGroup.Create;
+  Add(Result);
+end;
+
+function TFormGroupList.FindGroup(const GroupName: String): TFormGroup;
+var
+  i: Integer;
+  G: TFormGroup;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    G := Groups[i];
+    if Utf8CompareText(GroupName, G.Name) = 0 then Exit(G);
+  end;
+end;
+
+function TFormGroupList.FindGroupByFormId(FmId: Integer): TFormGroup;
+var
+  i: Integer;
+  G: TFormGroup;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    G := Groups[i];
+    if G.IdList.FindValue(FmId) >= 0 then Exit(G);
+  end;
+end;
+
+procedure TFormGroupList.Clear;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+    Groups[i].Free;
+  inherited Clear;
 end;
 
 { TDXMain }
@@ -177,6 +304,16 @@ begin
   if not Result then ShowWarnInfo(rsSaveProjectProhibited, rsChangeProhibitedDetails);
 end;
 
+procedure TDXMain.AddForm(FmId: Integer);
+begin
+  FTabs.AddValue(FmId);
+end;
+
+procedure TDXMain.DeleteForm(FmId: Integer);
+begin
+  FTabs.DeleteValue(FmId);
+end;
+
 procedure TDXMain.LoadSettings(St: TStream);
 begin
   if St = nil then Exit;
@@ -190,12 +327,40 @@ begin
 end;
 
 procedure TDXMain.SaveSettings(St: TStream);
+
+  function GroupToXml(G: TFormGroup): String;
+  var
+    Ids: String;
+    i: Integer;
+  begin
+    Ids := '';
+    for i := 0 to G.IdList.Count - 1 do
+      Ids := Ids + IntToStr(G.IdList[i]) + ';';
+    SetLength(Ids, Length(Ids) - 1);
+
+    Result := '<group name="' + StrToXml(G.Name) + '" forms="' + Ids + '"/>';
+  end;
+
 var
-  S: String;
+  S, FormTabs: String;
+  i: Integer;
 begin
+  FormTabs := '';
+  for i := 0 to FTabs.Count - 1 do
+    FormTabs := FormTabs + IntToStr(FTabs[i]) + ';';
+  if FormTabs <> '' then SetLength(FormTabs, Length(FormTabs) - 1);
+
   FDesignTimePPI := Screen.PixelsPerInch;
-  S := '<settings><designer designtimeppi="' + IntToStr(Screen.PixelsPerInch) +
-    '"/></settings>';
+  S := '<settings version="2"';
+  if FKey <> '' then
+    S := S + ' key="' + EncodeStringBase64(Encrypt(FKey, StartKey, MultKey, AddKey)) + '"';
+  S := S + '><designer designtimeppi="' + IntToStr(Screen.PixelsPerInch) +
+    '" tabs="' + FormTabs + '"/><groups>';
+
+  for i := 0 to FGroups.Count - 1 do
+    S := S + GroupToXml(FGroups[i]);
+  S := S + '</groups></settings>';
+
   St.WriteBuffer(Pointer(S)^, Length(S));
 end;
 
@@ -227,6 +392,16 @@ end;
 constructor TDXMain.Create;
 begin
   FDesignTimePPI := 96;
+  FTabs := TIntegerList.Create;
+  FGroups := TFormGroupList.Create;
+  FVersion := 2;
+end;
+
+destructor TDXMain.Destroy;
+begin
+  FGroups.Free;
+  FTabs.Free;
+  inherited Destroy;
 end;
 
 procedure TDXMain.LoadFromDb;
@@ -235,6 +410,7 @@ var
   DS: TSQLQuery;
 begin
   Clear;
+
   DS := DBase.OpenDataSet('select actions, settings, lastmodified from dx_main where id=1');
   St := nil;
   try
@@ -248,6 +424,9 @@ begin
     FreeAndNil(St);
     DS.Free;
   end;
+
+  if FKey = '' then
+    FKey := CreateGUIDString;
 end;
 
 procedure TDXMain.SaveToDb;
@@ -278,7 +457,10 @@ end;
 procedure TDXMain.LoadFromDir(const Dir: String);
 var
   FS: TFileStream;
+  OldKey: String;
 begin
+  OldKey := FKey;
+
   Clear;
   if FileExists(Dir + 'actions.main') then
   begin
@@ -295,6 +477,7 @@ begin
     try
       LoadSettings(FS);
     finally
+      FKey := OldKey;
       FS.Free;
     end;
   end;
@@ -303,6 +486,7 @@ end;
 procedure TDXMain.SaveToDir(const Dir: String);
 var
   FS: TFileStream;
+  OldKey: String;
 begin
   FS := TFileStream.Create(Dir + 'actions.main', fmCreate);
   try
@@ -313,8 +497,11 @@ begin
 
   FS := TFileStream.Create(Dir + 'settings.main', fmCreate);
   try
+    OldKey := FKey;
+    FKey := '';
     SaveSettings(FS);
   finally
+    FKey := OldKey;
     FS.Free;
   end;
 end;
@@ -323,6 +510,9 @@ procedure TDXMain.Clear;
 begin
   FActions := '';
   FDesignTimePPI := 96;
+  FTabs.Clear;
+  FGroups.Clear;
+  FKey := '';
 end;
 
 end.

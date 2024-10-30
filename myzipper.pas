@@ -40,11 +40,16 @@ type
   private
     procedure UnZipperCreateStream(Sender: TObject; var AStream: TStream;
       AItem: TFullZipFileEntry);
+    procedure UnZipperDoneStream(Sender: TObject; var AStream: TStream;
+      AItem: TFullZipFileEntry);
   public
     constructor Create;
   end;
 
 implementation
+
+uses
+  apputils;
 
 { TMyZipper }
 
@@ -72,10 +77,18 @@ begin
   if not AItem.IsDirectory then AStream := TFileStream.Create(S, fmCreate);
 end;
 
+procedure TMyUnZipper.UnZipperDoneStream(Sender: TObject; var AStream: TStream;
+  AItem: TFullZipFileEntry);
+begin
+  SetFileDateTime(TFileStream(AStream).Handle, AItem.DateTime);
+  FreeAndNil(AStream);
+end;
+
 constructor TMyUnZipper.Create;
 begin
   inherited Create;
   OnCreateStream:=@UnZipperCreateStream;
+  OnDoneStream:=@UnZipperDoneStream;
 end;
 
 end.

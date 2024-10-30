@@ -34,11 +34,12 @@ type
   TIntegerList = class(TList)
   private
     function GetValues(Index: Integer): Integer;
+    procedure SetValues(Index: Integer; AValue: Integer);
   public
     function AddValue(Value: Integer): Integer;
-    procedure DeleteValue(Value: Integer);
+    function DeleteValue(Value: Integer): Boolean;
     function FindValue(Value: Integer): Integer;
-    property Values[Index: Integer]: Integer read GetValues; default;
+    property Values[Index: Integer]: Integer read GetValues write SetValues; default;
   end;
 
   { TCardinalList }
@@ -286,17 +287,23 @@ begin
   Result := Integer(Items[Index]);
 end;
 
+procedure TIntegerList.SetValues(Index: Integer; AValue: Integer);
+begin
+  Items[Index] := Pointer(AValue);
+end;
+
 function TIntegerList.AddValue(Value: Integer): Integer;
 begin
   Result := Add(Pointer(Value));
 end;
 
-procedure TIntegerList.DeleteValue(Value: Integer);
+function TIntegerList.DeleteValue(Value: Integer): Boolean;
 var
   i: Integer;
 begin
   i := FindValue(Value);
-  if i >= 0 then Delete(i);
+  Result := i >= 0;
+  if Result then Delete(i);
 end;
 
 function TIntegerList.FindValue(Value: Integer): Integer;

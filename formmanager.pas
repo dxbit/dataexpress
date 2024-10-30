@@ -36,8 +36,8 @@ type
     FReadErrors: String;
     function GetForm(Index: Integer): TdxForm;
     function GetFormCount: Integer;
-    procedure ChangeIndexes(DeletedFm: TdxForm);
-    function GetParentFormCount: Integer;
+    //procedure ChangeIndexes(DeletedFm: TdxForm);
+    //function GetParentFormCount: Integer;
     function ReadForm(St: TStream): TdxForm;
     procedure ReaderError(Reader: TReader; const Message: string;
       var Handled: Boolean);
@@ -51,6 +51,7 @@ type
     procedure SaveToDir(const aDir: String);
     //procedure SaveToDirFromDataSet(const aDir: String);
     procedure LoadFromDir(const aDir: String);
+    procedure LoadFromCache(const aDir: String);
     function LoadFromFile(const FileName: String): TdxForm;
     function CreateNewForm: TdxForm;
     function CreateNewChildForm(ParentId: Integer): TdxForm;
@@ -67,10 +68,12 @@ type
     procedure CorrectMaxFId;
     function AddCopyForm(aForm: TdxForm): TdxForm;
     function CloneManager: TFormManager;
-    procedure SetDefaultIndexes;
+    //procedure SetDefaultIndexes;
     procedure Clear;
     function MakeUniqueFormName(const AnyFormName: String): String;
     function MakeUniqueFormComponentName(const AnyName: String): String;
+    procedure ReplaceForm(OldFm, NewFm: TdxForm);
+    procedure AddForm(Fm: TdxForm);
     property Forms[Index: Integer]: TdxForm read GetForm;
     property FormCount: Integer read GetFormCount;
   end;
@@ -81,7 +84,8 @@ var
 implementation
 
 uses
-  dbengine, apputils, LazUtf8, FileUtil, mytypes, dxmains, dximages;
+  dbengine, apputils, LazUtf8, FileUtil, mytypes, dxmains, formdesigner,
+  LazFileUtils;
 
 { TFormManager }
 
@@ -161,7 +165,7 @@ begin
   Result := FForms.Count;
 end;
 
-procedure TFormManager.ChangeIndexes(DeletedFm: TdxForm);
+{procedure TFormManager.ChangeIndexes(DeletedFm: TdxForm);
 var
   Idx, i: Integer;
   Fm: TdxForm;
@@ -172,16 +176,16 @@ begin
     Fm := Forms[i];
     if (Fm.PId = 0) and (Fm.Index > Idx) then Fm.Index := Fm.Index - 1;
   end;
-end;
+end;  }
 
-function TFormManager.GetParentFormCount: Integer;
+{function TFormManager.GetParentFormCount: Integer;
 var
   i: Integer;
 begin
   Result := 0;
   for i := 0 to FormCount - 1 do
     if Forms[i].PId = 0 then Inc(Result);
-end;
+end;         }
 
 constructor TFormManager.Create;
 begin
@@ -309,7 +313,7 @@ begin
   FreeAndNil(FDataSet);
   FReadErrors := '';
   ClearList(FForms);
-  DS := DBase.OpenDataSet('select id, form from dx_forms order by id');
+  DS := DBase.OpenDataSet('select id, form, lastmodified from dx_forms order by id');
   FDataSet := DS;
   try
     while DS.EOF = False do
@@ -324,12 +328,13 @@ begin
       if DXMain.AllowDynamicForms then StoreOnlyFields(Fm);
 
       FForms.Add(Fm);
+      Fm.LastModified := DS.Fields[2].AsDateTime;
 
       if DBase.IsRemote then
         Application.ProcessMessages;
       DS.Next;
     end;
-    SetDefaultIndexes;
+    //SetDefaultIndexes;
     if FReadErrors <> '' then
       ShowReadErrorsMsg;
   finally
@@ -340,12 +345,105 @@ end;
 procedure TFormManager.SaveToDb;
 var
   i: Integer;
+  DCI: TDesignCacheItem;
+  Wh: String;
+  DS: TSQLQuery;
+  MS: TMemoryStream;
+  Fm: TdxForm;
+begin
+  // Удаление форм
+  Debug('Удаление форм');
+  Wh := '';
+  for i := 0 to Cache.Count - 1 do
+  begin
+    DCI := Cache[i];
+    if not DCI.IsForm or (DCI.Status <> dstDelete) then Continue;
+
+    Debug(DCI.Id);
+
+    Wh := Wh + IntToStr(DCI.Id) + ',';
+  end;
+  if Wh <> '' then
+  begin
+    SetLength(Wh, Length(Wh) - 1);
+    DS := DBase.CreateQuery('delete from dx_forms where id in (' + Wh + ')');
+    try
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+    end;
+  end;
+  Debug('');
+
+  // Добавление новых
+  Debug('Добавление форм');
+  MS := TMemoryStream.Create;
+  DS := DBase.CreateQuery('insert into dx_forms (id, form, lastmodified) values (:id, :form, :lastmodified)');
+  try
+    DS.Prepare;
+
+    for i := 0 to Cache.Count - 1 do
+    begin
+      DCI := Cache[i];
+      if not DCI.IsForm or (DCI.Status <> dstNew) then Continue;
+
+      Fm := FindForm(DCI.Id);
+      WriteComponent(MS, Fm);
+
+      DS.Params[0].AsInteger := Fm.Id;
+      DS.Params[1].LoadFromStream(MS, ftMemo);
+      DS.Params[2].AsDateTime := Fm.LastModified;
+
+      DBase.ExecuteQuery(DS);
+      Fm.ResetFormChanged;
+
+      Debug(Fm.FormCaption);
+    end;
+  finally
+    DS.Free;
+    MS.Free;
+  end;
+  Debug('');
+
+  // Замена существующих
+  Debug('Замена форм');
+
+  MS := TMemoryStream.Create;
+  DS := DBase.CreateQuery('update dx_forms set form=:form, lastmodified=:lastmodified where id=:id');
+  try
+    DS.Prepare;
+
+    for i := 0 to FormCount - 1 do
+    begin
+      Fm := Forms[i];
+      if Cache.FormExists(Fm.Id) or not Fm.FormChanged then Continue;
+
+      WriteComponent(MS, Fm);
+
+      DS.Params[0].LoadFromStream(MS, ftMemo);
+      DS.Params[1].AsDateTime := Fm.LastModified;
+      DS.Params[2].AsInteger := Fm.Id;
+
+      DBase.ExecuteQuery(DS);
+      Fm.ResetFormChanged;
+
+      Debug(Fm.FormCaption);
+
+    end;
+  finally
+    DS.Free;
+    MS.Free;
+  end;
+  Debug('');
+end;
+
+{procedure TFormManager.SaveToDb;
+var
+  i: Integer;
   Fm: TdxForm;
   MS: TMemoryStream;
   DS: TSQLQuery;
 begin
-  //DBase.Execute('delete from dx_forms;');
-
   DS := DBase.OpenDataSet('select id, form from dx_forms');
   MS := TMemoryStream.Create;
   try
@@ -366,12 +464,11 @@ begin
       DS.Post;
     end;
     DBase.ApplyDataset(DS);
-    //DBase.Commit;
   finally
     MS.Free;
     DS.Free;
   end;
-end;
+end; }
 
 procedure TFormManager.SaveToDir(const aDir: String);
 var
@@ -385,6 +482,7 @@ begin
     FS := TFileStream.Create(aDir + IntToStr(Fm.Id) + '.frm', fmCreate + fmOpenWrite);
     try
       WriteComponent(FS, Fm);
+      SetFileDateTime(FS.Handle, Fm.LastModified);
     finally
       FS.Free;
     end;
@@ -442,14 +540,13 @@ begin
     FS := TFileStream.Create(SL[i], fmOpenRead + fmShareDenyNone);
     try
       Fm := ReadForm(FS);
-      // Убираем FGrid из Components
-      //Fm.RemoveGridTree;
       FForms.Add(Fm);
     finally
       FS.Free;
     end;
+    Fm.LastModified:=GetFileDateTime(SL[i]);
   end;
-  SetDefaultIndexes;
+  //SetDefaultIndexes;
   if FReadErrors <> '' then
     ShowReadErrorsMsg;
 
@@ -459,6 +556,77 @@ begin
   end;
 end;
 
+procedure TFormManager.LoadFromCache(const aDir: String);
+var
+  DS: TSQLQuery;
+  FlNm: String;
+  BS: TStream;
+  Fm: TdxForm;
+  FS: TFileStream;
+  SL: TStringList;
+  i, FmId: Integer;
+  LastModified: TDateTime;
+begin
+  FreeAndNil(FDataSet);
+  FReadErrors := '';
+  ClearList(FForms);
+  DS := DBase. OpenDataSet('select id, form, lastmodified from dx_forms');
+
+  try
+    while not DS.Eof do
+    begin
+      FlNm := aDir + DS.Fields[0].AsString + '.frm';
+      LastModified := DS.Fields[2].AsDateTime;
+      if not FileExists(FlNm) or not SameFileDateTime(FlNm, LastModified) then
+      begin
+        FS := nil;
+        BS := DS.CreateBlobStream(DS.Fields[1], bmRead);
+        try
+          Fm := ReadForm(BS);
+
+          FS := TFileStream.Create(FlNm, fmCreate);
+          FS.CopyFrom(BS, 0);
+          SetFileDateTime(FS.Handle, LastModified);
+        finally
+          BS.Free;
+          FreeAndNil(FS);
+        end;
+
+        if DBase.IsRemote then
+          Application.ProcessMessages;
+      end
+      else
+        Fm := LoadFromFile(FlNm);
+
+      FForms.Add(Fm);
+      Fm.LastModified := LastModified;
+
+      DS.Next;
+    end;
+
+  finally
+    DS.Free;
+  end;
+
+  SL := TStringList.Create;
+  try
+    FindAllFiles(SL, aDir, '*.frm', False);
+    for i := 0 to SL.Count - 1 do
+    begin
+      if TryStrToInt( ExtractFileNameOnly(SL[i]), FmId ) then
+      begin
+        if FindForm(FmId) = nil then
+          DeleteFile(SL[i]);
+      end;
+    end;
+  finally
+    SL.Free;
+  end;
+
+  if FReadErrors <> '' then
+    ShowReadErrorsMsg;
+end;
+
 function TFormManager.LoadFromFile(const FileName: String): TdxForm;
 var
   FS: TFileStream;
@@ -466,8 +634,6 @@ begin
   FS := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
   try
     Result := ReadForm(FS);
-    // Убираем FGrid из Components
-    //Result.RemoveGridTree;
   finally
     FS.Free;
   end;
@@ -480,7 +646,7 @@ begin
   Result.Name := MakeUniqueFormComponentName('Form');  //'Form' + IntToStr(Result.Id);
   Result.FormCaption := MakeUniqueFormName(rsForm); //Format(rsDefaultFormCaption, [IntToStr(Result.Id)]);
   FForms.Add(Result);
-  Result.Index := GetParentFormCount;
+  //Result.Index := GetParentFormCount;
 end;
 
 function TFormManager.CreateNewChildForm(ParentId: Integer): TdxForm;
@@ -500,7 +666,7 @@ begin
     Fm := Forms[i];
     if (Fm.Id = Id) or (Fm.PId = Id) then
     begin
-      if Fm.PId = 0 then ChangeIndexes(Fm);
+      //if Fm.PId = 0 then ChangeIndexes(Fm);
       Fm.Free;
       FForms.Remove(Fm)
     end;
@@ -578,12 +744,11 @@ var
 begin
   SL.Clear;
   for i := 0 to FormCount - 1 do
-  begin
     if Forms[i].PId = 0 then
-      AddToList(Forms[i])
-    else
+      AddToList(Forms[i]);
+  for i := 0 to FormCount - 1 do
+    if Forms[i].PId > 0 then
       AddChildToList(Forms[i]);
-  end;
 end;
 
 procedure TFormManager.SortFormsByIndex(SL: TStrings);
@@ -752,7 +917,7 @@ begin
     Result.AddCopyForm(GetForm(i));
 end;
 
-procedure TFormManager.SetDefaultIndexes;
+{procedure TFormManager.SetDefaultIndexes;
 var
   SL: TStrings;
   i: Integer;
@@ -775,7 +940,7 @@ begin
       TdxForm(SL.Objects[i]).Index := i;
 
   SL.Free;
-end;
+end;      }
 
 procedure TFormManager.Clear;
 begin
@@ -804,6 +969,20 @@ begin
   while FindFormByComponentName(S + IntToStr(n)) <> nil do
     Inc(n);
   Result := S + IntToStr(n);
+end;
+
+procedure TFormManager.ReplaceForm(OldFm, NewFm: TdxForm);
+var
+  i: Integer;
+begin
+  i := FForms.IndexOf(OldFm);
+  FForms[i] := NewFm;
+  OldFm.Free;
+end;
+
+procedure TFormManager.AddForm(Fm: TdxForm);
+begin
+  FForms.Add(Fm);
 end;
 
 end.

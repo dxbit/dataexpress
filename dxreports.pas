@@ -348,6 +348,8 @@ type
 
   { TReportData }
 
+  TReportStatus = (rpsNone, rpsNew, rpsDelete, rpsChanged);
+
   TReportData = class
   private
     FCalcFields: TRpCalcFieldList;
@@ -359,10 +361,11 @@ type
     FGrid: TRpGrid;
     FHelpText: String;
     FId: Integer;
+    FLastModified: TDateTime;
     FName: String;
     FKind: TReportKind;
-    FParamsOrMode: Boolean;
     FPrintFields: TStringList;
+    FReportChanged: Boolean;
     FSearchText: String;
     //FPivotGrid: TObject;
     FSortOrder: String;
@@ -406,6 +409,9 @@ type
     function IsSimple: Boolean;
     function HasParentIdField: Boolean;
 
+    procedure SetReportChanged;
+    procedure ResetReportChanged;
+
     property Id: Integer read FId write FId;
     property Name: String read FName write FName;
     property Sources: TRpSourceList read FSources;
@@ -429,6 +435,8 @@ type
     property SQL: String read FSQL write FSQL;
 
     property SearchText: String read FSearchText write FSearchText;
+    property ReportChanged: Boolean read FReportChanged;
+    property LastModified: TDateTime read FLastModified write FLastModified;
   end;
 
 
@@ -4774,6 +4782,17 @@ end;
 function TReportData.HasParentIdField: Boolean;
 begin
   Result := (FSources.Count = 1) and (FSources[0]^.TId > 0);
+end;
+
+procedure TReportData.SetReportChanged;
+begin
+  FReportChanged := True;
+  FLastModified := Now;
+end;
+
+procedure TReportData.ResetReportChanged;
+begin
+  FReportChanged := False;
 end;
 
 initialization

@@ -137,7 +137,7 @@ begin
   if (N <> nil) and (N.Count = 0) then
   begin
     FlNm := AppPath + StringReplace(N.GetTextPath, '/', PathDelim, [rfReplaceAll]);
-    FlDT := FileDateToDateTime(FileAge(FlNm));
+    FlDT := GetFileDateTime(FlNm);
     S := Format(rsUpdateDBFileInfo, [FormatFileSize(FileSize(FlNm)), DateTimeToStr(FlDT)]);
   end;
 

@@ -23,7 +23,7 @@ unit ReportManager;
 interface
 
 uses
-  Classes, SysUtils, sqldb, dxreports, Forms;
+  Classes, SysUtils, sqldb, dxreports, Forms, mytypes;
 
 type
 
@@ -32,6 +32,7 @@ type
   TReportManager = class
   private
     FReports: TList;
+    FAdded, FDeleted: TIntegerList;
     function GetReports(Index: Integer): TReportData;
   public
     constructor Create;
@@ -41,9 +42,13 @@ type
     procedure SaveToDB;
     procedure SaveToDir(const aDir: String);
     procedure LoadFromDir(const aDir: String);
+    procedure LoadFromCache(const aDir: String);
+    function LoadFromFile(const FileName: String): TReportData;
     function CreateReport(Id: Integer): TReportData;
     function CreateNewReport: TReportData;
+    procedure AddReport(RD: TReportData);
     function AddCopyReport(aRD: TReportData): TReportData;
+    procedure ReplaceReport(OldRD, NewRD: TReportData);
     procedure DeleteReport(RD: TReportData);
     function ReportCount: Integer;
     function FindReport(aId: Integer): TReportData;
@@ -62,7 +67,7 @@ var
 implementation
 
 uses
-  apputils, dbengine, Db, LazUtf8, FileUtil, mytypes;
+  apputils, dbengine, Db, LazUtf8, FileUtil, LazFileUtils;
 
 
 { TReportManager }
@@ -75,10 +80,14 @@ end;
 constructor TReportManager.Create;
 begin
   FReports := TList.Create;
+  FAdded := TIntegerList.Create;
+  FDeleted := TIntegerList.Create;
 end;
 
 destructor TReportManager.Destroy;
 begin
+  FAdded.Free;
+  FDeleted.Free;
   ClearList(FReports);
   FReports.Free;
   inherited Destroy;
@@ -87,6 +96,8 @@ end;
 procedure TReportManager.Clear;
 begin
   ClearList(FReports);
+  FDeleted.Clear;
+  FAdded.Clear;
 end;
 
 procedure TReportManager.LoadFromDB;
@@ -96,7 +107,7 @@ var
   RD: TReportData;
 begin
   Clear;
-  DS := DBase.OpenDataSet('select id, data from dx_reports');
+  DS := DBase.OpenDataSet('select id, data, lastmodified from dx_reports');
   MS := TMemoryStream.Create;
   try
     while DS.EOF = False do
@@ -106,6 +117,7 @@ begin
       MS.Position := 0;
       RD := TReportData.Create;
       RD.LoadFromStream(MS);
+      RD.LastModified := DS.Fields[2].AsDateTime;
       FReports.Add(RD);
 
       if DBase.IsRemote then
@@ -120,13 +132,110 @@ end;
 
 procedure TReportManager.SaveToDB;
 var
+  Wh: String;
+  i: Integer;
+  MS: TMemoryStream;
+  DS: TSQLQuery;
+  RD: TReportData;
+begin
+  // Удаление
+
+  Debug('Удаление отчетов');
+
+  Wh := '';
+  for i := 0 to FDeleted.Count - 1 do
+  begin
+    Wh := Wh + IntToStr(FDeleted[i]) + ',';
+    Debug(FDeleted[i]);
+  end;
+  if Wh <> '' then
+  begin
+    SetLength(Wh, Length(Wh) - 1);
+    DS := DBase.CreateQuery('delete from dx_reports where id in (' + Wh + ')');
+    try
+      DBase.ExecuteQuery(DS);
+    finally
+      DS.Free;
+    end;
+  end;
+  Debug('');
+
+  // Добавление новых
+
+  Debug('Добавление отчетов');
+
+  MS := TMemoryStream.Create;
+  DS := DBase.CreateQuery('insert into dx_reports (id, data, lastmodified) values (:id, :data, :lastmodified)');
+  try
+    DS.Prepare;
+
+    for i := 0 to FAdded.Count - 1 do
+    begin
+      RD := FindReport(FAdded[i]);
+
+      MS.Size:=0;
+      RD.SaveToStream(MS);
+      MS.Position:=0;
+
+      DS.Params[0].AsInteger := RD.Id;
+      DS.Params[1].LoadFromStream(MS, ftMemo);
+      DS.Params[2].AsDateTime := RD.LastModified;
+
+      DBase.ExecuteQuery(DS);
+      RD.ResetReportChanged;
+
+      Debug(RD.Name);
+    end;
+  finally
+    DS.Free;
+    MS.Free;
+  end;
+  Debug('');
+
+  // Замена существующих
+
+  Debug('Замена отчетов');
+
+  MS := TMemoryStream.Create;
+  DS := DBase.CreateQuery('update dx_reports set data=:data, lastmodified=:lastmodified where id=:id');
+  try
+    DS.Prepare;
+
+    for i := 0 to ReportCount - 1 do
+    begin
+      RD := Reports[i];
+      if (FAdded.FindValue(RD.Id) >= 0) or not RD.ReportChanged then Continue;
+
+      MS.Size:=0;
+      RD.SaveToStream(MS);
+      MS.Position:=0;
+
+      DS.Params[0].LoadFromStream(MS, ftMemo);
+      DS.Params[1].AsDateTime := RD.LastModified;
+      DS.Params[2].AsInteger := RD.Id;
+
+      DBase.ExecuteQuery(DS);
+      RD.ResetReportChanged;
+
+      Debug(RD.Name);
+    end;
+  finally
+    DS.Free;
+    MS.Free;
+  end;
+  Debug('');
+
+  FAdded.Clear;
+  FDeleted.Clear;
+end;
+
+{procedure TReportManager.SaveToDB;
+var
   DS: TSQLQuery;
   MS: TMemoryStream;
   i: Integer;
   RD: TReportData;
 begin
-  //DBase.Execute('delete from dx_reports;');
-
   DS := DBase.OpenDataSet('select id, data from dx_reports');
   MS := TMemoryStream.Create;
   try
@@ -146,12 +255,11 @@ begin
       DS.Post;
     end;
     DBase.ApplyDataset(DS);
-    //DBase.Commit;
   finally
     MS.Free;
     DS.Free;
   end;
-end;
+end;}
 
 procedure TReportManager.SaveToDir(const aDir: String);
 var
@@ -165,6 +273,7 @@ begin
     FS := TFileStream.Create(aDir + IntToStr(RD.Id) + '.rpt', fmCreate + fmOpenWrite);
     try
       RD.SaveToStream(FS);
+      SetFileDateTime(FS.Handle, RD.LastModified);
     finally
       FS.Free;
     end;
@@ -195,10 +304,89 @@ begin
     finally
       FS.Free;
     end;
+    RD.LastModified:=GetFileDateTime(SL[i]);
   end;
 
   finally
     SL.Free;
+  end;
+end;
+
+procedure TReportManager.LoadFromCache(const aDir: String);
+var
+  DS: TSQLQuery;
+  RD: TReportData;
+  BS: TStream;
+  FlNm: String;
+  FS: TFileStream;
+  i, RDId: Integer;
+  SL: TStringList;
+  LastModified: TDateTime;
+begin
+  Clear;
+  DS := DBase.OpenDataSet('select id, data, lastmodified from dx_reports');
+  try
+    while not DS.EOF do
+    begin
+      FlNm := aDir + DS.Fields[0].AsString + '.rpt';
+      LastModified := DS.Fields[2].AsDateTime;
+      if not FileExists(FlNm) or not SameFileDateTime(FlNm, LastModified) then
+      begin
+        FS := nil;
+        BS := DS.CreateBlobStream(DS.Fields[1], bmRead);
+        try
+          RD := TReportData.Create;
+          RD.LoadFromStream(BS);
+
+          FS := TFileStream.Create(FlNm, fmCreate);
+          FS.CopyFrom(BS, 0);
+          SetFileDateTime(FS.Handle, LastModified);
+        finally
+          BS.Free;
+          FreeAndNil(FS);
+        end;
+
+        if DBase.IsRemote then
+          Application.ProcessMessages;
+      end
+      else
+        RD := LoadFromFile(FlNm);
+
+      RD.LastModified := LastModified;
+      FReports.Add(RD);
+
+      DS.Next;
+    end;
+  finally
+    DS.Free;
+  end;
+
+  SL := TStringList.Create;
+  try
+    FindAllFiles(SL, aDir, '*.rpt', False);
+    for i := 0 to SL.Count - 1 do
+    begin
+      if TryStrToInt( ExtractFileNameOnly(SL[i]), RDId ) then
+      begin
+        if FindReport(RDId) = nil then
+          DeleteFile(SL[i]);
+      end;
+    end;
+  finally
+    SL.Free;
+  end;
+end;
+
+function TReportManager.LoadFromFile(const FileName: String): TReportData;
+var
+  FS: TFileStream;
+begin
+  FS := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
+  Result := TReportData.Create;
+  try
+    Result.LoadFromStream(FS);
+  finally
+    FS.Free;
   end;
 end;
 
@@ -225,6 +413,13 @@ begin
   Result.Id:=DBase.GenId('gen_rid');
   Result.Version:=2;
   FReports.Add(Result);
+  FAdded.AddValue(Result.Id);
+end;
+
+procedure TReportManager.AddReport(RD: TReportData);
+begin
+  FReports.Add(RD);
+  FAdded.AddValue(Rd.Id);
 end;
 
 function TReportManager.AddCopyReport(aRD: TReportData): TReportData;
@@ -238,10 +433,23 @@ begin
   MS.Position:=0;
   Result.LoadFromStream(MS);
   MS.Free;
+  FAdded.AddValue(aRD.Id);
+end;
+
+procedure TReportManager.ReplaceReport(OldRD, NewRD: TReportData);
+var
+  i: Integer;
+begin
+  i := FReports.IndexOf(OldRD);
+  FReports[i] := NewRD;
+  OldRD.Free;
 end;
 
 procedure TReportManager.DeleteReport(RD: TReportData);
 begin
+  if not FAdded.DeleteValue(RD.Id) then
+    FDeleted.AddValue(RD.Id);
+
   FReports.Remove(RD);
   RD.Free;
 end;

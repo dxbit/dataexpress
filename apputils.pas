@@ -181,6 +181,7 @@ function MakeNumberFormat(Prec: Integer; Group, PadZeros: Boolean): String;
 function GetVersionFromFile(const aDir: String): Integer;
 procedure ScaleForm(Fm: TdxForm; DesignTimePPI: Integer);
 procedure ScaleForms(FMan: TFormManager; DesignTimePPI: Integer);
+procedure ScaleReport(RD: TReportData; FromPPI, ToPPI: Integer);
 procedure ScaleReports(RMan: TReportManager; FromPPI, ToPPI: Integer);
 function ScaleToScreen(I: Integer): Integer;
 function ScaleRectToScreen(R: TRect): TRect;
@@ -223,8 +224,6 @@ function RemoveNonPrintableChars(const S: String; KeepNewLine: Boolean = False):
 procedure SaveString(const FileName: String; const S: String);
 function LoadString(const FileName: String): String;
 function ReplacePathDelimiters(const Path: String): String;
-procedure SaveMetaToCache;
-function IsFreshCache: Boolean;
 procedure LoadMetaFromCache;
 function CanCache: Boolean;
 function GetTempDirName: String;
@@ -256,6 +255,11 @@ procedure SetupPicture(Pic: TPicture; const ResName: String);
 procedure SetupBitBtn(Bn: TCustomBitBtn; const ResName: String);
 procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
 function CreateBitmapFromRes(const ResName: String): TCustomBitmap;
+procedure ConvertToDXMainVersion2(AMain, AFmMan: TObject; DoSave: Boolean);
+procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
+procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
+function GetFileDateTime(const FlNm: String): TDateTime;
+function SameFileDateTime(const FlNm: String; ATime: TDateTime): Boolean;
 
 implementation
 
@@ -680,7 +684,7 @@ begin
   else Result := GetAbsolutePath(Result);
 end;
 
-procedure CheckInsertValues(Obj: TdxLookupComboBox; Id: Integer);
+procedure CheckInsertValues(Fm: TdxForm; Obj: TdxLookupComboBox; Id: Integer);
 var
   i: Integer;
   Vl: TInsertValueData;
@@ -689,16 +693,23 @@ begin
   begin
     Vl := Obj.InsertedValues[i];
     if (Vl.SrcField = Id) or (Vl.DestField = Id) then
+    begin
     	Obj.InsertedValues.DeleteValue(i);
+      Fm.SetFormChanged;
+    end;
   end;
 end;
 
-procedure CheckListFields(Obj: TdxLookupComboBox; Id: Integer);
+procedure CheckListFields(Fm: TdxForm; Obj: TdxLookupComboBox; Id: Integer);
 var
   i: Integer;
 begin
   for i := Obj.ListFields.Count - 1 downto 0 do
-    if Obj.ListFields[i].FieldId = Id then Obj.ListFields.Delete(i);
+    if Obj.ListFields[i].FieldId = Id then
+    begin
+      Obj.ListFields.Delete(i);
+      Fm.SetFormChanged;
+    end;
 end;
 
 {procedure CheckFilter(CC: TComponent; Id: Integer);
@@ -820,7 +831,7 @@ begin
   end;
 end;
 
-procedure CheckFillTablePropsForm(C: TdxLookupComboBox; FmId: Integer);
+procedure CheckFillTablePropsForm(Fm: TdxForm; C: TdxLookupComboBox; FmId: Integer);
 var
   i: Integer;
   S: String;
@@ -836,6 +847,7 @@ begin
         S := FieldsTables[i];
         FieldsTables[i] := Copy(S, Pos('=', S), 255);
       end;
+      Fm.SetFormChanged;
     end;
     if DestTable = FmId then
     begin
@@ -845,6 +857,7 @@ begin
         S := FieldsTables[i];
         FieldsTables[i] := Copy(S, 1, Pos('=', S));
       end;
+      Fm.SetFormChanged;
     end;
   end;
 end;
@@ -859,13 +872,14 @@ begin
     if TId = GetId(DelC) then
     begin
       ResetLookupComponent(CurC);
+      Fm.SetFormChanged;
     end;
     if CurC is TdxLookupComboBox then
-    	CheckFillTablePropsForm(TdxLookupComboBox(CurC), GetId(DelC));
+    	CheckFillTablePropsForm(Fm, TdxLookupComboBox(CurC), GetId(DelC));
   end
 end;
 
-procedure CheckFillTablePropsField(C: TdxLookupComboBox; ObjFmId, FId: Integer);
+procedure CheckFillTablePropsField(Fm: TdxForm; C: TdxLookupComboBox; ObjFmId, FId: Integer);
 var
   i: Integer;
   S: String;
@@ -880,14 +894,20 @@ begin
         begin
           n := StrToInt(S);
           if n = FId then
+          begin
             FieldsTables[i] := '=' + FieldsTables.ValueFromIndex[i];
+            Fm.SetFormChanged;
+          end;
         end;
         S := FieldsTables.ValueFromIndex[i];
         if S <> '' then
         begin
           n := StrToInt(S);
           if n = FId then
+          begin
             FieldsTables[i] := FieldsTables.Names[i] + '=';
+            Fm.SetFormChanged;
+          end;
         end;
       end;
 end;
@@ -920,9 +940,9 @@ begin
       with TdxLookupComboBox(CurC) do
       begin
         if SourceTId = ObjFm.Id then
-          CheckListFields(TdxLookupComboBox(CurC), FId);
-        CheckInsertValues(TdxLookupComboBox(CurC), FId);
-        CheckFillTablePropsField(TdxLookupComboBox(CurC), ObjFm.Id, FId)
+          CheckListFields(Fm, TdxLookupComboBox(CurC), FId);
+        CheckInsertValues(Fm, TdxLookupComboBox(CurC), FId);
+        CheckFillTablePropsField(Fm, TdxLookupComboBox(CurC), ObjFm.Id, FId)
       end
   end
   else if CurC is TdxObjectField then
@@ -932,9 +952,13 @@ begin
       begin
         ObjId := 0;
         FieldId := 0;
+        Fm.SetFormChanged;
       end
       else if (ObjId > 0) and (FieldId = FId) then
+      begin
         FieldId := 0;
+        Fm.SetFormChanged;
+      end;
   end;
 end;
 
@@ -952,9 +976,15 @@ var
     begin
       MI := Menu[j];
       if (MI.Kind = miForm) and IsForm and (MI.Id = Id) then
-        Menu.DeleteItem(MI)
+      begin
+        Menu.DeleteItem(MI);
+        UserMan.SetIntfsChanged;
+      end
       else if (MI.Kind = miReport) and (MI.Id = Id) then
-        Menu.DeleteItem(MI)
+      begin
+        Menu.DeleteItem(MI);
+        UserMan.SetIntfsChanged;
+      end
       else if MI.Kind = miMenu then
         DeleteRefFromMenu(MI.Items);
     end;
@@ -965,7 +995,11 @@ var
     j: Integer;
   begin
     for j := Tabs.Count - 1 downto 0 do
-      if Tabs[j] = Id then Tabs.Delete(j);
+      if Tabs[j] = Id then
+      begin
+        Tabs.Delete(j);
+        UserMan.SetIntfsChanged;
+      end;
   end;
 
 begin
@@ -1040,6 +1074,7 @@ begin
       begin
         CR := FR.Controls.FindRight(C.Name);
         if CR <> nil then FR.Controls.DeleteRight(CR);
+        UserMan.SetRolesChanged;
       end;
     end;
   end;
@@ -2873,6 +2908,7 @@ begin
     Col.Font.Height := ScaleV(Col.Font.Height);
     Col.TitleFont.Height := ScaleV(Col.TitleFont.Height);
   end;
+  RD.SetReportChanged;
 end;
 
 procedure ScaleForm(Fm: TdxForm; DesignTimePPI: Integer);
@@ -2900,6 +2936,7 @@ begin
   ChangeScaleControl(Fm.Tree, Screen.PixelsPerInch, DesignTimePPI);
   _DoScale(Fm);
   Fm.EnableAutoSizing;
+  Fm.SetFormChanged;
 end;
 
 procedure ScaleForms(FMan: TFormManager; DesignTimePPI: Integer);
@@ -3383,13 +3420,16 @@ var
   RD: TReportData;
   C: TComponent;
   Bn: TdxButton;
+  RenameOk: Boolean;
 
   procedure ProcessLines(Lines: TActionLines);
   var
     j: Integer;
     Line: TActionLine;
     A: TBaseAction;
+    Ok: Boolean;
   begin
+    Ok := False;
     for j := 0 to Lines.Count - 1 do
     begin
       Line := Lines[j];
@@ -3399,16 +3439,17 @@ var
       begin
         A := Line.Action;
         case RenameObject of
-          renForm: A.RenameForm(OldName, NewName);
-          renField: A.RenameField(Fm, CurFm.FormCaption, OldName, NewName);
-          renComponent: A.RenameComponent(Fm, CurFm.FormCaption, OldName, NewName);
-          renQuery: A.RenameQuery(OldName, NewName);
-          renReport: A.RenameReport(OldName, NewName);
-          renRpField: A.RenameRpField(RD, OldName, NewName);
-          renImage: A.RenameImage(OldName, NewName);
+          renForm: Ok := A.RenameForm(OldName, NewName);
+          renField: Ok := A.RenameField(Fm, CurFm.FormCaption, OldName, NewName);
+          renComponent: Ok := A.RenameComponent(Fm, CurFm.FormCaption, OldName, NewName);
+          renQuery: Ok := A.RenameQuery(OldName, NewName);
+          renReport: Ok := A.RenameReport(OldName, NewName);
+          renRpField: Ok := A.RenameRpField(RD, OldName, NewName);
+          renImage: Ok := A.RenameImage(OldName, NewName);
         end;
       end;
     end;
+    if Ok then RenameOk := True;
   end;
 
   procedure ProcessRename(var Xml: String);
@@ -3426,6 +3467,8 @@ begin
   AR := TActionRunner.Create;
   for i := 0 to FormMan.FormCount - 1 do
   begin
+    RenameOk := False;
+
     Fm := FormMan.Forms[i];
     Xml := Fm.ActionOnCreate;
     ProcessRename(Xml);
@@ -3442,6 +3485,8 @@ begin
         Bn.ActionOnClick := Xml;
       end;
     end;
+
+    if RenameOk then Fm.SetFormChanged;
   end;
   Fm := nil;
   Xml := DXMain.Actions;
@@ -3469,6 +3514,7 @@ begin
         else
           TdxButton(C).ImageName := '';
       end;
+      Fm.SetFormChanged;
     end
     else if C is TdxImage then
     begin
@@ -3480,6 +3526,7 @@ begin
         else
           TdxImage(C).ImageName := '';
       end;
+      Fm.SetFormChanged;
     end;
   end;
 end;
@@ -3749,104 +3796,23 @@ begin
   FileSetDate(Nm, DateTimeToFileDate(DXMain.LastModified));
 end;
 
-procedure SaveMetaToCache;
-var
-  TmpDir: String;
-begin
-  TmpDir := GetTempDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
-  if DirectoryExists(TmpDir) then
-  begin
-    if not DeleteDirectory(TmpDir, True) then
-    begin
-      ErrMsgFmt(rsCanNotCleanDir, [TmpDir], True, 'SaveMetaDataToCache');
-      Exit;
-    end;
-  end
-  else if not CreateDir(TmpDir) then
-  begin
-    ErrMsgFmt(rsCanNotCreateTempDir, [TmpDir], True, 'SaveMetaDataToCache');
-    Exit;
-  end;
-
-  DXMain.SaveToDir(TmpDir);
-  FormMan.SaveToDir(TmpDir);
-  ReportMan.SaveToDir(TmpDir);
-  ImageMan.SaveToDir(TmpDir);
-  ScriptMan.SaveBinToDir(TmpDir);
-  if UserMan.IsUser then
-    ScriptMan.SaveCommentsToDir(TmpDir)
-  else
-  begin
-    ScriptMan.SaveToDir(TmpDir);
-    SaveString(TmpDir + 'devel', '');
-  end;
-  CreateMetaVersionFile(TmpDir);
-end;
-
-{function FileTimeToFileDate(FT: TFileTime): LongInt;
-var
-  LFT: TFileTime;
-  SFT: TSystemTime;
-  DT: TDateTime;
-begin
-  FileTimeToLocalFileTime(FT, LFT);
-  FileTimeToSystemTime(LFT, SFT);
-  DT := SystemTimeToDateTime(SFT);
-  Result := DateTimeToFileDate(DT);
-end;  }
-
-function IsFreshCache: Boolean;
-var
-  TmpDir, VerFile, S: String;
-  LastModif, DirTm: Longint;
-  Sz: Int64;
-begin
-  Result := False;
-  TmpDir := GetTempDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
-  VerFile := TmpDir + FormatDateTime('yyyymmdd', GetBuildDate);
-  if DirectoryExists(TmpDir) and FileExists(VerFile) then
-  begin
-    if FileAge(VerFile) = DateTimeToFileDate(DXMain.LastModified) then
-    begin
-      GetDirectoryInfo(TmpDir, LastModif, Sz);
-      DirTm := DirAge(TmpDir);
-      if DirTm >= LastModif then
-      begin
-        S := LoadString(VerFile);
-        if GetHashNum(DirTm + Sz) = S then Result := True;
-      end;
-    end;
-  end;
-end;
-
 procedure LoadMetaFromCache;
 var
   TmpDir: String;
 begin
   TmpDir := GetTempDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
-  DXMain.LoadFromDir(TmpDir);
-  ImageMan.LoadFromDir(TmpDir);
-  FormMan.LoadFromDir(TmpDir);
-  ReportMan.LoadFromDir(TmpDir);
-  if UserMan.IsUser then
-    ScriptMan.LoadBinFromDir(TmpDir)
-  else
-  begin
-    if FileExists(TmpDir + 'devel') then
-      ScriptMan.LoadFromDir(TmpDir)
-    else
-    begin
-      ScriptMan.LoadFromDB;
-      ScriptMan.SaveToDir(TmpDir);
-      SaveString(TmpDir + 'devel', '');
-      CreateMetaVersionFile(TmpDir);
-    end;
-  end;
+  if not ForceDirectories(TmpDir) then
+    raise Exception.CreateFmt('Unable to create cache directory %s', [TmpDir]);
+
+  ImageMan.LoadFromCache(TmpDir);
+  FormMan.LoadFromCache(TmpDir);
+  ReportMan.LoadFromCache(TmpDir);
+  ScriptMan.LoadFromCache(TmpDir);
 end;
 
 function CanCache: Boolean;
 begin
-  Result := AppConfig.Caching {and UserMan.IsUser} and DBase.IsRemote;
+  Result := AppConfig.Caching and DBase.IsRemote;
 end;
 
 function GetTempDirName: String;
@@ -4332,6 +4298,81 @@ const
   Sfx: array of String = ('', '_150', '_200');
 begin
   Result := CreateBitmapFromLazarusResource(ResName + Sfx[GetPPIndex]);
+end;
+
+procedure ConvertToDXMainVersion2(AMain, AFmMan: TObject; DoSave: Boolean);
+var
+  SL: TStringList;
+  i: Integer;
+  Fm: TdxForm;
+  G: TFormGroup;
+  Main: TDXMain;
+  FmMan: TFormManager;
+begin
+  Main := TDXMain(AMain);
+  if Main.Version = 2 then Exit;
+  FmMan := TFormManager(AFmMan);
+
+  SL := TStringList.Create;
+  FmMan.FormsToList(SL);
+  for i := 0 to SL.Count - 1 do
+  begin
+    Fm := TdxForm(SL.Objects[i]);
+    G := Main.Groups.FindGroup(Fm.FormGroup);
+    if G = nil then
+    begin
+      G := Main.Groups.AddGroup;
+      G.Name := Fm.FormGroup;
+    end;
+    G.IdList.AddValue(Fm.Id);
+  end;
+
+  FmMan.SortFormsByIndex(SL);
+  for i := 0 to SL.Count - 1 do
+  begin
+    Fm := TdxForm(SL.Objects[i]);
+    if Fm.AutoOpen then
+      Main.Tabs.AddValue(Fm.Id);
+  end;
+  SL.Free;
+
+  if DoSave then
+  begin
+    Main.SaveToDb;
+    DBase.Commit;
+  end;
+end;
+
+function GetDefaultDateTime(DT: TDateTime): TDateTime;
+begin
+  if DT <> 0 then Result := DT
+  else Result := EncodeDate(2024, 1, 1);
+end;
+
+procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
+begin
+  FileSetDate(FlNm, DateTimeToFileDate( GetDefaultDateTime(DT) ));
+end;
+
+procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
+begin
+  FileSetDate(Handle, DateTimeToFileDate( GetDefaultDateTime(DT) ));
+end;
+
+function GetFileDateTime(const FlNm: String): TDateTime;
+begin
+  Result := FileDateToDateTime(FileAge(FlNm));
+end;
+
+function SameFileDateTime(const FlNm: String; ATime: TDateTime): Boolean;
+begin
+  Result := FileAge(FlNm) = DateTimeToFileDate(  GetDefaultDateTime(ATime) );
+  {if not Result then
+  begin
+    Debug(FlNm);
+    Debug(FileAge(FlNm));
+    Debug(DateTimeToFileDate(  GetDefaultDateTime(ATime) ));
+  end;}
 end;
 
 end.

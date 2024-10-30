@@ -83,6 +83,7 @@ type
     procedure FixFntButtonClick(Sender: TObject);
     procedure FixFntKeyPress(Sender: TObject; var Key: char);
     procedure FntButtonClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
     procedure TotalFixFntButtonClick(Sender: TObject);
@@ -90,6 +91,7 @@ type
   private
     { private declarations }
     FGrid: TdxPivotGrid;
+    function Validate: Boolean;
   public
     { public declarations }
     function ShowForm(const aCaption: String; FI: TFieldItem; Grid: TdxPivotGrid): Integer;
@@ -103,7 +105,7 @@ function ShowPivotFieldForm(const aCaption: String; FI: TFieldItem; Grid: TdxPiv
 implementation
 
 uses
-  fontform, helpmanager;
+  apputils, fontform, helpmanager;
 
 function ShowPivotFieldForm(const aCaption: String; FI: TFieldItem;
   Grid: TdxPivotGrid): Integer;
@@ -187,6 +189,18 @@ begin
     TotalFnt.Text := TotalFnt.Font.Name;
 end;
 
+function TPivotFieldFm.Validate: Boolean;
+begin
+  Result := True;
+  if (TRpTotalFunc(Func.ItemIndex) in [tfSum, tfAvg]) and (DataType.ItemIndex <> 1) then
+  begin
+    PageControl1.ActivePageIndex := 4;
+    Func.SetFocus;
+    ErrMsgFmt(rsFuncOnlyNumber, [Func.Text]);
+    Result := False;
+  end;
+end;
+
 procedure TPivotFieldFm.FixFntKeyPress(Sender: TObject; var Key: char);
 begin
   Key := #0;
@@ -196,6 +210,12 @@ procedure TPivotFieldFm.FntButtonClick(Sender: TObject);
 begin
   if ShowFontForm(Fnt.Font, FGrid.Font) = mrOk then
     Fnt.Text := Fnt.Font.Name;
+end;
+
+procedure TPivotFieldFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  if ModalResult = mrOk then
+    CanClose := Validate;
 end;
 
 procedure TPivotFieldFm.FixFntButtonClick(Sender: TObject);

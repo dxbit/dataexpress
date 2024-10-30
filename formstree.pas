@@ -62,6 +62,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure BuildTree; override;
+    procedure SaveTree;
     procedure AddForm(Fm: TdxForm; ChildForm: Boolean);
     procedure DeleteForm(Fm: TdxForm);
     procedure DeleteSelected;
@@ -81,7 +82,8 @@ type
 implementation
 
 uses
-  formmanager, apputils, mydialogs, LazUtf8, appimagelists, appsettings;
+  formmanager, apputils, mydialogs, LazUtf8, appimagelists, appsettings,
+  dxmains;
 
 { TFormsTree }
 
@@ -253,7 +255,8 @@ begin
   Result := '';
   while Node <> nil do
   begin
-		Result := Node.Text + '\' + Result;
+    if Node.Data = nil then
+  		Result := Node.Text + '\' + Result;
     Node := Node.Parent;
   end;
   Result := Copy(Result, 1, Length(Result) - 1);
@@ -382,9 +385,11 @@ end;
 
 procedure TFormsTree.BuildTree;
 var
-  i: Integer;
+  i, j: Integer;
   Fm: TdxForm;
   PN: TTreeNode;
+  GL: TFormGroupList;
+  G: TFormGroup;
 
   function FindOrAddNode(PN: TTreeNode; const aText: String): TTreeNode;
   var
@@ -432,16 +437,55 @@ var
 
 begin
   inherited BuildTree;
+  Tree.Items.Clear;
+
+  GL := DXMain.Groups;
+  for i := 0 to GL.Count - 1 do
+  begin
+    G := GL[i];
+    PN := FindOrAddGroup(G.Name);
+    for j := 0 to G.IdList.Count - 1 do
+    begin
+      Fm := FormMan.FindForm(G.IdList[j]);
+      Tree.Items.AddChildObject(PN, Fm.FormCaption, Fm);
+    end;
+  end;
   for i := 0 to FormMan.FormCount - 1 do
   begin
     Fm := FormMan.Forms[i];
-    if Fm.PId = 0 then
-	    PN := FindOrAddGroup(Fm.FormGroup)
-    else
-      PN := Tree.Items.FindNodeWithData( FormMan.FindForm(Fm.PId) );
+    if Fm.PId = 0 then Continue;
+    PN := Tree.Items.FindNodeWithData( FormMan.FindForm(Fm.PId) );
   	Tree.Items.AddChildObject(PN, Fm.FormCaption, Fm);
   end;
   UpdateTreeSort;
+end;
+
+procedure TFormsTree.SaveTree;
+var
+  i: Integer;
+  N: TTreeNode;
+  Fm: TdxForm;
+  GroupName: String;
+  GL: TFormGroupList;
+  G: TFormGroup;
+begin
+  GL := DXMain.Groups;
+  GL.Clear;
+  for i := 0 to Tree.Items.Count - 1 do
+  begin
+    N := Tree.Items[i];
+    Fm := TdxForm(N.Data);
+    if (Fm = nil) or (Fm.PId > 0) then Continue;
+
+    GroupName := GetGroupPath(N);
+    G := GL.FindGroup(GroupName);
+    if G = nil then
+    begin
+      G := GL.AddGroup;
+      G.Name := GroupName;
+    end;
+    G.IdList.AddValue(Fm.Id);
+  end;
 end;
 
 procedure TFormsTree.AddForm(Fm: TdxForm; ChildForm: Boolean);

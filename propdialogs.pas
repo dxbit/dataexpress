@@ -285,7 +285,6 @@ function QuerySourceDlg(C: TComponent): Integer;
 var
   RD: TReportData;
   Fm: TdxForm;
-  //OldSqlMode: Boolean;
 begin
   RD := ReportMan.FindReport(GetId(C));
   if RD = nil then Exit;
@@ -293,15 +292,8 @@ begin
   Fm := TdxForm(C.Owner);
   Result := ShowReportForm(RD, Fm, TdxQueryGrid(C), True);
 
-  {while True do
-  begin
-    OldSqlMode := RD.SqlMode;
-    if RD.SqlMode then
-      Result := ShowSqlQueryForm(RD, TdxQueryGrid(C))
-    else
-      Result := ShowReportForm(RD, Fm, TdxQueryGrid(C), True);
-    if RD.SqlMode = OldSqlMode then Break;
-  end; }
+  if Result = mrOk then
+    RD.SetReportChanged;
 end;
 
 procedure QueryGridDlg(C: TdxQueryGrid);
@@ -309,7 +301,8 @@ var
   RD: TReportData;
 begin
   RD := ReportMan.FindReport(C.Id);
-  ShowRpGridForm(C, RD);
+  if ShowRpGridForm(C, RD) = mrOk then
+    RD.SetReportChanged;
 end;
 
 function FieldSizeDlg(C: TComponent): Boolean;
@@ -390,7 +383,10 @@ begin
   RD := ReportMan.FindReport(GetId(C));
   if RD = nil then Exit;
   if ShowCalcForm(RD, TdxForm(C.Owner), TdxQueryGrid(C), True) = mrOk then
+  begin
+    RD.SetReportChanged;
     UpdateTemplateFieldsForm;
+  end;
 end;
 
 function QueryFilterDlg(C: TComponent): Integer;
@@ -404,7 +400,11 @@ begin
   S := RD.Filter;
   Result := ShowExprForm(etOutputFilter, TdxQueryGrid(C), S, TdxForm(C.Owner),
     nil, nil, RD);
-  if Result = mrOk then RD.Filter := S;
+  if Result = mrOk then
+  begin
+    RD.Filter := S;
+    RD.SetReportChanged;
+  end;
 end;
 
 function DefaultValueDlg(C: TComponent): Integer;
@@ -427,7 +427,8 @@ var
 begin
   RD := ReportMan.FindReport(GetId(C));
   if RD = nil then Exit;
-  ShowQueryColoringForm(RD, TdxForm(C.Owner));
+  if ShowQueryColoringForm(RD, TdxForm(C.Owner)) = mrOk then
+    RD.SetReportChanged;
 end;
 
 {procedure CheckExprDlg(C: TdxCheckBox);
@@ -942,6 +943,7 @@ begin
   FNm.Text:=FRD.Name;
   FCmpNm.Text := C.Name;
   Result := ShowModal;
+  if Result = mrOk then FRD.SetReportChanged;
 end;
 
 { TFormNameDlg }

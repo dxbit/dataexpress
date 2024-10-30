@@ -147,6 +147,7 @@ begin
   aForm.TreeFont := FFm.TreeFont;
   aForm.TreeLineColor:=FFm.TreeLineColor;
   aForm.TreeSelectColor:=FFm.TreeSelectColor;
+  aForm.SetFormChanged;
 end;
 
 function TStyleFm.ShowForm(aForm: TdxForm): Integer;

@@ -608,7 +608,7 @@ begin
   if S = '' then
 	  S := Trim(InputBox(rsNewModule, rsModuleName, ''));
   if (S = '') or not CheckModuleName(S) or IsModuleExists(S, nil) then Exit;
-  SD := ScriptMan.AddScript(0, S, Source);
+  SD := ScriptMan.AddNewScript(0, S, Source);
   SD.Kind := Kind;
   CreateEditor(SD);
   PN := FModules.ModNode;
@@ -620,8 +620,6 @@ begin
   end;
   N := FModules.Tree.Items.AddChildObject(PN, S, SD);
   N.Parent.Expand(False);
-  //N.ImageIndex := 7;
-  //N.SelectedIndex := 7;
   N.Selected := True;
 end;
 
@@ -645,7 +643,7 @@ begin
     if SD = nil then
     begin
       PFm := FormMan.FindForm(Fm.PId);
-      SD := ScriptMan.AddScript(PFm.Id, '', SrcCode);
+      SD := ScriptMan.AddNewScript(PFm.Id, '', SrcCode);
       SD.Kind := Kind;
       CreateEditor(SD);
       N := FModules.Tree.Items.AddChildObject(N, PFm.FormCaption + ' (' + PFm.Name + ')', SD);
@@ -656,7 +654,7 @@ begin
   SD := ScriptMan.FindScript(Fm.Id, Kind);
   if SD = nil then
   begin
-    SD := ScriptMan.AddScript(Fm.Id, '', SrcCode);
+    SD := ScriptMan.AddNewScript(Fm.Id, '', SrcCode);
     SD.Kind := Kind;
     N := FModules.Tree.Items.AddChildObject(N, Fm.FormCaption + ' (' + Fm.Name + ')', SD);
     CreateEditor(SD);
@@ -673,7 +671,7 @@ var
   SD: TScriptData;
   N: TTreeNode;
 begin
-  SD := ScriptMan.AddScript(0, 'WebMain', Source);
+  SD := ScriptMan.AddNewScript(0, 'WebMain', Source);
   SD.Kind := skWebMain;
   CreateEditor(SD);
   N := FModules.Tree.Items.InsertBehind(FModules.Tree.TopItem, 'WebMain');
@@ -1279,8 +1277,10 @@ procedure TScriptFm.MemoStatusChange(Sender: TObject; Changes: TSynStatusChanges
   );
 var
   S: String;
+  SD: TScriptData;
 begin
   if Memo = nil then Exit;
+  SD := TScriptData(FModules.Tree.Selected.Data);
   SetControlState;
   if scModified in Changes then
   begin
@@ -1288,12 +1288,21 @@ begin
     if Memo.Modified then
     begin
       if Copy(S, 1, 1) <> '*' then
-        S := '*' + S
+        S := '*' + S;
+      SD.PartChanges := SD.PartChanges + [spcScript];
+      SD.LastModified := Now;
     end
     else if Copy(S, 1, 1) = '*' then
+    begin
       Delete(S, 1, 1);
+    end;
     FModules.Tree.Selected.Text := S;
     ScriptMan.NeedCompile := True;
+  end;
+  if (Changes * [scCaretX, scCaretY, scTopLine, scLeftChar, scLinesInWindow, scCharsInWindow]) <> [] then
+  begin
+    SD.PartChanges := SD.PartChanges + [spcExtra];
+    SD.LastModified := Now;
   end;
   UpdateStatusBar;
 end;
@@ -1601,27 +1610,6 @@ begin
   UpdateCanTestForm;
   SetControlState;
   UpdateStatusBar;
-
-  {SD := TScriptData(N.Data);
-  if SD <> nil then
-  begin
-    for i := 0 to SD.MsgCount - 1 do
-    begin
-      LI := Msgs.FindData(0, SD.Msgs[i], True, False);
-      if LI <> nil then LI.Delete;
-    end;
-
-    Kind := SD.Kind;
-    if SD.FmId > 0 then
-      DeleteForm(SD.FmId)
-    else
-    begin
-      DeleteEditor(SD);
-      ScriptMan.DeleteScript(SD);
-      N.Delete;
-    end;
-
-  end;   }
 end;
 
 procedure TScriptFm.MenuItem5Click(Sender: TObject);
@@ -1636,6 +1624,8 @@ begin
   S := Trim(InputBox(rsRenameModule, rsModuleName, OldS));
   if (S = '') or (S = OldS) or not CheckModuleName(S) or IsModuleExists(S, SD) then Exit;
   SD.Name := S;
+  SD.PartChanges := SD.PartChanges + [spcName];
+  SD.LastModified := Now;
   if Memo.Modified then S := '*' + S;
   N.Text:=S;
   ScriptMan.NeedCompile := True;

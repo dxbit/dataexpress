@@ -930,6 +930,8 @@ type
     FCustomFilter: String;
     FCustomFilterForm: TdxForm;
     FDSRi: Integer;
+    FFormChanged: Boolean;
+    FLastModified: TDateTime;
     FRecordCaption: String;
     FRecordsCaption: String;
     FFormGroup: String;
@@ -1041,6 +1043,8 @@ type
     function GetRecordCaption: String;
     function GetRecordsCaption: String;
     function IsBinded: Boolean;
+    procedure SetFormChanged;
+    procedure ResetFormChanged;
     //procedure ApplyUpdates;
     //procedure CancelUpdates;
     property DSP: TObject read FDSP write FDSP;
@@ -1064,6 +1068,9 @@ type
     property CustomFilter: String read FCustomFilter write FCustomFilter;
     property CustomFilterForm: TdxForm read FCustomFilterForm write FCustomFilterForm;
     property UseSelCond: Boolean read FUseSelCond write FUseSelCond;
+
+    property FormChanged: Boolean read FFormChanged;
+    property LastModified: TDateTime read FLastModified write FLastModified;
   published
     property Layout: TAlign read FLayout write FLayout stored False;       // устаревшее
   	property GroupField: Integer read FGroupField write FGroupField stored False;
@@ -1072,17 +1079,20 @@ type
     property TreeSelectColor: TColor read FTreeSelectColor write FTreeSelectColor stored False;
     property TreeFont: TFont read FTreeFont write SetTreeFont stored False;
     property TreeWidth: Integer read FTreeWidth write FTreeWidth stored False;
+    // Пока продолжаем сохранять эти свойства, т. к. при повторном импорте
+    // проекта пропадают группы.
+    property FormGroup: String read FFormGroup write FFormGroup;
+    property AutoOpen: Boolean read FAutoOpen write FAutoOpen;
+    property Index: Integer read FIndex write FIndex;
   published
     property Id: Integer read FId write FId;
     property PId: Integer read FPId write FPId;
     property FormCaption: String read FFormCaption write FFormCaption;
-    property FormGroup: String read FFormGroup write FFormGroup;
     property Templates: TStringList read FTemplates write SetTemplates;
     property Color;
     property Font;
     property CalcFields: TStrings read FCalcFields write SetCalcFields;
     property PopupMenu stored False;
-    property AutoOpen: Boolean read FAutoOpen write FAutoOpen;
     property ViewType: TViewType read FViewType write FViewType;      // вместо Layout
     property Filters: TStrings read FFilters write SetFilters;
     property Coloring: TStrings read FColoring write SetColoring;
@@ -1095,7 +1105,6 @@ type
     property ConfirmAutoSaveRecord: Boolean read FConfirmAutoSaveRecord write FConfirmAutoSaveRecord;
     property ConfirmCancelEditing: Boolean read FConfirmCancelEditing write FConfirmCancelEditing;
 		property Tree: TdxFormTree read FTree write SetTree;
-    property Index: Integer read FIndex write FIndex;
     property SoftCheck: Boolean read FSoftCheck write FSoftCheck;
     property RecordsCaption: String read FRecordsCaption write FRecordsCaption;
     property RecordCaption: String read FRecordCaption write FRecordCaption;
@@ -5858,6 +5867,17 @@ end;
 function TdxForm.IsBinded: Boolean;
 begin
   Result := FDSP <> nil;
+end;
+
+procedure TdxForm.SetFormChanged;
+begin
+  FFormChanged := True;
+  FLastModified := Now;
+end;
+
+procedure TdxForm.ResetFormChanged;
+begin
+  FFormChanged := False;
 end;
 
 function TdxForm.GetParentForm: TdxForm;

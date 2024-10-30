@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, ComCtrls, ExtCtrls, StdCtrls,
   Menus, Graphics, strconsts, dxctrls, formresizer, LclType,
-  summarytree, componenttree, Dialogs, SQLDb, formmanager,
+  summarytree, componenttree, Dialogs, SQLDb, formmanager, db,
   formstree;
 
 type
@@ -214,7 +214,7 @@ uses
   scriptfuncs, exprfuncs, anchorsform, propdialogs, debugscriptform,
   mytypes, LConvEncoding, actionseditform, dxmains, dbctrlsex, dxfiles,
   dximages, templatefieldsform, appimagelists, dxreports, findactionsform,
-  findexprform, findscriptform, zipper, myzipper;
+  findexprform, findscriptform, zipper, myzipper, LazFileUtils, LazUtf8;
 
 {$R *.lfm}
 
@@ -497,8 +497,8 @@ begin
   FFormsTree.AddForm(Fm, False);
   Cache.AddForm(Fm);
   FormChanges.AddForm(Fm.Id, 0);
+  DXMain.AddForm(Fm.Id);
   UpdateTemplateFieldsForm;
-  //FormDesign.StructChanged := True;
 end;
 
 procedure TDesignFr.DeleteForm;
@@ -514,6 +514,8 @@ begin
     Fm := FormMan.FindForm(FCurForm.PId);
     G := FindGridById(Fm, FCurForm.Id);
     G.Free;
+
+    Fm.SetFormChanged;
   end;
 
   Fm := FCurForm;
@@ -533,6 +535,7 @@ begin
   Cache.DeleteForm(Fm);
   UndoMan.DeleteCache(Fm);
   FormChanges.DeleteForm(Fm.Id);
+  DXMain.DeleteForm(Fm.Id);
   FormMan.DeleteForm(Fm.Id);
   UpdateTemplateFieldsForm;
 end;
@@ -1069,6 +1072,9 @@ var
 begin
   try
 
+  if ScriptFm <> nil then ScriptFm.SaveAll;
+  FFormsTree.SaveTree;
+
   TempDir := GetTempDir + 'dx' + IntToStr(Random(1000000)) + DirectorySeparator;
   CreateDir(TempDir);
   FormMan.SaveToDir(TempDir);
@@ -1102,6 +1108,511 @@ begin
 end;
 
 procedure TDesignFr.ImportProject(const aFileName: String);
+
+  procedure CompareForms(Fm, OldFm: TdxForm);
+  var
+    i: Integer;
+    OldC, C: TComponent;
+  begin
+    for i := 0 to OldFm.ComponentCount - 1 do
+    begin
+      OldC := OldFm.Components[i];
+      if not IsField(OldC) then Continue;
+      C := FindById(Fm, GetId(OldC));
+      if C = nil then Cache.DeleteComponent(OldC)
+      else if IsTextComponent(C) and IsTextComponent(OldC) then
+      else if C.ClassName <> OldC.ClassName then Cache.DeleteComponent(OldC);
+    end;
+    for i := 0 to Fm.ComponentCount - 1 do
+    begin
+      C := Fm.Components[i];
+      if not IsField(C) then Continue;
+      OldC := FindById(OldFm, GetId(C));
+      if OldC = nil then Cache.AddComponent(C)
+      else if IsTextComponent(C) and IsTextComponent(OldC) then
+      begin
+        if GetFieldSize(C) <> GetFieldSize(OldC) then
+          Cache.SetFieldSize(C, GetFieldSize(OldC));
+      end
+      else if C.ClassName <> OldC.ClassName then Cache.AddComponent(C);
+    end;
+  end;
+
+  procedure ImportForms(const TempDir: String);
+  var
+    SL: TStringList;
+    IL: TIntegerList;
+    i, n: Integer;
+    Fm, ImportFm: TdxForm;
+    FileName: String;
+  begin
+    SL := TStringList.Create;
+    IL := TIntegerList.Create;
+
+    try
+
+    FindAllFiles(SL, TempDir, '*.frm', False);
+    for i := 0 to SL.Count - 1 do
+      if TryStrToInt(ChangeFileExt(ExtractFileName(SL[i]), ''), n) then
+        IL.AddValue(n);
+
+    // Удаляем формы, которых нет в списке
+    for i := FormMan.FormCount - 1 downto 0 do
+    begin
+      Fm := FormMan.Forms[i];
+      if IL.FindValue(Fm.Id) < 0 then
+      begin
+        Cache.DeleteForm(Fm);
+        FormChanges.DeleteForm(Fm.Id);
+        FormMan.DeleteForm(Fm.Id);
+      end;
+    end;
+
+    // Сравниваем формы
+    for i := FormMan.FormCount - 1 downto 0 do
+    begin
+      Fm := FormMan.Forms[i];
+      FileName := TempDir + IntToStr(Fm.Id) + '.frm';
+      if SameFileDateTime(FileName, Fm.LastModified) then Continue;
+
+      ImportFm := FormMan.LoadFromFile(FileName);
+      ImportFm.SetFormChanged;
+      ImportFm.LastModified := GetFileDateTime(FileName);
+      ScaleForm(ImportFm, DXMain.DesignTimePPI);
+
+      if ImportFm.PId <> Fm.PId then
+      begin
+        Cache.DeleteForm(Fm);
+        FormChanges.DeleteForm(Fm.Id);
+        FormMan.DeleteForm(Fm.Id);
+        Cache.AddFormWithComponents(ImportFm);
+        FormChanges.AddForm(ImportFm.Id, 0);
+        FormMan.AddForm(ImportFm);
+      end
+      else
+      begin
+        CompareForms(ImportFm, Fm);
+        FormMan.ReplaceForm(Fm, ImportFm);
+      end;
+    end;
+
+    // Добавление новых форм
+    for i := 0 to IL.Count - 1 do
+    begin
+      n := IL[i];
+      if FormMan.FindForm(n) <> nil then Continue;
+
+      FileName := TempDir + IntToStr(n) + '.frm';
+      ImportFm := FormMan.LoadFromFile(FileName);
+      ImportFm.LastModified := GetFileDateTime(FileName);
+      ScaleForm(ImportFm, DXMain.DesignTimePPI);
+
+      Cache.AddFormWithComponents(ImportFm);
+      FormChanges.AddForm(ImportFm.Id, 0);
+      FormMan.AddForm(ImportFm);
+    end;
+
+    FormMan.CorrectMaxTId;
+    FormMan.CorrectMaxFId;
+
+    finally
+      SL.Free;
+      IL.Free;
+    end;
+  end;
+
+  procedure ImportReports(const TempDir: String);
+  var
+    SL: TStringList;
+    IL: TIntegerList;
+    i, n: Integer;
+    RD, ImportRD: TReportData;
+    FileName: String;
+  begin
+    SL := TStringList.Create;
+    IL := TIntegerList.Create;
+
+    try
+
+    FindAllFiles(SL, TempDir, '*.rpt', False);
+    for i := 0 to SL.Count - 1 do
+      if TryStrToInt(ChangeFileExt(ExtractFileName(SL[i]), ''), n) then
+        IL.AddValue(n);
+
+    // Удаляем старые отчеты
+    for i := ReportMan.ReportCount - 1 downto 0 do
+    begin
+      RD := ReportMan.Reports[i];
+      if IL.FindValue(RD.Id) < 0 then
+        ReportMan.DeleteReport(RD);
+    end;
+
+    // Сравниваем отчеты
+    for i := 0 to ReportMan.ReportCount - 1 do
+    begin
+      RD := ReportMan.Reports[i];
+      FileName := TempDir + IntToStr(RD.Id) + '.rpt';
+      if SameFileDateTime(FileName, RD.LastModified) then Continue;
+
+      ImportRD := ReportMan.LoadFromFile(FileName);
+      ImportRD.SetReportChanged;
+      ImportRD.LastModified := GetFileDateTime(FileName);
+      ScaleReport(ImportRD, DXMain.DesignTimePPI, Screen.PixelsPerInch);
+      ReportMan.ReplaceReport(RD, ImportRD);
+    end;
+
+    // Добавляем новые
+    for i := 0 to IL.Count - 1 do
+    begin
+      n := IL[i];
+      if ReportMan.FindReport(n) <> nil then Continue;
+
+      FileName := TempDir + IntToStr(n) + '.rpt';
+      ImportRD := ReportMan.LoadFromFile(FileName);
+      ImportRD.LastModified := GetFileDateTime(FileName);
+      ScaleReport(ImportRD, DXMain.DesignTimePPI, Screen.PixelsPerInch);
+      ReportMan.AddReport(ImportRD);
+    end;
+
+    ReportMan.CorrectMaxId;
+
+    finally
+      SL.Free;
+      IL.Free;
+    end;
+  end;
+
+  procedure ImportScripts(const TempDir: String);
+  var
+    SL: TStringList;
+    Names: TStringListUtf8;
+    i: Integer;
+    SD, ImportSD: TScriptData;
+    FileName, Nm, Ext: String;
+    FmId: LongInt;
+    SDKind: TScriptKind;
+  begin
+    SL := TStringList.Create;
+    Names := TStringListUtf8.Create;
+    Names.CaseSensitive:=False;
+    FindAllFiles(SL, TempDir, '*.pas;*.fpas;*.epas;*.wfpas;*.wepas', False);
+
+    try
+
+      for i := 0 to SL.Count - 1 do
+        Names.Add(ExtractFileName(SL[i]));
+
+      // Удаляем старое
+      for i := ScriptMan.ScriptCount - 1 downto 0 do
+      begin
+        SD := ScriptMan.Scripts[i];
+
+        if (SD.Kind = skForm) and (Names.IndexOf(IntToStr(SD.FmId) + '.fpas') < 0) or
+          (SD.Kind = skWebForm) and (Names.IndexOf(IntToStr(SD.FmId) + '.wfpas') < 0) or
+          (SD.Kind = skExpr) and (Names.IndexOf(SD.Name + '.epas') < 0) or
+          (SD.Kind = skWebExpr) and (Names.IndexOf(SD.Name + '.wepas') < 0) or
+          (SD.Kind in [skUser, skWebMain]) and (Names.IndexOf(SD.Name + '.pas') < 0) then
+        begin
+          ScriptMan.DeleteScript(SD);
+        end;
+      end;
+
+      // Сравниваем
+      for i := 0 to ScriptMan.ScriptCount - 1 do
+      begin
+        SD := ScriptMan.Scripts[i];
+        FileName := TempDir + SD.GetFileName;
+        if SameFileDateTime(FileName, SD.LastModified) then Continue;
+
+        ImportSD := TScriptData.Create;
+        ImportSD.Source := LoadString(FileName);
+        ImportSD.SourceData.LoadFromFile(FileName + '.cfg');
+        ImportSD.Name := SD.Name;
+        ImportSD.FmId := SD.FmId;
+        ImportSD.Kind := SD.Kind;
+        ImportSD.Id := SD.Id;
+        ImportSD.PartChanges := [spcName, spcScript, spcExtra];
+        ImportSD.LastModified := GetFileDateTime(FileName);
+        ScriptMan.ReplaceScript(SD, ImportSD);
+      end;
+
+      // Добавляем новые
+      for i := 0 to Names.Count - 1 do
+      begin
+        FileName := TempDir + Names[i];
+        Nm := ExtractFileNameOnly(Names[i]);
+        Ext := LowerCase(ExtractFileExt(Names[i]));
+
+        FmId := 0;
+        if (Ext = '.fpas') and (ScriptMan.FindScript(StrToInt(Nm), skForm) = nil) then
+        begin
+          FmId := StrToInt(Nm);
+          SDKind := skForm;
+        end
+        else if (Ext = '.wfpas') and (ScriptMan.FindScript(StrToInt(Nm), skWebForm) = nil) then
+        begin
+          FmId := StrToInt(Nm);
+          SDKind := skWebForm;
+        end
+        else if (Ext = '.epas') and (ScriptMan.FindScriptByName(Nm) = nil) then
+        begin
+          SDKind := skExpr;
+        end
+        else if (Ext = '.wepas') and (ScriptMan.FindScriptByName(Nm) = nil) then
+        begin
+          SDKind := skWebExpr;
+        end
+        else if (Ext = '.pas') and (ScriptMan.FindScriptByName(Nm) = nil) then
+        begin
+          if Nm = 'WebMain' then SDKind := skWebMain
+          else SDKind := skUser;
+        end
+        else Continue;
+
+        if FmId > 0 then Nm := '';
+        ImportSD := ScriptMan.AddNewScript(FmId, Nm, LoadString(FileName));
+        ImportSD.SourceData.LoadFromFile(FileName + '.cfg');
+        ImportSD.Kind := SDKind;
+        ImportSD.LastModified := GetFileDateTime(FileName);
+
+      end;
+    finally
+      SL.Free;
+      Names.Free;
+    end;
+  end;
+
+  procedure ImportUsers(const TempDir: String);
+  var
+    UsersModified: TDateTime;
+    ConnId, UId, i: Integer;
+    TmpSt: TMemoryStream;
+    OldUsers: TdxUserList;
+    OldU, U: TdxUser;
+    FileName: String;
+  begin
+    FileName := TempDir + 'users';
+    if SameFileDateTime(FileName, UserMan.LastModified) then Exit;
+
+    TmpSt := TMemoryStream.Create;
+    OldUsers := TdxUserList.Create;
+
+    try
+
+      UserMan.Users.SaveToStream(TmpSt);
+      OldUsers.LoadFromStream(TmpSt);
+      ConnId := UserMan.ConnId;
+      UId := UserMan.CurrentUserId;
+
+      UserMan.LoadFromDir(TempDir);
+      UserMan.LastModified := GetFileDateTime(FileName);
+      UserMan.UsersChanged := True;
+      UserMan.RolesChanged := True;
+      UserMan.IntfsChanged := True;
+
+      UserMan.ConnId := ConnId;
+      if UserMan.Users.FindUser(UId) <> nil then UserMan.CurrentUserId:=UId;
+      if (UserMan.CurrentUser <> nil) and (UserMan.CurrentUser.RoleId >= 0) then
+        UserMan.CurrentUser.WasDeveloper := True;
+
+      // Восстанавливаем пароли старых пользователей
+      for i := 0 to OldUsers.Count - 1 do
+      begin
+        OldU := OldUsers[i];
+        U := UserMan.Users.FindUserByName(OldU.Name);
+        if U <> nil then U.Password := OldU.Password;
+      end;
+
+    finally
+      OldUsers.Free;
+      TmpSt.Free;
+    end;
+  end;
+
+  procedure UpdateImages;
+  var
+    i: Integer;
+  begin
+    for i := 0 to FormMan.FormCount - 1 do
+      UpdateImagesInForm(FormMan.Forms[i]);
+  end;
+
+  procedure GetImageFiles(SL: TStrings; const ImgName: String; out Img100, Img150, Img200, Img: String);
+  var
+    i: Integer;
+    Tmp, S: String;
+  begin
+    Img100 := '';
+    Img150 := '';
+    Img200 := '';
+    Img := '';
+    for i := 0 to SL.Count - 1 do
+    begin
+      if Utf8CompareText(SL.Names[i], ImgName) = 0 then
+      begin
+        S := SL.ValueFromIndex[i];
+        Tmp := RightStr(ExcludeTrailingPathDelimiter(ExtractFilePath(S)), 3);
+        if Tmp = '100' then Img100 := S
+        else if Tmp = '150' then Img150 := S
+        else if Tmp = '200' then Img200 := S;
+      end;
+    end;
+    if Img100 <> '' then Img := Img100
+    else if Img150 <> '' then Img := Img150
+    else if Img200 <> '' then Img := Img200;
+  end;
+
+  procedure ImportImages(const TempDir: String);
+  var
+    SL: TStringListUtf8;
+    DS: TSQLQuery;
+    i: Integer;
+    Img100, Img150, Img200, ImgFile, Nm: String;
+  begin
+    SL := TStringListUtf8.Create;
+
+    try
+      FindAllFiles(SL, TempDir, '*', True);
+
+      for i := 0 to SL.Count - 1 do
+        SL[i] := ExtractFileNameOnly(SL[i]) + '=' + SL[i];
+
+      DS := ImageMan.DataSet;
+
+      // Удаляем старое
+      DS.First;
+      while not DS.Eof do
+      begin
+        if SL.IndexOfName(DS.Fields[1].AsString) < 0 then
+          DS.Delete
+        else
+          DS.Next;
+      end;
+
+      // Сравниваем
+      DS.First;
+      while not DS.Eof do
+      begin
+        GetImageFiles(SL, DS.Fields[1].AsString, Img100, Img150, Img200, ImgFile);
+        if SameFileDateTime(ImgFile, DS.Fields[5].AsDateTime) then Continue;
+
+        DS.Edit;
+
+        // img_100
+        if Img100 <> '' then
+          TBlobField(DS.Fields[2]).LoadFromFile(Img100)
+        else
+          DS.Fields[2].SetData(nil);
+
+        // img_150
+        if Img150 <> '' then
+          TBlobField(DS.Fields[3]).LoadFromFile(Img150)
+        else
+          DS.Fields[3].SetData(nil);
+
+        // img_200
+        if Img200 <> '' then
+          TBlobField(DS.Fields[4]).LoadFromFile(Img200)
+        else
+          DS.Fields[4].SetData(nil);
+
+        // lastmodified
+        DS.Fields[5].AsDateTime := GetFileDateTime(ImgFile);
+
+        DS.Post;
+        DS.Next;
+      end;
+
+      // Добавляем новые
+      for i := 0 to SL.Count - 1 do
+      begin
+        Nm := SL.Names[i];
+        if DS.Locate('name', Nm, []) then Continue;
+        GetImageFiles(SL, Nm, Img100, Img150, Img200, ImgFile);
+
+        ImageMan.AddImage(Nm);
+        DS.Edit;
+        if Img100 <> '' then TBlobField(DS.Fields[2]).LoadFromFile(Img100);
+        if Img150 <> '' then TBlobField(DS.Fields[3]).LoadFromFile(Img150);
+        if Img200 <> '' then TBlobField(DS.Fields[4]).LoadFromFile(Img200);
+        DS.Fields[5].AsDateTime := GetFileDateTime(ImgFile);
+        DS.Post;
+      end;
+
+      UpdateImages;
+    finally
+      SL.Free;
+    end;
+  end;
+
+var
+  TempDir: String;
+  Ver: Integer;
+begin
+  if Cache.StructChanged then
+  begin
+    Info(rsSaveChangesBeforeImportMsg);
+    Exit;
+  end;
+
+  if ScriptFm <> nil then ScriptFm.SaveAll;
+
+  TempDir := GetTempDir + 'dx' + IntToStr(Random(1000000)) + DirectorySeparator;
+
+  try
+
+  with TMyUnZipper.Create do
+  try
+    FileName:=aFileName;
+    OutputPath:=TempDir;
+    ForceDirectories(OutputPath);
+    UnZipAllFiles;
+  finally
+    Free;
+  end;
+
+  Ver := GetVersionFromFile(TempDir);
+
+  if Ver < 31 then
+  begin
+    ErrMsg(rsDBNotSupport);
+    DeleteDirectory(TempDir, False);
+    Exit;
+  end;
+
+  FFormsTree.ClearAll;
+  ResetDesigner;
+  ResetTemplateFieldsForm;
+  UndoMan.Clear;
+  Cache.Clear;
+
+  DXMain.LoadFromDir(TempDir);
+  ImportForms(TempDir);
+  ImportReports(TempDir);
+  ImportScripts(TempDir);
+  ImportUsers(TempDir);
+  ImportImages(TempDir + 'images');
+  ConvertToDXMainVersion2(DXMain, FormMan, False);
+
+  FFormsTree.BuildTree;
+  CursorBn.Down := True;
+
+  DeleteDirectory(TempDir, False);
+  if AppConfig.ExpertMode and (ScriptFm <> nil) then
+    ScriptFm.Reset(False);
+  UpdateTemplateFieldsForm;
+  if FindActionsFm <> nil then FindActionsFm.Reset;
+  if FindExprFm <> nil then FindExprFm.Reset;
+  if FindScriptFm <> nil then FindScriptFm.Reset;
+  MessageDlg(rsImportProject, rsImportPrjOk, mtInformation, [mbOk], 0);
+
+  except
+    on E: Exception do
+      ErrMsg(rsImportProjectError + ExceptionToString(E, True, False));
+  end;
+end;
+
+(*procedure TDesignFr.ImportProject(const aFileName: String);
 
   procedure _CompareForms(Fm, OldFm: TdxForm);
   var
@@ -1298,13 +1809,15 @@ begin
     OldUsers.Free;
     TmpSt.Free;
   end;
-end;
+end; *)
 
 procedure TDesignFr.MergeProjects(const aFileName: String);
 var
   S: String;
 begin
   if ScriptFm <> nil then ScriptFm.SaveAll;
+  FFormsTree.SaveTree;
+
   if ShowMergeProjectsForm(aFileName) = mrOk then
   begin
     FFormsTree.BuildTree;
@@ -1716,6 +2229,7 @@ begin
         Fm := FormMan.FindForm(DCI.FmId);
       C := FindById(Fm, DCI.Id);
       SetFieldSize(C, DCI.OldSize);
+      Fm.SetFormChanged;
       // Т. к. мы вернули исходный размер полей, удаляем изменения из кэша.
       {DCI.Free;
       Cache.Remove(DCI); }
@@ -1724,19 +2238,6 @@ begin
   end;
   SL.Sort;
   Fields := Trim(SL.Text);
- { if SL.Count > 0 then
-  begin
-    SL.Sort;
-    ErrMsgFmt(rsResizeFieldsCancel, [AroundSpaces(Trim(SL.Text))]);
-    try
-      FormMan.SaveToDb;
-      DBase.Commit;
-      Info(rsSaveFormsOk);
-    except
-      on E: Exception do
-        ErrMsgFmt(rsSaveFormsError, [ExceptionToString(E, True, True)]);
-    end;
-  end;}
   SL.Free;
 end;
 
@@ -1755,10 +2256,12 @@ begin
 
   if not CheckBeforeChangeStruct then Exit;
 
+  FFormsTree.SaveTree;
+
   if ScriptFm <> nil then ScriptFm.SaveAll;
   // В случае ошибок bin-ы не будут обновлены.
-  if AppConfig.Caching and ScriptMan.NeedCompile then
-    ScriptMan.CompileAll;
+  {if AppConfig.Caching and ScriptMan.NeedCompile then
+    ScriptMan.CompileAll;    }
 
   try
     ImageMan.SaveToDb;
@@ -1770,6 +2273,10 @@ begin
     DXMain.SaveToDb;
     ChangeStruct;
     DBase.Commit;
+
+    // Т. к. флаг ставится при выборе формы, а при сохранении флаг сбрасывается,
+    // ставим флаг на текущей выбранной форме
+    if FCurForm <> nil then FCurForm.SetFormChanged;
   except
     on E: Exception do
     begin
@@ -1815,8 +2322,6 @@ begin
     DXMain.SetLastModified;
     DBase.ReadCommit;
     DBase.StartReadTrans;
-
-    if CanCache then SaveMetaToCache;
   end;
 
   Result := True;
@@ -2074,6 +2579,13 @@ begin
   UpdateToolbarState;
   UpdateStatusBar;
   UndoMan.SelectCache(Fm);
+  // Чтобы сильно не погружаться в дебри кода решил ставить флаг изменения формы,
+  // когда пользователь выбирает ее в дизайнере. При большом количестве форм
+  // вряд ли пользователь просматривает все формы. Даже в таком случае скорость
+  // сохранения будет существенно выше, чем сохранение всех форм. Если же
+  // ставить флаг, только при каком-либо изменении в форме или его компонентах,
+  // это потребует вызывать метод SetFormChanged в сотне-другой местах кода.
+  Fm.SetFormChanged;
 end;
 
 procedure TDesignFr.SaveFormsAgain;

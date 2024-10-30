@@ -35,6 +35,7 @@ type
     Msg: TLabel;
     Progress: TProgressBar;
     Shape1: TShape;
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -50,7 +51,7 @@ procedure CloseProgress;
 implementation
 
 uses
-  mainform, dbengine;
+  mainform, dbengine, apputils;
 
 procedure ShowProgress(const aMsg: String; Marquee: Boolean);
 begin
@@ -72,6 +73,11 @@ end;
 {$R *.lfm}
 
 { TProgressFm }
+
+procedure TProgressFm.FormCreate(Sender: TObject);
+begin
+  SetupPicture(Image1.Picture, 'logo64');
+end;
 
 procedure TProgressFm.ShowForm(const aMsg: String; Marquee: Boolean);
 begin

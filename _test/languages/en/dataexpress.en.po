@@ -1711,8 +1711,7 @@ msgid "I confirm deletion"
 msgstr ""
 
 #: strconsts.rsdelrecsmsg
-#, object-pascal-format
-msgid "Warning!%sDo you want to delete all records selected current filters. The data will be deleted forever.%sAre you sure?"
+msgid "Do you want to delete all records selected current filters. The data will be deleted forever. Are you sure?"
 msgstr ""
 
 #: strconsts.rsdensityperc
@@ -2792,6 +2791,10 @@ msgstr ""
 msgid "Form actions"
 msgstr ""
 
+#: strconsts.rsformalreadyselected
+msgid "This form has already been selected."
+msgstr ""
+
 #: strconsts.rsformat
 msgid "Format"
 msgstr ""
@@ -2945,6 +2948,11 @@ msgstr ""
 
 #: strconsts.rsfuncnotsel
 msgid "Function not selected."
+msgstr ""
+
+#: strconsts.rsfunconlynumber
+#, object-pascal-format
+msgid "The \"%s\" function must have a data type of number."
 msgstr ""
 
 #: strconsts.rsfunction

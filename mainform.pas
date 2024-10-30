@@ -213,11 +213,11 @@ implementation
 
 uses
   dbengine, appsettings, LazUtf8, mainframe, LResources, apputils, settingsform,
-  Translations, recalcform, loginform, importform, exportform, deleterecsform,
+  Translations, recalcform, loginform, importform, exportform,
   setvalueform, md5, dxusers, monitorform, scriptmanager, outputform,
   langmanager, aboutform, formmanager, ConnectionsForm, progressform,
   helpmanager, dxmains, LazFileUtils, imagemanager,
-  appimagelists, reportmanager, mydialogs, crypt, mylogger{$ifdef DXFull},
+  appimagelists, reportmanager, mydialogs, crypt, mylogger, warningform{$ifdef DXFull},
   reportsform, usersform, modulesform, debugscriptform, scriptform,
   templatefieldsform, imagesform, designerframe, findactionsform,
   findexprform, findscriptform, updatemanform, updatemanager{$endif}
@@ -923,7 +923,7 @@ begin
     end
     // Если удалялись отчеты, то пункты меню тоже были удалены. Надо сохранить
     // изменения и перестроить меню.
-    else if ReportsFm.DelRps.Count > 0 then
+    else if (ReportsFm.DelRps.Count > 0) or ReportsFm.WasRename then
     begin
       ClearMenu;
       MainFr.BuildMenu;
@@ -1034,7 +1034,8 @@ begin
     ErrMsg(rsNoFormsAvailable)
   else if MainFr.CurView.Form.ViewType = vtSimpleForm then
   	ErrMsg(rsThisCommandNotApplySimpleForm)
-  else if ShowDeleteRecsForm = mrOk then
+  //else if ShowDeleteRecsForm = mrOk then
+  else if ShowWarnForm(rsDeleteRecords, rsDelRecsMsg, rsDeleteRecords) = mrOk then
     MainFr.CurView.DataSetProc.DeleteAllRecords;
 end;
 
@@ -1451,9 +1452,10 @@ begin
     if Ver < 32 then DXMain.CreateMain;
     if Ver < 33 then DXMain.UpdateMain;
     if Ver < 34 then ImageMan.CreateTable;
+    if Ver < 35 then DXMain.UpdateMain2;
     if Ver < DX_VERSION then
     begin
-      DXMain.UpdateMain2;
+      DBase.UpdateDatabase;
   	  DBase.UpdateVersion(DX_VERSION);
     end;
     if Ver > DX_VERSION then
@@ -1535,21 +1537,22 @@ begin
   try
 
     DXMain.LoadFromDB;
-    if not CanCache or not IsFreshCache then
+    if not CanCache then
     begin
       ShowProgress(rsPreparingToWork, True);
       ImageMan.LoadFromDB;
       FormMan.LoadFromDB;
       ReportMan.LoadFromDB;
       ScriptMan.LoadFromDB;
-      AppConfig.CacheLoaded := False;
     end
     else
     begin
-      ShowProgress(rsPreparingToWork, False);
+      ShowProgress(rsPreparingToWork, True);
       LoadMetaFromCache;
-      AppConfig.CacheLoaded := True;
     end;
+
+    ConvertToDXMainVersion2(DXMain, FormMan, True);
+
     ScaleForms(FormMan, DXMain.DesignTimePPI);
     ScaleReports(ReportMan, DXMain.DesignTimePPI, Screen.PixelsPerInch);
 

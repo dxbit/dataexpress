@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, CheckLst,
-  ButtonPanel, StdCtrls, ExtCtrls, Buttons, strconsts, DxCtrls;
+  ButtonPanel, StdCtrls, ExtCtrls, Buttons, strconsts, DxCtrls, DialogGrid;
 
 type
 
@@ -32,19 +32,18 @@ type
 
   TVisibleFormsFm = class(TForm)
     ButtonPanel1: TButtonPanel;
-    List: TCheckListBox;
-    Panel1: TPanel;
-    UpBn: TSpeedButton;
-    DownBn: TSpeedButton;
+    Grid: TDialogGrid;
+    DialogGridButtons1: TDialogGridButtons;
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure GridCommand(Sender: TObject; Cmd: TDialogGridCommand);
     procedure HelpButtonClick(Sender: TObject);
-    procedure ListSelectionChange(Sender: TObject; User: boolean);
-    procedure UpBnClick(Sender: TObject);
-    procedure DownBnClick(Sender: TObject);
   private
     { private declarations }
-    procedure SetControlState;
+    procedure Load;
+    procedure Save;
+    function Validate: Boolean;
   public
     { public declarations }
     function ShowForm: Integer;
@@ -58,7 +57,7 @@ function ShowVisibleFormsForm: Integer;
 implementation
 
 uses
-  apputils, helpmanager, formmanager;
+  apputils, helpmanager, formmanager, dxmains;
 
 function ShowVisibleFormsForm: Integer;
 begin
@@ -73,18 +72,40 @@ end;
 
 procedure TVisibleFormsFm.FormCreate(Sender: TObject);
 begin
-  SetupSpeedButton(UpBn, 'up16');
-  SetupSpeedButton(DownBn, 'down16');
   Caption := rsOrderVisibleForms;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption:=rsHelp;
 end;
 
+procedure TVisibleFormsFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean
+  );
+begin
+  if ModalResult = mrOk then
+  begin
+    CanClose := Validate;
+  end;
+end;
+
 procedure TVisibleFormsFm.FormShow(Sender: TObject);
 begin
-  List.SetFocus;
-  SetControlState;
+  Grid.SetFocus;
+end;
+
+procedure TVisibleFormsFm.GridCommand(Sender: TObject; Cmd: TDialogGridCommand);
+var
+  r: Integer;
+begin
+  if Cmd = dgcAppend then
+  begin
+    r := Grid.RowCount;
+    Grid.RowCount := r + 1;
+    Grid.Row := r;
+  end
+  else if Cmd = dgcDelete then
+  begin
+    Grid.DeleteRow(Grid.Row);
+  end;
 end;
 
 procedure TVisibleFormsFm.HelpButtonClick(Sender: TObject);
@@ -92,64 +113,65 @@ begin
   OpenHelp('visibleforms');
 end;
 
-procedure TVisibleFormsFm.ListSelectionChange(Sender: TObject; User: boolean);
-begin
-  SetControlState;
-end;
-
-procedure TVisibleFormsFm.UpBnClick(Sender: TObject);
-var
-  i: Integer;
-  Tmp: Boolean;
-begin
-  i := List.ItemIndex;
-  Tmp := List.Checked[i];
-  List.Checked[i] := List.Checked[i - 1];
-  List.Checked[i - 1] := Tmp;
-  List.Items.Exchange(i, i - 1);
-  List.ItemIndex := i - 1;
-  SetControlState;
-end;
-
-procedure TVisibleFormsFm.DownBnClick(Sender: TObject);
-var
-  i: Integer;
-  Tmp: Boolean;
-begin
-  i := List.ItemIndex;
-  Tmp := List.Checked[i];
-  List.Checked[i] := List.Checked[i + 1];
-  List.Checked[i + 1] := Tmp;
-  List.Items.Exchange(i, i + 1);
-  List.ItemIndex := i + 1;
-  SetControlState;
-end;
-
-procedure TVisibleFormsFm.SetControlState;
-begin
-  UpBn.Enabled := List.ItemIndex > 0;
-  DownBn.Enabled := (List.ItemIndex >= 0) and (List.ItemIndex < List.Count - 1);
-end;
-
-function TVisibleFormsFm.ShowForm: Integer;
+procedure TVisibleFormsFm.Load;
 var
   i: Integer;
   Fm: TdxForm;
 begin
-  FormMan.SortFormsByIndex(List.Items);
-  for i := 0 to List.Count - 1 do
+  Grid.RowCount := DXMain.Tabs.Count;
+  for i := 0 to DXMain.Tabs.Count - 1 do
   begin
-    Fm := TdxForm(List.Items.Objects[i]);
-    List.Checked[i] := Fm.AutoOpen;
+    Fm := FormMan.FindForm(DXMain.Tabs[i]);
+    Grid.Cells[0, i] := Fm.FormCaption;
+    Grid.Objects[0, i] := Fm;
   end;
+end;
+
+procedure TVisibleFormsFm.Save;
+var
+  i: Integer;
+  Fm: TdxForm;
+begin
+  DXMain.Tabs.Clear;
+  for i := 0 to Grid.RowCount - 1 do
+  begin
+    Fm := TdxForm(Grid.Objects[0, i]);
+    DXMain.Tabs.AddValue(Fm.Id);
+  end;
+end;
+
+function TVisibleFormsFm.Validate: Boolean;
+var
+  i, j: Integer;
+begin
+  Result := False;
+  for i := 0 to Grid.RowCount - 1 do
+  begin
+    if Grid.Cells[0, i] = '' then
+    begin
+      ErrMsg(rsFormNotSel);
+      Grid.Row := i;
+      Exit;
+    end;
+    for j := i + 1 to Grid.RowCount - 1 do
+    begin
+      if Grid.Cells[0, j] = Grid.Cells[0, i] then
+      begin
+        ErrMsg(rsFormAlreadySelected);
+        Grid.Row := j;
+        Exit;
+      end;
+    end;
+  end;
+  Result := True;
+end;
+
+function TVisibleFormsFm.ShowForm: Integer;
+begin
+  Load;
+  FormMan.FormsToList(Grid.Columns[0].PickList);
   Result := ShowModal;
-  if Result <> mrOk then Exit;
-  for i := 0 to List.Count - 1 do
-  begin
-    Fm := TdxForm(List.Items.Objects[i]);
-    Fm.AutoOpen := List.Checked[i];
-    Fm.Index := i;
-  end;
+  if Result = mrOk then Save;
 end;
 
 end.

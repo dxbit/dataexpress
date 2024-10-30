@@ -79,6 +79,12 @@ var
   Images32: TImageList;
   Images48: TImageList;
 
+  Images_16: TImageList;
+  Images_24: TImageList;
+  Images_32: TImageList;
+  Images_36: TImageList;
+  Images_48: TImageList;
+
 implementation
 
 uses
@@ -119,24 +125,56 @@ begin
   Images48.Height := 48;
   for i := 0 to High(Img48) do
     Images48.AddLazarusResource(Img48[i]);
+
+
+  Images_16 := TImageList.Create(nil);
+  Images_16.Width := 16;
+  Images_16.Height := 16;
+
+  Images_24 := TImageList.Create(nil);
+  Images_24.Width := 24;
+  Images_24.Height := 24;
+
+  Images_32 := TImageList.Create(nil);
+  Images_32.Width := 32;
+  Images_32.Height := 32;
+
+  Images_36 := TImageList.Create(nil);
+  Images_36.Width := 36;
+  Images_36.Height := 36;
+
+  Images_48 := TImageList.Create(nil);
+  Images_48.Width := 48;
+  Images_48.Height := 48;
 end;
 
 procedure ClearImageLists;
-var
-  i: Integer;
 begin
-  for i := Images16.Count - 1 downto High(Img16) + 1 do
+  Images_16.Clear;
+  Images_24.Clear;
+  Images_32.Clear;
+  Images_36.Clear;
+  Images_48.Clear;
+  {for i := Images16.Count - 1 downto High(Img16) + 1 do
     Images16.Delete(i);
   for i := Images24.Count - 1 downto High(Img24) + 1 do
     Images24.Delete(i);
   for i := Images32.Count - 1 downto High(Img32) + 1 do
     Images32.Delete(i);
+  for i := Images_36.Count - 1 downto 0 do
+    Images_36.Delete(i);
   for i := Images48.Count - 1 downto High(Img48) + 1 do
-    Images48.Delete(i);
+    Images48.Delete(i);}
 end;
 
 procedure FreeImageLists;
 begin
+  FreeAndNil(Images_16);
+  FreeAndNil(Images_24);
+  FreeAndNil(Images_32);
+  FreeAndNil(Images_36);
+  FreeAndNil(Images_48);
+
   FreeAndNil(Images16);
   FreeAndNil(Images24);
   FreeAndNil(Images32);

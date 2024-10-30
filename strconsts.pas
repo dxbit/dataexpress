@@ -579,8 +579,8 @@ resourcestring
   rsCollapseAll = 'Collapse all';
   rsDeleteRecords = 'Delete records';
   rsErrDelRecs = 'Some records have not been deleted.';
-  rsDelRecsMsg = 'Warning!%sDo you want to delete all records selected '
-    +'current filters. The data will be deleted forever.%sAre you sure?';
+  rsDelRecsMsg = 'Do you want to delete all records selected '
+    +'current filters. The data will be deleted forever. Are you sure?';
   rsDelRecsConfirm = 'I confirm deletion';
   rsSetValue = 'Set value';
   rsEnterExpr = 'Enter expression';
@@ -1829,6 +1829,8 @@ resourcestring
   rsHiddenComponents = 'Hidden components';
   rsHideComponent = 'Hide component';
   rsDataCantGroupByFilesImages = 'Data cannot be grouped by file or image.';
+  rsFormAlreadySelected = 'This form has already been selected.';
+  rsFuncOnlyNumber = 'The "%s" function must have a data type of number.';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

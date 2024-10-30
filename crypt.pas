@@ -25,7 +25,7 @@ unit crypt;
 interface
 
 uses
-  Classes, SysUtils, base64;
+  Classes, SysUtils, base64, DCPrc6, DCPsha1;
 
 const
   StartKey = 174; // Start default key
@@ -36,6 +36,9 @@ const
 function Encrypt(const InString: string; StartKey, MultKey, AddKey: Integer): string;
 
 function Decrypt(InString: string; StartKey, MultKey, AddKey: Integer): string;
+
+procedure EncryptStream(Src, Dest: TStream; const Key: String);
+procedure DecryptStream(Src, Dest: TStream; const Key: String);
 
 implementation
 
@@ -101,6 +104,29 @@ begin
     StartKey := (Byte(InString[I]) + StartKey) * MultKey + AddKey;
   end;
 end;
+
+procedure EncryptStream(Src, Dest: TStream; const Key: String);
+var
+  Cipher: TDCP_rc6;
+begin
+  Cipher:= TDCP_rc6.Create(nil);
+  Cipher.InitStr(Key, TDCP_sha1);
+  Cipher.EncryptStream(Src, Dest, Src.Size);
+  Cipher.Burn;
+  Cipher.Free;
+end;
+
+procedure DecryptStream(Src, Dest: TStream; const Key: String);
+var
+  Cipher: TDCP_rc6;
+begin
+  Cipher:= TDCP_rc6.Create(nil);
+  Cipher.InitStr(Key, TDCP_sha1);
+  Cipher.DecryptStream(Src, Dest, Src.Size);
+  Cipher.Burn;
+  Cipher.Free;
+end;
+
 {$R+}
 {$Q+}
 

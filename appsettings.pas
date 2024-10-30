@@ -77,7 +77,7 @@ type
     FAppOdsFile: String;
     FAppOdtFile: String;
     FAppXmlFile: String;
-    FCacheLoaded: Boolean;
+    //FCacheLoaded: Boolean;
     FCaching: Boolean;
     FCheckUpdates: Boolean;
     FConfirmExit: Boolean;
@@ -188,7 +188,7 @@ type
     property FormState: TWindowState read FFormState write FFormState;
     property ConfirmExit: Boolean read FConfirmExit write FConfirmExit;
     property Caching: Boolean read FCaching write FCaching;
-    property CacheLoaded: Boolean read FCacheLoaded write FCacheLoaded;
+    //property CacheLoaded: Boolean read FCacheLoaded write FCacheLoaded;
     property CheckUpdates: Boolean read FCheckUpdates write FCheckUpdates;
     property UpdatesDBPath: String read FUpdatesDBPath write FUpdatesDBPath;
     property UpdatesDBPwd: String read FUpdatesDBPwd write FUpdatesDBPwd;

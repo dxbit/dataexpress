@@ -97,6 +97,7 @@ type
     //FInDesigner: Boolean;
     FModified, FInDesigner: Boolean;
     FDelRps: TList;
+    FWasRename: Boolean;
     //FCloneReportMan: TReportManager;
     procedure FillReports;
     //procedure CheckQueries;
@@ -106,6 +107,7 @@ type
     { public declarations }
     function ShowForm(InDesigner: Boolean; SelReport: TReportData = nil): Integer;
     property DelRps: TList read FDelRps;
+    property WasRename: Boolean read FWasRename;
   end;
 
 var
@@ -159,7 +161,11 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  if ShowCalcForm(RD, nil, nil, FInDesigner) = mrOk then FModified := True;
+  if ShowCalcForm(RD, nil, nil, FInDesigner) = mrOk then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem11Click(Sender: TObject);
@@ -167,7 +173,11 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  ShowTotalsForm(RD);
+  if ShowTotalsForm(RD) = mrOk then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem12Click(Sender: TObject);
@@ -178,7 +188,11 @@ begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
   OldText := RD.HelpText;
   RD.HelpText:=Trim(ShowHelpTextForm(RD.HelpText));
-  if OldText <> RD.HelpText then FModified := True;
+  if OldText <> RD.HelpText then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem13Click(Sender: TObject);
@@ -216,7 +230,11 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  if ShowQueryColoringForm(RD, nil) = mrOk then FModified := True;
+  if ShowQueryColoringForm(RD, nil) = mrOk then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem15Click(Sender: TObject);
@@ -224,7 +242,8 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  ShowStringsForm(rsTemplates, 'reporttemplates', RD.Templates);
+  if ShowStringsForm(rsTemplates, 'reporttemplates', RD.Templates) = mrOk then
+    RD.SetReportChanged;
 end;
 
 procedure TReportsFm.MenuItem16Click(Sender: TObject);
@@ -238,7 +257,11 @@ begin
   begin
     Fm := CreateReportForm(RD, S);
     if ShowReportPrintFieldsForm(Fm) = mrOk then
+    begin
       RD.PrintFields.Assign(Fm.CalcFields);
+      RD.SetReportChanged;
+      FModified := True;
+    end;
     Fm.Free;
   end
   else
@@ -307,7 +330,9 @@ begin
     RD.Name := S;
     List.Items[i] := S;
 
+    RD.SetReportChanged;
     FModified := True;
+    FWasRename := True;
   end;
 end;
 
@@ -316,8 +341,11 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  if ShowReportForm(RD, nil, nil, FInDesigner) = mrOk then FModified := True;
-  //ShowSelectionForm(RD);
+  if ShowReportForm(RD, nil, nil, FInDesigner) = mrOk then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem6Click(Sender: TObject);
@@ -330,6 +358,7 @@ begin
   if ShowExprForm(etOutputFilter, nil, S, nil, nil, nil, RD) = mrOk then
   begin
     RD.Filter := S;
+    RD.SetReportChanged;
     FModified := True;
   end;
 end;
@@ -339,7 +368,11 @@ var
   RD: TReportData;
 begin
   RD := TReportData(List.Items.Objects[List.ItemIndex]);
-  if ShowRpGridForm(nil, RD) = mrOk then FModified := True;
+  if ShowRpGridForm(nil, RD) = mrOk then
+  begin
+    RD.SetReportChanged;
+    FModified := True;
+  end;
 end;
 
 procedure TReportsFm.MenuItem9Click(Sender: TObject);
@@ -500,6 +533,7 @@ begin
   if not InDesigner and not DXMain.CanProjectChange then Exit(mrCancel);
 
   FModified := False;
+  FWasRename := False;
   FInDesigner := InDesigner;
   FDelRps.Clear;
   FillReports;

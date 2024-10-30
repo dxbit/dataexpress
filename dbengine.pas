@@ -27,7 +27,7 @@ uses
   Controls, LazFileUtils, dxctrls, strconsts, dxreports;
 
 const
-  DX_VERSION = 35;
+  DX_VERSION = 36;
 
 type
 
@@ -108,8 +108,11 @@ type
     function OpenDataSet(const SQL: String): TSQLQuery;
     //function OpenSysTable(const SQL, Table: String): TSQLQuery;
     procedure CreateDatabase;
+    procedure UpdateDatabase;
     procedure Execute(const aSQL: String);
     procedure ExecuteWithoutCommit(const aSQL: String);
+    function CreateQuery(const ASQL: String): TSQLQuery;
+    procedure ExecuteQuery(DS: TSQLQuery);
     function GenId(const S: String; N: Integer = 1): Integer;
     procedure ChangeId(const S: String; Value: Integer);
     function GetCurrentId(const S: String): Variant;
@@ -566,28 +569,37 @@ procedure TDBEngine.CreateDatabase;
 begin
   FBLoader.LoadFirebirdLibrary(Self);
   FConn.CreateDB;
-  Execute('CREATE TABLE DX_FORMS (ID INTEGER, FORM BLOB SUB_TYPE 1 SEGMENT SIZE 80);' +
+  Execute('CREATE TABLE DX_FORMS (ID INTEGER, FORM BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
     'CREATE SEQUENCE GEN_TID;' +
     'CREATE SEQUENCE GEN_FID;' +
-    'CREATE TABLE DX_REPORTS (ID INTEGER, DATA BLOB SUB_TYPE 1 SEGMENT SIZE 80);' +
+    'CREATE TABLE DX_REPORTS (ID INTEGER, DATA BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
     'CREATE SEQUENCE GEN_RID;' +
     'CREATE TABLE DX_USERS (ID INTEGER, USERS BLOB SUB_TYPE 1 SEGMENT SIZE 80,' +
-    'ROLES BLOB SUB_TYPE 1 SEGMENT SIZE 80, INTFS BLOB SUB_TYPE 1 SEGMENT SIZE 80);' +
+    'ROLES BLOB SUB_TYPE 1 SEGMENT SIZE 80, INTFS BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
     'CREATE TABLE DX_CONN (ID INTEGER, UID INTEGER, MODE INTEGER, DTIME TIMESTAMP);' +
     'CREATE TABLE DX_LOCK (CID INTEGER, UID INTEGER, FMID INTEGER, RECID INTEGER, DTIME TIMESTAMP);' +
     'CREATE TABLE DX_SCRIPTS (ID INTEGER, ' +
     'SCRIPT BLOB SUB_TYPE 1 SEGMENT SIZE 80, EXTRA BLOB SUB_TYPE 1 SEGMENT SIZE 80, ' +
-    'FMID INTEGER, NAME VARCHAR(255), KIND SMALLINT);' +
+    'FMID INTEGER, NAME VARCHAR(255), KIND SMALLINT, LASTMODIFIED TIMESTAMP);' +
     'CREATE TABLE DX_MAIN (ID INTEGER, ACTIONS BLOB SUB_TYPE 1 SEGMENT SIZE 80, ' +
       'SETTINGS BLOB SUB_TYPE 1 SEGMENT SIZE 80, ' +
       'LASTMODIFIED TIMESTAMP);' +
     'CREATE TABLE DX_IMAGES (ID INTEGER, NAME VARCHAR(50), ' +
       'IMG_100 BLOB SUB_TYPE 0 SEGMENT SIZE 512, ' +
       'IMG_150 BLOB SUB_TYPE 0 SEGMENT SIZE 512, ' +
-      'IMG_200 BLOB SUB_TYPE 0 SEGMENT SIZE 512);' +
+      'IMG_200 BLOB SUB_TYPE 0 SEGMENT SIZE 512, LASTMODIFIED TIMESTAMP);' +
     'CREATE TABLE DX_VERSION (VERSION INTEGER);' +
     'COMMIT;' +
     'INSERT INTO DX_VERSION (VERSION) VALUES (' + IntToStr(DX_VERSION) + ');');
+end;
+
+procedure TDBEngine.UpdateDatabase;
+begin
+  Execute('ALTER TABLE DX_FORMS ADD LASTMODIFIED TIMESTAMP;' +
+    'ALTER TABLE DX_REPORTS ADD LASTMODIFIED TIMESTAMP;' +
+    'ALTER TABLE DX_USERS ADD LASTMODIFIED TIMESTAMP;' +
+    'ALTER TABLE DX_SCRIPTS ADD LASTMODIFIED TIMESTAMP;' +
+    'ALTER TABLE DX_IMAGES ADD LASTMODIFIED TIMESTAMP;');
 end;
 
 procedure TDBEngine.Execute(const aSQL: String);
@@ -636,6 +648,30 @@ begin
     finally
       Free;
     end;
+end;
+
+function TDBEngine.CreateQuery(const ASQL: String): TSQLQuery;
+begin
+  Result := TSQLQuery.Create(nil);
+  with Result do
+  begin
+    Database := FConn;
+    Transaction := FUpdateTrans;
+    SQL.Text := ASQL;
+  end;
+end;
+
+procedure TDBEngine.ExecuteQuery(DS: TSQLQuery);
+begin
+  try
+    DS.ExecSQL;
+  except
+    on E: EIBDatabaseError do
+    begin
+      FUpdateTrans.Rollback;
+      raise;
+    end;
+  end;
 end;
 
 function TDBEngine.GenId(const S: String; N: Integer): Integer;

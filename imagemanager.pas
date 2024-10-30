@@ -63,6 +63,7 @@ type
     procedure SaveToDb;
     procedure LoadFromDir(const Dir: String);
     procedure SaveToDir(const Dir: String);
+    procedure LoadFromCache(const Dir: String);
     procedure GetNames(SL: TStrings);
     procedure AddImage(const AName: String);
     procedure RenameImage(const OldName, NewName: String);
@@ -111,13 +112,15 @@ var
 begin
   Result := nil;
   if (Bitmap.Width = 16) and (Bitmap.Height = 16) then
-    IL := Images16
-  else if (Bitmap.Width = 24) and (Bitmap.Width = 24) then
-    IL := Images24
-  else if (Bitmap.Width = 32) and (Bitmap.Width = 32) then
-    IL := Images32
-  else if (Bitmap.Width = 48) and (Bitmap.Width = 48) then
-    IL := Images48
+    IL := Images_16
+  else if (Bitmap.Width = 24) and (Bitmap.Height = 24) then
+    IL := Images_24
+  else if (Bitmap.Width = 32) and (Bitmap.Height = 32) then
+    IL := Images_32
+  else if (Bitmap.Width = 36) and (Bitmap.Height = 36) then
+    IL := Images_36
+  else if (Bitmap.Width = 48) and (Bitmap.Height = 48) then
+    IL := Images_48
   else
     Exit;
 
@@ -212,7 +215,7 @@ end;
 procedure TImageManager.LoadFromDb;
 begin
   FDataSet.Close;
-  FDataSet.SQL.Text := 'select id, name, img_100, img_150, img_200 from dx_images';
+  FDataSet.SQL.Text := 'select id, name, img_100, img_150, img_200, lastmodified from dx_images';
   FDataSet.Open;
   FDataSet.Fields[0].ProviderFlags:=[pfInWhere, pfInKey, pfInUpdate];
   FMaxId := GetMaxId;
@@ -256,6 +259,7 @@ procedure TImageManager.LoadFromDir(const Dir: String);
         Inc(FMaxId);
         FDataSet.Fields[0].AsInteger := FMaxId;
         FDataSet.Fields[1].AsString := ImgNm;
+        FDataSet.Fields[5].AsDateTime := GetFileDateTime(SL[i]);
       end;
 
       St := FDataSet.CreateBlobStream(FDataSet.Fields[idx + 2], bmWrite);
@@ -272,7 +276,7 @@ var
 begin
   if not FDataSet.Active then
   begin
-    FDataSet.SQL.Text := 'select id, name, img_100, img_150, img_200 from dx_images where id=0';
+    FDataSet.SQL.Text := 'select id, name, img_100, img_150, img_200, lastmodified from dx_images where id=0';
     FDataSet.Open;
     FDataSet.Fields[0].ProviderFlags:=[pfInWhere, pfInKey, pfInUpdate];
   end;
@@ -291,6 +295,7 @@ var
   Dir100, Dir150, Dir200, Nm: String;
   St: TStream;
   FS: TFileStream;
+  LastModified: TDateTime;
 begin
   Dir100 := Dir + 'images' + PathDelim + '100' + PathDelim;
   Dir150 := Dir + 'images' + PathDelim + '150' + PathDelim;
@@ -302,6 +307,7 @@ begin
   while not FDataSet.Eof do
   begin
     Nm := FDataSet.Fields[1].AsString;
+    LastModified := FDataSet.Fields[5].AsDateTime;
 
     // 100
     St := FDataSet.CreateBlobStream(FDataSet.Fields[2], bmRead);
@@ -311,6 +317,7 @@ begin
       FS := TFileStream.Create(Dir100 + Nm + '.' +
         ImgFormatToExt(DetectFileFormat(St)), fmCreate);
       FS.CopyFrom(St, St.Size);
+      SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
     end;
@@ -321,6 +328,7 @@ begin
       FS := TFileStream.Create(Dir150 + Nm + '.' +
         ImgFormatToExt(DetectFileFormat(St)), fmCreate);
       FS.CopyFrom(St, St.Size);
+      SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
     end;
@@ -331,11 +339,133 @@ begin
       FS := TFileStream.Create(Dir200 + Nm + '.' +
         ImgFormatToExt(DetectFileFormat(St)), fmCreate);
       FS.CopyFrom(St, St.Size);
+      SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
     end;
     FDataSet.Next;
   end;
+end;
+
+procedure ExtractImageFiles(SL: TStringList; out Img100, Img150, Img200, Img, ImgName: String);
+var
+  i: Integer;
+  Tmp, S: String;
+begin
+  Img := SL[0];
+  ImgName := ExtractFileNameOnly(Img);
+
+  for i := SL.Count - 1 downto 0 do
+  begin
+    S := SL[i];
+    if ExtractFileNameOnly(S) = ImgName then
+    begin
+      Tmp := RightStr(ExcludeTrailingPathDelimiter(ExtractFilePath(S)), 3);
+      if Tmp = '100' then Img100 := S
+      else if Tmp = '150' then Img150 := S
+      else Img200 := S;
+      SL.Delete(i);
+    end;
+  end;
+end;
+
+type
+  TImgInfo = record
+    Img100, Img150, Img200, Img, ImgName: String;
+    Id: Integer;
+  end;
+
+procedure TImageManager.LoadFromCache(const Dir: String);
+var
+  SL: TStringList;
+  Img100, Img150, Img200, Img, ImgNm, Ids: String;
+  DS: TSQLQuery;
+  ImgInfo: array of TImgInfo;
+  n, i: Integer;
+  Inf: TImgInfo;
+begin
+  SL := TStringList.Create;
+  DS := DBase.OpenDataSet('select id, name, lastmodified from dx_images');
+
+  try
+    FindAllFiles(SL, Dir + 'images', GetAllFilesMask, True);
+
+    SetLength(ImgInfo, SL.Count);
+    n := 0;
+    while SL.Count > 0 do
+    begin
+      ExtractImageFiles(SL, Img100, Img150, Img200, Img, ImgNm);
+      if not DS.Locate('name', ImgNm, []) then
+      begin
+        DeleteFile(Img100);
+        DeleteFile(Img150);
+        DeleteFile(Img200);
+      end
+      else
+      begin
+        if SameFileDateTime(Img, DS.Fields[2].AsDateTime) then
+        begin
+          ImgInfo[n].Img100 := Img100;
+          ImgInfo[n].Img150 := Img150;
+          ImgInfo[n].Img200 := Img200;
+          ImgInfo[n].Img := Img;
+          ImgInfo[n].ImgName := ImgNm;
+          ImgInfo[n].Id := DS.Fields[0].AsInteger;
+          Inc(n);
+
+          // Эти не грузим из базы
+          DS.Edit;
+          DS.Fields[0].SetData(nil);
+          DS.Post;
+        end;
+      end;
+    end;
+    SetLength(ImgInfo, n);
+
+    // Грузим из базы только обновленные и новые картинки
+    Ids := '';
+    DS.First;
+    while not DS.Eof do
+    begin
+      if not DS.Fields[0].IsNull then Ids := Ids + DS.Fields[0].AsString + ',';
+      DS.Next;
+    end;
+    SetLength(Ids, Length(Ids) - 1);
+    if Ids = '' then Ids := '0';
+
+  finally
+    DS.Free;
+    SL.Free;
+  end;
+
+  FDataSet.Close;
+
+  FDataSet.SQL.Text := 'select id, name, img_100, img_150, img_200, ' +
+    'lastmodified from dx_images where id in (' + Ids + ')'; ;
+  FDataSet.Open;
+  FDataSet.Fields[0].ProviderFlags:=[pfInWhere, pfInKey, pfInUpdate];
+
+  SaveToDir(Dir);
+
+  for i := 0 to High(ImgInfo) do
+  begin
+    Inf := ImgInfo[i];
+    FDataSet.Append;
+    FDataSet.Fields[0].AsInteger := Inf.Id;
+    FDataSet.Fields[1].AsString := Inf.ImgName;
+    if Inf.Img100 <> '' then
+      TBlobField(FDataSet.Fields[2]).LoadFromFile(Inf.Img100);
+    if Inf.Img150 <> '' then
+      TBlobField(FDataSet.Fields[3]).LoadFromFile(Inf.Img150);
+    if Inf.Img200 <> '' then
+      TBlobField(FDataSet.Fields[4]).LoadFromFile(Inf.Img200);
+    FDataSet.Fields[5].AsDateTime := GetFileDateTime(Inf.Img);
+    FDataSet.Post;
+  end;
+  FDataSet.MergeChangeLog;
+
+  FMaxId := GetMaxId;
+  SetLength(ImgInfo, 0);
 end;
 
 procedure TImageManager.GetNames(SL: TStrings);
@@ -355,6 +485,7 @@ begin
   Inc(FMaxId);
   FDataSet.Fields[0].AsInteger := FMaxId;
   FDataSet.Fields[1].AsString := AName;
+  FDataSet.Fields[5].AsDateTime := Now;
   FDataSet.Post;
 end;
 
@@ -364,6 +495,7 @@ begin
   begin
     FDataSet.Edit;
     FDataSet.Fields[1].AsString := NewName;
+    FDataSet.Fields[5].AsDateTime := Now;
     FDataSet.Post;
   end;
 end;
@@ -442,6 +574,7 @@ begin
   BS := FDataSet.CreateBlobStream(FDataSet.Fields[AIndex + 2], bmWrite);
   try
     BS.CopyFrom(St, St.Size);
+    FDataSet.Fields[5].AsDateTime := Now;
     FDataSet.Post;
   finally
     BS.Free;
@@ -454,6 +587,7 @@ begin
   begin
     FDataSet.Edit;
     FDataSet.Fields[AIndex + 2].SetData(nil);
+    FDataSet.Fields[5].AsDateTime := Now;
     FDataSet.Post;
   end;
 end;
