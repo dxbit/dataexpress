@@ -226,6 +226,8 @@ begin
   DBase.ApplyDataSet(FDataSet);
 end;
 
+// Используется только при объединении проектов (часть функционала уже не нужна,
+// но пока оставил)
 procedure TImageManager.LoadFromDir(const Dir: String);
 
   procedure _Load(const ImgDir: String; idx: Integer; OnlyAdd: Boolean);
@@ -288,6 +290,9 @@ begin
   _Load(ImgDir + '100', 0, True);
   _Load(ImgDir + '150', 1, False);
   _Load(ImgDir + '200', 2, False);
+
+  // FDataSet.MergeChangeLog; Вот это я забыл добавить, когда метод использовался
+  // для загрузки картинок из кэша.
 end;
 
 procedure TImageManager.SaveToDir(const Dir: String);

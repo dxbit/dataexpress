@@ -1095,6 +1095,7 @@ begin
       Entries.AddFileEntry(SL[i], Utf8ToCP866(S));
     end;
     ZipAllFiles;
+    DeleteDirectory(TempDir, False);
     MessageDlg(rsExportProject, rsExportPrjOk, mtInformation, [mbOk], 0);
   finally
     Free;
@@ -1494,7 +1495,11 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       while not DS.Eof do
       begin
         GetImageFiles(SL, DS.Fields[1].AsString, Img100, Img150, Img200, ImgFile);
-        if SameFileDateTime(ImgFile, DS.Fields[5].AsDateTime) then Continue;
+        if SameFileDateTime(ImgFile, DS.Fields[5].AsDateTime) then
+        begin
+          DS.Next;
+          Continue;
+        end;
 
         DS.Edit;
 

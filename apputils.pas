@@ -3513,8 +3513,8 @@ begin
           TdxButton(C).RenameImage(NewName)
         else
           TdxButton(C).ImageName := '';
+        Fm.SetFormChanged;
       end;
-      Fm.SetFormChanged;
     end
     else if C is TdxImage then
     begin
@@ -3525,8 +3525,8 @@ begin
           TdxImage(C).RenameImage(NewName)
         else
           TdxImage(C).ImageName := '';
+        Fm.SetFormChanged;
       end;
-      Fm.SetFormChanged;
     end;
   end;
 end;

@@ -30,21 +30,22 @@ uses
 
 type
   TAboutFm = class(TForm)
-    MailLbl: TLabel;
-    WebSiteLbl: TLabel;
-    MailImg: TImage;
-    WebImg: TImage;
-    Licensed: TLabel;
+    AppVersion: TLabel;
     Label2: TLabel;
+    MailImg: TImage;
+    MailLbl: TLabel;
+    Panel1: TPanel;
+    Licensed: TLabel;
     LicenseBn: TBitBtn;
     DonateBn: TBitBtn;
     CloseBn: TBitBtn;
-    AppVersion: TLabel;
     Copyright: TLabel;
     GroupBox1: TGroupBox;
     LogoImg: TImage;
     Label1: TLabel;
     AppDescript: TLabel;
+    WebImg: TImage;
+    WebSiteLbl: TLabel;
     procedure LicenseBnClick(Sender: TObject);
     procedure DonateBnClick(Sender: TObject);
     procedure CloseBnClick(Sender: TObject);

@@ -2630,7 +2630,7 @@ var
     if St <> nil then
     begin
       FS := TFileStream.Create(FileName + '.cfg', fmCreate);
-      EncryptStream(St, FS, DXMain.Key);
+      FS.CopyFrom(St, 0);
       SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
@@ -2647,6 +2647,7 @@ var
     FS := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
     DecryptStream(FS, SS, DXMain.Key);
     Result.Source := SS.DataString;
+    Result.SourceData.LoadFromFile(FileName + '.cfg');
     FS.Free;
     SS.Free;
   end;
