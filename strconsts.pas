@@ -1831,6 +1831,7 @@ resourcestring
   rsDataCantGroupByFilesImages = 'Data cannot be grouped by file or image.';
   rsFormAlreadySelected = 'This form has already been selected.';
   rsFuncOnlyNumber = 'The "%s" function must have a data type of number.';
+  rsInvalidDate = 'Invalid date %s';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

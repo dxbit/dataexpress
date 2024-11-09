@@ -1417,8 +1417,7 @@ function TFilterDate.Validate: Boolean;
 var
   D: TDateTime;
 begin
-  Result := TryStrToDate(StringReplace(Text, ' ', DefaultFormatSettings.DateSeparator,
-    [rfReplaceAll]), D);
+  Result := TryTextToDate(Text, D);
   if Result then
     Text := DateToStr(D);
 end;

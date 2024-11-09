@@ -41,8 +41,8 @@ type
   private
     function GetFCItems(Index: Integer): TFormChangesItem;
   public
-    procedure AddForm(Id, Cnt: Integer);
-    procedure DeleteForm(Id: Integer);
+    procedure AddForm(FmId, Cnt: Integer);
+    procedure DeleteForm(Fm: TdxForm);
     procedure Clear; override;
     procedure GetFormChanges;
     function FindForm(Id: Integer): TFormChangesItem;
@@ -448,7 +448,16 @@ end;
 procedure TUndoManager.DeleteCache(Fm: TdxForm);
 var
   C: TUndoCache;
+  i: Integer;
+  Tbl: TdxForm;
 begin
+  if Fm.PId = 0 then
+    for i := 0 to FormMan.FormCount - 1 do
+    begin
+      Tbl := FormMan.Forms[i];
+      if Tbl.PId = Fm.Id then DeleteCache(Tbl);
+    end;
+
   C := FindCache(Fm);
   if C <> nil then
   begin
@@ -726,12 +735,12 @@ begin
   Result := TFormChangesItem(Items[Index]);
 end;
 
-procedure TFormChangesList.AddForm(Id, Cnt: Integer);
+procedure TFormChangesList.AddForm(FmId, Cnt: Integer);
 var
   FCI: TFormChangesItem;
 begin
   FCI := TFormChangesItem.Create;
-  FCI.Id := Id;
+  FCI.Id := FmId;
   FCI.Cnt := Cnt;
   Add(FCI);
 end;
@@ -785,11 +794,20 @@ begin
   end;
 end;
 
-procedure TFormChangesList.DeleteForm(Id: Integer);
+procedure TFormChangesList.DeleteForm(Fm: TdxForm);
 var
   FCI: TFormChangesItem;
+  Tbl: TdxForm;
+  i: Integer;
 begin
-  FCI := FindForm(Id);
+  if Fm.PId = 0 then
+    for i := 0 to FormMan.FormCount - 1 do
+    begin
+      Tbl := FormMan.Forms[i];
+      if Tbl.PId = Fm.Id then DeleteForm(Tbl);
+    end;
+
+  FCI := FindForm(Fm.Id);
   if FCI <> nil then
   begin
     Remove(FCI);
@@ -902,8 +920,17 @@ var
   IsNew: Boolean;
   i, FmId: Integer;
   DCI: TDesignCacheItem;
+  Tbl: TdxForm;
 begin
   IsNew := False;
+
+  if Fm.PId = 0 then
+    for i := 0 to FormMan.FormCount - 1 do
+    begin
+      Tbl := FormMan.Forms[i];
+      if Tbl.PId = Fm.Id then
+        DeleteForm(Tbl);
+    end;
 
   // Добавляем на удаление компоненты формы
   for i := 0 to Fm.ComponentCount - 1 do
@@ -1439,7 +1466,7 @@ procedure TFormDesigner.SurfaceDeleteComponent(Sender: TObject;
     if FindExprFm <> nil then FindExprFm.DeleteForm(Fm);
     DesignFr.FormsTreeView.DeleteForm(Fm);
     Cache.DeleteForm(Fm);
-    FormChanges.DeleteForm(Fm.Id);
+    FormChanges.DeleteForm(Fm);
     UndoMan.CurrentCache.DeleteComponent(C);
     UndoMan.DeleteCache(Fm);
     FormMan.DeleteForm(Fm.Id);

@@ -1485,3 +1485,21 @@ The function has no parameters.
 The function returns true if the web server is running in service mode. In the desktop version, it always returns false.<br><br>
 <center><code>ISSERVICE</code></center><br><br>
 The function has no parameters.
+
+[ENCODEDATE]
+3
+The function returns the date from the passed values of the year, month and day.
+<center><code>ENCODEDATE(year, month, day)</code></center><br><br>
+<b>Parameters:</b> year - number, month - number, day - number.<br>
+<b>Result:</b> date<br><br>
+<b>Example:</b><br>
+<center><code>ENCODEDATE(2024, 12, 31)</code></center><br><br>
+
+[ENCODETIME]
+5
+The function returns the time from the passed values of hours, minutes and seconds.
+<center><code>ENCODETIME(hours, minutes, seconds)</code></center><br><br>
+<b>Parameters:</b> hours - number, minutes - number, seconds - number.<br>
+<b>Result:</b> time<br><br>
+<b>Example:</b><br>
+<center><code>ENCODETIME(12, 5, 0)</code></center><br><br>

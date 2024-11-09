@@ -3933,7 +3933,7 @@ begin
   PopupMenu.Items[0].Enabled := (SelText <> '') and (not ReadOnly) and ae;
   PopupMenu.Items[1].Enabled := SelText <> '';
   PopupMenu.Items[2].Enabled := (Clipboard.AsText <> '') and
-  	(TryStrToDate(Clipboard.AsText, D)) and (not ReadOnly) and ae;
+  	(TryTextToDate(Clipboard.AsText, D)) and (not ReadOnly) and ae;
   PopupMenu.Items[4].Enabled := (Text <> '') and (not ReadOnly) and ae;
   PopupMenu.Items[6].Enabled := (not ReadOnly) and ae;
   PopupMenu.Items[7].Enabled := (not ReadOnly) and ae;

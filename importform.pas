@@ -289,7 +289,7 @@ begin
       if V = '' then S := S + F.FieldName + ' is null and '
       else
       begin
-        DT := StrToDate(V);
+        if not TryTextToDate(V, DT) then raise EConvertError.CreateFmt(rsInvalidDate, [V]);
         V := Date2Str(DT);
         S := S + F.FieldName + '=''' + V + ''' and ';
       end;
@@ -419,7 +419,7 @@ begin
     end
     else if C is TdxDateEdit then
     begin
-      if TryStrToDate(S, D) then
+      if TryTextToDate(S, D) then
         Csv[i, Row] := DateToStr(D)
       else
       begin
@@ -663,7 +663,8 @@ begin
         end
         else if C is TdxDateEdit then
         begin
-          DT := StrToDate(S);
+          if not TryTextToDate(S, DT) then raise EConvertError.CreateFmt(rsInvalidDate, [S]);
+          //DT := StrToDate(S);
           F.AsDateTime := DT;
         end
         else if C is TdxTimeEdit then

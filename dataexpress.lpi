@@ -27,10 +27,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="24"/>
-      <MinorVersionNr Value="10"/>
-      <RevisionNr Value="17"/>
+      <MinorVersionNr Value="11"/>
+      <RevisionNr Value="9"/>
       <Language Value="0419"/>
-      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.10.17"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.11.9"/>
     </VersionInfo>
     <BuildModes Count="4">
       <Item1 Name="Win32" Default="True"/>
@@ -189,7 +189,7 @@
         <PackageName Value="LCL"/>
       </Item14>
     </RequiredPackages>
-    <Units Count="204">
+    <Units Count="203">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1478,57 +1478,52 @@
         <UnitName Value="TreePanel"/>
       </Unit195>
       <Unit196>
-        <Filename Value="metamanager.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="MetaManager"/>
-      </Unit196>
-      <Unit197>
         <Filename Value="updatemanform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="UpdateManFm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UpdateManForm"/>
-      </Unit197>
-      <Unit198>
+      </Unit196>
+      <Unit197>
         <Filename Value="msgform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MsgFm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MsgForm"/>
-      </Unit198>
-      <Unit199>
+      </Unit197>
+      <Unit198>
         <Filename Value="updateoptionsform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="UpdateOptionsFm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UpdateOptionsForm"/>
-      </Unit199>
-      <Unit200>
+      </Unit198>
+      <Unit199>
         <Filename Value="updatemanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UpdateManager"/>
-      </Unit200>
-      <Unit201>
+      </Unit199>
+      <Unit200>
         <Filename Value="myzipper.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyZipper"/>
-      </Unit201>
-      <Unit202>
+      </Unit200>
+      <Unit201>
         <Filename Value="mylogger.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MyLogger"/>
-      </Unit202>
-      <Unit203>
+      </Unit201>
+      <Unit202>
         <Filename Value="lcbxlistsourcemoreform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="LCbxListSourceMoreFm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LCbxListSourceMoreForm"/>
-      </Unit203>
+      </Unit202>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

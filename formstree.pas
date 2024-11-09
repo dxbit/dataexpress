@@ -386,7 +386,7 @@ end;
 procedure TFormsTree.BuildTree;
 var
   i, j: Integer;
-  Fm: TdxForm;
+  Fm, PFm: TdxForm;
   PN: TTreeNode;
   GL: TFormGroupList;
   G: TFormGroup;
@@ -454,7 +454,12 @@ begin
   begin
     Fm := FormMan.Forms[i];
     if Fm.PId = 0 then Continue;
-    PN := Tree.Items.FindNodeWithData( FormMan.FindForm(Fm.PId) );
+    PFm := FormMan.FindForm(Fm.PId);
+
+    // Может быть из-за ошибки в предыдущих версиях
+    if PFm = nil then Continue;
+
+    PN := Tree.Items.FindNodeWithData( PFm );
   	Tree.Items.AddChildObject(PN, Fm.FormCaption, Fm);
   end;
   UpdateTreeSort;

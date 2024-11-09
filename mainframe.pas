@@ -884,7 +884,7 @@ begin
 
   SetupImageList(ToolbarImages, ['movefirst24', 'moveprior24', 'movenext24',
     'movelast24', 'add24', 'edit24', 'undo24', 'save24', 'delete24', 'refresh24',
-    'print24', 'filter24', 'find24', 'help24']);
+    'print24', 'filter24', 'find24', 'help24', 'eyes24']);
   SetupImageList(SmallImages, ['filter16', 'delete16']);
 
   VarList := TVarList.Create;

@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel, MetaManager,
+  SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel,
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,
   MyLogger, PascalScriptFCL, LCbxListSourceMoreForm;
 

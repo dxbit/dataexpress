@@ -140,13 +140,13 @@ var
 begin
   // Удаление
 
-  Debug('Удаление отчетов');
+  //Debug('Удаление отчетов');
 
   Wh := '';
   for i := 0 to FDeleted.Count - 1 do
   begin
     Wh := Wh + IntToStr(FDeleted[i]) + ',';
-    Debug(FDeleted[i]);
+    //Debug(FDeleted[i]);
   end;
   if Wh <> '' then
   begin
@@ -158,11 +158,11 @@ begin
       DS.Free;
     end;
   end;
-  Debug('');
+  //Debug('');
 
   // Добавление новых
 
-  Debug('Добавление отчетов');
+  //Debug('Добавление отчетов');
 
   MS := TMemoryStream.Create;
   DS := DBase.CreateQuery('insert into dx_reports (id, data, lastmodified) values (:id, :data, :lastmodified)');
@@ -184,17 +184,17 @@ begin
       DBase.ExecuteQuery(DS);
       RD.ResetReportChanged;
 
-      Debug(RD.Name);
+      //Debug(RD.Name);
     end;
   finally
     DS.Free;
     MS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   // Замена существующих
 
-  Debug('Замена отчетов');
+  //Debug('Замена отчетов');
 
   MS := TMemoryStream.Create;
   DS := DBase.CreateQuery('update dx_reports set data=:data, lastmodified=:lastmodified where id=:id');
@@ -217,13 +217,13 @@ begin
       DBase.ExecuteQuery(DS);
       RD.ResetReportChanged;
 
-      Debug(RD.Name);
+      //Debug(RD.Name);
     end;
   finally
     DS.Free;
     MS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   FAdded.Clear;
   FDeleted.Clear;

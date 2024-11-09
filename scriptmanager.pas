@@ -2382,14 +2382,14 @@ var
 begin
   // Удаление
 
-  Debug('Удаление скриптов');
+  //Debug('Удаление скриптов');
 
   Wh := '';
   for i := 0 to FDeleted.Count - 1 do
   begin
     Wh := Wh + IntToStr(FDeleted[i]) + ',';
 
-    Debug(FDeleted[i]);
+    //Debug(FDeleted[i]);
   end;
   if Wh <> '' then
   begin
@@ -2401,11 +2401,11 @@ begin
       DS.Free;
     end;
   end;
-  Debug('');
+  //Debug('');
 
   // Добавление
 
-  Debug('Добавление скриптов');
+  //Debug('Добавление скриптов');
 
   DS := DBase.CreateQuery('insert into dx_scripts (id, script, fmid, name, kind, extra, lastmodified) values (:id, :script, :fmid, :name, :kind, :extra, :lastmodified)');
   try
@@ -2426,18 +2426,18 @@ begin
       DBase.ExecuteQuery(DS);
       SD.PartChanges := [];
 
-      if SD.FmId = 0 then Debug(SD.Name)
-      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+      //if SD.FmId = 0 then Debug(SD.Name)
+      //else Debug(FormMan.FindForm(SD.FmId).FormCaption);
     end;
 
   finally
     DS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   // Изменение названия
 
-  Debug('Изменение название скрипта');
+  //Debug('Изменение название скрипта');
 
   DS := DBase.CreateQuery('update dx_scripts set name=:name, lastmodified=:lastmodified where id=:id');
   try
@@ -2454,18 +2454,18 @@ begin
       DBase.ExecuteQuery(DS);
       SD.PartChanges := SD.PartChanges - [spcName];
 
-      if SD.FmId = 0 then Debug(SD.Name)
-      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+      //if SD.FmId = 0 then Debug(SD.Name)
+      //else Debug(FormMan.FindForm(SD.FmId).FormCaption);
     end;
 
   finally
     DS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   // Изменение исходного кода
 
-  Debug('Изменение исходного кода скрипта');
+  //Debug('Изменение исходного кода скрипта');
 
   DS := DBase.CreateQuery('update dx_scripts set script=:script, lastmodified=:lastmodified  where id=:id');
   try
@@ -2482,18 +2482,18 @@ begin
       DBase.ExecuteQuery(DS);
       SD.PartChanges := SD.PartChanges - [spcScript];
 
-      if SD.FmId = 0 then Debug(SD.Name)
-      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+      //if SD.FmId = 0 then Debug(SD.Name)
+      //else Debug(FormMan.FindForm(SD.FmId).FormCaption);
     end;
 
   finally
     DS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   // Изменение служебных данных скрипта
 
-  Debug('Изменение служебных данных скрипта');
+  //Debug('Изменение служебных данных скрипта');
 
   DS := DBase.CreateQuery('update dx_scripts set extra=:extra, lastmodified=:lastmodified  where id=:id');
   try
@@ -2510,14 +2510,14 @@ begin
       DBase.ExecuteQuery(DS);
       SD.PartChanges := SD.PartChanges - [spcExtra];
 
-      if SD.FmId = 0 then Debug(SD.Name)
-      else Debug(FormMan.FindForm(SD.FmId).FormCaption);
+      //if SD.FmId = 0 then Debug(SD.Name)
+      //else Debug(FormMan.FindForm(SD.FmId).FormCaption);
     end;
 
   finally
     DS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   FAdded.Clear;
   FDeleted.Clear;

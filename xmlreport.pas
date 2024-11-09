@@ -836,7 +836,7 @@ var
           // данных может быть произвольный текст или несколько полей.
           if (m > 1) or ((dt = 'n') and
             not TryStrToFloat(StringReplace(S, ts, '', [rfReplaceAll]), E)) or
-            ((dt = 'd') and not TryStrToDate(S, Dat)) or
+            ((dt = 'd') and not TryTextToDate(S, Dat)) or
             ((dt = 't') and not TryStrToTime(S, Dat)) then dt := 's';
 
           NumGrouping := (dt = 'n') and (Pos(ts, S) > 0);
@@ -948,7 +948,7 @@ var
           end
           else if dt = 'd' then
           begin
-            if TryStrToDate(N.TextContent, Dat) then
+            if TryTextToDate(N.TextContent, Dat) then
             begin
               N.SetAttribute('office:date-value', Format('%s-%s-%sT00:00:00',
                 [SetZeros(YearOf(Dat), 2), SetZeros(MonthOf(Dat), 2), SetZeros(DayOf(Dat), 2)]));

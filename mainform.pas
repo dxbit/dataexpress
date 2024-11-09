@@ -1551,7 +1551,7 @@ begin
       LoadMetaFromCache;
     end;
 
-    ConvertToDXMainVersion2(DXMain, FormMan, True);
+    ConvertToDXMainVersion2(DXMain, FormMan);
 
     ScaleForms(FormMan, DXMain.DesignTimePPI);
     ScaleReports(ReportMan, DXMain.DesignTimePPI, Screen.PixelsPerInch);

@@ -221,7 +221,7 @@ const
     ('+', '-', '', '', '', ''), ('*', '/', '', '', '', ''),
     ('', '', '', '', '', ''));
 
-  Funcs: array [0..141, 0..2] of String =
+  Funcs: array [0..143, 0..2] of String =
     (('COUNT', 's', 'n'),
     ('SUM', 'ss', 'n'),
     ('LENGTH', 's', 'n'),
@@ -369,7 +369,10 @@ const
 
     ('TYPEDTEXT', 'n', 'v'),
     ('ISWEB', '', 'b'),
-    ('ISSERVICE', '', 'b')
+    ('ISSERVICE', '', 'b'),
+
+    ('ENCODEDATE', 'nnn', 'd'),
+    ('ENCODETIME', 'nnn', 't')
 
     );
 
@@ -522,6 +525,9 @@ const
     FUNC_ISWEB = 140;
     FUNC_ISSERVICE = 141;
 
+    FUNC_ENCODEDATE = 142;
+    FUNC_ENCODETIME = 143;
+
 
 function FindFunc(const Func: String): Integer;
 var
@@ -671,7 +677,7 @@ begin
     FUNC_AVGIF: V := CalcAggFunc(FForm, FParForm, FDS, Vals[0], Vals[1], Vals[2], tfAvg);
     FUNC_CSTR: V := VarToStr(Vals[0]);
     FUNC_CNUM: V := StrToFloat(Vals[0]);
-    FUNC_CDATE: V := StrToDate(Vals[0]);
+    FUNC_CDATE: V := TextToDate(Vals[0]);
     FUNC_ADDDAY: V := IncDay(Vals[0], Vals[1]);
     FUNC_ADDWEEK: V := IncWeek(Vals[0], Vals[1]);
     FUNC_ADDMONTH: V := IncMonth(Vals[0], Vals[1]);
@@ -779,6 +785,9 @@ begin
     FUNC_TYPEDTEXT: V := GetTypedText(Vals[0]);
     FUNC_ISWEB: V := IsWebServer;
     FUNC_ISSERVICE: V := False;
+
+    FUNC_ENCODEDATE: V := EncodeDate(Vals[0], Vals[1], Vals[2]);
+    FUNC_ENCODETIME: V := EncodeTime(Vals[0], Vals[1], Vals[2], 0);
   end;
   Result := V;
 end;

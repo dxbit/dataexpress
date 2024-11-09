@@ -1392,9 +1392,9 @@ begin
     else if Tp = flDate then
     begin
       if V1 <> '' then
-      	Tmp := Tmp + Fn + '>=''' + V1 + ''' and ';
+      	Tmp := Tmp + Fn + '>=''' + CheckDate(V1) + ''' and ';
     	if V2 <> '' then
-        Tmp := Tmp + Fn + '<=''' + V2 + ''' and ';
+        Tmp := Tmp + Fn + '<=''' + CheckDate(V2) + ''' and ';
       Tmp := Copy(Tmp, 1, Length(Tmp) - 5);
       rS := rS + '(' + Tmp + ') or ';
     end
@@ -1490,9 +1490,9 @@ begin
           //end;
           Tmp := '';
           if Bg <> '' then
-            Tmp := Tmp + FlNm + '>=''' + Bg + ''' and ';
+            Tmp := Tmp + FlNm + '>=''' + CheckDate(Bg) + ''' and ';
           if Ed <> '' then
-            Tmp := Tmp + FlNm + '<=''' + Ed + ''' and ';
+            Tmp := Tmp + FlNm + '<=''' + CheckDate(Ed) + ''' and ';
           Tmp := Copy(Tmp, 1, Length(Tmp) - 5);
           if Tmp <> '' then
             W := W + '(' + Tmp + ') or ';
@@ -2226,7 +2226,7 @@ function CreateReportForm(RD: TReportData; out SQL: String): TdxForm;
     C := TdxDateEdit.Create(Fm);
     C.Id := n;
     C.FieldName := FieldName;
-    if (Value > '') and TryStrToDate(Value, DT) then
+    if (Value > '') and TryTextToDate(Value, DT) then
       Result := Format('(CAST(''%s'' as DATE)) as f%d,', [Date2Str(DT), n])
     else Result := Format('null as f%d,', [n]);
     Inc(n);

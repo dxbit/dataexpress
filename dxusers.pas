@@ -1123,7 +1123,7 @@ var
 begin
   if FRecordNotExists then
   begin
-    Debug('Новая запись dx_users');
+    //Debug('Новая запись dx_users');
 
     MS := TMemoryStream.Create;
     DS := DBase.CreateQuery('insert into dx_users (id, users, roles, intfs, lastmodified) ' +
@@ -1150,6 +1150,8 @@ begin
       DS.Params[4].AsDateTime := FLastModified;
 
       DBase.ExecuteQuery(DS);
+
+      FRecordNotExists:=False;
     finally
       DS.Free;
       MS.Free;
@@ -1160,7 +1162,7 @@ begin
 
   if FUsersChanged then
   begin
-    Debug('Изменены пользователи');
+    //Debug('Изменены пользователи');
 
     MS := TMemoryStream.Create;
     DS := DBase.CreateQuery('update dx_users set users=:users, lastmodified=:lastmodified where id=1');
@@ -1182,7 +1184,7 @@ begin
 
   if FRolesChanged then
   begin
-    Debug('Изменены роли');
+    //Debug('Изменены роли');
 
     MS := TMemoryStream.Create;
     DS := DBase.CreateQuery('update dx_users set roles=:roles, lastmodified=:lastmodified where id=1');
@@ -1204,7 +1206,7 @@ begin
 
   if FIntfsChanged then
   begin
-    Debug('Изменен интерфейс');
+    //Debug('Изменен интерфейс');
 
     MS := TMemoryStream.Create;
     DS := DBase.CreateQuery('update dx_users set intfs=:intfs, lastmodified=:lastmodified where id=1');
@@ -1223,7 +1225,7 @@ begin
       MS.Free;
     end;
   end;
-  Debug('');
+  //Debug('');
 
   FUsersChanged := False;
   FRolesChanged := False;

@@ -126,6 +126,7 @@ function AliasStr(AliasSL: TStrings; const AliasName: String): String;
 procedure DoFilterParserError(const Msg: String; P: Integer);
 
 procedure CheckTime(fmt: TdxTimeFormat; var Bg, Ed: String);
+function CheckDate(const Value: String): String;
 
 function DateFormatToSql(const FlNm: String): String;
 function IsValidCharsSql(const S: String; Sep: Char): Boolean;
@@ -639,8 +640,9 @@ var
   DT: TDateTime;
 begin
   if Value = '' then Exit('');
-  DT := StrToDate(Value);
-  Result := Date2Str(DT);
+  //DT := StrToDate(Value);
+  DT := TextToDate(Value);
+  Result := Date2Str(DT)
 end;
 
 function DateCodeToPeriod(const S: String; out Bg, Ed: String): Boolean;
@@ -1941,7 +1943,7 @@ begin
   if TryStrToInt(Value, N) then Result := rsNumber
   else if TryStrToFloat(Value, E) then Result := rsNumber
   else if TryStrToTime(Value, DT) then Result := rsTime
-  else if TryStrToDate(Value, DT) then Result := rsDate
+  else if TryTextToDate(Value, DT) then Result := rsDate
   else Result := rsText;
 end;
 

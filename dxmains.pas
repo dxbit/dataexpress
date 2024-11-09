@@ -81,6 +81,7 @@ type
     procedure SaveToDb;
     procedure LoadFromDir(const Dir: String);
     procedure SaveToDir(const Dir: String);
+    procedure GenerateKey;
     procedure Clear;
     procedure CreateMain;
     procedure UpdateMain;
@@ -158,7 +159,6 @@ begin
   else if LocalName = 'settings' then
   begin
     FMain.FVersion := GetInt(Atts, 'version');
-    FMain.FKey := Decrypt(DecodeStringBase64(GetStr(Atts, 'key')), StartKey, MultKey, AddKey);
   end;
 end;
 
@@ -351,11 +351,8 @@ begin
   if FormTabs <> '' then SetLength(FormTabs, Length(FormTabs) - 1);
 
   FDesignTimePPI := Screen.PixelsPerInch;
-  S := '<settings version="2"';
-  if FKey <> '' then
-    S := S + ' key="' + EncodeStringBase64(Encrypt(FKey, StartKey, MultKey, AddKey)) + '"';
-  S := S + '><designer designtimeppi="' + IntToStr(Screen.PixelsPerInch) +
-    '" tabs="' + FormTabs + '"/><groups>';
+  S := '<settings version="2"><designer designtimeppi="' +
+    IntToStr(Screen.PixelsPerInch) + '" tabs="' + FormTabs + '"/><groups>';
 
   for i := 0 to FGroups.Count - 1 do
     S := S + GroupToXml(FGroups[i]);
@@ -394,7 +391,6 @@ begin
   FDesignTimePPI := 96;
   FTabs := TIntegerList.Create;
   FGroups := TFormGroupList.Create;
-  FVersion := 2;
 end;
 
 destructor TDXMain.Destroy;
@@ -411,7 +407,7 @@ var
 begin
   Clear;
 
-  DS := DBase.OpenDataSet('select actions, settings, lastmodified from dx_main where id=1');
+  DS := DBase.OpenDataSet('select actions, settings, key, lastmodified from dx_main where id=1');
   St := nil;
   try
     St := DS.CreateBlobStream(DS.Fields[0], bmRead);
@@ -419,14 +415,14 @@ begin
     FreeAndNil(St);
     St := DS.CreateBlobStream(DS.Fields[1], bmRead);
     LoadSettings(St);
-    FLastModified := DS.Fields[2].AsDateTime;
+    FKey :=  Decrypt(DecodeStringBase64(DS.Fields[2].AsString), StartKey, MultKey, AddKey);
+    FLastModified := DS.Fields[3].AsDateTime;
   finally
     FreeAndNil(St);
     DS.Free;
   end;
 
-  if FKey = '' then
-    FKey := CreateGUIDString;
+  GenerateKey;
 end;
 
 procedure TDXMain.SaveToDb;
@@ -457,10 +453,7 @@ end;
 procedure TDXMain.LoadFromDir(const Dir: String);
 var
   FS: TFileStream;
-  OldKey: String;
 begin
-  OldKey := FKey;
-
   Clear;
   if FileExists(Dir + 'actions.main') then
   begin
@@ -477,7 +470,6 @@ begin
     try
       LoadSettings(FS);
     finally
-      FKey := OldKey;
       FS.Free;
     end;
   end;
@@ -486,7 +478,6 @@ end;
 procedure TDXMain.SaveToDir(const Dir: String);
 var
   FS: TFileStream;
-  OldKey: String;
 begin
   FS := TFileStream.Create(Dir + 'actions.main', fmCreate);
   try
@@ -497,13 +488,20 @@ begin
 
   FS := TFileStream.Create(Dir + 'settings.main', fmCreate);
   try
-    OldKey := FKey;
-    FKey := '';
     SaveSettings(FS);
   finally
-    FKey := OldKey;
     FS.Free;
   end;
+end;
+
+procedure TDXMain.GenerateKey;
+begin
+  if FKey <> '' then Exit;
+
+  FKey := CreateGUIDString;
+  DBase.Execute(Format('update or insert into dx_main (id, key) ' +
+    'values (1, ''%s'') matching (id);',
+    [EncodeStringBase64(Encrypt(FKey, StartKey, MultKey, AddKey))]));
 end;
 
 procedure TDXMain.Clear;
@@ -512,7 +510,7 @@ begin
   FDesignTimePPI := 96;
   FTabs.Clear;
   FGroups.Clear;
-  FKey := '';
+  FVersion := 0;
 end;
 
 end.

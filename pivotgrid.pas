@@ -879,7 +879,12 @@ begin
         Result := TryStrToInt(S, N);
         if Result then V := N;
       end;
-    flDate, flTime:
+    flDate:
+      begin
+        Result := TryTextToDate(S, D);
+        if Result then V := D;
+      end;
+    flTime:
       begin
         Result := TryStrToDateTime(S, D);
         if Result then V := D;

@@ -1165,8 +1165,7 @@ begin
   end;
   if Sender.DataType = ftDate then
   begin
-    if TryStrToDate(StringReplace(aText, ' ', DefaultFormatSettings.DateSeparator,
-      [rfReplaceAll]), D) then Sender.AsDateTime := D
+    if TryTextToDate(aText, D) then Sender.AsDateTime := D
     else Sender.Value := Sender.Value;
   end
   else if Sender.DataType = ftFloat then

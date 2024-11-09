@@ -14,6 +14,7 @@ type
 
   TDXUpdateFm = class(TForm)
     Image1: TImage;
+    ImageList1: TImageList;
     Msg: TLabel;
     Progress: TProgressBar;
     Shape1: TShape;
@@ -32,7 +33,7 @@ var
 implementation
 
 uses
-  ShellApi;
+  ShellApi, LazStringUtils;
 
 {$R *.lfm}
 

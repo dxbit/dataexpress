@@ -505,7 +505,7 @@ procedure TDesignFr.DeleteForm;
 var
   Fm: TdxForm;
   G: TdxGrid;
-  //FmId: Integer;
+  i: Integer;
 begin
   if (not ConfirmDelete) or (not CheckDeleteForm(FCurForm)) then Exit;
 
@@ -534,7 +534,8 @@ begin
   DeleteReferences(Fm);
   Cache.DeleteForm(Fm);
   UndoMan.DeleteCache(Fm);
-  FormChanges.DeleteForm(Fm.Id);
+  FormChanges.DeleteForm(Fm);
+
   DXMain.DeleteForm(Fm.Id);
   FormMan.DeleteForm(Fm.Id);
   UpdateTemplateFieldsForm;
@@ -1164,8 +1165,8 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       if IL.FindValue(Fm.Id) < 0 then
       begin
         Cache.DeleteForm(Fm);
-        FormChanges.DeleteForm(Fm.Id);
-        FormMan.DeleteForm(Fm.Id);
+        FormChanges.DeleteForm(Fm);
+        FormMan.DeleteForm(Fm.Id, False);
       end;
     end;
 
@@ -1174,6 +1175,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
     begin
       Fm := FormMan.Forms[i];
       FileName := TempDir + IntToStr(Fm.Id) + '.frm';
+
       if SameFileDateTime(FileName, Fm.LastModified) then Continue;
 
       ImportFm := FormMan.LoadFromFile(FileName);
@@ -1184,8 +1186,8 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       if ImportFm.PId <> Fm.PId then
       begin
         Cache.DeleteForm(Fm);
-        FormChanges.DeleteForm(Fm.Id);
-        FormMan.DeleteForm(Fm.Id);
+        FormChanges.DeleteForm(Fm);
+        FormMan.DeleteForm(Fm.Id, False);
         Cache.AddFormWithComponents(ImportFm);
         FormChanges.AddForm(ImportFm.Id, 0);
         FormMan.AddForm(ImportFm);
@@ -1597,7 +1599,7 @@ begin
   ImportScripts(TempDir);
   ImportUsers(TempDir);
   ImportImages(TempDir + 'images');
-  ConvertToDXMainVersion2(DXMain, FormMan, False);
+  ConvertToDXMainVersion2(DXMain, FormMan);
 
   FFormsTree.BuildTree;
   CursorBn.Down := True;

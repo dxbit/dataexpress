@@ -6,6 +6,7 @@ msgid "Abort"
 msgstr "Прервать"
 
 #: dxupdatestrconsts.rscopyfileerror
+#, object-pascal-format
 msgid "Can not copy file %s into %s."
 msgstr "Не удалось скопировать файл %s в %s."
 
@@ -14,6 +15,7 @@ msgid "Error"
 msgstr "Ошибка"
 
 #: dxupdatestrconsts.rsfullerrmsg
+#, object-pascal-format
 msgid "%0:s\\n\\nException class: %1:s\\nException message: %2:s"
 msgstr "%0:s\\n\\nКласс исключения: %1:s\\nСообщение: %2:s"
 
@@ -22,6 +24,7 @@ msgid "Retry"
 msgstr "Повторить"
 
 #: dxupdatestrconsts.rsstartupdateerror
+#, object-pascal-format
 msgid "Unable to start DataExpress update. File %s is in use by another process. Make sure you don't have any instances of DataExpress running. Close all applications that may interfere with the update process."
 msgstr "Не удалось начать обновление DataExpress. Файл %s занят другим процессом. Проверьте, что нет запущенных экземпляров DataExpress. Закройте все приложения, которые могут влиять на процесс обновления."
 

@@ -3665,6 +3665,11 @@ msgstr "Неверное имя компонента."
 msgid "Invalid comparison operation."
 msgstr "Недопустимая операция сравнения."
 
+#: strconsts.rsinvaliddate
+#, object-pascal-format
+msgid "Invalid date %s"
+msgstr ""
+
 #: strconsts.rsinvalidmethotcall
 #, object-pascal-format
 msgid "Invalid method call child form: %s"

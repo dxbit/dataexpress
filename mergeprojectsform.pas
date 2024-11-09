@@ -1624,7 +1624,7 @@ begin
   FScrMan.LoadFromDir(TempDir);
   FImgMan.LoadFromDir(TempDir);
   FMain.LoadFromDir(TempDir);
-  ConvertToDXMainVersion2(FMain, FFmMan, False);
+  ConvertToDXMainVersion2(FMain, FFmMan);
   ScaleForms(FFmMan, FMain.DesignTimePPI);
   ScaleReports(FRpMan, FMain.DesignTimePPI, Screen.PixelsPerInch);
   FillForms;

@@ -55,7 +55,7 @@ type
     function LoadFromFile(const FileName: String): TdxForm;
     function CreateNewForm: TdxForm;
     function CreateNewChildForm(ParentId: Integer): TdxForm;
-    procedure DeleteForm(Id: Integer);
+    procedure DeleteForm(Id: Integer; WithChilds: Boolean = True);
     function FindForm(Id: Integer): TdxForm;
     function FindFormByName(const FormName: String): TdxForm;
     function FindFormByComponentName(const aName: String): TdxForm;
@@ -352,14 +352,14 @@ var
   Fm: TdxForm;
 begin
   // Удаление форм
-  Debug('Удаление форм');
+  //Debug('Удаление форм');
   Wh := '';
   for i := 0 to Cache.Count - 1 do
   begin
     DCI := Cache[i];
     if not DCI.IsForm or (DCI.Status <> dstDelete) then Continue;
 
-    Debug(DCI.Id);
+    //Debug(DCI.Id);
 
     Wh := Wh + IntToStr(DCI.Id) + ',';
   end;
@@ -373,10 +373,10 @@ begin
       DS.Free;
     end;
   end;
-  Debug('');
+  //Debug('');
 
   // Добавление новых
-  Debug('Добавление форм');
+  //Debug('Добавление форм');
   MS := TMemoryStream.Create;
   DS := DBase.CreateQuery('insert into dx_forms (id, form, lastmodified) values (:id, :form, :lastmodified)');
   try
@@ -397,16 +397,16 @@ begin
       DBase.ExecuteQuery(DS);
       Fm.ResetFormChanged;
 
-      Debug(Fm.FormCaption);
+      //Debug(Fm.FormCaption);
     end;
   finally
     DS.Free;
     MS.Free;
   end;
-  Debug('');
+  //Debug('');
 
   // Замена существующих
-  Debug('Замена форм');
+  //Debug('Замена форм');
 
   MS := TMemoryStream.Create;
   DS := DBase.CreateQuery('update dx_forms set form=:form, lastmodified=:lastmodified where id=:id');
@@ -427,14 +427,14 @@ begin
       DBase.ExecuteQuery(DS);
       Fm.ResetFormChanged;
 
-      Debug(Fm.FormCaption);
+      //Debug(Fm.FormCaption);
 
     end;
   finally
     DS.Free;
     MS.Free;
   end;
-  Debug('');
+  //Debug('');
 end;
 
 {procedure TFormManager.SaveToDb;
@@ -656,19 +656,29 @@ begin
   Result.Index := 0;
 end;
 
-procedure TFormManager.DeleteForm(Id: Integer);
+procedure TFormManager.DeleteForm(Id: Integer; WithChilds: Boolean);
 var
   Fm: TdxForm;
   i: Integer;
 begin
-  for i := FormCount - 1 downto 0 do
-  begin
-    Fm := Forms[i];
-    if (Fm.Id = Id) or (Fm.PId = Id) then
+  if WithChilds then
+    for i := FormCount - 1 downto 0 do
     begin
-      //if Fm.PId = 0 then ChangeIndexes(Fm);
+      Fm := Forms[i];
+      if (Fm.Id = Id) or (Fm.PId = Id) then
+      begin
+        //if Fm.PId = 0 then ChangeIndexes(Fm);
+        Fm.Free;
+        FForms.Remove(Fm)
+      end;
+    end
+  else
+  begin
+    Fm := FindForm(Id);
+    if Fm <> nil then
+    begin
       Fm.Free;
-      FForms.Remove(Fm)
+      FForms.Remove(Fm);
     end;
   end;
 end;
