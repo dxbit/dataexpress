@@ -26,11 +26,11 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MajorVersionNr Value="24"/>
-      <MinorVersionNr Value="11"/>
-      <RevisionNr Value="9"/>
+      <MajorVersionNr Value="25"/>
+      <MinorVersionNr Value="1"/>
+      <RevisionNr Value="8"/>
       <Language Value="0419"/>
-      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="24.11.9"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2024 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="25.1.8"/>
     </VersionInfo>
     <BuildModes Count="4">
       <Item1 Name="Win32" Default="True"/>
@@ -145,51 +145,57 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="14">
+    <RequiredPackages Count="16">
       <Item1>
-        <PackageName Value="dcpcrypt"/>
+        <PackageName Value="LazControls"/>
       </Item1>
       <Item2>
-        <PackageName Value="laz.virtualtreeview_package"/>
+        <PackageName Value="LazControlDsgn"/>
       </Item2>
       <Item3>
-        <PackageName Value="PascalScriptFCL"/>
+        <PackageName Value="dcpcrypt"/>
       </Item3>
       <Item4>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="laz.virtualtreeview_package"/>
       </Item4>
       <Item5>
-        <PackageName Value="dxcomponents"/>
+        <PackageName Value="PascalScriptFCL"/>
       </Item5>
       <Item6>
-        <PackageName Value="TAChartLazarusPkg"/>
+        <PackageName Value="SynEdit"/>
       </Item6>
       <Item7>
-        <PackageName Value="tachartbgra"/>
+        <PackageName Value="dxcomponents"/>
       </Item7>
       <Item8>
-        <PackageName Value="SynEditDsgn"/>
+        <PackageName Value="TAChartLazarusPkg"/>
       </Item8>
       <Item9>
-        <PackageName Value="jvRuntimeDesign"/>
+        <PackageName Value="tachartbgra"/>
       </Item9>
       <Item10>
-        <PackageName Value="TurboPowerIProDsgn"/>
+        <PackageName Value="SynEditDsgn"/>
       </Item10>
       <Item11>
-        <PackageName Value="KControlsLaz"/>
+        <PackageName Value="jvRuntimeDesign"/>
       </Item11>
       <Item12>
-        <PackageName Value="DataControlsEx"/>
+        <PackageName Value="TurboPowerIProDsgn"/>
       </Item12>
       <Item13>
-        <PackageName Value="BGRABitmapPack"/>
+        <PackageName Value="KControlsLaz"/>
       </Item13>
       <Item14>
-        <PackageName Value="LCL"/>
+        <PackageName Value="DataControlsEx"/>
       </Item14>
+      <Item15>
+        <PackageName Value="BGRABitmapPack"/>
+      </Item15>
+      <Item16>
+        <PackageName Value="LCL"/>
+      </Item16>
     </RequiredPackages>
-    <Units Count="203">
+    <Units Count="204">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1524,6 +1530,14 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LCbxListSourceMoreForm"/>
       </Unit202>
+      <Unit203>
+        <Filename Value="embedimagesform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="EmbedImagesFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EmbedImagesForm"/>
+      </Unit203>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

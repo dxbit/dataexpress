@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -41,6 +41,8 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    AddEmbedImagesMnu: TMenuItem;
+    Separator1: TMenuItem;
     PageControl1: TPageControl;
     Panel1: TPanel;
     Panel2: TPanel;
@@ -57,6 +59,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
+    procedure AddEmbedImagesMnuClick(Sender: TObject);
     procedure TreeDblClick(Sender: TObject);
     procedure TreeSelectionChanged(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
@@ -97,7 +100,8 @@ function ShowImagesForm(ASelect: Boolean; ASelImageName: String; AddOnly: Boolea
 implementation
 
 uses
-  imagemanager, apputils, formmanager, dbengine, helpmanager, appsettings;
+  imagemanager, apputils, formmanager, helpmanager, appsettings, embedimagesform,
+  LResources;
 
 type
 
@@ -612,6 +616,7 @@ begin
   MenuItem4.Caption := rsLoadImage;
   MenuItem5.Caption := rsSaveImage;
   MenuItem6.Caption := rsClear;
+  AddEmbedImagesMnu.Caption := rsAddEmbeddedImages;
   SetupImageList(Images, ['add16', 'edit16', 'delete16', 'db16', 'save16', 'delete16']);
   SetupSpeedButton(AddBn, 'add16');
   AddBn.Hint := rsAppend;
@@ -642,6 +647,63 @@ end;
 procedure TImagesFm.HelpButtonClick(Sender: TObject);
 begin
   OpenHelp('gallery');
+end;
+
+procedure TImagesFm.AddEmbedImagesMnuClick(Sender: TObject);
+var
+  SL: TStringList;
+  i: Integer;
+  ImgNm, RenamesBuf: String;
+  St: TStream;
+  N: TTreeNode;
+begin
+  if ShowEmbedImagesForm <> mrOk then Exit;
+
+  RenamesBuf := '';
+
+  SL := TStringList.Create;
+  St := nil;
+
+  Tree.BeginUpdate;
+  try try
+
+    EmbedImagesFm.GetSelectedImages(SL);
+
+    for i := 0 to SL.Count - 1 do
+    begin
+      ImgNm := SL[i];
+      ImgNm := GetUniqueImageName(ImgNm);
+      ImageMan.AddImage(ImgNm);
+      N := Tree.Items.AddChild(nil, ImgNm);
+
+      St := TLazarusResourceStream.Create(SL[i], 'PNG');
+      ImageMan.SetImageStream(ImgNm, 0, St);
+      FreeAndNil(St);
+      St := TLazarusResourceStream.Create(SL[i] + '_150', 'PNG');
+      ImageMan.SetImageStream(ImgNm, 1, St);
+      FreeAndNil(St);
+      St := TLazarusResourceStream.Create(SL[i] + '_200', 'PNG');
+      ImageMan.SetImageStream(ImgNm, 2, St);
+      FreeAndNil(St);
+
+      if SL[i] <> ImgNm then
+        RenamesBuf := RenamesBuf + Format(rsImageRenameItem, [SL[i], ImgNm]);
+    end;
+
+  except
+    on E: Exception do
+      ErrMsg(rsFailedToLoadImage + Spaces + E.Message);
+  end;
+  finally
+    Tree.EndUpdate;
+    FreeAndNil(St);
+    SL.Free;
+
+    if N <> nil then N.Selected := True;
+  end;
+
+  if RenamesBuf <> '' then
+    Info(rsRenameAddedImagesMsg + LineEnding + LineEnding + RenamesBuf);
 end;
 
 procedure TImagesFm.TreeDblClick(Sender: TObject);

@@ -1,56 +1,22 @@
 object ListSourceFrm: TListSourceFrm
   Left = 409
-  Height = 376
+  Height = 453
   Top = 332
-  Width = 448
-  ActiveControl = Obj
+  Width = 462
   BorderIcons = [biSystemMenu]
   Caption = 'ListSourceFrm'
-  ClientHeight = 376
-  ClientWidth = 448
+  ClientHeight = 453
+  ClientWidth = 462
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
-  object Obj: TListBox
-    AnchorSideRight.Control = Label1
-    AnchorSideBottom.Control = Panel1
-    Left = 8
-    Height = 286
-    Top = 8
-    Width = 211
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Right = 4
-    BorderSpacing.Bottom = 4
-    ItemHeight = 0
-    OnSelectionChange = ObjSelectionChange
-    ScrollWidth = 209
-    TabOrder = 0
-  end
-  object Fields: TListBox
-    AnchorSideLeft.Control = Label1
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = Panel1
-    Left = 227
-    Height = 286
-    Top = 8
-    Width = 213
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Left = 4
-    BorderSpacing.Right = 8
-    BorderSpacing.Bottom = 4
-    ItemHeight = 0
-    OnDblClick = FieldsDblClick
-    ScrollWidth = 211
-    TabOrder = 1
-  end
+  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
-    Top = 336
-    Width = 436
+    Top = 413
+    Width = 450
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -63,32 +29,26 @@ object ListSourceFrm: TListSourceFrm
     TabOrder = 2
     ShowButtons = [pbOK, pbCancel, pbHelp]
   end
-  object Label1: TLabel
-    AnchorSideLeft.Control = Owner
-    AnchorSideLeft.Side = asrCenter
-    Left = 223
-    Height = 15
-    Top = 165
-    Width = 3
-    Caption = ' '
-    ParentColor = False
-  end
   object Panel1: TPanel
-    Left = 0
-    Height = 32
-    Top = 298
-    Width = 448
+    Left = 8
+    Height = 58
+    Top = 349
+    Width = 446
     Align = alBottom
+    AutoSize = True
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
     BevelOuter = bvNone
-    ClientHeight = 32
-    ClientWidth = 448
-    TabOrder = 3
+    ClientHeight = 58
+    ClientWidth = 446
+    ParentFont = False
+    TabOrder = 1
     object Label2: TLabel
-      AnchorSideTop.Control = Panel1
+      AnchorSideTop.Control = RowCnt
       AnchorSideTop.Side = asrCenter
-      Left = 8
+      Left = 0
       Height = 15
-      Top = 9
+      Top = 12
       Width = 149
       Caption = 'Количество строк в списке'
       ParentColor = False
@@ -96,13 +56,13 @@ object ListSourceFrm: TListSourceFrm
     object RowCnt: TSpinEdit
       AnchorSideLeft.Control = Label2
       AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = Panel1
       AnchorSideTop.Side = asrCenter
-      Left = 165
+      Left = 157
       Height = 23
-      Top = 5
+      Top = 8
       Width = 74
       BorderSpacing.Left = 8
+      BorderSpacing.Top = 8
       MinValue = 1
       TabOrder = 0
       Value = 1
@@ -112,16 +72,67 @@ object ListSourceFrm: TListSourceFrm
       AnchorSideRight.Control = Panel1
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Side = asrCenter
-      Left = 344
+      Left = 350
       Height = 23
-      Top = 5
+      Top = 8
       Width = 96
       Anchors = [akTop, akRight]
-      BorderSpacing.Left = 8
-      BorderSpacing.Right = 8
       Caption = 'Очистить'
       OnClick = BitBtn1Click
       TabOrder = 1
+    end
+    object OnlyListChk: TCheckBox
+      AnchorSideTop.Control = RowCnt
+      AnchorSideTop.Side = asrBottom
+      Left = 0
+      Height = 19
+      Top = 39
+      Width = 167
+      BorderSpacing.Top = 8
+      Caption = 'Только значения из списка'
+      TabOrder = 2
+    end
+  end
+  object Panel2: TPanel
+    Left = 8
+    Height = 341
+    Top = 8
+    Width = 446
+    Align = alClient
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 8
+    BevelOuter = bvNone
+    ClientHeight = 341
+    ClientWidth = 446
+    TabOrder = 0
+    object Fields: TListBox
+      Left = 216
+      Height = 341
+      Top = 0
+      Width = 230
+      Align = alClient
+      ItemHeight = 0
+      ScrollWidth = 211
+      TabOrder = 1
+      OnDblClick = FieldsDblClick
+    end
+    object Obj: TListBox
+      Left = 0
+      Height = 341
+      Top = 0
+      Width = 211
+      Align = alLeft
+      ItemHeight = 0
+      ScrollWidth = 209
+      TabOrder = 0
+      OnSelectionChange = ObjSelectionChange
+    end
+    object Splitter1: TSplitter
+      Left = 211
+      Height = 341
+      Top = 0
+      Width = 5
     end
   end
 end

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -387,6 +387,7 @@ type
 
   TdxComboBox = class(TDBComboBox)
   private
+    FOldText: String;
     FCheckExpression: String;
     FDefaultValue: String;
     //FDSP: TObject;
@@ -397,6 +398,7 @@ type
     FFilter: String;
     FHidden: Boolean;
     FId: Integer;
+    FItemsOnly: Boolean;
     FOldSize: Integer;
     //FOnMyUtf8KeyPress: TMyUtf8KeyPressEvent;
     FOnNeedData: TNotifyEvent;
@@ -419,8 +421,10 @@ type
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure Change; override;
     procedure DropDown; override;
+    procedure DoEnter; override;
   public
     constructor Create(AOwner: TComponent); override;
+    procedure EditingDone; override;
     procedure CutToClipboard;
     procedure CopyToClipboard;
     procedure PasteFromClipboard;
@@ -448,6 +452,7 @@ type
     property TabStop stored False;
     property OnMeasureItem;
     property Hidden: Boolean read FHidden write FHidden default False;
+    property ItemsOnly: Boolean read FItemsOnly write FItemsOnly default False;
   end;
 
   TInsertValueData = class
@@ -783,6 +788,7 @@ type
   protected
     procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
     function GetClientRect: TRect; override;
+    procedure SetColor(Value: TColor); override;
   public
     constructor Create(AOwner: TComponent); override;
   published
@@ -2167,6 +2173,33 @@ begin
   Fm := FormMan.FindForm(GetSourceTId(Obj));
   if Fm <> nil then Result := Fm.FormCaption;
 end;
+
+// Оставлю до лучших времен...
+{procedure DoPasteFromClipboard(E: TCustomMaskEdit);
+var
+  S: TCaption;
+  DecimalSeparatorFound: Boolean;
+  Res: String;
+  i: SizeInt;
+begin
+  if Clipboard.HasFormat(CF_TEXT) then
+  begin
+    S := E.Text;
+    DecimalSeparatorFound := False;
+    Res := '';
+    for i := Length(S) downto 1 do
+    begin
+      if S[i] in ['0'..'9'] then
+        Res := S[i] + Res
+      else if not DecimalSeparatorFound and (S[i] in [DefaultFormatSettings.DecimalSeparator, '.']) then
+      begin
+        Res := DefaultFormatSettings.DecimalSeparator + Res;
+        DecimalSeparatorFound := True;
+      end;
+    end;
+    E.Text := Res;
+  end;
+end; }
 
 { TdxRecordId }
 
@@ -4251,8 +4284,8 @@ begin
   ae := DataSource.DataSet.State in [dsInsert, dsEdit];
   PopupMenu.Items[0].Enabled:=(SelText <> '') and (not ReadOnly) and ae;
   PopupMenu.Items[1].Enabled:=SelText <> '';
-  PopupMenu.Items[2].Enabled:=(not ReadOnly) and ae;
-  PopupMenu.Items[4].Enabled:=(Clipboard.AsText <> '') and (Text <> '') and (not ReadOnly) and ae;
+  PopupMenu.Items[2].Enabled:=(Clipboard.AsText <> '') and not ReadOnly and ae;
+  PopupMenu.Items[4].Enabled:=(Text <> '') and not ReadOnly and ae;
 end;
 
 procedure TdxComboBox.DoNeedData;
@@ -4278,7 +4311,10 @@ procedure TdxComboBox.Select;
 begin
   inherited Select;
   if (ItemIndex >= 0) and (Field.DataSet.State in [dsInsert, dsEdit]) then
+  begin
     Field.Text := Text;
+    if ItemsOnly then FOldText := Text;
+  end;
 end;
 
 {procedure TdxComboBox.UTF8KeyPress(var UTF8Key: TUTF8Char);
@@ -4321,6 +4357,22 @@ begin
   inherited DropDown;
   if Field <> nil then
 	  DoNeedData;
+end;
+
+procedure TdxComboBox.DoEnter;
+begin
+  inherited DoEnter;
+  if ItemsOnly then FOldText := Text;
+end;
+
+procedure TdxComboBox.EditingDone;
+begin
+  if ItemsOnly and (FOldText <> Text) then
+  begin
+    ItemIndex := Items.IndexOf(Text);
+    if ItemIndex < 0 then Text := FOldText;
+  end;
+  inherited EditingDone;
 end;
 
 constructor TdxComboBox.Create(AOwner: TComponent);
@@ -5681,13 +5733,27 @@ begin
   {$endif}
 end;
 
+// В LCL есть недоработка. Когда устанавливаешь цвет фона формы, в группах
+// слетает свойство ParentBackground. Причем если его попытаться установить
+// в режиме дизайна, фон группы устанавливается в цвет фона родителя, но при
+// этом ParentBackground слетает снова.
+procedure TdxGroupBox.SetColor(Value: TColor);
+begin
+  inherited SetColor(Value);
+  if Assigned(Parent) and (Value = Parent.Color) then
+  begin
+    ControlStyle := ControlStyle + [csParentBackground] - [csOpaque];
+    ParentColor := True;
+  end;
+end;
+
 constructor TdxGroupBox.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Width := ScaleToScreen(300);
   Height := ScaleToScreen(150);
   ControlStyle := ControlStyle - [csSetCaption];
-  ParentBackground := False;
+  ParentBackground := True;
   FStopTab := True;
 end;
 

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ButtonPanel, Buttons, Menus, ExtCtrls, Spin, strconsts;
+  ButtonPanel, Buttons, Menus, ExtCtrls, Spin, strconsts, dxctrls;
 
 type
 
@@ -33,12 +33,14 @@ type
   TListSourceFrm = class(TForm)
     BitBtn1: TBitBtn;
     ButtonPanel1: TButtonPanel;
+    OnlyListChk: TCheckBox;
+    Fields: TListBox;
     Label2: TLabel;
     Obj: TListBox;
-    Fields: TListBox;
-    Label1: TLabel;
     Panel1: TPanel;
+    Panel2: TPanel;
     RowCnt: TSpinEdit;
+    Splitter1: TSplitter;
     procedure BitBtn1Click(Sender: TObject);
     procedure FieldsDblClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -48,26 +50,26 @@ type
     procedure FormShow(Sender: TObject);
   private
     { private declarations }
-    FCbx: TComponent;
+    FCbx: TdxComboBox;
     procedure FillFieldList;
     procedure SelectForm(aId: Integer);
     procedure SelectField(aId: Integer);
   public
     { public declarations }
-    function ShowForm(C: TComponent): Integer;
+    function ShowForm(C: TdxComboBox): Integer;
   end;
 
 var
   ListSourceFrm: TListSourceFrm;
 
-function ShowListSourceForm(C: TComponent): Integer;
+function ShowListSourceForm(C: TdxComboBox): Integer;
 
 implementation
 
 uses
-  formmanager, dxctrls, LazUtf8, helpmanager, apputils;
+  formmanager, LazUtf8, helpmanager, apputils;
 
-function ShowListSourceForm(C: TComponent): Integer;
+function ShowListSourceForm(C: TdxComboBox): Integer;
 begin
   if ListSourceFrm = nil then
   	ListSourceFrm := TListSourceFrm.Create(Application);
@@ -90,10 +92,7 @@ end;
 
 procedure TListSourceFrm.HelpButtonClick(Sender: TObject);
 begin
-  if FCbx is TdxComboBox then
-    OpenHelp('listsource')
-  else
-    OpenHelp('memosource');
+  OpenHelp('listsource')
 end;
 
 procedure TListSourceFrm.ObjSelectionChange(Sender: TObject; User: boolean
@@ -176,7 +175,6 @@ begin
     with TdxForm(Obj.Items.Objects[i]) do
       if Id = aId then
       begin
-        //Obj.ItemIndex := -1;
         Obj.ItemIndex := i;
         Break;
       end;
@@ -192,14 +190,13 @@ begin
     C := TComponent(Fields.Items.Objects[i]);
     if GetId(C) = aId then
     begin
-      //Fields.ItemIndex := -1;
       Fields.ItemIndex := i;
       Break;
     end;
   end;
 end;
 
-function TListSourceFrm.ShowForm(C: TComponent): Integer;
+function TListSourceFrm.ShowForm(C: TdxComboBox): Integer;
 var
   TId, NewTId, NewFId: Integer;
 begin
@@ -207,15 +204,12 @@ begin
   Obj.Clear;
   FormMan.SourceFormsToList(Obj.Items);
   Fields.Clear;
-  TId := GetSourceTId(C);
+  TId := C.SourceTId;
   SelectForm(TId);
-  SelectField(GetSourceFId(C));
+  SelectField(C.SourceFId);
 
-  Label2.Visible := C is TdxComboBox;
-  RowCnt.Visible := Label2.Visible;
-
-  if C is TdxComboBox then
-	  RowCnt.Value:=TdxComboBox(C).DropDownCount;
+  RowCnt.Value := C.DropDownCount;
+  OnlyListChk.Checked := C.ItemsOnly;
 
   if ShowModal = mrOk then
   begin
@@ -223,17 +217,18 @@ begin
     begin
       NewTId := TdxForm(Obj.Items.Objects[Obj.ItemIndex]).Id;
       NewFId := GetId( TComponent(Fields.Items.Objects[Fields.ItemIndex]) );
-      SetSourceTId(C, NewTId);
-      SetSourceFId(C, NewFId);
-      if C is TdxComboBox then TdxComboBox(C).Style := csDropDown;
+      C.SourceTId := NewTId;
+      C.SourceFId := NewFId;
     end
     else
     begin
-      SetSourceTId(C, 0);
-      SetSourceFId(C, 0);
+      C.SourceTId := 0;
+      C.SourceFId := 0;
     end;
-    if C is TdxComboBox then
-    	TdxComboBox(C).DropDownCount:=RowCnt.Value;
+
+    C.ItemsOnly := OnlyListChk.Checked;
+    C.DropDownCount:=RowCnt.Value;
+    C.Style := csDropDown;
   end;
   Result := ModalResult;
 end;

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,24 +23,17 @@ unit TreePanel;
 interface
 
 uses
-  Classes, SysUtils, Controls, StdCtrls, ExtCtrls, ComCtrls, TreeFilterEdit,
-  Buttons, LclType, dxctrls, treeviewex, strconsts;
+  Classes, SysUtils, Controls, StdCtrls, ExtCtrls, ComCtrls,
+  Buttons, LclType, treeviewex, strconsts;
 
 type
 
   { TTreePanel }
 
-  { TTreeFilterEditEx }
-
-  TTreeFilterEditEx = class(TTreeFilterEdit)
-  public
-    procedure StoreSelection; override;
-  end;
-
   TTreePanel = class(TCustomControl)
   private
     FTree: TTreeViewEx;
-    FFilter: TTreeFilterEdit;
+    FFilter: TTreeFilterEditEx;
     FNextBn, FBackBn: TSpeedButton;
     procedure ButtonClick(Sender: TObject);
     procedure TreeStateChanged(Sender: TObject);
@@ -49,31 +42,13 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure BuildTree; virtual;
     property Tree: TTreeViewEx read FTree;
-    property Filter: TTreeFilterEdit read FFilter;
+    property Filter: TTreeFilterEditEx read FFilter;
   end;
 
 implementation
 
 uses
   apputils, appsettings;
-
-{ TTreeFilterEditEx }
-
-// Когда выделен самый верхний узел, то при сбросе фильтра выделение этого узла
-// сбрасывается. Чтобы этого не произошло переопределяем метод. Все то же самое,
-// только наоборот.
-procedure TTreeFilterEditEx.StoreSelection;
-var
-  ANode: TTreeNode;
-begin
-  inherited StoreSelection;
-  if FilteredTreeview = nil then Exit;
-  ANode := FilteredTreeview.Selected;
-  if ANode = nil then Exit;
-  if ANode <> FilteredTreeview.Items.GetFirstVisibleNode then Exit;
-  SelectionList.Clear;       // Clear old selection only if there is new one.
-  SelectionList.Add(ANode.Text);
-end;
 
 { TTreePanel }
 

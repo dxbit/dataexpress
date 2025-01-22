@@ -134,7 +134,7 @@ object ImagesFm: TImagesFm
   end
   object PopupMenu1: TPopupMenu
     Images = Images
-    Left = 119
+    Left = 120
     Top = 229
     object MenuItem1: TMenuItem
       Caption = 'Добавить'
@@ -153,6 +153,13 @@ object ImagesFm: TImagesFm
       ImageIndex = 2
       ShortCut = 46
       OnClick = MenuItem3Click
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object AddEmbedImagesMnu: TMenuItem
+      Caption = 'Добавить встроенное изображение'
+      OnClick = AddEmbedImagesMnuClick
     end
   end
   object PopupMenu2: TPopupMenu

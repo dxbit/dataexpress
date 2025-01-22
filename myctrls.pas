@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1456,8 +1456,15 @@ begin
 end;
 
 function TMyDBGrid.GetTruncCellHintText(aCol, aRow: Integer): string;
+var
+  C: TColumn;
 begin
   Result:=StringReplace(inherited GetTruncCellHintText(aCol, aRow), '|', '/', [rfReplaceAll]);
+  if (Result = '') and (aRow < FixedRows) then
+  begin
+    C := ColumnFromCol(aCol);
+    if C <> nil then Result := C.Title.Caption;
+  end;
 end;
 
 procedure TMyDBGrid.UTF8KeyPress(var UTF8Key: TUTF8Char);

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ type
   TDBEngine = class
   private
     //FLoader: TSQLDBLibraryLoader;
-    FConn: TIBConnection;
+    FConn: TdxConnection;
     FDatabase: String;
     FDBVersion: Integer;
     FPwd: String;
@@ -123,7 +123,7 @@ type
     property Database: String read FDatabase write SetDatabase;
     property Pwd: String read FPwd write FPwd;
     property DBVersion: Integer read FDBVersion write FDBVersion;
-    property Conn: TIBConnection read FConn;
+    property Conn: TdxConnection read FConn;
   end;
 
 var
@@ -188,6 +188,8 @@ begin
   Result := 0;
   for i := 0 to RD.GetRpSQLFieldCount - 1 do
   begin
+    if not RD.GetFieldVisible(i) then Continue;
+
     if RD.GetFieldType(i) in [flFile, flImage] then Inc(Result, 4)
     else Inc(Result);
   end;

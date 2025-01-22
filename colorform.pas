@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -87,19 +87,16 @@ end;
 
 function TColorFm.ShowForm(Control: TControl): Integer;
 begin
-  {if Control is TdxLabel then
-    ColorSampler1.DefaultColor := clNone
-  else}
-    ColorSampler1.DefaultColor:=clDefault;;
+  ColorSampler1.DefaultColor:=clDefault;
   ColorSampler1.SampleColor := Control.Color;
   Result := ShowModal;
   if Result = mrOk then
   begin
+    Control.Color := ColorSampler1.SampleColor;
     if Control is TdxLabel then
     begin
       TdxLabel(Control).Transparent := ColorSampler1.SampleColor = ColorSampler1.DefaultColor;
     end;
-    Control.Color := ColorSampler1.SampleColor;
   end;
 end;
 

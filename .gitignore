@@ -5,6 +5,7 @@
 *.log
 *.trc
 *.lps
+*.log
 readme.txt
 modify.txt
 dataexpress
@@ -17,4 +18,8 @@ tools
 /_dist
 logs
 /_test/htmltextlib.dll
+/_test/dxcef.dll
+/_test/gantchartlib10.dll
+/_test/tglog.txt
+/_test/cef
 

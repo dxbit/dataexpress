@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -302,7 +302,7 @@ begin
     C_FORM:
       DesignFr.FormsTreeView.SelectForm(FormMan.FindForm(GetId(C)));
     C_LISTSOURCE:
-			ShowListSourceForm(C);
+			ShowListSourceForm(TdxComboBox(C));
     C_LINKFORM:
     	ShowLCbxListSourceForm(TdxLookupComboBox(C));
     C_TEMPLATE:

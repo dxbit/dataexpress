@@ -193,6 +193,10 @@ msgstr ""
 msgid "Add a user-developer"
 msgstr ""
 
+#: strconsts.rsaddembeddedimages
+msgid "Add embedded images"
+msgstr ""
+
 #: strconsts.rsaddextmodule
 msgid "Add extensions module"
 msgstr ""
@@ -1310,7 +1314,7 @@ msgid "Copy style"
 msgstr ""
 
 #: strconsts.rscopyrighttext
-msgid "Copyright © 2015-2024 Pavel Duborkin"
+msgid "Copyright © 2015-2025 Pavel Duborkin"
 msgstr ""
 
 #: strconsts.rscopystyle
@@ -5422,6 +5426,14 @@ msgstr ""
 
 #: strconsts.rsselectedtext
 msgid "Selected text"
+msgstr ""
+
+#: strconsts.rsselectembeddimages
+msgid "Select embedded images"
+msgstr ""
+
+#: strconsts.rsselectembedimageshint
+msgid "Hold down Ctrl to select multiple images"
 msgstr ""
 
 #: strconsts.rsselectfields

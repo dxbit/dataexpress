@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  Types, InterfaceBase, ExtCtrls;
+  Types, InterfaceBase, ExtCtrls, TreeFilterEdit;
 
 type
 
@@ -66,13 +66,39 @@ type
     property OnStateChanged: TNotifyEvent read FOnStateChanged write FOnStateChanged;
   end;
 
+
+  { TTreeFilterEditEx }
+
+  TTreeFilterEditEx = class(TTreeFilterEdit)
+  public
+    procedure StoreSelection; override;
+  end;
+
 procedure Register;
 
 implementation
 
 procedure Register;
 begin
-  RegisterComponents('dxComponents', [TTreeViewEx]);
+  RegisterComponents('dxComponents', [TTreeViewEx, TTreeFilterEditEx]);
+end;
+
+{ TTreeFilterEditEx }
+
+// Когда выделен самый верхний узел, то при сбросе фильтра выделение этого узла
+// сбрасывается. Чтобы этого не произошло переопределяем метод. Все то же самое,
+// только наоборот.
+procedure TTreeFilterEditEx.StoreSelection;
+var
+  ANode: TTreeNode;
+begin
+  inherited StoreSelection;
+  if FilteredTreeview = nil then Exit;
+  ANode := FilteredTreeview.Selected;
+  if ANode = nil then Exit;
+  if ANode <> FilteredTreeview.Items.GetFirstVisibleNode then Exit;
+  SelectionList.Clear;       // Clear old selection only if there is new one.
+  SelectionList.Add(ANode.Text);
 end;
 
 { TTreeViewEx }

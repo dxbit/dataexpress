@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -3223,6 +3223,8 @@ begin
    //   Debug(EIBDatabaseError(E).ErrorCode);
     S := WinCPToUtf8(E.Message);
     if Pos('Unable to complete network', S) > 0 then
+      Msg := rsDatabaseConnectLost
+    else if Pos('Error writing data to the connection', S) > 0 then
       Msg := rsDatabaseConnectLost
     else if Pos('block size exceeds', S) > 0 then
       Msg := rsRecSizeLimit

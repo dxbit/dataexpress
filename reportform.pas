@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -483,7 +483,7 @@ begin
   with FirstRecordCount do
   begin
     Enabled := TCheckBox(Sender).Checked;
-    if CanFocus then
+    if CanFocus and HandleAllocated then
     begin
       SetFocus;
       SelStart := Length(Text);
@@ -671,7 +671,7 @@ end;
 
 procedure TReportFm.FormShow(Sender: TObject);
 begin
-  Grid.SetFocus;
+  if Grid.CanFocus then Grid.SetFocus;
   SetControlState;
 end;
 

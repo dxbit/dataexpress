@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -982,7 +982,7 @@ resourcestring
   rsAbortOperation = 'Abort operation?';
   rsDonate = 'Donate';
   //rsDXVersion = 'Version: %s';
-  rsCopyrightText = 'Copyright © 2015-2024 Pavel Duborkin';
+  rsCopyrightText = 'Copyright © 2015-2025 Pavel Duborkin';
   rsFloatFieldOutRange = 'The value [%s] of field [%s] out of range.';
   rsFloatOutRange = 'The value [%s] out of range.';
   rsTextTooLong = 'Text too long (%d > %d).';
@@ -1832,6 +1832,9 @@ resourcestring
   rsFormAlreadySelected = 'This form has already been selected.';
   rsFuncOnlyNumber = 'The "%s" function must have a data type of number.';
   rsInvalidDate = 'Invalid date %s';
+  rsSelectEmbeddImages = 'Select embedded images';
+  rsSelectEmbedImagesHint = 'Hold down Ctrl to select multiple images';
+  rsAddEmbeddedImages = 'Add embedded images';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

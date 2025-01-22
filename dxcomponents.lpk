@@ -11,33 +11,36 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="4">
-      <Item1>
+    <Files>
+      <Item>
         <Filename Value="ctrlutils.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="CtrlUtils"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Filename Value="dialoggrid.pas"/>
         <UnitName Value="DialogGrid"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Filename Value="checktreeview.pas"/>
         <UnitName Value="CheckTreeView"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <Filename Value="treeviewex.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="TreeViewEx"/>
-      </Item4>
+      </Item>
     </Files>
-    <RequiredPkgs Count="2">
-      <Item1>
+    <RequiredPkgs>
+      <Item>
+        <PackageName Value="LazControls"/>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
-      </Item2>
+      </Item>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

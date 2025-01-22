@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -336,7 +336,7 @@ end;
 function IsBackColorChangeable(C: TComponent): Boolean;
 const
   Cls = ' tdxcheckbox tdximage tdxdbimage tdxshape tdxgrid tdxquerygrid tdxpivotgrid' +
-        ' tdxgroupbox tdxpagecontrol tdxtabsheet tdxbutton ';
+        ' tdxpagecontrol tdxtabsheet tdxbutton tdxgroupbox ';
 begin
   Result := Pos(' ' + LowerCase(C.ClassName) + ' ', Cls) = 0;
 end;

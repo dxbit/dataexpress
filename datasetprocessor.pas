@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1336,7 +1336,7 @@ begin
     end;
   end;
 
-  if LCbx.ListFields.Count = 0 then
+  if (LCbx.ListFields.Count = 0) or (LCbx.ListSource > 0) and (LCbx.ListFields.Count = 1) then
     Grid.Options := Grid.Options - [loTitles]
   else
     Grid.Options := Grid.Options + [loTitles];
@@ -2177,7 +2177,7 @@ begin
   else if C is TdxCalcEdit then
   begin
     Editor.Tag := i;
-    Editor.OnKeyPress:=@FloatCellKeyPress
+    Editor.OnKeyPress:=@FloatCellKeyPress;
   end
   else if C is TdxCounter then
     TCustomEdit(Editor).ReadOnly := TdxCounter(C).ReadOnly
@@ -3026,6 +3026,7 @@ begin
 	    begin
   	    OnClick:=@ButtonClick;
     	end;
+
     if not HasFId(C) then Continue;
 
     SetDataSource(C, DS);
@@ -5825,6 +5826,8 @@ begin
   for i := 0 to sG.Columns.Count - 1 do
   begin
     dG.Columns[i].Tag := sG.Columns[i].Tag;
+    dG.Columns[i].AutoAlignment := sG.Columns[i].AutoAlignment;
+    dG.Columns[i].AutoLayout := sG.Columns[i].AutoLayout;
     // Если в дизайнере установлено "Только чтение", то все столбцы тоже
     // только для чтения и разрешение в скрипте редактировать таблицу не
     // будет иметь эффекта. Поэтому сбрасываем флаг со столбцов.

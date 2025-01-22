@@ -217,6 +217,10 @@ msgstr "Добавить"
 msgid "Add a user-developer"
 msgstr "Добавьте пользователя-разработчика"
 
+#: strconsts.rsaddembeddedimages
+msgid "Add embedded images"
+msgstr "Добавить встроенные изображения"
+
 #: strconsts.rsaddextmodule
 msgid "Add extensions module"
 msgstr "Добавить модуль расширений"
@@ -1344,8 +1348,8 @@ msgid "Copy style"
 msgstr "Копировать стиль"
 
 #: strconsts.rscopyrighttext
-msgid "Copyright © 2015-2024 Pavel Duborkin"
-msgstr "Copyright © 2015-2024 Павел Дуборкин"
+msgid "Copyright © 2015-2025 Pavel Duborkin"
+msgstr "Copyright © 2015-2025 Павел Дуборкин"
 
 #: strconsts.rscopystyle
 msgctxt "strconsts.rscopystyle"
@@ -3668,7 +3672,7 @@ msgstr "Недопустимая операция сравнения."
 #: strconsts.rsinvaliddate
 #, object-pascal-format
 msgid "Invalid date %s"
-msgstr ""
+msgstr "Некорректная дата %s"
 
 #: strconsts.rsinvalidmethotcall
 #, object-pascal-format
@@ -5491,6 +5495,14 @@ msgstr "Выбранное поле"
 #: strconsts.rsselectedtext
 msgid "Selected text"
 msgstr "Выделенный текст"
+
+#: strconsts.rsselectembeddimages
+msgid "Select embedded images"
+msgstr "Выберите встроенные изображения"
+
+#: strconsts.rsselectembedimageshint
+msgid "Hold down Ctrl to select multiple images"
+msgstr "Удерживайте Ctrl, чтобы выбрать несколько изображений"
 
 #: strconsts.rsselectfields
 msgid "Select fields"

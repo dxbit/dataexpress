@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -122,6 +122,7 @@ type
     FSelActionId: String;
     FSelActionType: TdxActionType;
     FActionPos: Integer;
+    function GetSelectedNode: TTreeNode;
     procedure SetModified;
     function ValidateCurrentAction: Boolean;
     procedure SelectNode(N: TTreeNode);
@@ -598,6 +599,12 @@ begin
     ShowLine(nil);
 end;
 
+function TActionsEditFm.GetSelectedNode: TTreeNode;
+begin
+  Result := Tree.Selected;
+  if (Result = nil) and (Tree.SelectionCount > 0) then Result := Tree.Selections[0];
+end;
+
 procedure TActionsEditFm.SetModified;
 begin
   FModified := True;
@@ -786,7 +793,8 @@ var
   i: Integer;
 begin
   Result := True;
-  N := Tree.Selected;
+  //N := Tree.Selected;
+  N := GetSelectedNode;
   for i := 0 to Tree.SelectionCount - 1 do
   begin
     NS := Tree.Selections[i];
@@ -919,10 +927,13 @@ var
   Buf: String;
   Act: TBaseAction;
 begin
-  N := Tree.Selected;
+  //N := Tree.Selected;
+  //if (N = nil) and (Tree.SelectionCount > 0) then N := Tree.Selections[0];
+  N := GetSelectedNode;
+
   alk := GetNodeLineKind(N);
-  cms := (N <> nil) and CheckMultiSelection;
-  sc1 := Tree.SelectionCount = 1;
+  cms := (alk <> alkNone) and CheckMultiSelection;
+  sc1 := (Tree.SelectionCount <= 1) and (N <> nil);
   ne := not (alk in [alkElseIf, alkElse]);
   ife := (N <> nil) and CheckIfElseIfExists(N.GetPrevSibling);
   Act := GetFirstSelectedAction;
@@ -949,9 +960,12 @@ var
   alk: TActionLineKind;
   sc1: Boolean;
 begin
-  N := Tree.Selected;
+  //N := Tree.Selected;
+  //if (N = nil) and (Tree.SelectionCount = 1) then N := Tree.Selections[0];
+  N := GetSelectedNode;
   alk := GetNodeLineKind(N);
-  sc1 := Tree.SelectionCount = 1;
+  sc1 := (Tree.SelectionCount <= 1) and (N <> nil);
+
   DelMnu.Enabled := sc1 and (alk <> alkNone);
   DisabledMnu.Enabled := True;
 end;
@@ -1375,9 +1389,18 @@ var
   AL: TActionLine;
 begin
   Result := nil;
-  for i := 0 to Tree.SelectionCount - 1 do
+  if Tree.SelectionCount > 0 then
+    for i := 0 to Tree.SelectionCount - 1 do
+    begin
+      N := Tree.Selections[i];
+      AL := TActionLine(N.Data);
+      if (AL <> nil) and (AL.Kind = alkAction) then
+        Exit(AL.Action);
+    end
+  else
   begin
-    N := Tree.Selections[i];
+    N := Tree.Selected;
+    if N = nil then Exit;
     AL := TActionLine(N.Data);
     if (AL <> nil) and (AL.Kind = alkAction) then
       Exit(AL.Action);
