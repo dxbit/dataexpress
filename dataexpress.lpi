@@ -195,7 +195,7 @@
         <PackageName Value="LCL"/>
       </Item16>
     </RequiredPackages>
-    <Units Count="204">
+    <Units Count="205">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1538,6 +1538,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EmbedImagesForm"/>
       </Unit203>
+      <Unit204>
+        <Filename Value="structtree.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StructTree"/>
+      </Unit204>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -129,6 +129,7 @@ type
     FSESDName: String;
     FShowGrid: Boolean;
     FSQLEditorHeight: Integer;
+    FSQLEditorRightPanelWidth: Integer;
     FSQLEditorWidth: Integer;
     FSQLModeEditorRightPanelWidth: Integer;
     FSQLModeEditorHeight: Integer;
@@ -259,6 +260,8 @@ type
     // Редактор SQL (скрипты)
     property SQLEditorWidth: Integer read FSQLEditorWidth write FSQLEditorWidth;
     property SQLEditorHeight: Integer read FSQLEditorHeight write FSQLEditorHeight;
+    property SQLEditorRightPanelWidth: Integer read FSQLEditorRightPanelWidth
+      write FSQLEditorRightPanelWidth;
     // Редактор SQL (отбор)
     property SQLModeEditorWidth: Integer read FSQLModeEditorWidth write FSQLModeEditorWidth;
     property SQLModeEditorHeight: Integer read FSQLModeEditorHeight write FSQLModeEditorHeight;
@@ -624,6 +627,7 @@ begin
 
       WriteInteger('SQL Editor', 'Width', FSQLEditorWidth);
       WriteInteger('SQL Editor', 'Height', FSQLEditorHeight);
+      WriteInteger('SQL Editor', 'RightPanelWidth', FSQLEditorRightPanelWidth);
 
       WriteInteger('SQL mode Editor', 'Width', FSQLModeEditorWidth);
       WriteInteger('SQL mode Editor', 'Height', FSQLModeEditorHeight);
@@ -753,6 +757,7 @@ begin
 
       FSQLEditorWidth := ReadInteger('SQL Editor', 'Width', 950);
       FSQLEditorHeight := ReadInteger('SQL Editor', 'Height', 550);
+      FSQLEditorRightPanelWidth := ReadInteger('SQL Editor', 'RightPanelWidth', 250);
 
       FSQLModeEditorWidth := ReadInteger('SQL mode Editor', 'Width', 950);
       FSQLModeEditorHeight := ReadInteger('SQL mode Editor', 'Height', 550);

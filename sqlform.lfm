@@ -19,11 +19,11 @@ object SqlFm: TSqlFm
     Height = 509
     Top = 0
     Width = 244
-    ActivePage = TabSheet1
+    ActivePage = FieldsTab
     Align = alRight
     TabIndex = 0
     TabOrder = 1
-    object TabSheet1: TTabSheet
+    object FieldsTab: TTabSheet
       Caption = 'Поля'
       ClientHeight = 481
       ClientWidth = 236
@@ -60,6 +60,9 @@ object SqlFm: TSqlFm
         Align = alBottom
         ResizeAnchor = akBottom
       end
+    end
+    object StructTab: TTabSheet
+      Caption = 'Структура'
     end
   end
   object Panel3: TPanel
@@ -109,6 +112,8 @@ object SqlFm: TSqlFm
       ParentColor = False
       ParentFont = False
       TabOrder = 1
+      OnDragDrop = EditDragDrop
+      OnDragOver = EditDragOver
       OnKeyDown = EditKeyDown
       Gutter.Visible = False
       Gutter.Width = 57

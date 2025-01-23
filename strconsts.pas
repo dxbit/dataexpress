@@ -1835,6 +1835,7 @@ resourcestring
   rsSelectEmbeddImages = 'Select embedded images';
   rsSelectEmbedImagesHint = 'Hold down Ctrl to select multiple images';
   rsAddEmbeddedImages = 'Add embedded images';
+  rsStructure = 'Structure';
   //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
   //rsContainingTextFrags = 'Containing one or more text fragments';
 

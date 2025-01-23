@@ -10,7 +10,7 @@ uses
   SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel,
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,
   MyLogger, PascalScriptFCL, LCbxListSourceMoreForm, EmbedImagesForm,
-  lazcontrols;
+  lazcontrols, StructTree;
 
 {$R *.res}
 

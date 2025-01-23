@@ -5822,6 +5822,10 @@ msgstr ""
 msgid "Storage type"
 msgstr ""
 
+#: strconsts.rsstructure
+msgid "Structure"
+msgstr ""
+
 #: strconsts.rsstyle
 msgid "Style"
 msgstr ""

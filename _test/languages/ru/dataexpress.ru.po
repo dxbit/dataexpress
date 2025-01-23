@@ -5896,6 +5896,10 @@ msgstr "Не указана папка хранения."
 msgid "Storage type"
 msgstr "Способ хранения"
 
+#: strconsts.rsstructure
+msgid "Structure"
+msgstr "Структура"
+
 #: strconsts.rsstyle
 msgid "Style"
 msgstr "Стиль"

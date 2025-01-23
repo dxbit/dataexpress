@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ uses
   Classes, SysUtils, FileUtil, SynEdit, SynHighlighterSQL, Forms, Controls,
   Graphics, Dialogs, DBGrids, ExtCtrls, ComCtrls, strconsts, db, SqlDb,
   dxsqlquery, SynEditTypes, LclType, StdCtrls, ButtonPanel, dxreports, LazUtf8,
-  propgrids, dxctrls;
+  propgrids, dxctrls, structtree;
 
 { TSqlFm }
 
@@ -48,7 +48,8 @@ type
     StatusBar1: TStatusBar;
     Edit: TSynEdit;
     SynSQLSyn1: TSynSQLSyn;
-    TabSheet1: TTabSheet;
+    FieldsTab: TTabSheet;
+    StructTab: TTabSheet;
     ToolBar1: TToolBar;
     ExecuteBn: TToolButton;
     CopyBn: TToolButton;
@@ -56,6 +57,9 @@ type
     FieldsTree: TTreeView;
     BuilderBn: TToolButton;
     procedure EditChange(Sender: TObject);
+    procedure EditDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure EditDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
     procedure EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure EditStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure FieldsTreeSelectionChanged(Sender: TObject);
@@ -80,6 +84,9 @@ type
     FQGrid: TdxQueryGrid;
     FCurrentForm: TdxForm;
     FProps: TVirtualPropGrid;
+    FStructTree: TStructTree;
+    FDragText: String;
+    FOldX, FOldY: Integer;
     procedure DeleteOldFieldsReferences;
     procedure ShowGrid;
     procedure ShowErrors;
@@ -97,6 +104,8 @@ type
     procedure FillProps;
     function IsSqlMode: Boolean;
     function GetSelectedSqlField: TSQLField;
+    procedure StructTreeMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure UpdateSqlFieldNode(N: TTreeNode);
     procedure SetDisplayFormat;
     function CanOldFieldsDeleted: Boolean;
@@ -123,7 +132,7 @@ function ShowSqlForm: Integer;
 implementation
 
 uses
-  Clipbrd, expressions, apputils, helpmanager, appsettings;
+  Clipbrd, expressions, apputils, helpmanager, appsettings, StrUtils;
 
 function ShowSqlForm: Integer;
 begin
@@ -165,12 +174,21 @@ end;
 
 procedure TSqlFm.FormCreate(Sender: TObject);
 begin
+  FStructTree := TStructTree.Create(Self);
+  with FStructTree do
+  begin
+    Parent := StructTab;
+    Align := alClient;
+    Tree.OnMouseDown := @StructTreeMouseDown;
+  end;
   FSqlFields := TSQLFieldList.Create;
   Caption := rsSQLEditor;
   ExecuteBn.Hint := rsExecuteSQL;
   CopyBn.Hint := rsCopyToPasteScript;
   PasteBn.Hint := rsPasteFromScript;
   BuilderBn.Hint := rsSwitchToBuilderMode;
+  FieldsTab.Caption := rsFields;
+  StructTab.Caption := rsStructure;
   SetupImageList(ImageList1, ['play16', 'copy16', 'paste16', 'query16']);
   Buttons.OKButton.Caption := rsOk;
   Buttons.CancelButton.Caption := rsCancel;
@@ -242,6 +260,29 @@ end;
 procedure TSqlFm.EditChange(Sender: TObject);
 begin
   FModified := True;
+end;
+
+procedure TSqlFm.EditDragDrop(Sender, Source: TObject; X, Y: Integer);
+begin
+  Edit.InsertTextAtCaret(FDragText);
+end;
+
+procedure TSqlFm.EditDragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+begin
+  Edit.SetFocus;
+  if State = dsDragEnter then
+  begin
+    FOldX := X;
+    FOldY := Y;
+  end
+  else
+  begin
+    if (X < FOldX) and (X < ScaleToScreen(200)) then Edit.LeftChar := Edit.LeftChar - 1
+    else if (X > FOldX) and (X > Edit.ClientWidth - ScaleToScreen(200) ) then Edit.LeftChar := Edit.LeftChar + 1;
+    Edit.CaretXY := Edit.PixelsToRowColumn(Point(X, Y));
+    FOldX := X; FOldY := Y;
+  end;
 end;
 
 procedure TSqlFm.ExecuteBnClick(Sender: TObject);
@@ -521,6 +562,25 @@ begin
     Result := nil;
 end;
 
+procedure TSqlFm.StructTreeMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  Tree: TTreeView;
+  N: TTreeNode;
+begin
+  Tree := TTreeView(Sender);
+  if Button = mbLeft then
+  begin
+  	N := Tree.GetNodeAt(X, Y);
+    if N <> nil then
+    begin
+      Tree.BeginDrag(False);
+      FDragText := N.Text;
+      FDragText := '[' + LeftStr(FDragText, RPos(' (', FDragText) - 1) + ']';
+    end;
+  end;
+end;
+
 procedure TSqlFm.UpdateSqlFieldNode(N: TTreeNode);
 var
   SqlF: TSQLField;
@@ -725,18 +785,24 @@ begin
   begin
     AppConfig.SQLEditorWidth := R.Width;
     AppConfig.SQLEditorHeight := R.Height;
+    AppConfig.SQLEditorRightPanelWidth := ScaleTo96(SidePages.Width);
   end;
 end;
 
 function TSqlFm.ShowForm: Integer;
 begin
-  SideSplitter.Visible := False;
-  SidePages.Visible := False;
+  //SideSplitter.Visible := False;
+  //SidePages.Visible := False;
   BuilderBn.Visible := False;
   Buttons.Visible := False;
+  FieldsTab.TabVisible:=False;
+  SidePages.ActivePageIndex := 1;
 
   Width := ScaleToScreen(AppConfig.SQLEditorWidth);
   Height := ScaleToScreen(AppConfig.SQLEditorHeight);
+  SidePages.Width := ScaleToScreen(AppConfig.SQLEditorRightPanelWidth);
+
+  FStructTree.BuildTree;
 
   Result := ShowModal;
 end;
@@ -776,6 +842,7 @@ begin
   Height := ScaleToScreen(AppConfig.SQLModeEditorHeight);
   SidePages.Width := ScaleToScreen(AppConfig.SQLModeEditorRightPanelWidth);
 
+  FStructTree.BuildTree;
   Result := ShowModal;
 
   if Result = mrOk then
