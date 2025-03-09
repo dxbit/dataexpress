@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -79,9 +79,13 @@ end;
 
 procedure TMyUnZipper.UnZipperDoneStream(Sender: TObject; var AStream: TStream;
   AItem: TFullZipFileEntry);
+var
+  FlNm: String;
 begin
-  SetFileDateTime(TFileStream(AStream).Handle, AItem.DateTime);
+  FlNm := TFileStream(AStream).FileName;
+  //SetFileDateTime(TFileStream(AStream).Handle, AItem.DateTime);
   FreeAndNil(AStream);
+  SetFileDateTime(FlNm, AItem.DateTime);
 end;
 
 constructor TMyUnZipper.Create;

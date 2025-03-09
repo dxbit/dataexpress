@@ -7,11 +7,12 @@ object OutputFm: TOutputFm
   Caption = 'OutputFm'
   ClientHeight = 323
   ClientWidth = 381
+  ShowInTaskBar = stAlways
+  OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ShowInTaskBar = stAlways
-  LCLVersion = '2.0.12.0'
+  OnShow = FormShow
   object Memo: TMemo
     Left = 0
     Height = 323

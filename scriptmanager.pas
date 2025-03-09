@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -2621,9 +2621,10 @@ var
     begin
       FS := TFileStream.Create(FileName, fmCreate);
       EncryptStream(St, FS, DXMain.Key);
-      SetFileDateTime(FS.Handle, LastModified);
+      //SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
+      SetFileDateTime(FileName, LastModified);
     end;
 
     St := DS.CreateBlobStream(DS.Fields[5], bmRead);
@@ -2631,9 +2632,10 @@ var
     begin
       FS := TFileStream.Create(FileName + '.cfg', fmCreate);
       FS.CopyFrom(St, 0);
-      SetFileDateTime(FS.Handle, LastModified);
+      //SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
+      SetFileDateTime(FileName + '.cfg', LastModified);
     end;
   end;
 
@@ -2734,22 +2736,25 @@ procedure TScriptManager.SaveToDir(const aDir: String);
 var
   i: Integer;
   SD: TScriptData;
-  S: String;
+  S, FlNm: String;
 begin
   for i := 0 to FScripts.Count - 1 do
   begin
     SD := GetScripts(i);
-    S := SD.GetFileName;
-    SD.SourceData.SaveToFile(aDir + S + '.cfg');
-    SetFileDateTime(aDir + S + '.cfg', SD.LastModified);
+    FlNm := aDir + SD.GetFileName;
+    SD.SourceData.SaveToFile(FlNm + '.cfg');
+    SetFileDateTime(FlNm + '.cfg', SD.LastModified);
 
-    with TFileStream.Create(aDir + S, fmCreate) do
-    try
-      S := SD.Source;
-      WriteBuffer(Pointer(S)^, Length(S));
-      SetFileDateTime(Handle, SD.LastModified);
-    finally
-      Free;
+    with TFileStream.Create(FlNm, fmCreate) do
+    begin
+      try
+        S := SD.Source;
+        WriteBuffer(Pointer(S)^, Length(S));
+        //SetFileDateTime(Handle, SD.LastModified);
+      finally
+        Free;
+      end;
+      SetFileDateTime(FlNm, SD.LastModified);
     end;
   end;
 end;

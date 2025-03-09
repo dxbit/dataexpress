@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -349,7 +349,7 @@ begin
 
   for i := 0 to Fields.Count - 1 do
   begin
-    FieldIndex := Integer(Fields.Objects[i]) - 1;
+    FieldIndex := PtrInt(Fields.Objects[i]) - 1;
     N := FTree.Items.AddChildObject(FQryNode, Fields[i], Pointer(FieldIndex+1));
     N.ImageIndex := Ord( FRD.GetFieldType(FieldIndex) ) - 1;
     N.SelectedIndex := N.ImageIndex;
@@ -360,7 +360,7 @@ begin
     FCFNode := FTree.Items.AddChild(FQryNode, rsCalcFields);
     for i := 0 to CalcFields.Count - 1 do
     begin
-      FieldIndex := Integer(CalcFields.Objects[i]) - 1;
+      FieldIndex := PtrInt(CalcFields.Objects[i]) - 1;
       N := FTree.Items.AddChildObject(FCFNode, CalcFields[i], Pointer(FieldIndex+1));
       N.ImageIndex := Ord( FRD.GetFieldType(FieldIndex) ) - 1;
       N.SelectedIndex := N.ImageIndex;

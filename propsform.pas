@@ -158,13 +158,15 @@ begin
     Exit;
   end;
 
+//  if csDesigning in aControl.ComponentState then ShowMessage('Ok');
+
   if aControl is TdxForm then
     P := DesignFr.ScreenToClient(Mouse.CursorPos)
   else
     P := aControl.ClientToParent(Point(0, 0), DesignFr);
   X := P.X; Y := P.Y;
 
-  SBox := DesignFr.ScrollBox1;
+  SBox := DesignFr.DesignBox;
   HidePropsForm;
   PropsFrm := TPropsForm.Create(nil);
   PropsFrm.Parent := DesignFr;

@@ -7,9 +7,9 @@ object ThumbFm: TThumbFm
   Caption = 'Миниатюра'
   ClientHeight = 123
   ClientWidth = 320
-  OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '4.0.0.2'
+  OnCreate = FormCreate
   object Label1: TLabel
     Left = 16
     Height = 15

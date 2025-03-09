@@ -362,7 +362,7 @@ begin
 
   for i := 0 to FOldFieldNames.Count - 1 do
   begin
-    FlNm :='f' + IntToStr(Integer(FOldFieldNames.Objects[i]));
+    FlNm :='f' + IntToStr(PtrInt(FOldFieldNames.Objects[i]));
     if FindRpFieldByFieldNameDS(FlNm) < 0 then
       DeleteLCbxListSourceField(FFm, FRD.Id, FlNm);
   end;

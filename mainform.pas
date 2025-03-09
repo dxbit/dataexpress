@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ interface
 uses
   Classes, {$IFDEF WINDOWS}windows,{$ENDIF} SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   Menus, strconsts, LclType, LclProc, ExtCtrls, IBConnection, dxctrls,
-  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils;
+  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils, LMessages;
 
 type
 
@@ -97,6 +97,7 @@ type
     procedure ClearHistoryMnuHandler(Sender: TObject);
     procedure FindActionsMnuClick(Sender: TObject);
     procedure FindExprMnuClick(Sender: TObject);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
@@ -156,6 +157,7 @@ type
     FParams: TParamList;
     FSelectedFormId: Integer;
     FOldFormatSettings: TFormatSettings;
+    FRealBounds: TRect;
     function GetFormViews(Index: Integer): TFormView;
     function GetPages: TPageControl;
     function GetStatusBar: TStatusBar;
@@ -186,6 +188,7 @@ type
     procedure OpenTemplateFolder;
     function CanCloseDatabase: Boolean;
     procedure EnableDropFiles(AEnabled: Boolean);
+    procedure SetDesignerMode(Value: Boolean);
     property SelectedFormId: Integer read FSelectedFormId write FSelectedFormId;
     property DesignPageIndex: Integer read FDesignPageIndex write FDesignPageIndex;
     property FormViews[Index: Integer]: TFormView read GetFormViews;
@@ -220,10 +223,7 @@ uses
   appimagelists, reportmanager, mydialogs, crypt, mylogger, warningform{$ifdef DXFull},
   reportsform, usersform, modulesform, debugscriptform, scriptform,
   templatefieldsform, imagesform, designerframe, findactionsform,
-  findexprform, findscriptform, updatemanform, updatemanager{$endif}
-  {$ifdef linux},
-  gtkthememanager
-  {$endif};
+  findexprform, findscriptform, updatemanform, updatemanager{$endif};
 
 const
   WIKI_URL = 'https://wiki.mydataexpress.ru/';
@@ -421,7 +421,6 @@ begin
   if not (DefaultFormatSettings.ThousandSeparator in [' ', ',', '.', '-', '''']) then
     DefaultFormatSettings.ThousandSeparator := ' ';
   //
-  CreateThemeFile;
   {$endif}
   FOldFormatSettings := DefaultFormatSettings;
 end;
@@ -504,6 +503,14 @@ end;
 procedure TMainFm.FindExprMnuClick(Sender: TObject);
 begin
   ShowFindExprForm;
+end;
+
+procedure TMainFm.FormChangeBounds(Sender: TObject);
+begin
+  {$ifdef linux}
+  if WindowState = wsNormal then
+    FRealBounds := BoundsRect;
+  {$endif}
 end;
 
 procedure TMainFm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -672,7 +679,7 @@ begin
   begin
     if (Key = VK_F4) and (Shift = []) and AppConfig.ExpertMode then DesignFr.ShowScriptForm
     else if (Key = VK_F5) and (Shift = []) and (DesignFr.CurForm <> nil) then
-      DesignFr.TestForm(DesignFr.CurForm.FormCaption);
+      DesignFr.TestForm(DesignFr.CurForm.FormCaption)
   end{$endif};
   if (UserMan.CurrentUser = nil) or (UserMan.CurrentUser.RoleId < 0) then
     case Key of
@@ -759,7 +766,99 @@ begin
   if DBPwd <> '' then DBPwd := Decrypt(DBPwd, StartKey, MultKey, AddKey);
 end;
 
+{$ifdef linux}
+function TrimQuotes(const S: String): String;
+begin
+  Result := S;
+  if S = '' then Exit;
+  if Result[1] = '"' then Delete(Result, 1, 1);
+  if RightStr(Result, 1) = '"' then SetLength(Result, Length(Result) - 1);
+end;
+
+function GetDesktopDir: String;
+var
+  UserDirsFile: String;
+  SL: TStringList;
+begin
+  Result := '';
+  UserDirsFile := GetUserDir + '.config/user-dirs.dirs';
+  if FileExists(UserDirsFile) then
+  begin
+    SL := TStringList.Create;
+    try
+      SL.LoadFromFile(UserDirsFile);
+      Result := TrimQuotes(SL.Values['XDG_DESKTOP_DIR']);
+      Result := StringReplace(Result, '$HOME/', GetUserDir, []);
+      if Result <> '' then Result := IncludeTrailingPathDelimiter(Result);
+    finally
+      SL.Free;
+    end;
+  end;
+  if Result <> '' then Exit;
+
+  if DirectoryExists(GetUserDir + 'Рабочий стол') then
+    Result := GetUserDir + 'Рабочий стол' + PathDelim
+  else if DirectoryExists(GetUserDir + 'Desktop') then
+    Result := GetUserDir + 'Desktop' + PathDelim;
+end;
+
+function ShortcutFileExists(FbVer: Byte): Boolean;
+var
+  Dir, FileName: String;
+begin
+  Result := False;
+  Dir := GetDesktopDir;
+  if Dir = '' then Exit;
+
+  if FbVer = 25 then FileName := 'dataexpress fb25.desktop'
+  else FileName := 'dataexpress fb5.desktop';
+  Result := FileExists(Dir + FileName);
+end;
+
+// Для корректной работы требуется задать переменные окружения LD_LIBRARY_PATH и FIREBIRD.
+function CreateShortcutFile(FbVer: Byte): Boolean;
+var
+  S, Dir, FbDir, FileName: String;
+begin
+  Result := False;
+  FbDir := 'fb' + IntToStr(FbVer);
+  S := '[Desktop Entry]' + LineEnding +
+    'Version=1.0' + LineEnding +
+    'Encoding=UTF-8' + LineEnding +
+    'Type=Application' + LineEnding +
+    'Icon=' + AppPath + 'dataexpress.png' + LineEnding +
+    'Path=' + AppPath + LineEnding +
+    'Exec=env LD_LIBRARY_PATH=' + AppPath + FbDir + ' FIREBIRD=' + AppPath + FbDir + ' ' + Application.ExeName + LineEnding +
+    'Name=DataExpress FB' + IntToStr(FbVer);
+  Dir := GetDesktopDir;
+  if Dir = '' then
+  begin
+    ErrMsg(rsDesktopDirNotFound, True, rsStart);
+    Exit;
+  end;
+  if FbVer = 25 then FileName := 'dataexpress fb25.desktop'
+  else FileName := 'dataexpress fb5.desktop';
+  FileName := Dir + FileName;
+  if not FileExists(FileName) then
+    try
+      with TFileStream.Create(FileName, fmCreate) do
+      try
+        Write(Pointer(S)^, Length(S));
+      finally
+        Free;
+      end;
+    except
+      on E: Exception do
+        ErrMsg(Format(rsFailedCreateShortcut, [FileName]) +
+          ExceptionToString(E, True, False));
+    end;
+  Result := True;
+end;
+{$endif}
+
 procedure TMainFm.FormShow(Sender: TObject);
+const
+  DXUpdateExe = {$ifdef windows}'dxupdate.exe'{$else}'dxupdate'{$endif};
 var
   DBName, DBPath, User, Pwd, DBPwd, DXUpdateFile, DXUpdateFileTmp: String;
   ContinueOpen: Boolean;
@@ -770,6 +869,8 @@ begin
   // На случай, если окно скроют, а потом покажут.
   if not FIsLoadApp then Exit;
 
+  FRealBounds := BoundsRect;
+
   if not AppConfig.MainFormPosCorrected then
   begin
     CorrectFormPos(Self, Self);
@@ -777,9 +878,8 @@ begin
     AppConfig.MainFormPosCorrected := True;
   end;
 
-
   // Проверка обновлений...
-  DXUpdateFile := AppPath + 'dxupdate.exe';
+  DXUpdateFile := AppPath + DXUpdateExe;
   if AppConfig.CheckUpdates and (AppConfig.UpdatesDBPath <> '') and FileExists(DXUpdateFile) then
   begin
     with TUpdateMan.Create do
@@ -789,7 +889,7 @@ begin
         ProgressFm.ShowForm(rsDownloadUpdatesMsg, False);
         DownloadFiles;
 
-        DXUpdateFileTmp := GetTempDir + 'dxupdates.tmp' + PathDelim + 'dxupdate.exe';
+        DXUpdateFileTmp := GetTempDir + 'dxupdates.tmp' + PathDelim + DXUpdateExe;
         if FileExists(DXUpdateFileTmp) then
         begin
           CopyFile(DXUpdateFileTmp, DXUpdateFile, [cffOverwriteFile, cffPreserveTime], False);
@@ -1365,7 +1465,8 @@ var
   Title: String;
 begin
   if DBName = '' then Exit;
-	CI := nil;
+
+  CI := nil;
   // Это именованное соединение?
   if IsConnectName(DBName) then
   begin
@@ -1398,6 +1499,26 @@ begin
     AppConfig.Pwd := DBPwd;
   end;
   AppConfig.Save;
+
+  {$ifdef linux}
+  if not DBase.IsRemote then
+  begin
+    if (CompareText(ExtractFileExt(DBase.Database), '.FDB') = 0) and (GetCurrentFirebirdDir <> 'fb25') then
+    begin
+      Info(Format(rsCantOpenDatabaseFDB, [DBName]));
+      if not ShortcutFileExists(25) and (Confirm(rsWarning, rsShortcutFB25NotFound) = mrYes) then
+        CreateShortcutFile(25);
+      Exit;
+    end
+    else if (CompareText(ExtractFileExt(DBase.Database), '.DXDB') = 0) and (GetCurrentFirebirdDir <> 'fb5') then
+    begin
+      Info(Format(rsCantOpenDatabaseDXDB, [DBName]));
+      if not ShortcutFileExists(5) and (Confirm(rsWarning, rsShortcutFB5NotFound) = mrYes) then
+        CreateShortcutFile(5);
+      Exit;
+    end;
+  end;
+  {$endif}
 
   if not DBase.IsRemote and not DBase.DatabaseExists then
   begin
@@ -1793,11 +1914,7 @@ begin
   {$ifdef windows}
   ExecuteProcess('explorer.exe', [{Utf8ToWinCP}(S)]);
   {$else}
-  FM := GetUnixFileManager;
-  if S <> '' then
-    ShellExec('', FM, S, '', 0)
-  else
-    ErrMsg(rsUnableFindFileManager);
+  ShellExec('explore', S, '', '', 0)
   {$endif}
 end;
 
@@ -1821,13 +1938,22 @@ begin
   end;
 end;
 
+procedure TMainFm.SetDesignerMode(Value: Boolean);
+begin
+  SetDesigning(Value, False);
+end;
+
 procedure TMainFm.SaveConfig;
 var
   R: TRect;
 begin
   if WindowState in [wsNormal, wsMaximized] then
     AppConfig.FormState := WindowState;
+  {$ifdef windows}
   R := ScaleRectTo96(GetFormRealBounds(Self));
+  {$else}
+  R := ScaleRectTo96(FRealBounds);
+  {$endif}
   AppConfig.FormLeft := R.Left;
   Appconfig.FormTop := R.Top;
 	AppConfig.FormWidth := R.Width;

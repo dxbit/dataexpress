@@ -1,7 +1,7 @@
 object SelectFm: TSelectFm
-  Left = 335
+  Left = 678
   Height = 357
-  Top = 186
+  Top = 288
   Width = 320
   BorderIcons = [biSystemMenu]
   Caption = 'SelectFm'
@@ -10,7 +10,7 @@ object SelectFm: TSelectFm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '3.2.0.0'
   object List: TListBox
     Left = 4
     Height = 315
@@ -21,9 +21,9 @@ object SelectFm: TSelectFm
     BorderSpacing.Top = 4
     BorderSpacing.Right = 4
     ItemHeight = 0
+    TabOrder = 0
     OnDblClick = ListDblClick
     OnSelectionChange = ListSelectionChange
-    TabOrder = 0
   end
   object ButtonPanel1: TButtonPanel
     Left = 6

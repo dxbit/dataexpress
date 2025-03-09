@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -303,7 +303,7 @@ begin
     S := '';
     for i := 0 to Fields.Count - 1 do
       S := S + QuoteStr(GetFieldName( TComponent(Fields.Objects[i]) )) + ';';
-    S := Copy(S, 1, Length(S) - 1) + LineEnding;
+    S := Copy(S, 1, Length(S) - 1) + #13#10;
     if ANSI then S := Utf8ToWinCP(S);
     FS.WriteBuffer(Pointer(S)^, Length(S));
 
@@ -357,7 +357,7 @@ begin
         end;
         if i < DSFields.Count - 1 then S := S + ';';
       end;
-      S := S + LineEnding;
+      S := S + #13#10;
       if ANSI then S := Utf8ToWinCP(S);
       FS.WriteBuffer(Pointer(S)^, Length(S));
 

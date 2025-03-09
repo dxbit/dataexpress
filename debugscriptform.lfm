@@ -6,14 +6,15 @@ object DebugScriptFm: TDebugScriptFm
   Caption = 'DebugScriptFm'
   ClientHeight = 401
   ClientWidth = 794
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '4.0.0.2'
+  OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  ShowInTaskBar = stAlways
-  LCLVersion = '3.2.0.0'
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
@@ -51,8 +52,8 @@ object DebugScriptFm: TDebugScriptFm
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 378
+    Height = 20
+    Top = 381
     Width = 794
     Panels = <    
       item

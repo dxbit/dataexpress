@@ -746,7 +746,7 @@ end;
 
 function TDropDownList.GetRecId(Index: Integer): Integer;
 begin
-  Result := Integer(Objects[0, Index]);
+  Result := PtrInt(Objects[0, Index]);
 end;
 
 procedure TDropDownList.SetColumns(AValue: TDropDownListColumns);
@@ -776,7 +776,7 @@ end;
 
 procedure TDropDownList.SetRecId(Index: Integer; AValue: Integer);
 begin
-  Objects[0, Index] := TObject(AValue);
+  Objects[0, Index] := TObject(PtrInt(AValue));
 end;
 
 function TDropDownList.GetDefaultRowHeight: integer;

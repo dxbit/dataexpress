@@ -46,7 +46,7 @@ object ReportFm: TReportFm
     end
     object ToolButton3: TToolButton
       Left = 373
-      Height = 22
+      Height = 5
       Top = 0
       Caption = 'ToolButton3'
       Style = tbsDivider
@@ -104,7 +104,7 @@ object ReportFm: TReportFm
     end
     object ToolButton10: TToolButton
       Left = 718
-      Height = 22
+      Height = 5
       Top = 0
       Caption = 'ToolButton10'
       Style = tbsDivider

@@ -27,11 +27,7 @@ uses
   DbCtrlsEx, BGRABitmap, ComCtrls, Db, Grids, Graphics, strconsts, Menus,
   Buttons, Forms, timeedit, LazUtf8, LclType, lists, myctrls, LMessages,
   DxActions, myclasses,
-  mytypes, sqldb, dximages, dxfiles, LclIntf, treeviewex
-  {$ifdef linux}{,
-  gtk2globals }
-  {$else}
-  {$endif};
+  mytypes, sqldb, dximages, dxfiles, LclIntf, treeviewex;
 
 const
   StorageTypeDB = 0;
@@ -640,6 +636,7 @@ type
     //procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyUp(var Key: Word; Shift: TShiftState); override;
+    procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
     procedure DefineProperties(Filer: TFiler); override;
     procedure Change; override;
     procedure FontChanged(Sender: TObject); override;
@@ -4649,9 +4646,7 @@ begin
   else S := '';
 
 	CreateListForm;
-  {$ifdef windows}
   FForm.PopupParent := TCustomForm(Self.GetTopParent);
-  {$endif}
 
   if FOnNeedData <> nil then FOnNeedData(Self, S);
   //if FGrid.RowCount = FGrid.FixedRows then Exit;
@@ -4978,6 +4973,14 @@ begin
   end;
 
   FKeyDown := False;
+  {$endif}
+end;
+
+procedure TdxLookupComboBox.UTF8KeyPress(var UTF8Key: TUTF8Char);
+begin
+  inherited UTF8KeyPress(UTF8Key);
+  {$ifdef linux}
+  //FFiltering := True;
   {$endif}
 end;
 

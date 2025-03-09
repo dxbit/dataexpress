@@ -2,11 +2,11 @@ object GrdFm: TGrdFm
   Left = 662
   Height = 367
   Top = 184
-  Width = 1184
+  Width = 1193
   BorderIcons = [biSystemMenu]
   Caption = 'Таблица'
   ClientHeight = 367
-  ClientWidth = 1184
+  ClientWidth = 1193
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
@@ -16,7 +16,7 @@ object GrdFm: TGrdFm
     Left = 6
     Height = 26
     Top = 335
-    Width = 1172
+    Width = 1181
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -32,29 +32,35 @@ object GrdFm: TGrdFm
   end
   object Panel1: TPanel
     Left = 0
-    Height = 109
+    Height = 122
     Top = 0
-    Width = 1184
+    Width = 1193
     Align = alTop
+    AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 109
-    ClientWidth = 1184
+    ClientHeight = 122
+    ClientWidth = 1193
     ParentFont = False
     TabOrder = 1
     object GridGrp: TGroupBox
       Left = 4
-      Height = 105
-      Top = 0
+      Height = 114
+      Top = 4
       Width = 208
+      BorderSpacing.Left = 4
+      BorderSpacing.Top = 4
+      BorderSpacing.Bottom = 4
       Caption = 'Сетка'
-      ClientHeight = 85
+      ClientHeight = 94
       ClientWidth = 204
       TabOrder = 0
       object VertLines: TCheckBox
         Left = 4
         Height = 19
-        Top = 0
+        Top = 4
         Width = 94
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
         Caption = 'По вертикали'
         TabOrder = 0
         OnChange = LinesChange
@@ -65,7 +71,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrBottom
         Left = 4
         Height = 19
-        Top = 23
+        Top = 27
         Width = 107
         BorderSpacing.Top = 4
         Caption = 'По горизонтали'
@@ -77,9 +83,10 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrBottom
         Left = 68
         Height = 23
-        Top = 50
+        Top = 54
         Width = 132
         BorderSpacing.Top = 8
+        BorderSpacing.Right = 4
         ItemHeight = 15
         ParentShowHint = False
         ShowHint = True
@@ -92,9 +99,10 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrBottom
         Left = 4
         Height = 23
-        Top = 50
+        Top = 54
         Width = 58
         BorderSpacing.Top = 8
+        BorderSpacing.Bottom = 4
         MaxValue = 1000
         OnChange = DefRowHeightChange
         ParentShowHint = False
@@ -110,7 +118,7 @@ object GrdFm: TGrdFm
         AnchorSideBottom.Side = asrBottom
         Left = 119
         Height = 42
-        Top = 0
+        Top = 4
         Width = 81
         Anchors = [akTop, akLeft, akRight, akBottom]
         BorderSpacing.Left = 8
@@ -125,20 +133,21 @@ object GrdFm: TGrdFm
       end
     end
     object DataGrp: TGroupBox
+      AnchorSideBottom.Side = asrBottom
       Left = 216
-      Height = 105
-      Top = 0
-      Width = 480
+      Height = 114
+      Top = 4
+      Width = 478
       Caption = 'Область данных'
-      ClientHeight = 85
-      ClientWidth = 476
+      ClientHeight = 94
+      ClientWidth = 474
       TabOrder = 1
       object Label1: TLabel
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Side = asrCenter
         Left = 38
         Height = 15
-        Top = 5
+        Top = 9
         Width = 57
         BorderSpacing.Left = 4
         Caption = 'Фон ячеек'
@@ -149,7 +158,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrCenter
         Left = 38
         Height = 15
-        Top = 33
+        Top = 37
         Width = 61
         BorderSpacing.Left = 4
         Caption = 'Выделение'
@@ -160,7 +169,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrCenter
         Left = 186
         Height = 15
-        Top = 5
+        Top = 9
         Width = 89
         BorderSpacing.Left = 4
         Caption = 'Альт. фон ячеек'
@@ -171,7 +180,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrCenter
         Left = 186
         Height = 15
-        Top = 33
+        Top = 37
         Width = 111
         BorderSpacing.Left = 4
         Caption = 'Неактив. выделение'
@@ -180,7 +189,7 @@ object GrdFm: TGrdFm
       object Label5: TLabel
         Left = 8
         Height = 1
-        Top = 72
+        Top = 76
         Width = 1
         ParentColor = False
       end
@@ -189,7 +198,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrCenter
         Left = 38
         Height = 15
-        Top = 61
+        Top = 65
         Width = 92
         BorderSpacing.Left = 4
         Caption = 'Текст выделения'
@@ -200,7 +209,7 @@ object GrdFm: TGrdFm
         AnchorSideTop.Side = asrCenter
         Left = 186
         Height = 15
-        Top = 61
+        Top = 65
         Width = 141
         BorderSpacing.Left = 4
         Caption = 'Текст неактив. выделения'
@@ -209,7 +218,7 @@ object GrdFm: TGrdFm
       object CellFontB: TToggleBox
         Left = 344
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'B'
         Font.Style = [fsBold]
@@ -222,7 +231,7 @@ object GrdFm: TGrdFm
         Tag = 1
         Left = 376
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'I'
         Font.Style = [fsBold, fsItalic]
@@ -235,7 +244,7 @@ object GrdFm: TGrdFm
         Tag = 2
         Left = 408
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'U'
         Font.Style = [fsBold, fsUnderline]
@@ -247,7 +256,7 @@ object GrdFm: TGrdFm
       object CellFontSize: TSpinEdit
         Left = 344
         Height = 23
-        Top = 56
+        Top = 60
         Width = 62
         MinValue = 1
         OnChange = CellFontSizeChange
@@ -260,8 +269,10 @@ object GrdFm: TGrdFm
         Tag = 1
         Left = 4
         Height = 25
-        Top = 0
+        Top = 4
         Width = 30
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
         BorderWidth = 2
         ButtonColorSize = 16
         ButtonColor = clNone
@@ -274,7 +285,7 @@ object GrdFm: TGrdFm
         Tag = 2
         Left = 4
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -288,8 +299,9 @@ object GrdFm: TGrdFm
         Tag = 3
         Left = 4
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
+        BorderSpacing.Bottom = 4
         BorderWidth = 2
         ButtonColorSize = 16
         ButtonColor = clNone
@@ -302,7 +314,7 @@ object GrdFm: TGrdFm
         Tag = 4
         Left = 152
         Height = 25
-        Top = 0
+        Top = 4
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -316,7 +328,7 @@ object GrdFm: TGrdFm
         Tag = 5
         Left = 152
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -330,7 +342,7 @@ object GrdFm: TGrdFm
         Tag = 6
         Left = 152
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -344,7 +356,7 @@ object GrdFm: TGrdFm
         Tag = 7
         Left = 408
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -357,7 +369,7 @@ object GrdFm: TGrdFm
       object ResetCellFontBn: TSpeedButton
         Left = 440
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
         OnClick = ResetCellFontBnClick
         ShowHint = True
@@ -367,7 +379,7 @@ object GrdFm: TGrdFm
         Tag = 3
         Left = 440
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'S'
         Font.Style = [fsBold, fsStrikeOut]
@@ -379,11 +391,12 @@ object GrdFm: TGrdFm
       object CellFont: TComboBoxAdv
         Left = 344
         Height = 23
-        Top = 0
+        Top = 4
         Width = 126
         AutoComplete = True
         AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
         AutoSize = False
+        BorderSpacing.Right = 4
         DropDownCount = 16
         ItemHeight = 15
         ParentShowHint = False
@@ -394,18 +407,19 @@ object GrdFm: TGrdFm
       end
     end
     object TitlesGrp: TGroupBox
-      Left = 700
-      Height = 105
-      Top = 0
+      AnchorSideBottom.Side = asrBottom
+      Left = 698
+      Height = 114
+      Top = 4
       Width = 218
       Caption = 'Заголовки'
-      ClientHeight = 85
+      ClientHeight = 94
       ClientWidth = 214
       TabOrder = 2
       object FlatStyle: TToggleBox
         Left = 4
         Height = 25
-        Top = 28
+        Top = 32
         Width = 75
         Caption = 'Плоский'
         TabOrder = 0
@@ -414,7 +428,7 @@ object GrdFm: TGrdFm
       object GridTitleFontB: TToggleBox
         Left = 84
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'B'
         Font.Style = [fsBold]
@@ -427,7 +441,7 @@ object GrdFm: TGrdFm
         Tag = 1
         Left = 116
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'I'
         Font.Style = [fsBold, fsItalic]
@@ -440,7 +454,7 @@ object GrdFm: TGrdFm
         Tag = 2
         Left = 148
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'U'
         Font.Style = [fsBold, fsUnderline]
@@ -452,7 +466,7 @@ object GrdFm: TGrdFm
       object GridTitleFontSize: TSpinEdit
         Left = 84
         Height = 23
-        Top = 56
+        Top = 60
         Width = 62
         MinValue = 1
         OnChange = GridTitleFontSizeChange
@@ -464,8 +478,9 @@ object GrdFm: TGrdFm
       object VisibleCols: TButton
         Left = 4
         Height = 25
-        Top = 56
+        Top = 60
         Width = 75
+        BorderSpacing.Bottom = 4
         Caption = 'Столбцы'
         ParentShowHint = False
         ShowHint = True
@@ -476,8 +491,10 @@ object GrdFm: TGrdFm
         Tag = 8
         Left = 4
         Height = 25
-        Top = 0
+        Top = 4
         Width = 75
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
         BorderWidth = 2
         ButtonColorSize = 16
         ButtonColor = clNone
@@ -490,7 +507,7 @@ object GrdFm: TGrdFm
         Tag = 9
         Left = 148
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
         BorderWidth = 2
         ButtonColorSize = 16
@@ -504,7 +521,7 @@ object GrdFm: TGrdFm
         Tag = 3
         Left = 180
         Height = 25
-        Top = 28
+        Top = 32
         Width = 30
         Caption = 'S'
         Font.Style = [fsBold, fsStrikeOut]
@@ -516,7 +533,7 @@ object GrdFm: TGrdFm
       object ResetTitleFontBn: TSpeedButton
         Left = 180
         Height = 25
-        Top = 56
+        Top = 60
         Width = 30
         OnClick = ResetTitleFontBnClick
         ShowHint = True
@@ -525,11 +542,12 @@ object GrdFm: TGrdFm
       object GridTitleFont: TComboBoxAdv
         Left = 84
         Height = 23
-        Top = 0
+        Top = 4
         Width = 126
         AutoComplete = True
         AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
         AutoSize = False
+        BorderSpacing.Right = 4
         DropDownCount = 16
         ItemHeight = 15
         ParentShowHint = False
@@ -540,19 +558,21 @@ object GrdFm: TGrdFm
       end
     end
     object OptionsGrp: TGroupBox
-      Left = 922
-      Height = 105
-      Top = 0
-      Width = 257
+      AnchorSideBottom.Side = asrBottom
+      Left = 920
+      Height = 114
+      Top = 4
+      Width = 270
+      BorderSpacing.Right = 4
       Caption = 'Опции'
-      ClientHeight = 85
-      ClientWidth = 253
+      ClientHeight = 94
+      ClientWidth = 266
       TabOrder = 3
       object GridOptions: TCheckListBox
         Left = 4
-        Height = 81
+        Height = 90
         Top = 0
-        Width = 245
+        Width = 258
         Align = alClient
         BorderSpacing.Left = 4
         BorderSpacing.Right = 4

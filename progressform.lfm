@@ -1,11 +1,11 @@
 object ProgressFm: TProgressFm
   Left = 369
-  Height = 84
+  Height = 79
   Top = 348
   Width = 320
   BorderStyle = bsNone
   Caption = 'ProgressFm'
-  ClientHeight = 84
+  ClientHeight = 79
   ClientWidth = 320
   OnCreate = FormCreate
   Position = poMainFormCenter

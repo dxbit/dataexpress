@@ -7,10 +7,10 @@ object DXUpdateFm: TDXUpdateFm
   Caption = 'DXUpdateFm'
   ClientHeight = 84
   ClientWidth = 320
+  Position = poScreenCenter
+  LCLVersion = '4.0.0.2'
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poScreenCenter
-  LCLVersion = '3.2.0.0'
   object Shape1: TShape
     Left = 0
     Height = 84

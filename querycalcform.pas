@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -422,7 +422,7 @@ var
 begin
   for i := 0 to FOldFieldNames.Count - 1 do
   begin
-    FlNm :='cf' + IntToStr(Integer(FOldFieldNames.Objects[i]));
+    FlNm :='cf' + IntToStr(PtrInt(FOldFieldNames.Objects[i]));
     if FRD.CalcFields.FindFieldByNameDS(FlNm) = nil then
       DeleteLCbxListSourceField(FForm, FRD.Id, FlNm);
   end;

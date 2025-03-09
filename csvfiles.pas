@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -152,7 +152,7 @@ begin
       end
       else S := S + Ch;
     end
-    else if (Ch in [#13, FDelimiter]) and not IsQuote then
+    else if (Ch in [#13, #10, FDelimiter]) and not IsQuote then
     begin
       // Игнорируем пустые строки.
       if (c = 0) and FirstChar and (Ch <> FDelimiter) then
@@ -165,7 +165,7 @@ begin
           Cells[c, r] := S;
         end;
         Inc(c);
-        if Ch = #13 then
+        if Ch in [#13, #10] then
         begin
           Inc(r);
           if r = RowCount then RowCount := RowCount + 100;

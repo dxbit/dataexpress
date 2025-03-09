@@ -182,7 +182,7 @@ type
 
   { TMyMessenger }
 
-  TMyMessenger = class(TJvDesignWinControlHookMessenger)
+  TMyMessenger = class(TJvDesignDesignerMessenger) //class(TJvDesignWinControlHookMessenger)
   public
     function IsDesignMessage(ASender: TControl; var AMessage: TLMessage): Boolean;
       override;
@@ -265,11 +265,21 @@ type
     property OnKeyDown: TKeyEvent read FOnKeyDown write FOnKeyDown;
   end;
 
+  { TDesignerForm }
+
+  TDesignerForm = class({$ifdef windows}TCustomDesignControl{$else}TCustomForm{$endif})
+  public
+    constructor Create(AOwner: TComponent); reintroduce;
+  end;
+
   { TDesignerBox }
 
   TDesignerBox = class(TScrollBox)
   private
     FIsWheel: Boolean;
+    {$ifdef linux}
+    FDesignFm: TDesignerForm;
+    {$endif}
   protected
     procedure WMHScroll(var Message: TLMHScroll); message LM_HScroll;
     procedure WMVScroll(var Message: TLMVScroll); message LM_VScroll;
@@ -281,6 +291,11 @@ type
     procedure Click; override;
   public
     constructor Create(AOwner: TComponent); override;
+    procedure SetDesignerMode(Value: Boolean);
+    procedure SetForm(Fm: TdxForm);
+    {$ifdef linux}
+    property DesignFm: TDesignerForm read FDesignFm;
+    {$endif}
   end;
 
   TIdObjItem = class
@@ -1127,11 +1142,60 @@ end;
 constructor TDesignerBox.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  {$ifdef linux}
+  FDesignFm := TDesignerForm.Create(Self);
+  with FDesignFm do
+  begin
+    Parent := Self;
+    Left := 10;
+    Top := 10;
+  end;
+  {$endif}
+
+  AutoScroll := True;
   Color := clSilver;
   HorzScrollBar.Smooth:=True;
   HorzScrollBar.Tracking:=True;
   VertScrollBar.Smooth:=True;
   VertScrollBar.Tracking:=True;
+end;
+
+procedure TDesignerBox.SetDesignerMode(Value: Boolean);
+begin
+  {$ifdef linux}
+  TDesignerForm(FDesignFm).SetDesigning(Value, False);
+  {$endif}
+end;
+
+procedure TDesignerBox.SetForm(Fm: TdxForm);
+begin
+  if Fm <> nil then
+  begin
+    {$ifdef linux}
+    SetDesignerMode(False);
+    FDesignFm.Width := Fm.Width;
+    FDesignFm.Height := Fm.Height;
+    FDesignFm.Color := clBtnFace;
+    Fm.Left := 0; Fm.Top := 0;
+    Fm.Parent := FDesignFm;
+    SetDesignerMode(True);
+    {$else}
+    Fm.Left := 10; Fm.Top := 10;
+    Fm.Parent := Self;
+    {$endif}
+    //Fm.Visible := True;
+    FormDesign.DesignForm(Fm);
+    FormDesign.PopupMenu := DesignFr.PopupMenu1;
+  end
+  else
+  begin
+    FormDesign.DesignForm(nil);
+    {$ifdef linux}
+    SetDesignerMode(False);
+    DesignFm.Color := clDefault;
+    DesignFm.PopupMenu := nil;
+    {$endif}
+  end;
 end;
 
 { TMySelector }
@@ -1155,7 +1219,7 @@ function TMyMessenger.IsDesignMessage(ASender: TControl; var AMessage: TLMessage
   ): Boolean;
 begin
   Result := inherited IsDesignMessage(ASender, AMessage);
-	  case AMessage.Msg of
+	case AMessage.Msg of
   	  LM_SETFOCUS, LM_KEYDOWN: Container.SetFocus;
   	end;
 end;
@@ -1694,8 +1758,8 @@ begin
     Active := True;
 
     {$ifndef windows}
-    for i := 0 to Fm.ComponentCount - 1 do
-      AssignDesignMenu(Fm.Components[i]);
+   // for i := 0 to Fm.ComponentCount - 1 do
+   //   AssignDesignMenu(Fm.Components[i]);
     {$endif}
   end;
 end;
@@ -2260,6 +2324,17 @@ procedure TFormDesigner.SurfaceGetComponentName(Sender: TObject;
   aComponent: TComponent);
 begin
   MakeUniqueName(Container, aComponent);
+end;
+
+{ TDesignerForm }
+
+constructor TDesignerForm.Create(AOwner: TComponent);
+begin
+  {$ifdef windows}
+  inherited Create(AOwner);
+  {$else}
+  inherited CreateNew(AOwner);
+  {$endif}
 end;
 
 end.

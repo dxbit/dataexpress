@@ -4,20 +4,20 @@ object ShapeFm: TShapeFm
   Top = 263
   Width = 434
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'ShapeFm'
   ClientHeight = 351
   ClientWidth = 434
-  OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  OnCreate = FormCreate
   object GroupBox1: TGroupBox
     Left = 8
     Height = 184
     Top = 8
     Width = 240
     Caption = 'Фигура'
-    ClientHeight = 164
-    ClientWidth = 236
+    ClientHeight = 159
+    ClientWidth = 234
     TabOrder = 0
     object Shape1: TShape
       Left = 40
@@ -30,9 +30,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape1
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 23
-      Width = 20
+      Height = 15
+      Top = 25
+      Width = 14
       TabOrder = 0
     end
     object Shape2: TShape
@@ -46,9 +46,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape2
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 23
-      Width = 20
+      Height = 15
+      Top = 25
+      Width = 14
       TabOrder = 1
     end
     object Shape3: TShape
@@ -62,9 +62,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape3
       AnchorSideTop.Side = asrCenter
       Left = 152
-      Height = 19
-      Top = 23
-      Width = 20
+      Height = 15
+      Top = 25
+      Width = 14
       TabOrder = 2
     end
     object Shape4: TShape
@@ -77,9 +77,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape4
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 71
-      Width = 20
+      Height = 15
+      Top = 73
+      Width = 14
       TabOrder = 3
     end
     object Shape5: TShape
@@ -93,9 +93,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape5
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 71
-      Width = 20
+      Height = 15
+      Top = 73
+      Width = 14
       TabOrder = 4
     end
     object Shape6: TShape
@@ -109,9 +109,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape6
       AnchorSideTop.Side = asrCenter
       Left = 152
-      Height = 19
-      Top = 71
-      Width = 20
+      Height = 15
+      Top = 73
+      Width = 14
       TabOrder = 5
     end
     object Shape7: TShape
@@ -125,9 +125,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape7
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 119
-      Width = 20
+      Height = 15
+      Top = 121
+      Width = 14
       TabOrder = 6
     end
     object Shape8: TShape
@@ -141,9 +141,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape8
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 119
-      Width = 20
+      Height = 15
+      Top = 121
+      Width = 14
       TabOrder = 7
     end
     object Shape9: TShape
@@ -157,9 +157,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape9
       AnchorSideTop.Side = asrCenter
       Left = 152
-      Height = 19
-      Top = 119
-      Width = 20
+      Height = 15
+      Top = 121
+      Width = 14
       TabOrder = 8
     end
   end
@@ -169,8 +169,8 @@ object ShapeFm: TShapeFm
     Top = 8
     Width = 168
     Caption = 'Стиль линии'
-    ClientHeight = 164
-    ClientWidth = 164
+    ClientHeight = 159
+    ClientWidth = 162
     TabOrder = 1
     object Shape10: TShape
       Left = 40
@@ -183,9 +183,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape10
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 23
-      Width = 20
+      Height = 15
+      Top = 25
+      Width = 14
       TabOrder = 0
     end
     object Shape11: TShape
@@ -200,9 +200,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape11
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 23
-      Width = 20
+      Height = 15
+      Top = 25
+      Width = 14
       TabOrder = 1
     end
     object Shape12: TShape
@@ -217,9 +217,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape12
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 119
-      Width = 20
+      Height = 15
+      Top = 121
+      Width = 14
       TabOrder = 4
     end
     object Shape13: TShape
@@ -234,9 +234,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape13
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 19
-      Top = 71
-      Width = 20
+      Height = 15
+      Top = 73
+      Width = 14
       TabOrder = 2
     end
     object Shape14: TShape
@@ -251,9 +251,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape14
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 71
-      Width = 20
+      Height = 15
+      Top = 73
+      Width = 14
       TabOrder = 3
     end
     object Shape15: TShape
@@ -268,9 +268,9 @@ object ShapeFm: TShapeFm
       AnchorSideTop.Control = Shape15
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 19
-      Top = 119
-      Width = 20
+      Height = 15
+      Top = 121
+      Width = 14
       TabOrder = 5
     end
   end
@@ -278,16 +278,16 @@ object ShapeFm: TShapeFm
     AnchorSideTop.Control = SpinEdit1
     AnchorSideTop.Side = asrCenter
     Left = 16
-    Height = 15
-    Top = 204
-    Width = 89
+    Height = 17
+    Top = 205
+    Width = 96
     Caption = 'Толщина линии'
     ParentColor = False
   end
   object SpinEdit1: TSpinEdit
     AnchorSideLeft.Side = asrBottom
     Left = 128
-    Height = 23
+    Height = 26
     Top = 200
     Width = 50
     BorderSpacing.Left = 8
@@ -298,9 +298,9 @@ object ShapeFm: TShapeFm
     AnchorSideTop.Control = PenColor
     AnchorSideTop.Side = asrCenter
     Left = 16
-    Height = 15
-    Top = 236
-    Width = 64
+    Height = 17
+    Top = 235
+    Width = 71
     Caption = 'Цвет линии'
     ParentColor = False
   end
@@ -308,16 +308,16 @@ object ShapeFm: TShapeFm
     AnchorSideTop.Control = BrushColor
     AnchorSideTop.Side = asrCenter
     Left = 16
-    Height = 15
-    Top = 268
-    Width = 73
+    Height = 17
+    Top = 267
+    Width = 81
     Caption = 'Цвет заливки'
     ParentColor = False
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 311
+    Height = 36
+    Top = 309
     Width = 422
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True

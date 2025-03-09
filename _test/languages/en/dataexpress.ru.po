@@ -806,6 +806,16 @@ msgstr "Нельзя сделать заметку неограниченной,
 msgid "Can not move a group. This group already exists."
 msgstr "Нельзя переместить группу. Такая группа уже есть."
 
+#: strconsts.rscantopendatabasedxdb
+#, object-pascal-format
+msgid "Unable to open the database \"%s\" because the embedded server Firebird 5 is not loaded. Run the program using the shortcut \"DataExpress FB5\"."
+msgstr ""
+
+#: strconsts.rscantopendatabasefdb
+#, object-pascal-format
+msgid "Unable to open the database \"%s\" because the embedded server Firebird 2.5 is not loaded. Run the program using the shortcut \"DataExpress FB25\"."
+msgstr ""
+
 #: strconsts.rscantrenamereportmsg
 msgid "You can not rename the report because the program can not rename it in related actions. This operation only works in designer mode."
 msgstr "Не удается переименовать отчет, потому что программа не может его переименовать в связанных действиях. Эта операция работает только в режиме дизайнера."
@@ -1765,6 +1775,10 @@ msgstr "Объем"
 msgid "Designer"
 msgstr "Дизайнер"
 
+#: strconsts.rsdesktopdirnotfound
+msgid "The desktop directory could not be found."
+msgstr ""
+
 #: strconsts.rsdestfldnotsel
 msgid "Destination field not selected."
 msgstr "Поле целевой таблицы не выбрано."
@@ -2470,6 +2484,11 @@ msgstr "Модули расширений (*.epas)|*.epas|"
 #: strconsts.rsextralistwidth
 msgid "Extra list width"
 msgstr "Расширить список на"
+
+#: strconsts.rsfailedcreateshortcut
+#, object-pascal-format
+msgid "Failed to create a shortcut %s"
+msgstr ""
 
 #: strconsts.rsfailedtocreatedb
 #, object-pascal-format
@@ -5615,6 +5634,14 @@ msgstr "Тип фигуры"
 msgid "Shopping"
 msgstr "Шопинг"
 
+#: strconsts.rsshortcutfb25notfound
+msgid "The shortcut \"DataExpress FB25\" is not found on the desktop. Create it?"
+msgstr ""
+
+#: strconsts.rsshortcutfb5notfound
+msgid "The shortcut \"DataExpress FB5\" is not found on the desktop. Create it?"
+msgstr ""
+
 #: strconsts.rsshowbutton
 msgid "Show button"
 msgstr "Показать кнопку"
@@ -6384,10 +6411,6 @@ msgstr "Имя пользователя"
 #: strconsts.rsusers
 msgid "Users"
 msgstr "Пользователи"
-
-#: strconsts.rsusetheme
-msgid "Use theme"
-msgstr "Использовать тему"
 
 #: strconsts.rsvalidateactionerror
 #, object-pascal-format

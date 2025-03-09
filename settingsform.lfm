@@ -1,20 +1,19 @@
 object SettingsFm: TSettingsFm
   Left = 452
-  Height = 359
+  Height = 370
   Top = 188
   Width = 461
   BorderIcons = [biSystemMenu]
   Caption = 'SettingsFm'
-  ClientHeight = 359
+  ClientHeight = 370
   ClientWidth = 461
+  Position = poOwnerFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 26
-    Top = 327
+    Height = 28
+    Top = 336
     Width = 449
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -32,7 +31,7 @@ object SettingsFm: TSettingsFm
   end
   object Pages: TPageControl
     Left = 4
-    Height = 317
+    Height = 326
     Top = 4
     Width = 453
     ActivePage = IntfTab
@@ -44,27 +43,27 @@ object SettingsFm: TSettingsFm
     TabOrder = 1
     object IntfTab: TTabSheet
       Caption = 'Интерфейс'
-      ClientHeight = 289
-      ClientWidth = 445
+      ClientHeight = 295
+      ClientWidth = 449
       object Label1: TLabel
         AnchorSideTop.Control = ComboBox1
         AnchorSideTop.Side = asrCenter
         Left = 8
-        Height = 15
+        Height = 17
         Top = 12
-        Width = 27
+        Width = 30
         Caption = 'Язык'
         ParentColor = False
       end
       object ComboBox1: TComboBox
         AnchorSideLeft.Control = Label1
         AnchorSideLeft.Side = asrBottom
-        Left = 43
-        Height = 23
+        Left = 46
+        Height = 25
         Top = 8
         Width = 213
         BorderSpacing.Left = 8
-        ItemHeight = 15
+        ItemHeight = 25
         Style = csDropDownList
         TabOrder = 0
       end
@@ -74,23 +73,23 @@ object SettingsFm: TSettingsFm
         AnchorSideBottom.Control = ComboBox1
         AnchorSideBottom.Side = asrBottom
         Left = 258
-        Height = 23
+        Height = 25
         Top = 8
         Width = 23
         Anchors = [akTop, akLeft, akBottom]
         BorderSpacing.Left = 2
         Flat = True
-        OnClick = InfoLangBnClick
         ShowHint = True
         ParentShowHint = False
+        OnClick = InfoLangBnClick
       end
       object Label5: TLabel
         AnchorSideTop.Control = ComboBox1
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
-        Top = 39
-        Width = 120
+        Height = 17
+        Top = 41
+        Width = 130
         BorderSpacing.Top = 8
         Caption = 'Действие при запуске'
         ParentColor = False
@@ -99,12 +98,12 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Label5
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 23
-        Top = 55
-        Width = 427
+        Height = 25
+        Top = 59
+        Width = 431
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 1
-        ItemHeight = 15
+        ItemHeight = 25
         Style = csDropDownList
         TabOrder = 1
       end
@@ -112,48 +111,24 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = StartupAction
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 19
-        Top = 86
-        Width = 163
+        Height = 23
+        Top = 92
+        Width = 182
         BorderSpacing.Top = 8
         Caption = 'Подтверждать при выходе'
         TabOrder = 2
       end
-      object Label6: TLabel
-        AnchorSideTop.Control = ConfirmExit
-        AnchorSideTop.Side = asrBottom
-        Left = 8
-        Height = 15
-        Top = 113
-        Width = 102
-        BorderSpacing.Top = 8
-        Caption = 'Тема оформления'
-        ParentColor = False
-      end
-      object UseTheme: TComboBox
-        AnchorSideTop.Control = Label6
-        AnchorSideTop.Side = asrBottom
-        Left = 8
-        Height = 23
-        Top = 129
-        Width = 427
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Top = 1
-        ItemHeight = 15
-        Style = csDropDownList
-        TabOrder = 3
-      end
     end
     object TplTab: TTabSheet
       Caption = 'Шаблоны'
-      ClientHeight = 289
-      ClientWidth = 445
+      ClientHeight = 295
+      ClientWidth = 449
       object Label2: TLabel
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
+        Height = 17
         Top = 8
-        Width = 98
+        Width = 103
         BorderSpacing.Top = 8
         Caption = 'Путь к шаблонам'
         ParentColor = False
@@ -162,9 +137,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Label2
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 23
-        Top = 24
-        Width = 426
+        Height = 25
+        Top = 26
+        Width = 430
         ShowHidden = False
         ButtonWidth = 23
         NumGlyphs = 1
@@ -178,9 +153,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = TemplateDir
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
-        Top = 55
-        Width = 77
+        Height = 17
+        Top = 59
+        Width = 83
         BorderSpacing.Top = 8
         Caption = 'Папка вывода'
         ParentColor = False
@@ -189,9 +164,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Label4
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 23
-        Top = 71
-        Width = 426
+        Height = 25
+        Top = 77
+        Width = 430
         ShowHidden = False
         ButtonWidth = 23
         NumGlyphs = 1
@@ -205,9 +180,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = OutputDir
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
-        Top = 102
-        Width = 113
+        Height = 17
+        Top = 110
+        Width = 119
         BorderSpacing.Top = 8
         Caption = 'Открыть шаблоны в'
         ParentColor = False
@@ -217,9 +192,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Side = asrBottom
         Left = 8
         Height = 158
-        Top = 118
-        Width = 426
-        Anchors = [akTop, akLeft, akRight]
+        Top = 128
+        Width = 430
+        Anchors = [akTop, akLeft, akRight, akBottom]
         AutoWidthLastColumn = True
         BorderSpacing.Top = 1
         Columns = <        
@@ -232,7 +207,7 @@ object SettingsFm: TSettingsFm
           end        
           item
             Caption = 'Приложение'
-            Width = 222
+            Width = 228
           end>
         PopupMenu = PopupMenu1
         ReadOnly = True
@@ -243,13 +218,13 @@ object SettingsFm: TSettingsFm
     end
     object UpdTab: TTabSheet
       Caption = 'Обновление'
-      ClientHeight = 289
-      ClientWidth = 445
+      ClientHeight = 295
+      ClientWidth = 449
       object CheckUpdates: TCheckBox
         Left = 8
-        Height = 19
+        Height = 23
         Top = 8
-        Width = 147
+        Width = 165
         Caption = 'Проверять обновление'
         TabOrder = 0
       end
@@ -257,9 +232,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = CheckUpdates
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
-        Top = 35
-        Width = 176
+        Height = 17
+        Top = 39
+        Width = 191
         BorderSpacing.Top = 8
         Caption = 'Путь к базе данных обновления'
         ParentColor = False
@@ -268,9 +243,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Label7
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 23
-        Top = 51
-        Width = 428
+        Height = 25
+        Top = 57
+        Width = 432
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 1
         TabOrder = 1
@@ -279,9 +254,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = UpdatesDBPath
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 15
-        Top = 82
-        Width = 87
+        Height = 17
+        Top = 90
+        Width = 93
         BorderSpacing.Top = 8
         Caption = 'Пароль SYSDBA'
         ParentColor = False
@@ -290,8 +265,8 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Label8
         AnchorSideTop.Side = asrBottom
         Left = 8
-        Height = 23
-        Top = 98
+        Height = 25
+        Top = 108
         Width = 144
         BorderSpacing.Top = 1
         EchoMode = emPassword
@@ -301,14 +276,14 @@ object SettingsFm: TSettingsFm
     end
     object DesignTab: TTabSheet
       Caption = 'Дизайнер'
-      ClientHeight = 289
-      ClientWidth = 445
+      ClientHeight = 295
+      ClientWidth = 449
       ParentFont = False
       object ShowGridChk: TCheckBox
         Left = 8
-        Height = 19
+        Height = 23
         Top = 8
-        Width = 115
+        Width = 131
         Caption = 'Показывать сетку'
         TabOrder = 0
       end
@@ -316,9 +291,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = GridXSpin
         AnchorSideTop.Side = asrCenter
         Left = 24
-        Height = 15
-        Top = 39
-        Width = 83
+        Height = 17
+        Top = 44
+        Width = 89
         Caption = 'Размер X сетки'
         ParentColor = False
       end
@@ -327,9 +302,9 @@ object SettingsFm: TSettingsFm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = ShowGridChk
         AnchorSideTop.Side = asrBottom
-        Left = 115
-        Height = 23
-        Top = 35
+        Left = 121
+        Height = 26
+        Top = 39
         Width = 64
         BorderSpacing.Left = 8
         BorderSpacing.Top = 8
@@ -342,9 +317,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = GridYSpin
         AnchorSideTop.Side = asrCenter
         Left = 24
-        Height = 15
-        Top = 78
-        Width = 83
+        Height = 17
+        Top = 86
+        Width = 89
         Caption = 'Размер Y сетки'
         ParentColor = False
       end
@@ -352,9 +327,9 @@ object SettingsFm: TSettingsFm
         AnchorSideLeft.Control = GridXSpin
         AnchorSideTop.Control = GridXSpin
         AnchorSideTop.Side = asrBottom
-        Left = 115
-        Height = 23
-        Top = 74
+        Left = 121
+        Height = 26
+        Top = 81
         Width = 64
         BorderSpacing.Top = 16
         MaxValue = 32
@@ -366,9 +341,9 @@ object SettingsFm: TSettingsFm
         AnchorSideLeft.Control = Label11
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = GridXSpin
-        Left = 245
-        Height = 22
-        Top = 35
+        Left = 254
+        Height = 25
+        Top = 39
         Width = 141
         NoneColorColor = clNone
         Style = [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames]
@@ -382,10 +357,10 @@ object SettingsFm: TSettingsFm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = GridColorBox
         AnchorSideTop.Side = asrCenter
-        Left = 211
-        Height = 15
-        Top = 39
-        Width = 26
+        Left = 217
+        Height = 17
+        Top = 43
+        Width = 29
         BorderSpacing.Left = 32
         Caption = 'Цвет'
         ParentColor = False
@@ -393,13 +368,13 @@ object SettingsFm: TSettingsFm
     end
     object OtherTab: TTabSheet
       Caption = 'Прочее'
-      ClientHeight = 289
-      ClientWidth = 445
+      ClientHeight = 295
+      ClientWidth = 449
       object Caching: TCheckBox
         Left = 16
-        Height = 19
+        Height = 23
         Top = 24
-        Width = 156
+        Width = 176
         Caption = 'Кэшировать метаданные'
         TabOrder = 0
       end
@@ -407,9 +382,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = Caching
         AnchorSideTop.Side = asrBottom
         Left = 16
-        Height = 19
-        Top = 75
-        Width = 232
+        Height = 23
+        Top = 79
+        Width = 256
         BorderSpacing.Top = 32
         Caption = 'Поддержка новых баз данных (*.DXDB)'
         TabOrder = 1
@@ -418,9 +393,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Control = SupportDXDB
         AnchorSideTop.Side = asrBottom
         Left = 16
-        Height = 19
-        Top = 126
-        Width = 139
+        Height = 23
+        Top = 134
+        Width = 155
         BorderSpacing.Top = 32
         Caption = 'Логирование ошибок'
         TabOrder = 2

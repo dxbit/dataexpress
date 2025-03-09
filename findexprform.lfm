@@ -7,18 +7,17 @@ object FindExprFm: TFindExprFm
   Caption = 'FindExprFm'
   ClientHeight = 499
   ClientWidth = 908
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  ShowInTaskBar = stAlways
-  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
-    Height = 15
+    Height = 17
     Top = 8
-    Width = 53
+    Width = 59
     Caption = 'Значение'
     ParentColor = False
   end
@@ -26,8 +25,8 @@ object FindExprFm: TFindExprFm
     AnchorSideTop.Control = Label1
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 24
+    Height = 25
+    Top = 26
     Width = 726
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
@@ -40,19 +39,19 @@ object FindExprFm: TFindExprFm
     AnchorSideBottom.Side = asrBottom
     Left = 736
     Height = 25
-    Top = 23
+    Top = 26
     Width = 83
     Anchors = [akTop, akRight]
     Caption = 'Найти'
-    OnClick = FindBnClick
     TabOrder = 1
+    OnClick = FindBnClick
   end
   object PageControl1: TPageControl
     AnchorSideTop.Control = FilterPan
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 228
-    Top = 264
+    Height = 224
+    Top = 268
     Width = 894
     ActivePage = FmTab
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -61,13 +60,13 @@ object FindExprFm: TFindExprFm
     TabOrder = 4
     object FmTab: TTabSheet
       Caption = 'Формы'
-      ClientHeight = 200
-      ClientWidth = 886
+      ClientHeight = 193
+      ClientWidth = 890
       object FmGrid: TStringGrid
         Left = 0
-        Height = 199
+        Height = 192
         Top = 1
-        Width = 886
+        Width = 890
         Align = alClient
         AlternateColor = 15658734
         BorderSpacing.Top = 1
@@ -114,9 +113,9 @@ object FindExprFm: TFindExprFm
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = FmGrid
         AnchorSideTop.Side = asrCenter
-        Left = 274
+        Left = 276
         Height = 50
-        Top = 75
+        Top = 72
         Width = 338
         BevelOuter = bvNone
         Caption = 'FmNothingPan'
@@ -133,13 +132,13 @@ object FindExprFm: TFindExprFm
     end
     object QTab: TTabSheet
       Caption = 'Запросы'
-      ClientHeight = 200
-      ClientWidth = 886
+      ClientHeight = 193
+      ClientWidth = 890
       object QGrid: TStringGrid
         Left = 0
-        Height = 199
+        Height = 192
         Top = 1
-        Width = 886
+        Width = 890
         Align = alClient
         AlternateColor = 15658734
         BorderSpacing.Top = 1
@@ -185,9 +184,9 @@ object FindExprFm: TFindExprFm
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = QGrid
         AnchorSideTop.Side = asrCenter
-        Left = 274
+        Left = 276
         Height = 50
-        Top = 75
+        Top = 72
         Width = 338
         BevelOuter = bvNone
         Caption = 'QNothingPan'
@@ -204,13 +203,13 @@ object FindExprFm: TFindExprFm
     end
     object RpTab: TTabSheet
       Caption = 'Отчеты'
-      ClientHeight = 200
-      ClientWidth = 886
+      ClientHeight = 193
+      ClientWidth = 890
       object RpGrid: TStringGrid
         Left = 0
-        Height = 199
+        Height = 192
         Top = 1
-        Width = 886
+        Width = 890
         Align = alClient
         AlternateColor = 15658734
         BorderSpacing.Top = 1
@@ -251,9 +250,9 @@ object FindExprFm: TFindExprFm
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = RpGrid
         AnchorSideTop.Side = asrCenter
-        Left = 274
+        Left = 276
         Height = 50
-        Top = 75
+        Top = 72
         Width = 338
         BevelOuter = bvNone
         Caption = 'RpNothingPan'
@@ -274,7 +273,7 @@ object FindExprFm: TFindExprFm
     AnchorSideTop.Side = asrBottom
     Left = 8
     Height = 201
-    Top = 55
+    Top = 59
     Width = 920
     BorderSpacing.Top = 8
     BevelOuter = bvNone
@@ -296,8 +295,8 @@ object FindExprFm: TFindExprFm
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclTopToBottomThenLeftToRight
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 180
-      ClientWidth = 517
+      ClientHeight = 175
+      ClientWidth = 515
       ColumnLayout = clVerticalThenHorizontal
       Columns = 4
       Items.Strings = (
@@ -341,8 +340,8 @@ object FindExprFm: TFindExprFm
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 1
-      ClientHeight = 180
-      ClientWidth = 172
+      ClientHeight = 175
+      ClientWidth = 170
       Items.Strings = (
         'Фильтр источника'
         'Выходной фильтр'
@@ -370,8 +369,8 @@ object FindExprFm: TFindExprFm
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 1
-      ClientHeight = 180
-      ClientWidth = 172
+      ClientHeight = 175
+      ClientWidth = 170
       Items.Strings = (
         'Фильтр источника'
         'Выходной фильтр'
@@ -387,9 +386,10 @@ object FindExprFm: TFindExprFm
     end
   end
   object FilterBn: TToggleBox
+    AnchorSideTop.Control = FindBn
     Left = 819
     Height = 25
-    Top = 23
+    Top = 26
     Width = 83
     Anchors = [akTop, akRight]
     Caption = 'Фильтр'

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -184,11 +184,7 @@ begin
   FHrs.AutoFillColumns := True;
   FHrs.Flat := True;
   FHrs.Font.Name:='Tahoma';
-  {$ifdef windows}
   FHrs.Font.Size := 10;
-  {$else}
-  FHrs.Font.Size := 8;
-  {$endif}
   FHrs.Width := 265;
   FHrs.Height := 44;
   FHrs.ScrollBars := ssNone;
@@ -212,11 +208,7 @@ begin
   FMins.AutoFillColumns := True;
   FMins.Flat := True;
   FMins.Font.Name:='Tahoma';
-  {$ifdef windows}
   FMins.Font.Size := 10;
-  {$else}
-  FMins.Font.Size := 8;
-  {$endif}
   FMins.Top := 48;
   FMins.Width := 265;
   FMins.Height := 22; //111;

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ begin
   ButtonPanel1.OKButton.Caption := rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption:=rsHelp;
+  AddFormHeight(Self);
 end;
 
 procedure TStorageTypeFm.FormCloseQuery(Sender: TObject; var CanClose: boolean);

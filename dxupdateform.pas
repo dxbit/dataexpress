@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls,
-  StdCtrls, FileUtil, LazUtf8, IniFiles, Translations, LclProc, dxupdatestrconsts;
+  StdCtrls, FileUtil, LazUtf8, IniFiles, Translations, LclProc, LclIntf,
+  process, Utf8Process, dxupdatestrconsts, BaseUnix;
+
+const
+  DataExpressExe = {$ifdef windows}'dataexpress.exe'{$else}'dataexpress'{$endif};
 
 type
 
@@ -33,7 +37,7 @@ var
 implementation
 
 uses
-  ShellApi, LazStringUtils;
+  {$ifdef windows}ShellApi, {$endif}LazStringUtils;
 
 {$R *.lfm}
 
@@ -81,11 +85,60 @@ begin
   MessageDlg(rsError, S, mtError, [mbOk], 0);
 end;
 
+procedure ParamsToArray(Params: String; var Arr: TStringArray);
+var
+  p, Size: Integer;
+begin
+  Size := 0;
+  while Length(Params) > 0 do
+  begin
+    Trim(Params);
+    if Params[1] = '"' then
+    begin
+      Delete(Params, 1, 1);
+      p := Pos('"', Params);
+      if p = 0 then Break;
+    end
+    else
+    begin
+      p := Pos(' ', Params);
+      if p = 0 then p := Length(Params) + 1;
+    end;
+    SetLength(Arr, Size + 1);
+    Arr[Size] := Copy(Params, 1, p - 1);
+    Delete(Params, 1, p);
+  end;
+end;
+
+function RemoveQuotes(const S: String): String;
+var
+  Len: Integer;
+begin
+  Len := Length(S);
+  if (Copy(S, 1, 1) = '"') and (Copy(S, Len, 1) = '"') then
+  	Result := Copy(S, 2, Len - 2)
+  else
+  	Result := S;
+end;
+
+function IsUrl(S: String): Boolean;
+begin
+  S := Utf8LowerCase(S);
+  Result := (Copy(S, 1, 7) = 'http://') or (Copy(S, 1, 8) = 'https://') or
+    (Copy(S, 1, 4) = 'www.');
+end;
+
+function IsMail(var S: String): Boolean;
+begin
+  Result := Pos('@', S) > 0;
+  if Result and (Pos('mailto:', Utf8LowerCase(S)) = 0) then
+    S := 'mailto:' + S;
+end;
+
 function ShellExec(const Operation, FileName, Params, WorkDir: String;
   ShowCmd: LongInt): Boolean;
 var
-  OutS, S: String;
-  Arr: TStringArray;
+  S: String;
 begin
   {$ifdef windows}
   Result := ShellExecute(0, PChar(Operation), PChar(Utf8ToWinCP(FileName)),
@@ -98,9 +151,16 @@ begin
     Result := LclIntf.OpenDocument(S)
   else
   begin
-    ParamsToArray(Params, Arr);
-    Result := RunCommandInDir(WorkDir, S, Arr, OutS, [poNoConsole]);
-    SetLength(Arr, 0);
+    with TProcessUtf8.Create(nil) do
+    try
+      InheritHandles := False;
+      ShowWindow := TShowWindowOptions(ShowCmd);
+      CurrentDirectory := WorkDir;
+      ParseCmdLine(FileName + ' ' + Params);
+      Execute;
+    finally
+      Free;
+    end;
   end;
   {$endif}
 end;
@@ -200,7 +260,10 @@ begin
     end;
   end;
 
-  ShellExec('open', AppPath + 'dataexpress.exe', '', '', 5);
+  {$ifdef linux}
+  FpChmod(AppPath + DataExpressExe, &755);
+  {$endif}
+  ShellExec('open', AppPath + DataExpressExe, '', '', 5);
 
   finally
     //DirL.Free;

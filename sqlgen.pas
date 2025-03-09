@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1778,7 +1778,8 @@ begin
   FlNm := FieldStr(C);
   if C is TdxFile then FlNm := FlNm + 'd'
   else if C is TdxDBImage then FlNm := FlNm + 'src'
-  else if C is TdxRecordId then FlNm := 'id';
+  else if C is TdxRecordId then FlNm := 'id'
+  else if C is TdxObjectField then DoFilterParserError(Format(rsFPSrcFldObjFieldNotValid, [aFieldName]), FPos);
   FCmp := C;
   Result := AliasNm + '.' + FlNm;
 

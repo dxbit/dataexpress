@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -297,7 +297,7 @@ end;
 
 procedure TImageManager.SaveToDir(const Dir: String);
 var
-  Dir100, Dir150, Dir200, Nm: String;
+  Dir100, Dir150, Dir200, Nm, FlNm: String;
   St: TStream;
   FS: TFileStream;
   LastModified: TDateTime;
@@ -319,34 +319,37 @@ begin
     if St <> nil then
     begin
       // To do: Есть функция SuggestImageExtension
-      FS := TFileStream.Create(Dir100 + Nm + '.' +
-        ImgFormatToExt(DetectFileFormat(St)), fmCreate);
+      FlNm := Dir100 + Nm + '.' + ImgFormatToExt(DetectFileFormat(St));
+      FS := TFileStream.Create(FlNm, fmCreate);
       FS.CopyFrom(St, St.Size);
-      SetFileDateTime(FS.Handle, LastModified);
+      //SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
+      SetFileDateTime(FlNm, LastModified);
     end;
     // 150
     St := FDataSet.CreateBlobStream(FDataSet.Fields[3], bmRead);
     if St <> nil then
     begin
-      FS := TFileStream.Create(Dir150 + Nm + '.' +
-        ImgFormatToExt(DetectFileFormat(St)), fmCreate);
+      FlNm := Dir150 + Nm + '.' + ImgFormatToExt(DetectFileFormat(St));
+      FS := TFileStream.Create(FlNm, fmCreate);
       FS.CopyFrom(St, St.Size);
-      SetFileDateTime(FS.Handle, LastModified);
+      //SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
+      SetFileDateTime(FlNm, LastModified);
     end;
     // 200
     St := FDataSet.CreateBlobStream(FDataSet.Fields[4], bmRead);
     if St <> nil then
     begin
-      FS := TFileStream.Create(Dir200 + Nm + '.' +
-        ImgFormatToExt(DetectFileFormat(St)), fmCreate);
+      FlNm := Dir200 + Nm + '.' + ImgFormatToExt(DetectFileFormat(St));
+      FS := TFileStream.Create(FlNm, fmCreate);
       FS.CopyFrom(St, St.Size);
-      SetFileDateTime(FS.Handle, LastModified);
+      //SetFileDateTime(FS.Handle, LastModified);
       FS.Free;
       St.Free;
+      SetFileDateTime(FlNm, LastModified);
     end;
     FDataSet.Next;
   end;

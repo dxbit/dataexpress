@@ -376,7 +376,6 @@ object DesignFr: TDesignFr
     Height = 1
     Top = 284
     Width = 1
-    ParentColor = False
   end
   object DummyY: TLabel
     Left = 664

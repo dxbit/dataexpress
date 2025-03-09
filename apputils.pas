@@ -25,8 +25,8 @@ interface
 uses
   Classes, {Windows, }SysUtils, strconsts, Menus, DBGrids, dxctrls, DXReports,
   Lists, Db, Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons,
-  SynEdit, LclType, ImgList, formmanager, reportmanager, process,
-  TypInfo, Types, IBConnection, crossapi;
+  SynEdit, LclType, ImgList, formmanager, reportmanager, process, Utf8Process,
+  TypInfo, Types, IBConnection, crossapi {$ifdef linux}, BaseUnix{$endif};
 
 //const
   //BUILD_DATE = '22.3.12';
@@ -257,11 +257,12 @@ procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
 function CreateBitmapFromRes(const ResName: String): TCustomBitmap;
 procedure ConvertToDXMainVersion2(AMain, AFmMan: TObject);
 procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
-procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
+//procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
 function GetFileDateTime(const FlNm: String): TDateTime;
 function SameFileDateTime(const FlNm: String; ATime: TDateTime): Boolean;
 function TryTextToDate(AText: String; out ResDate: TDateTime): Boolean;
 function TextToDate(AText: String): TDateTime;
+function GetCurrentFirebirdDir: String;
 
 implementation
 
@@ -2015,8 +2016,7 @@ end;
 function ShellExec(const Operation, FileName, Params, WorkDir: String;
   ShowCmd: LongInt): Boolean;
 var
-  OutS, S: String;
-  Arr: TStringArray;
+  S: String;
 begin
   {$ifdef windows}
   Result := ShellExecute(0, PChar(Operation), PChar(Utf8ToWinCP(FileName)),
@@ -2025,13 +2025,20 @@ begin
   S := RemoveQuotes(FileName);
   if IsUrl(S) or IsMail(S) then
     Result := LclIntf.OpenUrl(S)
-  else if ExtractFileExt(S) <> '' then
+  else if (ExtractFileExt(S) <> '') or (Operation = 'explore') then
     Result := LclIntf.OpenDocument(S)
   else
   begin
-    ParamsToArray(Params, Arr);
-    Result := RunCommandInDir(WorkDir, S, Arr, OutS, [poNoConsole]);
-    SetLength(Arr, 0);
+    with TProcessUtf8.Create(nil) do
+    try
+      InheritHandles := False;
+      ShowWindow := TShowWindowOptions(ShowCmd);
+      CurrentDirectory := WorkDir;
+      ParseCmdLine(FileName + ' ' + Params);
+      Execute;
+    finally
+      Free;
+    end;
   end;
   {$endif}
 end;
@@ -2381,10 +2388,36 @@ begin
   end;
 end;  }
 
+{$ifdef windows}
+function IsBlockedFile(const FileName: String): Boolean;
+var
+  SrcHandle: THandle;
+begin
+  SrcHandle := FileOpen(FileName, fmOpenRead + fmShareExclusive);
+  if (THandle(SrcHandle)=feInvalidHandle) then
+    Result := True
+  else
+  begin
+    FileClose(SrcHandle);
+    Result := False;
+  end;
+end;
+{$else}
+function IsBlockedFile(const FileName: String): Boolean;
+var
+  OutStr: string;
+  ExitStat: Integer;
+begin
+  Result := False;
+  if RunCommandInDir('', 'lsof', [FileName], OutStr, ExitStat) = 0 then
+  begin
+    Result := Utf8Pos(FileName, OutStr) > 0;
+  end;
+end;
+{$endif}
 
 function GetOutputFileName(const FileName: String): String;
 var
-  SrcHandle: THandle;
   i: Integer;
   Ext: String;
 begin
@@ -2394,14 +2427,17 @@ begin
   begin
     if FileExists(Result) then
     begin
-      SrcHandle := FileOpen(Result, fmOpenRead + fmShareExclusive);
-      if (THandle(SrcHandle)=feInvalidHandle) then
+      if not IsBlockedFile(Result) then Break;
+      Result := ChangeFileExt(FileName, '') + SetZeros(i, 3) + Ext;
+
+      {SrcHandle := FileOpen(Result, fmOpenRead + fmShareExclusive);
+      if (TLCLHandle(SrcHandle)=feInvalidHandle) then
         Result := ChangeFileExt(FileName, '') + SetZeros(i, 3) + Ext
       else
       begin
         FileClose(SrcHandle);
         Break;
-      end;
+      end;}
     end
     else Break;
   end;
@@ -3800,11 +3836,20 @@ begin
   FileSetDate(Nm, DateTimeToFileDate(DXMain.LastModified));
 end;
 
+function GetCacheDir: String;
+begin
+  {$ifdef windows}
+  Result := GetTempDir;
+  {$else}
+  Result := AppPath + 'cache' + PathDelim;
+  {$endif}
+end;
+
 procedure LoadMetaFromCache;
 var
   TmpDir: String;
 begin
-  TmpDir := GetTempDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
+  TmpDir := GetCacheDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
   if not ForceDirectories(TmpDir) then
     raise Exception.CreateFmt('Unable to create cache directory %s', [TmpDir]);
 
@@ -4347,29 +4392,71 @@ begin
   else Result := EncodeDate(2024, 1, 1);
 end;
 
+{$ifdef windows}
 procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
 begin
   FileSetDate(FlNm, DateTimeToFileDate( GetDefaultDateTime(DT) ));
 end;
-
-procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
+{$else}
+procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
+var
+  Utime: TUTimBuf;
+  Tm: Int64;
+  St: stat;
 begin
-  FileSetDate(Handle, DateTimeToFileDate( GetDefaultDateTime(DT) ));
+  // Второй параметр говорит, что время передается по гринвичу и тогда,
+  // результат будет смещен в соответствии с часовым поясом. Мне это не нужно,
+  // т. к. я передаю время, соответствующее часовому поясу.
+  Tm := DateTimeToUnix( GetDefaultDateTime(DT), False );
+  if FpStat(FlNm, St) = 0 then
+  begin
+    Utime.actime := St.st_atime;
+    UTime.modtime := Tm;
+    FpUtime(FlNm, @Utime);
+  end
 end;
 
+{$endif}
+
+{procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
+begin
+  FileSetDate(Handle, DateTimeToFileDate( GetDefaultDateTime(DT) ));
+end;}
+
+{$ifdef windows}
 function GetFileDateTime(const FlNm: String): TDateTime;
 begin
   Result := FileDateToDateTime(FileAge(FlNm));
 end;
+{$else}
+function GetFileAge(const FlNm: String): QWord;
+var
+  St: stat;
+begin
+  if FpStat(FlNm, St) = 0 then
+    Result := St.st_mtime
+  else
+    Result := 0;
+end;
+
+function GetFileDateTime(const FlNm: String): TDateTime;
+begin
+  Result := UnixToDateTime(GetFileAge(FlNm), False);
+end;
+{$endif}
 
 function SameFileDateTime(const FlNm: String; ATime: TDateTime): Boolean;
 begin
-  Result := FileAge(FlNm) = DateTimeToFileDate(  GetDefaultDateTime(ATime) );
+  {$ifdef windows}
+  Result := FileAge(FlNm) = DateTimeToFileDate( GetDefaultDateTime(ATime) );
+  {$else}
+  Result := GetFileAge(FlNm) = DateTimeToUnix(GetDefaultDateTime(ATime), False);
+  {$endif}
   {if not Result then
   begin
     Debug(FlNm);
-    Debug(FileAge(FlNm));
-    Debug(DateTimeToFileDate(  GetDefaultDateTime(ATime) ));
+    Debug(GetFileDateTime(FlNm));
+    Debug(GetDefaultDateTime(ATime));
   end;}
 end;
 
@@ -4593,6 +4680,15 @@ begin
   if not TryTextToDate(AText, Result) then
     raise EConvertError.CreateFmt(rsInvalidDate, [AText]);
 end;
+
+function GetCurrentFirebirdDir: String;
+var
+  S: String;
+begin
+  S := Application.EnvironmentVariable['FIREBIRD'];
+  Result := Utf8Copy(S, RPos(PathDelim, S) + 1, 255);
+end;
+
 
 end.
 

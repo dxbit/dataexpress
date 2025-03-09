@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ unit DebugScriptForm;
 interface
 
 uses
-  Classes, Windows, SysUtils, Types, FileUtil, SynEdit, SynHighlighterPas,
+  Classes, SysUtils, Types, FileUtil, SynEdit, SynHighlighterPas,
   Forms, Controls, Graphics, Dialogs, ComCtrls, strconsts, scriptmanager,
   SynEditMiscClasses, uPSDebugger, uPSUtils, uPSRuntime, scriptedit, LclType,
   Menus, crossapi;
@@ -41,6 +41,7 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     procedure EditShowHint(Sender: TObject; HintInfo: PHintInfo);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
@@ -56,6 +57,7 @@ type
     FSD, FOldSD: TScriptData;
     Edit: TScriptEdit;
     FFormsDisabled: TList;
+    FRealBounds: TRect;
     procedure EditBreakpointChanged(Sender: TObject; aLine: Integer);
     procedure EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure EditStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -543,8 +545,13 @@ var
   FormBounds: TRect;
 begin
   if FFormsDisabled <> nil then Screen.EnableForms(FFormsDisabled);
+  FreeAndNil(FFormsDisabled);
 
+  {$ifdef windows}
   FormBounds := ScaleRectTo96(GetFormRealBounds(Self));
+  {$else}
+  FormBounds := ScaleRectTo96(FRealBounds);
+  {$endif}
   AppConfig.DebugFormLeft:=FormBounds.Left;
   AppConfig.DebugFormTop:=FormBounds.Top;
   AppConfig.DebugFormWidth:=FormBounds.Width;
@@ -553,6 +560,7 @@ end;
 
 procedure TDebugScriptFm.FormShow(Sender: TObject);
 begin
+  FRealBounds := BoundsRect;
   if AppConfig.DebugFormPosCorrected = False then
   begin
     CorrectFormPos(Self, Self);
@@ -624,6 +632,14 @@ begin
   end;   }
 end;
 
+procedure TDebugScriptFm.FormChangeBounds(Sender: TObject);
+begin
+  {$ifdef linux}
+  if WindowState = wsNormal then
+    FRealBounds := BoundsRect;
+  {$endif}
+end;
+
 procedure TDebugScriptFm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   CanClose := Edit.CurLine = 0;
@@ -650,7 +666,10 @@ begin
   SetFormCaption(rsPaused);
   SetControlState;
   Show;
-  FFormsDisabled := Screen.DisableForms(Self);
+  //{$ifdef windows}
+  FFormsDisabled := TList.Create;
+  FFormsDisabled := Screen.DisableForms(Self, FFormsDisabled);
+  //{$endif}
 end;
 
 end.

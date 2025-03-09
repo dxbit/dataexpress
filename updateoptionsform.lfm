@@ -7,13 +7,12 @@ object UpdateOptionsFm: TUpdateOptionsFm
   Caption = 'UpdateOptionsFm'
   ClientHeight = 163
   ClientWidth = 515
+  Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poMainFormCenter
-  LCLVersion = '2.0.12.0'
   object GroupBox1: TGroupBox
     Left = 4
-    Height = 121
+    Height = 119
     Top = 4
     Width = 507
     Align = alClient
@@ -22,16 +21,17 @@ object UpdateOptionsFm: TUpdateOptionsFm
     BorderSpacing.Right = 4
     BorderSpacing.Bottom = 4
     Caption = 'Сообщение'
-    ClientHeight = 101
-    ClientWidth = 503
+    ClientHeight = 94
+    ClientWidth = 501
     TabOrder = 0
     object Memo1: TMemo
       Left = 4
-      Height = 97
-      Top = 0
-      Width = 495
+      Height = 86
+      Top = 4
+      Width = 493
       Align = alClient
       BorderSpacing.Left = 4
+      BorderSpacing.Top = 4
       BorderSpacing.Right = 4
       BorderSpacing.Bottom = 4
       Lines.Strings = (
@@ -42,8 +42,8 @@ object UpdateOptionsFm: TUpdateOptionsFm
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 26
-    Top = 131
+    Height = 28
+    Top = 129
     Width = 503
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True

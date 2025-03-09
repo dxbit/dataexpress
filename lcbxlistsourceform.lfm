@@ -7,11 +7,11 @@ object LCbxListSourceFm: TLCbxListSourceFm
   Caption = 'Источник списка'
   ClientHeight = 441
   ClientWidth = 461
+  Position = poOwnerFormCenter
+  LCLVersion = '4.0.0.2'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -271,8 +271,8 @@ object LCbxListSourceFm: TLCbxListSourceFm
     Anchors = [akTop, akRight]
     BorderSpacing.Top = 8
     Caption = 'Дополнительно'
-    OnClick = MoreBnClick
     TabOrder = 4
+    OnClick = MoreBnClick
   end
   object ListMsgTxt: TStaticText
     AnchorSideLeft.Control = Fields

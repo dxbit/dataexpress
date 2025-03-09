@@ -3,9 +3,10 @@ program DataExpress;
 {$mode objfpc}{$H+}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
-  cthreads,
-  {$ENDIF}{$ENDIF}
+  {$IFDEF UNIX}
+  {$IFDEF UseCThreads}cthreads,{$ENDIF}
+  clocale,
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel,
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,

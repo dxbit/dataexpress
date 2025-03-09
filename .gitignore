@@ -15,6 +15,7 @@ lib
 backup
 tools
 /_test64
+/_linux64
 /_dist
 logs
 /_test/htmltextlib.dll

@@ -26,16 +26,16 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, ComCtrls, ExtCtrls, StdCtrls,
   Menus, Graphics, strconsts, dxctrls, formresizer, LclType,
   summarytree, componenttree, Dialogs, SQLDb, formmanager, db,
-  formstree;
+  formstree, LMessages, formdesigner;
 
 type
   { TDesignFr }
 
   TDesignFr = class(TFrame)
-    ToolbarImages: TImageList;
-    MenuImages: TImageList;
     DummyX: TLabel;
     DummyY: TLabel;
+    ToolbarImages: TImageList;
+    MenuImages: TImageList;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
@@ -118,7 +118,7 @@ type
     NumBn: TToolButton;
     DateBn: TToolButton;
     MemoBn: TToolButton;
-    ScrollBox1: TScrollBox;
+    DesignBox: TDesignerBox;
     procedure AddFieldsBnClick(Sender: TObject);
     procedure AddFmBnClick(Sender: TObject);
     procedure DelFmBnClick(Sender: TObject);
@@ -207,7 +207,7 @@ var
 implementation
 
 uses
-  apputils, sqlgen, dbengine, formdesigner, propsform, imagemanager,
+  apputils, sqlgen, dbengine, propsform, imagemanager,
   taborderform, addfieldsform, reportmanager, Visibleformsform, fontform,
   colorform, styleform, propsmenus, dxusers,
   mainform, mergeprojectsform, scriptform, scriptmanager, appsettings,
@@ -417,11 +417,11 @@ var
   DX, DY, CW, CH: Integer;
   P: TPoint;
 begin
-  DX := ScrollBox1.HorzScrollBar.Position;
-  DY := ScrollBox1.VertScrollBar.Position;
-  CW := ScrollBox1.ClientWidth;
-  CH := ScrollBox1.ClientHeight;
-  P := C.ClientToParent(Point(0, 0), ScrollBox1);
+  DX := DesignBox.HorzScrollBar.Position;
+  DY := DesignBox.VertScrollBar.Position;
+  CW := DesignBox.ClientWidth;
+  CH := DesignBox.ClientHeight;
+  P := C.ClientToParent(Point(0, 0), DesignBox);
   P.X := P.X + DX; P.Y := P.Y + DY;
 
   if P.X > DX + CW - 8 then
@@ -454,8 +454,8 @@ begin
       DY := P.Y - 8;
   end;
 
-  ScrollBox1.HorzScrollBar.Position := DX;
-  ScrollBox1.VertScrollBar.Position := DY;
+  DesignBox.HorzScrollBar.Position := DX;
+  DesignBox.VertScrollBar.Position := DY;
 end;
 
 procedure TDesignFr.SelectControl(C: TControl; AddToSelection: Boolean);
@@ -544,7 +544,8 @@ end;
 procedure TDesignFr.ResetDesigner;
 begin
   HidePropsForm;
-  FormDesign.DesignForm(nil);
+  DesignBox.SetForm(nil);
+  //FormDesign.DesignForm(nil);
   if FCurForm <> nil then
   begin
     UpdateAnchoredComponents(FCurForm);
@@ -2338,15 +2339,15 @@ constructor TDesignFr.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   DesignFr := Self;
-  ScrollBox1 := TDesignerBox.Create(Self);
-  ScrollBox1.Parent := Self;
-  ScrollBox1.Align := alClient;
-  ScrollBox1.TabOrder := 2;
-  DummyX.Parent := ScrollBox1;
-  DummyY.Parent := ScrollBox1;
+  DesignBox := TDesignerBox.Create(Self);
+  DesignBox.Parent := Self;
+  DesignBox.Align := alClient;
+  DesignBox.TabOrder := 2;
+  DummyX.Parent := DesignBox;
+  DummyY.Parent := DesignBox;
   FResizer := TFormResizer.Create;
   FormDesign := TFormDesigner.Create(Self);
-  FormDesign.Parent := ScrollBox1;
+  FormDesign.Parent := DesignBox;
   FormDesign.OnKeyDown:=@FormDesignKeyDown;
   Cache := TDesignCache.Create;
   FormChanges := TFormChangesList.Create;
@@ -2539,6 +2540,7 @@ begin
   end;
 
   FormChanges.GetFormChanges;
+  DesignBox.Show;
   UpdateDesigner;
 end;
 
@@ -2569,13 +2571,18 @@ begin
   ResetDesigner;
 
   Fm := FormMan.FindForm(Id);
-  Fm.Parent := ScrollBox1;
-  Fm.Left := 10; Fm.Top := 10;
-  Fm.Visible:=True;
-  Fm.PopupMenu := PopupMenu1;
-  FResizer.Bind(ScrollBox1, Fm);
+  DesignBox.SetForm(Fm);
+  //Fm.Parent := DesignBox;
+  //Fm.Left := 10; Fm.Top := 10;
+  //Fm.Visible:=True;
+  //DesignBox.DesignFm.PopupMenu := PopupMenu1;
+  FResizer.Bind(DesignBox, Fm, ScaleToScreen(2));
   FResizer.OnFormResize:=@FormResize;
-  FormDesign.DesignForm(Fm);
+  //MainFm.SetDesignerMode(False);
+  //DesignBox.SetDesignerMode(False);
+  //FormDesign.DesignForm(Fm);
+  //MainFm.SetDesignerMode(True);
+  //DesignBox.SetDesignerMode(True);
   FCurForm := Fm;
   HidePropsForm;
   //DummyY.AnchorToCompanion(akTop, 32, FCurForm);

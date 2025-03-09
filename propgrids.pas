@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1252,7 +1252,7 @@ begin
     if PD^.Kind = dkProp then
     begin
       GetPropVal(PD, PInfo, S);
-      if PInfo^.PropType^.Name = 'TGraphicsColor' then
+      if PInfo^.PropType^.Name = 'TColor' then //'TGraphicsColor' then
         AEditLink := FColorLink //TVPGColorLink.Create
       else if PInfo^.PropType^.Kind = tkInteger then
         AEditLink := FIntLink //TVPGIntEditLink.Create
@@ -1384,7 +1384,7 @@ var
 begin
   GetPropVal(PD, PInfo, S);
 
-  if PInfo^.PropType^.Name = 'TGraphicsColor' then
+  if PInfo^.PropType^.Name = 'TColor' then // 'TGraphicsColor' then
     DrawPropColor(C, R, TColor(StrToInt(S)))
   else
     case PInfo^.PropType^.Kind of
@@ -1921,6 +1921,7 @@ var
   NodePath: String;
 begin
   N := GetFirst;
+  PrevN := nil;
   while N <> nil do
   begin
     //if N^.ChildCount > 0 then

@@ -144,7 +144,7 @@ begin
   with KeyFieldCbx do
     if ItemIndex >= 0 then
     begin
-      i := Integer(Items.Objects[ItemIndex]);
+      i := PtrInt(Items.Objects[ItemIndex]);
       Result := GetSelectedSource.GetFieldNameDS(i-1);
     end
     else
@@ -258,7 +258,7 @@ begin
   L.Clear;
   for i := 1 to Fields.RowCount - 1 do
   begin
-    idx := Integer(Fields.Objects[0, i]) - 1;
+    idx := PtrInt(Fields.Objects[0, i]) - 1;
     LF := L.Add;
     LF.FieldName := RD.GetFieldNameDS(idx);
     if TryStrToInt(Fields.Cells[1, i], N) then

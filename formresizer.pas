@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ unit FormResizer;
 interface
 
 uses
-  Classes, SysUtils, Controls, StdCtrls, Forms, dxctrls;
+  Classes, SysUtils, Controls, StdCtrls, Forms, Graphics, dxctrls, formdesigner;
 
 type
 
@@ -35,31 +35,38 @@ type
     procedure ControlMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
-    FControl: TScrollBox;
+    FOffset, FSpace: Integer;
+    FControl: TDesignerBox;
     FForm: TdxForm;
     FOnFormResize: TNotifyEvent;
     FXPress, FYPress: Boolean;
     FDummyX, FDummyY: TLabel;
   public
-    procedure Bind(aControl: TScrollBox; aForm: TdxForm);
+    procedure Bind(aControl: TDesignerBox; aForm: TdxForm; AOffset: Integer);
     procedure UnBind;
     property OnFormResize: TNotifyEvent read FOnFormResize write FOnFormResize;
   end;
 
 implementation
 
+uses
+  apputils;
+
 { TFormResizer }
 
-procedure TFormResizer.Bind(aControl: TScrollBox; aForm: TdxForm);
+procedure TFormResizer.Bind(aControl: TDesignerBox; aForm: TdxForm;
+  AOffset: Integer);
 begin
   FControl := aControl;
   FForm := aForm;
+  FOffset := AOffset;
+  FSpace := ScaleToScreen(8);
   FControl.OnMouseMove:=@ControlMouseMove;
   FControl.OnMouseUp:=@ControlMouseUp;
   FDummyX := TLabel(FControl.Owner.FindComponent('DummyX'));
   FDummyY := TLabel(FControl.Owner.FindComponent('DummyY'));
-  FDummyX.Left := FForm.Left + FForm.Width + 32;
-  FDummyY.Top := FForm.Top + FForm.Height + 32;
+  FDummyX.Left := FOffset + FForm.Width + FSpace;
+  FDummyY.Top := FOffset + FForm.Height + FSpace;
 end;
 
 procedure TFormResizer.UnBind;
@@ -76,23 +83,18 @@ procedure TFormResizer.ControlMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 var
   R: TRect;
-  delta: Integer;
 begin
   R := FForm.BoundsRect;
+  R.Offset(FOffset, FOffset);
   X := FControl.HorzScrollBar.Position + X;
   Y := FControl.VertScrollBar.Position + Y;
-  {$ifdef windows}
-  delta := 0;
-  {$else}
-  delta := 4;
-  {$endif}
-  if (X >= R.Right+delta) and (X <= R.Right + 8) and (Y >= R.Top) and
+  if (X >= R.Right) and (X <= R.Right + 8) and (Y >= R.Top) and
     (Y <= R.Bottom) then
   begin
     FControl.Cursor := crSizeWE;
     FXPress := ssLeft in Shift;
   end
-  else if (X >= R.Left) and (X <= R.Right) and (Y >= R.Bottom+delta) and
+  else if (X >= R.Left) and (X <= R.Right) and (Y >= R.Bottom) and
     (Y <= R.Bottom + 8) then
   begin
     FControl.Cursor := crSizeNS;
@@ -105,12 +107,18 @@ begin
     if FXPress then
     begin
       R.Right := X - 1;
-      FForm.BoundsRect := R;
+      FForm.Width := R.Width;
+      {$ifdef linux}
+      FControl.DesignFm.Width := R.Width;
+      {$endif}
     end
     else if FYPress then
     begin
       R.Bottom := Y - 1;
-      FForm.BoundsRect := R;
+      FForm.Height := R.Height;
+      {$ifdef linux}
+      FControl.DesignFm.Height := R.Height;
+      {$endif}
     end;
     if FOnFormResize <> nil then FOnFormResize(Self);
   end;
@@ -126,8 +134,9 @@ begin
     FXPress := False;
     FYPress := False;
     R := FForm.BoundsRect;
-    FDummyX.Left := R.Right + 32;
-    FDummyY.Top := R.Bottom + 32;
+    R.Offset(FOffset, FOffset);
+    FDummyX.Left := R.Right + FSpace;
+    FDummyY.Top := R.Bottom + FSpace;
   end;
 end;
 

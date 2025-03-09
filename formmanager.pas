@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -475,17 +475,20 @@ var
   i: Integer;
   FS: TFileStream;
   Fm: TdxForm;
+  FlNm: String;
 begin
   for i := 0 to FormCount - 1 do
   begin
     Fm := Forms[i];
-    FS := TFileStream.Create(aDir + IntToStr(Fm.Id) + '.frm', fmCreate + fmOpenWrite);
+    FlNm := aDir + IntToStr(Fm.Id) + '.frm';
+    FS := TFileStream.Create(FlNm, fmCreate + fmOpenWrite);
     try
       WriteComponent(FS, Fm);
-      SetFileDateTime(FS.Handle, Fm.LastModified);
+      //SetFileDateTime(FS.Handle, Fm.LastModified);
     finally
       FS.Free;
     end;
+    SetFileDateTime(FlNm, Fm.LastModified);
   end;
 end;
 
@@ -586,11 +589,12 @@ begin
 
           FS := TFileStream.Create(FlNm, fmCreate);
           FS.CopyFrom(BS, 0);
-          SetFileDateTime(FS.Handle, LastModified);
+          //SetFileDateTime(FS.Handle, LastModified);
         finally
           BS.Free;
           FreeAndNil(FS);
         end;
+        SetFileDateTime(FlNm, LastModified);
 
         if DBase.IsRemote then
           Application.ProcessMessages;

@@ -268,22 +268,38 @@ end;
 
 function TFBLoader.GetFirebird25Lib: String;
 begin
+  {$ifdef windows}
   Result := AppPath + 'fbclientd.dll';
+  {$else}
+  Result := AppPath + 'fb25/libfbclient.so';
+  {$endif}
 end;
 
 function TFBLoader.GetFirebird5Lib: String;
 begin
+  {$ifdef windows}
   Result := AppPath + 'fb5\fbclient.dll';
+  {$else}
+  Result := AppPath + 'fb5/libfbclient.so';
+  {$endif}
 end;
 
 function TFBLoader.IsFirebird25Lib: Boolean;
 begin
+  {$ifdef windows}
   Result := LibraryName = AppPath + 'fbclientd.dll';
+  {$else}
+  Result := LibraryName = AppPath + 'fb25/libfbclient.so';
+  {$endif}
 end;
 
 function TFBLoader.IsFirebird5Lib: Boolean;
 begin
+  {$ifdef windows}
   Result := LibraryName = AppPath + 'fb5\fbclient.dll';
+  {$else}
+  Result := LibraryName = AppPath + 'fb5/libfbclient.so';
+  {$endif}
 end;
 
 function TFBLoader.IsLibraryLoaded: Boolean;

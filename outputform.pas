@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ unit OutputForm;
 interface
 
 uses
-  Classes, Windows, SysUtils, Types, FileUtil, Forms, Controls, Graphics,
+  Classes, SysUtils, Types, FileUtil, Forms, Controls, Graphics,
   Dialogs, StdCtrls, Menus, ExtCtrls, strconsts, LclIntf, LclType, crossapi;
 
 type
@@ -34,12 +34,15 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     PopupMenu1: TPopupMenu;
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
   private
+    FRealBounds: TRect;
   public
     procedure Clear;
   end;
@@ -148,18 +151,34 @@ begin
   MenuItem2.Caption := rsCopy;
   {$ifdef windows}
   FormStyle := fsStayOnTop;
-  //PopupMode := pmExplicit;
   {$endif}
 end;
 
 procedure TOutputFm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  {$ifdef windows}
   AppConfig.OutputBounds := ScaleRectTo96(GetFormRealBounds(Self));
+  {$else}
+  AppConfig.OutputBounds := ScaleRectTo96(FRealBounds);
+  {$endif}
+end;
+
+procedure TOutputFm.FormChangeBounds(Sender: TObject);
+begin
+  {$ifdef linux}
+  if WindowState = wsNormal then
+    FRealBounds := BoundsRect;
+  {$endif}
 end;
 
 procedure TOutputFm.FormDestroy(Sender: TObject);
 begin
   //SaveOutputFmState;
+end;
+
+procedure TOutputFm.FormShow(Sender: TObject);
+begin
+  FRealBounds := BoundsRect;
 end;
 
 procedure TOutputFm.MenuItem1Click(Sender: TObject);

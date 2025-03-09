@@ -7,17 +7,16 @@ object FillTableFm: TFillTableFm
   Caption = 'Заполнить таблицу'
   ClientHeight = 505
   ClientWidth = 428
+  Position = poOwnerFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
   object Label2: TLabel
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
+    Height = 17
     Top = 8
-    Width = 103
+    Width = 111
     BorderSpacing.Top = 8
     Caption = 'Таблица-источник'
     ParentColor = False
@@ -26,23 +25,23 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = Label2
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 24
+    Height = 25
+    Top = 26
     Width = 413
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
-    ItemHeight = 15
-    OnChange = SrcTblChange
+    ItemHeight = 25
     Style = csDropDownList
     TabOrder = 0
+    OnChange = SrcTblChange
   end
   object Label3: TLabel
     AnchorSideTop.Control = SrcTbl
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 55
-    Width = 107
+    Height = 17
+    Top = 59
+    Width = 115
     BorderSpacing.Top = 8
     Caption = 'Таблица-приемник'
     ParentColor = False
@@ -51,20 +50,20 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = Label3
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 71
+    Height = 25
+    Top = 77
     Width = 413
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
-    ItemHeight = 15
-    OnChange = DestTblChange
+    ItemHeight = 25
     Style = csDropDownList
     TabOrder = 1
+    OnChange = DestTblChange
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 465
+    Height = 36
+    Top = 463
     Width = 416
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -83,9 +82,9 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = DestTbl
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 102
-    Width = 41
+    Height = 17
+    Top = 110
+    Width = 44
     BorderSpacing.Top = 8
     Caption = 'Фильтр'
     ParentColor = False
@@ -94,8 +93,8 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = Label4
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 118
+    Height = 25
+    Top = 128
     Width = 412
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
@@ -104,29 +103,30 @@ object FillTableFm: TFillTableFm
     Flat = True
     MaxLength = 0
     NumGlyphs = 1
-    OnButtonClick = FilterButtonClick
     PasswordChar = #0
     TabOrder = 2
+    OnButtonClick = FilterButtonClick
   end
   object BitBtn1: TBitBtn
+    AnchorSideTop.Control = Grid
     AnchorSideTop.Side = asrBottom
     Left = 322
     Height = 25
-    Top = 404
+    Top = 408
     Width = 99
     Anchors = [akTop, akRight]
     BorderSpacing.Top = 8
     Caption = 'Сброс'
-    OnClick = BitBtn1Click
     TabOrder = 6
+    OnClick = BitBtn1Click
   end
   object CheckBox1: TCheckBox
     AnchorSideTop.Control = Grid
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 19
+    Height = 23
     Top = 408
-    Width = 206
+    Width = 228
     BorderSpacing.Top = 8
     Caption = 'Запрашивать перед заполнением'
     TabOrder = 4
@@ -135,9 +135,9 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = CheckBox1
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 19
-    Top = 435
-    Width = 231
+    Height = 23
+    Top = 439
+    Width = 254
     BorderSpacing.Top = 8
     Caption = 'Очищать таблицу перед заполнением'
     TabOrder = 5
@@ -146,8 +146,8 @@ object FillTableFm: TFillTableFm
     AnchorSideTop.Control = Filter
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 251
-    Top = 149
+    Height = 239
+    Top = 161
     Width = 412
     AlternateColor = 15658734
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -157,7 +157,7 @@ object FillTableFm: TFillTableFm
     Columns = <    
       item
         Title.Caption = 'Источник'
-        Width = 205
+        Width = 206
         ColumnType = gctList
         MinValue = 0
         MaxValue = 0
@@ -165,7 +165,7 @@ object FillTableFm: TFillTableFm
       end    
       item
         Title.Caption = 'Приемник'
-        Width = 206
+        Width = 205
         ColumnType = gctList
         MinValue = 0
         MaxValue = 0
@@ -181,8 +181,8 @@ object FillTableFm: TFillTableFm
     ShowCommands = [dgcAppend, dgcDelete, dgcMoveUp, dgcMoveDown]
     OnCommand = GridCommand
     ColWidths = (
-      205
       206
+      205
     )
   end
 end

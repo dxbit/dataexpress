@@ -8,16 +8,15 @@ object ConnectInfoFm: TConnectInfoFm
   Caption = 'Параметры подключения к базе данных'
   ClientHeight = 336
   ClientWidth = 433
+  Position = poOwnerFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.0.0.3'
   object Label1: TLabel
     Left = 8
-    Height = 15
+    Height = 17
     Top = 8
-    Width = 55
+    Width = 60
     Caption = 'Описание'
     ParentColor = False
     ParentFont = False
@@ -26,8 +25,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label1
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 24
+    Height = 25
+    Top = 26
     Width = 416
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
@@ -38,9 +37,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = ConnectName
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 55
-    Width = 156
+    Height = 17
+    Top = 59
+    Width = 168
     BorderSpacing.Top = 8
     Caption = 'Расположение базы данных'
     ParentColor = False
@@ -50,8 +49,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label2
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 23
-    Top = 71
+    Height = 25
+    Top = 77
     Width = 416
     OnAcceptFileName = DBPathAcceptFileName
     FilterIndex = 0
@@ -69,9 +68,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = DBPath
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 15
-    Top = 102
-    Width = 42
+    Height = 17
+    Top = 110
+    Width = 44
     BorderSpacing.Top = 8
     Caption = 'Пароль'
     ParentColor = False
@@ -80,8 +79,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label3
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 118
+    Height = 25
+    Top = 128
     Width = 168
     BorderSpacing.Top = 1
     TabOrder = 2
@@ -91,9 +90,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = DBPwd
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 15
-    Top = 149
-    Width = 95
+    Height = 17
+    Top = 161
+    Width = 100
     BorderSpacing.Top = 8
     Caption = 'Папка шаблонов'
     ParentColor = False
@@ -102,8 +101,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label4
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 165
+    Height = 25
+    Top = 179
     Width = 416
     ShowHidden = False
     ButtonWidth = 23
@@ -118,9 +117,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = TemplateDir
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 15
-    Top = 196
-    Width = 77
+    Height = 17
+    Top = 212
+    Width = 83
     BorderSpacing.Top = 8
     Caption = 'Папка вывода'
     ParentColor = False
@@ -129,8 +128,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label5
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 212
+    Height = 25
+    Top = 230
     Width = 416
     ShowHidden = False
     ButtonWidth = 23
@@ -143,8 +142,8 @@ object ConnectInfoFm: TConnectInfoFm
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 296
+    Height = 36
+    Top = 294
     Width = 421
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -162,9 +161,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = OutputDir
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 15
-    Top = 243
-    Width = 102
+    Height = 17
+    Top = 263
+    Width = 110
     BorderSpacing.Top = 8
     Caption = 'Имя пользователя'
     ParentColor = False
@@ -173,8 +172,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label6
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 259
+    Height = 25
+    Top = 281
     Width = 192
     BorderSpacing.Top = 1
     TabOrder = 5
@@ -184,9 +183,9 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = OutputDir
     AnchorSideTop.Side = asrBottom
     Left = 206
-    Height = 15
-    Top = 243
-    Width = 42
+    Height = 17
+    Top = 263
+    Width = 44
     BorderSpacing.Top = 8
     Caption = 'Пароль'
     ParentColor = False
@@ -195,8 +194,8 @@ object ConnectInfoFm: TConnectInfoFm
     AnchorSideTop.Control = Label7
     AnchorSideTop.Side = asrBottom
     Left = 206
-    Height = 23
-    Top = 259
+    Height = 25
+    Top = 281
     Width = 160
     BorderSpacing.Top = 1
     EchoMode = emPassword

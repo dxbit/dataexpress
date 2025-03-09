@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1270,19 +1270,23 @@ begin
   try
     FS := TFileStream.Create(aDir + 'users', fmCreate + fmOpenWrite);
     FUsers.SaveToStream(FS);
-    SetFileDateTime(FS.Handle, FLastModified);
+    //SetFileDateTime(FS.Handle, FLastModified);
     FS.Free;
+    SetFileDateTime(aDir + 'users', FLastModified);
 
     FS := TFileStream.Create(aDir + 'roles', fmCreate + fmOpenWrite);
     FRoles.SaveToStream(FS);
-    SetFileDateTime(FS.Handle, FLastModified);
+    //SetFileDateTime(FS.Handle, FLastModified);
     FS.Free;
+    SetFileDateTime(aDir + 'roles', FLastModified);
 
     FS := TFileStream.Create(aDir + 'intfs', fmCreate + fmOpenWrite);
     FIntfs.SaveToStream(FS);
-    SetFileDateTime(FS.Handle, FLastModified);
+    //SetFileDateTime(FS.Handle, FLastModified);
+    FS.Free;
+    SetFileDateTime(aDir + 'intfs', FLastModified);
   finally
-    FreeAndNil(FS);
+    //FreeAndNil(FS);
   end;
 end;
 

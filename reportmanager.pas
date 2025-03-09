@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -266,17 +266,20 @@ var
   i: Integer;
   RD: TReportData;
   FS: TFileStream;
+  FlNm: String;
 begin
   for i := 0 to ReportCount - 1 do
   begin
     RD := Reports[i];
-    FS := TFileStream.Create(aDir + IntToStr(RD.Id) + '.rpt', fmCreate + fmOpenWrite);
+    FlNm := aDir + IntToStr(RD.Id) + '.rpt';
+    FS := TFileStream.Create(FlNm, fmCreate + fmOpenWrite);
     try
       RD.SaveToStream(FS);
-      SetFileDateTime(FS.Handle, RD.LastModified);
+      //SetFileDateTime(FS.Handle, RD.LastModified);
     finally
       FS.Free;
     end;
+    SetFileDateTime(FlNm, RD.LastModified);
   end;
 end;
 
@@ -340,11 +343,12 @@ begin
 
           FS := TFileStream.Create(FlNm, fmCreate);
           FS.CopyFrom(BS, 0);
-          SetFileDateTime(FS.Handle, LastModified);
+          //SetFileDateTime(FS.Handle, LastModified);
         finally
           BS.Free;
           FreeAndNil(FS);
         end;
+        SetFileDateTime(FlNm, LastModified);
 
         if DBase.IsRemote then
           Application.ProcessMessages;

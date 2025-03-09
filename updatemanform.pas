@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -196,7 +196,7 @@ var
   Ext: String;
 begin
   Ext := LowerCase(ExtractFileExt(FlNm));
-  if FlNm = 'dataexpress.exe' then Result := 1
+  if (FlNm = 'dataexpress.exe') or (FlNm = 'dataexpress') then Result := 1
   else if Ext = '.exe' then Result := 2
   else if Ext = '.dll' then Result := 3
   else if (Ext = '.txt') or (Ext = '.dat') or (Ext = '.po') or (Ext = '.info') or
@@ -315,13 +315,15 @@ var
   i: Integer;
   N: TTreeNode;
   F: TUpdateFileInfo;
+  FlNm: String;
 begin
   DBTree.BeginUpdate;
   DBTree.Items.Clear;
   for i := 0 to FUpdateMan.Files.Count - 1 do
   begin
     F := FUpdateMan.Files[i];
-    N := DBTree.AddNodePath(F.FileName, PathDelim, 0);
+    FlNm := StringReplace(F.FileName, '\', PathDelim, [rfReplaceAll]);
+    N := DBTree.AddNodePath(FlNm, PathDelim, 0);
     N.ImageIndex := GetImageIndexByFileExt(F.FileName);
     N.SelectedIndex := N.ImageIndex;
     N.Data := FUpdateMan.Files.Items[i];

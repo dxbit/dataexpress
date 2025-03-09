@@ -23,7 +23,7 @@ unit WebServer;
 interface
 
 uses
-  Classes, SysUtils, fphttpserver, fptemplate, mytypes, ssockets;
+  Classes, SysUtils, fphttpserver, fptemplate, mytypes, ssockets, openssl;
 
 type
 

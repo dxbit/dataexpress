@@ -8,25 +8,24 @@ object UpdateManFm: TUpdateManFm
   Caption = 'Управление обновлениями'
   ClientHeight = 568
   ClientWidth = 787
+  Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object UploadBn: TBitBtn
     Left = 372
     Height = 88
     Top = 216
     Width = 42
-    OnClick = UploadBnClick
     ParentShowHint = False
     ShowHint = True
     Spacing = 0
     TabOrder = 1
+    OnClick = UploadBnClick
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 26
-    Top = 536
+    Height = 27
+    Top = 535
     Width = 775
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -47,12 +46,12 @@ object UpdateManFm: TUpdateManFm
     Top = 8
     Width = 361
     Caption = 'Папка программы'
-    ClientHeight = 500
+    ClientHeight = 501
     ClientWidth = 357
     TabOrder = 0
     object AppVer: TLabel
       Left = 4
-      Height = 15
+      Height = 17
       Top = 0
       Width = 349
       Align = alTop
@@ -64,8 +63,8 @@ object UpdateManFm: TUpdateManFm
     end
     object FilesTree: TCheckTreeView
       Left = 4
-      Height = 460
-      Top = 16
+      Height = 454
+      Top = 18
       Width = 349
       Align = alClient
       BorderSpacing.Left = 4
@@ -77,16 +76,16 @@ object UpdateManFm: TUpdateManFm
       ReadOnly = True
       SortType = stData
       TabOrder = 0
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       OnCompare = FilesTreeCompare
       OnSelectionChanged = FilesTreeSelectionChanged
-      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       MixedMode = True
       OnCheckChange = FilesTreeCheckChange
     end
     object FilesSta: TStaticText
       Left = 4
-      Height = 16
-      Top = 480
+      Height = 21
+      Top = 476
       Width = 349
       Align = alBottom
       AutoSize = True
@@ -103,13 +102,13 @@ object UpdateManFm: TUpdateManFm
     Top = 8
     Width = 361
     Caption = 'База обновлений'
-    ClientHeight = 500
+    ClientHeight = 501
     ClientWidth = 357
     TabOrder = 3
     object DBTree: TTreeViewEx
       Left = 4
-      Height = 460
-      Top = 16
+      Height = 454
+      Top = 18
       Width = 349
       Align = alClient
       BorderSpacing.Left = 4
@@ -119,12 +118,12 @@ object UpdateManFm: TUpdateManFm
       Images = FilesImages
       ReadOnly = True
       TabOrder = 1
-      OnSelectionChanged = DBTreeSelectionChanged
       Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      OnSelectionChanged = DBTreeSelectionChanged
     end
     object DBVer: TLabel
       Left = 4
-      Height = 15
+      Height = 17
       Top = 0
       Width = 349
       Align = alTop
@@ -141,7 +140,7 @@ object UpdateManFm: TUpdateManFm
       AnchorSideTop.Side = asrCenter
       Left = 26
       Height = 52
-      Top = 220
+      Top = 219
       Width = 304
       BevelOuter = bvNone
       Caption = 'MsgPan'
@@ -157,8 +156,8 @@ object UpdateManFm: TUpdateManFm
     end
     object DBSta: TStaticText
       Left = 4
-      Height = 16
-      Top = 480
+      Height = 21
+      Top = 476
       Width = 349
       Align = alBottom
       AutoSize = True
@@ -174,11 +173,11 @@ object UpdateManFm: TUpdateManFm
     Height = 40
     Top = 312
     Width = 42
-    OnClick = MoreBnClick
     ParentShowHint = False
     ShowHint = True
     Spacing = 0
     TabOrder = 2
+    OnClick = MoreBnClick
   end
   object FilesImages: TImageList
     Left = 160

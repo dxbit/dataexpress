@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -55,7 +55,6 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
     ListView1: TListView;
@@ -70,7 +69,6 @@ type
     UpdTab: TTabSheet;
     OtherTab: TTabSheet;
     TemplateDir: TDirectoryEdit;
-    UseTheme: TComboBox;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure InfoLangBnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -93,10 +91,7 @@ function ShowSettingsForm: Integer;
 implementation
 
 uses
-  appsettings, helpmanager, langmanager, apputils
-  {$ifdef linux},
-  gtkthememanager
-  {$endif};
+  appsettings, helpmanager, langmanager, apputils;
 
 function ShowSettingsForm: Integer;
 begin
@@ -126,13 +121,6 @@ begin
   Label5.Caption := rsStartupAction;
   StartupAction.Items.AddStrings([rsOpenLastDB, rsOpenConnectList]);
   ConfirmExit.Caption := rsConfirmExit;
-  {$ifdef windows}
-  Label6.Visible := False;
-  UseTheme.Visible := False;
-  //Height := Height - 47;
-  {$else}
-  Label6.Caption := rsUseTheme;
-  {$endif}
   // Шаблоны
   Label2.Caption := rsTemplatesFolder;
   TemplateDir.TextHint := rsHintTemplateDefaultFolder;
@@ -186,7 +174,7 @@ begin
 
   SetupSpeedButton(InfoLangBn, 'info16');
 
-  AddFormHeight(Self);
+  //AddFormHeight(Self);
 end;
 
 procedure TSettingsFm.InfoLangBnClick(Sender: TObject);
@@ -292,16 +280,6 @@ begin
   SupportDXDB.Checked := AppConfig.SupportDXDB;
   LogErrorsChk.Checked := AppConfig.LogErrors;
 
-  {$ifdef linux}
-  GetThemes(UseTheme.Items);
-  UseTheme.Items.Insert(0, rsDefault);
-  Theme := GetCurrentTheme;
-  if CompareText(Theme, 'default') = 0 then
-    UseTheme.ItemIndex := 0
-  else
-    UseTheme.ItemIndex := UseTheme.Items.IndexOf(Theme);
-  {$endif}
-
   DesignTab.TabVisible := IsDeveloper and not IsEmptyApp;
   if Pages.ActivePage = DesignTab then Pages.ActivePage := IntfTab;
 
@@ -337,19 +315,8 @@ begin
   AppConfig.SupportDXDB := SupportDXDB.Checked;
   Appconfig.LogErrors := LogErrorsChk.Checked;
 
-  {$ifdef linux}
-  if UseTheme.ItemIndex = 0 then
-    S := 'Default'
-  else if UseTheme.ItemIndex > 0 then
-    S := UseTheme.Text;
-  ApplyTheme(S);
-  if (S <> Theme) or (ComboBox1.ItemIndex <> OldItemIndex) then
-    Info(rsNewThemeLangApply);
-  {$else}
   if ComboBox1.ItemIndex <> OldItemIndex then
     Info(rsNewLangApply);
-  {$endif}
-  //AppConfig.Save;
 end;
 
 end.

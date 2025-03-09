@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -81,6 +81,7 @@ type
     procedure ValueEdKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FImages: TImageList;
+    FFilterHeight: Integer;
     procedure CheckAll(Group: TCheckGroup);
     function AnyChecked(Group: TCheckGroup): Boolean;
     procedure ShowFormResult;
@@ -155,7 +156,7 @@ procedure TFindExprFm.FilterBnChange(Sender: TObject);
 begin
   if FilterBn.Checked then
   begin
-    FilterPan.Height := ScaleToScreen(160);
+    FilterPan.Height := ScaleToScreen(FFilterHeight);
     FilterPan.Enabled := True;
   end
   else
@@ -218,6 +219,8 @@ end;
 
 procedure TFindExprFm.FormCreate(Sender: TObject);
 begin
+  FFilterHeight := FilterPan.Height;
+
   PopupParent := Application.MainForm;
   Caption := rsFindExpressions;
 

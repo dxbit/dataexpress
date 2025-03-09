@@ -23,7 +23,7 @@ unit ScriptForm;
 interface
 
 uses
-  Classes, Windows, SysUtils, types, FileUtil, SynHighlighterPas, Forms,
+  Classes, SysUtils, types, FileUtil, SynHighlighterPas, Forms,
   Controls, Graphics, Dialogs, ComCtrls, StdCtrls, ExtCtrls, Menus, strconsts,
   dxctrls, LclType, EditBtn, Buttons, SynEditTypes, SynEdit, SynEditMarks,
   scriptmanager, scriptedit, classestree, modulestree, crossapi;
@@ -112,6 +112,7 @@ type
     ToolButton9: TToolButton;
     procedure FindScriptMnuClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -167,6 +168,7 @@ type
     FSearchOptions: TSynSearchOptions;
     FModulesWidth, FClassTreeWidth, FMsgsHeight: Integer;
     FFullScreen: Boolean;
+    FRealBounds: TRect;
     procedure DoSearchText(ContinueSearch, Backward: Boolean);
     procedure MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ShowSearchForm(Replace: Boolean);
@@ -757,7 +759,11 @@ begin
   end;
 
   if WindowState in [wsNormal, wsMaximized] then AppConfig.SEFormState:=WindowState;
+  {$ifdef windows}
   FormBounds := ScaleRectTo96(GetFormRealBounds(Self));
+  {$else}
+  FormBounds := ScaleRectTo96(FRealBounds);
+  {$endif}
   AppConfig.SEFormLeft := FormBounds.Left;
   AppConfig.SEFormTop := FormBounds.Top;
 	AppConfig.SEFormWidth := FormBounds.Width;
@@ -1104,6 +1110,14 @@ begin
   {$endif}
 end;
 
+procedure TScriptFm.FormChangeBounds(Sender: TObject);
+begin
+  {$ifdef linux}
+  if WindowState = wsNormal then
+    FRealBounds := BoundsRect;
+  {$endif}
+end;
+
 procedure TScriptFm.FindScriptMnuClick(Sender: TObject);
 begin
   ShowFindScriptForm(Memo.GetWordAtRowCol(Memo.CaretXY));
@@ -1248,6 +1262,7 @@ end;
 
 procedure TScriptFm.FormShow(Sender: TObject);
 begin
+  FRealBounds := BoundsRect;
   if AppConfig.ScriptFormPosCorrected = False then
   begin
     CorrectFormPos(Self, Self);

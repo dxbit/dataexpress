@@ -8,16 +8,16 @@ object ScriptFm: TScriptFm
   ClientHeight = 526
   ClientWidth = 890
   KeyPreview = True
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
   OnActivate = FormActivate
+  OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
-  Position = poOwnerFormCenter
-  ShowInTaskBar = stAlways
-  LCLVersion = '3.2.0.0'
   object Splitter1: TSplitter
     Left = 0
     Height = 494
@@ -57,7 +57,7 @@ object ScriptFm: TScriptFm
       TabOrder = 1
       object Notebook: TNotebook
         Left = 0
-        Height = 374
+        Height = 375
         Top = 0
         Width = 880
         Align = alClient
@@ -66,8 +66,8 @@ object ScriptFm: TScriptFm
       end
       object StatusBar: TStatusBar
         Left = 0
-        Height = 23
-        Top = 374
+        Height = 22
+        Top = 375
         Width = 880
         Panels = <        
           item
@@ -99,7 +99,7 @@ object ScriptFm: TScriptFm
           Width = 24
         end      
         item
-          Width = 852
+          Width = 841
         end>
       HideSelection = False
       ReadOnly = True
@@ -136,9 +136,9 @@ object ScriptFm: TScriptFm
     Top = 32
     Width = 5
     Align = alRight
-    OnChangeBounds = Splitter3ChangeBounds
     ResizeAnchor = akRight
     ResizeStyle = rsPattern
+    OnChangeBounds = Splitter3ChangeBounds
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -199,8 +199,8 @@ object ScriptFm: TScriptFm
       Caption = 'Найти'
       DropdownMenu = FindPopup
       ImageIndex = 8
-      OnClick = ToolButtonClick
       Style = tbsDropDown
+      OnClick = ToolButtonClick
     end
     object ToolButton7: TToolButton
       Tag = 6

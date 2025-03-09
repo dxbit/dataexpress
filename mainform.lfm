@@ -6,6 +6,8 @@ object MainFm: TMainFm
   Caption = 'MainFm'
   KeyPreview = True
   Menu = MainMenu1
+  Position = poScreenCenter
+  OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -13,8 +15,6 @@ object MainFm: TMainFm
   OnDropFiles = FormDropFiles
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  Position = poScreenCenter
-  LCLVersion = '3.2.0.0'
   object MainMenu1: TMainMenu
     Images = MenuImages
     Left = 36

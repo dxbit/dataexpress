@@ -120,21 +120,21 @@ object MainFr: TMainFr
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 344
+    Height = 347
     Top = 34
     Width = 984
     Align = alClient
+    Options = [nboDoChangeOnSetIndex]
     PopupMenu = TabMnu
     TabOrder = 1
     OnChange = PageControl1Change
     OnChanging = PageControl1Changing
     OnCloseTabClicked = PageControl1CloseTabClicked
-    Options = [nboShowCloseButtons, nboDoChangeOnSetIndex]
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 378
+    Height = 20
+    Top = 381
     Width = 984
     Panels = <    
       item

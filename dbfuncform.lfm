@@ -7,10 +7,10 @@ object DBFuncFm: TDBFuncFm
   Caption = 'DBFuncFm'
   ClientHeight = 248
   ClientWidth = 372
+  Position = poOwnerFormCenter
+  LCLVersion = '4.0.0.2'
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -83,9 +83,9 @@ object DBFuncFm: TDBFuncFm
     Flat = True
     MaxLength = 0
     NumGlyphs = 1
-    OnButtonClick = FieldButtonClick
     PasswordChar = #0
     TabOrder = 2
+    OnButtonClick = FieldButtonClick
   end
   object Label4: TLabel
     AnchorSideTop.Control = Field
@@ -111,9 +111,9 @@ object DBFuncFm: TDBFuncFm
     Flat = True
     MaxLength = 0
     NumGlyphs = 1
-    OnButtonClick = FilterButtonClick
     PasswordChar = #0
     TabOrder = 3
+    OnButtonClick = FilterButtonClick
   end
   object ButtonPanel1: TButtonPanel
     Left = 6

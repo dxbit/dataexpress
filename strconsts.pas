@@ -1319,7 +1319,7 @@ resourcestring
   rsRefreshTreeEveryShow = 'Refresh the tree every time the window is shown';
   rsNewThemeLangApply = 'The selected language or theme will be applied after the application is restarted.';
   rsNewLangApply = 'The selected language will be applied after the application is restarted.';
-  rsUseTheme = 'Use theme';
+  //rsUseTheme = 'Use theme';
   rsErrorSelCond = 'An error was found in the selection condition: %sIn this '
     +'regard, the selection condition will be ignored.';
   //rsOptimizeSelection = 'Optimize selection records';
@@ -1836,8 +1836,18 @@ resourcestring
   rsSelectEmbedImagesHint = 'Hold down Ctrl to select multiple images';
   rsAddEmbeddedImages = 'Add embedded images';
   rsStructure = 'Structure';
-  //rsImageNameLenExceed = 'The image name length must not exceed 50 characters.';
-  //rsContainingTextFrags = 'Containing one or more text fragments';
+  rsDesktopDirNotFound = 'The desktop directory could not be found.';
+  rsFailedCreateShortcut = 'Failed to create a shortcut %s';
+  rsCantOpenDatabaseFDB = 'Unable to open the database "%s" because the '
+    +'embedded server Firebird 2.5 is not loaded. Run the program using the '
+    +'shortcut "DataExpress FB25".';
+  rsCantOpenDatabaseDXDB = 'Unable to open the database "%s" because the '
+    +'embedded server Firebird 5 is not loaded. Run the program using the '
+    +'shortcut "DataExpress FB5".';
+  rsShortcutFB25NotFound = 'The shortcut "DataExpress FB25" is not found on '
+    +'the desktop. Create it?';
+  rsShortcutFB5NotFound = 'The shortcut "DataExpress FB5" is not found on '
+    +'the desktop. Create it?';
 
 implementation
 

@@ -9,11 +9,11 @@ object ExportFm: TExportFm
   Caption = 'ExportFm'
   ClientHeight = 329
   ClientWidth = 620
+  Position = poOwnerFormCenter
+  LCLVersion = '4.0.0.2'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -105,8 +105,8 @@ object ExportFm: TExportFm
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 36
-    ClientWidth = 295
+    ClientHeight = 38
+    ClientWidth = 281
     Columns = 2
     Items.Strings = (
       'UTF8'
@@ -120,9 +120,9 @@ object ExportFm: TExportFm
     Top = 1
     Width = 23
     Flat = True
-    OnClick = CheckAllClick
     ShowHint = True
     ParentShowHint = False
+    OnClick = CheckAllClick
   end
   object UncheckAll: TSpeedButton
     Left = 281
@@ -130,8 +130,8 @@ object ExportFm: TExportFm
     Top = 1
     Width = 23
     Flat = True
-    OnClick = UncheckAllClick
     ShowHint = True
     ParentShowHint = False
+    OnClick = UncheckAllClick
   end
 end

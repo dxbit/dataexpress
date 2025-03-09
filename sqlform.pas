@@ -25,8 +25,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, SynEdit, SynHighlighterSQL, Forms, Controls,
   Graphics, Dialogs, DBGrids, ExtCtrls, ComCtrls, strconsts, db, SqlDb,
-  dxsqlquery, SynEditTypes, LclType, StdCtrls, ButtonPanel, dxreports, LazUtf8,
-  propgrids, dxctrls, structtree;
+  dxsqlquery, SynEditTypes, SynGutterBase, LclType, StdCtrls, ButtonPanel,
+  dxreports, LazUtf8, propgrids, dxctrls, structtree;
 
 { TSqlFm }
 
@@ -63,6 +63,7 @@ type
     procedure EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure EditStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure FieldsTreeSelectionChanged(Sender: TObject);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -87,6 +88,7 @@ type
     FStructTree: TStructTree;
     FDragText: String;
     FOldX, FOldY: Integer;
+    FRealBounds: TRect;
     procedure DeleteOldFieldsReferences;
     procedure ShowGrid;
     procedure ShowErrors;
@@ -202,6 +204,7 @@ end;
 
 procedure TSqlFm.FormShow(Sender: TObject);
 begin
+  FRealBounds := BoundsRect;
   ShowGrid;
   Edit.SetFocus;
 end;
@@ -244,6 +247,14 @@ end;
 procedure TSqlFm.FieldsTreeSelectionChanged(Sender: TObject);
 begin
   FillProps;
+end;
+
+procedure TSqlFm.FormChangeBounds(Sender: TObject);
+begin
+  {$ifdef linux}
+  if WindowState = wsNormal then
+    FRealBounds := BoundsRect;
+  {$endif}
 end;
 
 procedure TSqlFm.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
@@ -774,7 +785,11 @@ procedure TSqlFm.SaveConfig;
 var
   R: TRect;
 begin
+  {$ifdef windows}
   R := ScaleRectTo96(GetFormRealBounds(Self));
+  {$else}
+  R := ScaleRectTo96(FRealBounds);
+  {$endif}
   if IsSqlMode then
   begin
     AppConfig.SQLModeEditorWidth := R.Width;
