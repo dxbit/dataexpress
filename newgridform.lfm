@@ -1,22 +1,22 @@
 object GrdFm: TGrdFm
-  Left = 662
-  Height = 367
-  Top = 184
-  Width = 1193
+  Left = 475
+  Height = 375
+  Top = 322
+  Width = 1271
   BorderIcons = [biSystemMenu]
   Caption = 'Таблица'
-  ClientHeight = 367
-  ClientWidth = 1193
+  ClientHeight = 375
+  ClientWidth = 1271
+  Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
-    Top = 335
-    Width = 1181
+    Top = 343
+    Width = 1259
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -34,12 +34,12 @@ object GrdFm: TGrdFm
     Left = 0
     Height = 122
     Top = 0
-    Width = 1193
+    Width = 1271
     Align = alTop
     AutoSize = True
     BevelOuter = bvNone
     ClientHeight = 122
-    ClientWidth = 1193
+    ClientWidth = 1271
     ParentFont = False
     TabOrder = 1
     object GridGrp: TGroupBox
@@ -104,10 +104,10 @@ object GrdFm: TGrdFm
         BorderSpacing.Top = 8
         BorderSpacing.Bottom = 4
         MaxValue = 1000
-        OnChange = DefRowHeightChange
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
+        OnChange = DefRowHeightChange
       end
       object GridColor: TColorButtonEx
         AnchorSideLeft.Control = HorzLines
@@ -258,12 +258,13 @@ object GrdFm: TGrdFm
         Height = 23
         Top = 60
         Width = 62
+        MaxValue = 1000
         MinValue = 1
-        OnChange = CellFontSizeChange
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
         Value = 1
+        OnChange = CellFontSizeChange
       end
       object CellColor: TColorButtonEx
         Tag = 1
@@ -371,9 +372,9 @@ object GrdFm: TGrdFm
         Height = 25
         Top = 60
         Width = 30
-        OnClick = ResetCellFontBnClick
         ShowHint = True
         ParentShowHint = False
+        OnClick = ResetCellFontBnClick
       end
       object CellFontS: TToggleBox
         Tag = 3
@@ -411,10 +412,10 @@ object GrdFm: TGrdFm
       Left = 698
       Height = 114
       Top = 4
-      Width = 218
+      Width = 294
       Caption = 'Заголовки'
       ClientHeight = 94
-      ClientWidth = 214
+      ClientWidth = 290
       TabOrder = 2
       object FlatStyle: TToggleBox
         Left = 4
@@ -468,12 +469,13 @@ object GrdFm: TGrdFm
         Height = 23
         Top = 60
         Width = 62
+        MaxValue = 1000
         MinValue = 1
-        OnChange = GridTitleFontSizeChange
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
         Value = 1
+        OnChange = GridTitleFontSizeChange
       end
       object VisibleCols: TButton
         Left = 4
@@ -535,9 +537,9 @@ object GrdFm: TGrdFm
         Height = 25
         Top = 60
         Width = 30
-        OnClick = ResetTitleFontBnClick
         ShowHint = True
         ParentShowHint = False
+        OnClick = ResetTitleFontBnClick
       end
       object GridTitleFont: TComboBoxAdv
         Left = 84
@@ -556,10 +558,28 @@ object GrdFm: TGrdFm
         Text = 'GridTitleFont'
         OnSelect = GridTitleFontSelect
       end
+      object TitleHeightChk: TCheckBox
+        Left = 216
+        Height = 19
+        Top = 6
+        Width = 58
+        Caption = 'Высота'
+        TabOrder = 8
+        OnChange = TitleHeightChkChange
+      end
+      object TitleHeightEdt: TSpinEdit
+        Left = 216
+        Height = 23
+        Top = 32
+        Width = 58
+        MaxValue = 1000
+        TabOrder = 9
+        OnChange = TitleHeightEdtChange
+      end
     end
     object OptionsGrp: TGroupBox
       AnchorSideBottom.Side = asrBottom
-      Left = 920
+      Left = 995
       Height = 114
       Top = 4
       Width = 270

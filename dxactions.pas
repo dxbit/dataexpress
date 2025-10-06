@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -76,19 +76,19 @@ type
     //procedure Load(const Xml: String); virtual;
     function Execute: Variant;
     function RenameForm(const OldName, NewName: String): Boolean; virtual;
-    function RenameField(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
+    function RenameField(CurFm, RD: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
     function RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
-    function RenameQuery(const OldName, NewName: String): Boolean; virtual;
+    function RenameQuery(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; virtual;
     function RenameReport(const OldName, NewName: String): Boolean; virtual;
-    function RenameRpField(RD: TObject; const OldName, NewName: String): Boolean; virtual;
+    //function RenameRpField(CurFm: TObject; const FormName: String; RD: TObject; const OldName, NewName: String): Boolean; virtual;
     function RenameImage(const OldName, NewName: String): Boolean; virtual;
     function FormExists(aName: String): Boolean; virtual;
-    function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean; virtual;
+    function FieldExists(CurFm, RD: TObject; const FormName, FieldName: String): Boolean; virtual;
     function ObjectExists(CurFm: TObject; const FormName, FieldName: String): Boolean; virtual;
     function ComponentExists(CurFm: TObject; const FormName, CmpName: String): Boolean; virtual;
-    function QueryExists(aName: String): Boolean; virtual;
+    function QueryExists(CurFm: TObject; const FormName, aName: String): Boolean; virtual;
     function ReportExists(aName: String): Boolean; virtual;
-    function RpFieldExists(RD: TObject; const FieldName: String): Boolean; virtual;
+    //function RpFieldExists(CurFm: TObject; const FormName: String; RD: TObject; const FieldName: String): Boolean; virtual;
     function TemplateExists(const FileName: String): Boolean; virtual;
     function ImageExists(const ImageName: String): Boolean; virtual;
     function ValueExists(AValue: String): Boolean; virtual;
@@ -157,10 +157,10 @@ type
     function InnerExecute: Variant; override;
   public
     function RenameForm(const OldName, NewName: String): Boolean; override;
-    function RenameField(CurFm: TObject; const aFormName, OldName, NewName:
+    function RenameField(CurFm, RD: TObject; const aFormName, OldName, NewName:
       String): Boolean; override;
     function FormExists(aName: String): Boolean; override;
-    function FieldExists(CurFm: TObject; const aFormName, aFieldName: String): Boolean;
+    function FieldExists(CurFm, RD: TObject; const aFormName, aFieldName: String): Boolean;
       override;
     function ValueExists(AValue: String): Boolean; override;
     property FormName: String read FFormName write FFormName;
@@ -220,9 +220,9 @@ type
   public
     constructor Create; override;
     destructor Destroy; override;
-    function RenameField(CurFm: TObject; const FormName, OldName, NewName:
+    function RenameField(CurFm, RD: TObject; const FormName, OldName, NewName:
       String): Boolean; override;
-    function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean;
+    function FieldExists(CurFm, RD: TObject; const FormName, FieldName: String): Boolean;
       override;
     function ValueExists(AValue: String): Boolean; override;
   	property Fields: TStringList read FFields;
@@ -262,19 +262,19 @@ type
     constructor Create; override;
     destructor Destroy; override;
     function RenameForm(const OldName, NewName: String): Boolean; override;
-    function RenameField(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; override;
+    function RenameField(CurFm, RD: TObject; const FormName, OldName, NewName: String): Boolean; override;
     function RenameComponent(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; override;
-    function RenameQuery(const OldName, NewName: String): Boolean; override;
+    function RenameQuery(CurFm: TObject; const FormName, OldName, NewName: String): Boolean; override;
     function RenameReport(const OldName, NewName: String): Boolean; override;
-    function RenameRpField(RD: TObject; const OldName, NewName: String): Boolean; override;
+    //function RenameRpField(CurFm: TObject; const FormName: String; RD: TObject; const OldName, NewName: String): Boolean; override;
     function RenameImage(const OldName, NewName: String): Boolean; override;
     function FormExists(aName: String): Boolean; override;
-    function FieldExists(CurFm: TObject; const FormName, FieldName: String): Boolean; override;
+    function FieldExists(CurFm, RD: TObject; const FormName, FieldName: String): Boolean; override;
     function ObjectExists(CurFm: TObject; const FormName, FieldName: String): Boolean; override;
     function ComponentExists(CurFm: TObject; const FormName, CmpName: String): Boolean; override;
-    function QueryExists(aName: String): Boolean; override;
+    function QueryExists(CurFm: TObject; const FormName, aName: String): Boolean; override;
     function ReportExists(aName: String): Boolean; override;
-    function RpFieldExists(RD: TObject; const FieldName: String): Boolean; override;
+    //function RpFieldExists(CurFm: TObject; const FormName: String; RD: TObject; const FieldName: String): Boolean; override;
     function TemplateExists(const FileName: String): Boolean; override;
     function ImageExists(const ImageName: String): Boolean; override;
     function ValueExists(AValue: String): Boolean; override;
@@ -1253,7 +1253,7 @@ begin
 end;
 
 function _SourceExists(A: TActionCustom; Controls: TEAControls; CurFm: TdxForm;
-  const SourceName, FormName: String): Boolean;
+  RD: TReportData; const SourceName, FormName: String): Boolean;
 var
   EACSrc: TEAControl;
   P, SrcP: TActionProp;
@@ -1261,65 +1261,186 @@ var
   Fm: TdxForm;
   Cmp: TComponent;
 begin
+  if (SourceName = '') and (CurFm <> nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
+    Exit(True);
+
   Result := False;
   EACSrc := Controls.FindByName(SourceName);
   if EACSrc = nil then Exit;
 
-  // Источник является формой
-  if EACSrc.ControlType in [eacForm, eacChildForm] then
+  if RD = nil then
   begin
-    P := A.Props.Find(EACSrc.Name);
-    if (P <> nil) and (MyUtf8CompareText(P.Value, FormName) = 0) then Exit(True);
-  end
-  // Источник является объектом
-  else if EACSrc.ControlType = eacObject then
-  begin
-    SrcP := A.Props.Find(EACSrc.Name);
-    if SrcP <> nil then
+
+    // Источник является формой
+    if EACSrc.ControlType in [eacForm, eacChildForm] then
     begin
-      ObjName := SrcP.Value;
-      if EACSrc.Source = '' then Fm := CurFm
-      else Fm := nil;
-      // Объект может принадлежать другой форме
-      if EACSrc.Source <> '' then
+      P := A.Props.Find(EACSrc.Name);
+      if (P <> nil) and (MyUtf8CompareText(P.Value, FormName) = 0) then Exit(True);
+    end
+    // Источник является объектом
+    else if EACSrc.ControlType = eacObject then
+    begin
+      SrcP := A.Props.Find(EACSrc.Name);
+      if SrcP <> nil then
       begin
-        EACSrc := Controls.FindByName(EACSrc.Source);
-        if EACSrc <> nil then
+        ObjName := SrcP.Value;
+        if EACSrc.Source = '' then Fm := CurFm
+        else Fm := nil;
+        // Объект может принадлежать другой форме
+        if EACSrc.Source <> '' then
         begin
-          if EACSrc.ControlType in [eacForm, eacChildForm] then
+          EACSrc := Controls.FindByName(EACSrc.Source);
+          if EACSrc <> nil then
           begin
-            SrcP := A.Props.Find(EACSrc.Name);
-            if SrcP <> nil then
-              Fm := FormMan.FindFormByName(SrcP.Value);
+            if EACSrc.ControlType in [eacForm, eacChildForm] then
+            begin
+              SrcP := A.Props.Find(EACSrc.Name);
+              if SrcP <> nil then
+                Fm := FormMan.FindFormByName(SrcP.Value);
+            end;
+          end;
+        end;
+        if Fm <> nil then
+        begin
+          // Ищем компонент объекта
+          Cmp := FindComponentByFieldName(Fm, ObjName);
+          if (Cmp <> nil) and (Cmp is TdxLookupComboBox) then
+          begin
+            // Наконец-то теперь мы можем узнать имя формы
+            Fm := FormMan.FindForm(GetSourceTId(Cmp));
+            if (Fm <> nil) and (MyUtf8CompareText(FormName, Fm.FormCaption) = 0) then Exit(True);
           end;
         end;
       end;
-      if Fm <> nil then
-      begin
-        // Ищем компонент объекта
-        Cmp := FindComponentByFieldName(Fm, ObjName);
-        if (Cmp <> nil) and (Cmp is TdxLookupComboBox) then
-        begin
-          // Наконец-то теперь мы можем узнать имя формы
-          Fm := FormMan.FindForm(GetSourceTId(Cmp));
-          if (Fm <> nil) and (MyUtf8CompareText(FormName, Fm.FormCaption) = 0) then Exit(True);
-        end;
-      end;
     end;
+  end
+  else
+  begin
+
+    // Источник - запрос
+    if (EACSrc.ControlType = eacQuery) and (RD.Kind = rkQuery) then
+    begin
+      P := A.Props.Find(EACSrc.Name);
+      if (P <> nil) and (MyUtf8CompareText(P.Value, RD.Name) = 0) then
+      begin
+        if _SourceExists(A, Controls, CurFm, nil, EACSrc.Source, FormName) then
+          Exit(True);
+      end;
+    end
+    else if (EACSrc.ControlType = eacReport) and (RD.Kind = rkReport) then
+    begin
+      P := A.Props.Find(EACSrc.Name);
+      if (P <> nil) and (MyUtf8CompareText(P.Value, RD.Name) = 0) then Exit(True);
+    end
+
   end;
 end;
 
 function _RenameFieldInGrid(A: TActionCustom; ParentControls, Controls: TEAControls;
   ControlTypes: TEAControlTypes; var GridPropValue: String; CurFm: TdxForm;
-  const FormName, OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
+  RD: TReportData; const FormName, OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
 var
   Rows, Titles, Cols: TStringList;
-  i, j, n, idx: Integer;
-  EAC, EACSrc: TEAControl;
+  i, j, n: Integer;
+  EAC: TEAControl;
   P: TActionProp;
   S, ObjName: String;
   Cmp: TComponent;
   Fm: TdxForm;
+
+  function _SourceExistsInGrid(EAC: TEAControl; ARD: TReportData): Boolean;
+  var
+    idx: Integer;
+    EACSrc: TEAControl;
+  begin
+    if (EAC.Source = '') and (CurFm <> nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
+      Exit(True);
+
+    Result := False;
+
+    idx := Titles.IndexOf(EAC.Source);
+
+    // Источник находится в таблице
+    if idx >= 0 then
+    begin
+      EACSrc := Controls.FindByName(EAC.Source);
+      if EACSrc <> nil then
+      begin
+
+        if ARD = nil then
+        begin
+
+          // Источник является формой
+          if EACSrc.ControlType in [eacForm, eacChildForm] then
+          begin
+            if MyUtf8CompareText(Cols[idx], FormName) = 0 then Result := True;
+          end
+          // Источником является объектом
+          else if EACSrc.ControlType = eacObject then
+          begin
+            if EACSrc.Source = '' then Fm := CurFm
+            else Fm := nil;
+            ObjName := Cols[idx];
+            // Объект принадлежит какой-то форме
+            if EACSrc.Source <> '' then
+            begin
+              idx := Titles.IndexOf(EACSrc.Source);
+              // Источник объекта находится в таблице
+              if idx >= 0 then
+              begin
+                if Controls[idx].ControlType in [eacForm, eacChildForm] then
+                  Fm := FormMan.FindFormByName(Cols[idx]);
+              end
+              // Источник где-то наверху
+              else
+              begin
+                EACSrc := ParentControls.FindByName(EACSrc.Source);
+                if EACSrc <> nil then
+                begin
+                  if EACSrc.ControlType in [eacForm, eacChildForm] then
+                  begin
+                    P := A.Props.Find(EACSrc.Name);
+                    if P <> nil then
+                      Fm := FormMan.FindFormByName(P.Value);
+                  end;
+                end;
+              end;
+            end;
+            if Fm <> nil then
+            begin
+              // Наконец-то ищем наш объект и определяем его форму
+              Cmp := FindComponentByFieldName(Fm, ObjName);
+              if (Cmp <> nil) and (Cmp is TdxLookupComboBox) then
+              begin
+                Fm := FormMan.FindForm(GetSourceTId(Cmp));
+                if (Fm <> nil) and (MyUtf8CompareText(Fm.FormCaption, FormName) = 0) then Result := True;
+              end;
+            end;
+          end;
+
+        end
+        else
+        begin
+
+          // Источник - запрос
+          if (EACSrc.ControlType = eacQuery) and (ARD.Kind = rkQuery) then
+          begin
+            if (MyUtf8CompareText(Cols[idx], ARD.Name) = 0) and
+              _SourceExistsInGrid(EACSrc, nil) then Result := True;
+          end
+          else if (EACSrc.ControlType = eacReport) and (ARD.Kind = rkReport) then
+          begin
+            if MyUtf8CompareText(Cols[idx], ARD.Name) = 0 then Result := True;
+          end
+
+        end;
+      end;
+    end
+    // Источник где-то наверху
+    else
+      if _SourceExists(A, ParentControls, CurFm, ARD, EAC.Source, FormName) then Result := True;
+  end;
+
 begin
   Result := False;
   Rows := TStringList.Create;
@@ -1345,94 +1466,11 @@ begin
 
       if EAC.ControlType in ControlTypes then
       begin
-        if MyUtf8CompareText(OldName, Cols[n]) = 0 then
+        if (MyUtf8CompareText(OldName, Cols[n]) = 0) and _SourceExistsInGrid(EAC, RD) then
         begin
-          // В таблице поля текущей формы
-          if (EAC.Source = '') and (CurFm <> nil) and (CurFm.FormCaption = FormName) then
-          begin
-            Result := True;
-            if OnlyCheckExists then Exit;
-            Cols[n] := NewName;
-          end
-          // Поле имеет какой-то источник
-          else if EAC.Source <> '' then
-          begin
-            idx := Titles.IndexOf(EAC.Source);
-
-            // Источник находится в таблице
-            if idx >= 0 then
-            begin
-              EACSrc := Controls.FindByName(EAC.Source);
-              if EACSrc <> nil then
-              begin
-                // Источник является формой
-                if EACSrc.ControlType in [eacForm, eacChildForm] then
-                begin
-                  if MyUtf8CompareText(Cols[idx], FormName) = 0 then
-                  begin
-                    Result := True;
-                    if OnlyCheckExists then Exit;
-                    Cols[n] := NewName;
-                  end;
-                end
-                // Источником является объектом
-                else if EACSrc.ControlType = eacObject then
-                begin
-                  if EACSrc.Source = '' then Fm := CurFm
-                  else Fm := nil;
-                  ObjName := Cols[idx];
-                  // Объект принадлежит какой-то форме
-                  if EACSrc.Source <> '' then
-                  begin
-                    idx := Titles.IndexOf(EACSrc.Source);
-                    // Источник объекта находится в таблице
-                    if idx >= 0 then
-                    begin
-                      if Controls[idx].ControlType in [eacForm, eacChildForm] then
-                        Fm := FormMan.FindFormByName(Cols[idx]);
-                    end
-                    // Источник где-то наверху
-                    else
-                    begin
-                      EACSrc := ParentControls.FindByName(EACSrc.Source);
-                      if EACSrc <> nil then
-                      begin
-                        if EACSrc.ControlType in [eacForm, eacChildForm] then
-                        begin
-                          P := A.Props.Find(EACSrc.Name);
-                          if P <> nil then
-                            Fm := FormMan.FindFormByName(P.Value);
-                        end;
-                      end;
-                    end;
-                  end;
-                  if Fm <> nil then
-                  begin
-                    // Наконец-то ищем наш объект и определяем его форму
-                    Cmp := FindComponentByFieldName(Fm, ObjName);
-                    if (Cmp <> nil) and (Cmp is TdxLookupComboBox) then
-                    begin
-                      Fm := FormMan.FindForm(GetSourceTId(Cmp));
-                      if (Fm <> nil) and (MyUtf8CompareText(Fm.FormCaption, FormName) = 0) then
-                      begin
-                        Result := True;
-                        if OnlyCheckExists then Exit;
-                        Cols[n] := NewName;
-                      end;
-                    end;
-                  end;
-                end;
-              end;
-            end
-            // Источник где-то наверху
-            else
-              if _SourceExists(A, ParentControls, CurFm, EAC.Source, FormName) then
-              begin
-                Result := True;
-                if OnlyCheckExists then Exit;
-                Cols[n] := NewName;
-              end;
-          end;
+          Result := True;
+          if OnlyCheckExists then Exit;
+          Cols[n] := NewName;
         end;
       end;
     end;
@@ -1465,7 +1503,7 @@ begin
 end;
 
 function _RenameField(A: TActionCustom; Controls: TEAControls; ControlTypes: TEAControlTypes;
-  CurFm: TdxForm; const FormName, OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
+  CurFm: TdxForm; RD: TReportData; const FormName, OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
 var
   i: Integer;
   EAC: TEAControl;
@@ -1481,22 +1519,11 @@ begin
       P := A.Props.Find(EAC.Name);
       if (P <> nil) and (MyUtf8CompareText(P.Value, OldName) = 0) then
       begin
-        // источником поля является текущая форма
-        if (EAC.Source = '') and (CurFm <> nil) and (CurFm.FormCaption = FormName) then
+        if _SourceExists(A, Controls, CurFm, RD, EAC.Source, FormName) then
         begin
           Result := True;
           if OnlyCheckExists then Exit;
           P.Value := NewName;
-        end
-        // Поле имеет источник
-        else if EAC.Source <> '' then
-        begin
-          if _SourceExists(A, Controls, CurFm, EAC.Source, FormName) then
-          begin
-            Result := True;
-            if OnlyCheckExists then Exit;
-            P.Value := NewName;
-          end;
         end;
       end;
     end
@@ -1507,7 +1534,7 @@ begin
       begin
         GridPropValue := P.Value;
         if _RenameFieldInGrid(A, Controls, EAC.Controls, ControlTypes, GridPropValue, CurFm,
-          FormName, OldName, NewName, OnlyCheckExists) then
+          RD, FormName, OldName, NewName, OnlyCheckExists) then
         begin
           Result := True;
           if OnlyCheckExists then Exit;
@@ -1518,7 +1545,7 @@ begin
   end;
 end;
 
-function TActionCustom.RenameField(CurFm: TObject; const FormName, OldName,
+function TActionCustom.RenameField(CurFm, RD: TObject; const FormName, OldName,
   NewName: String): Boolean;
 var
   EA: TExprAction;
@@ -1527,7 +1554,7 @@ begin
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
     Result := _RenameField(Self, EA.Controls, [eacField, eacObject], TdxForm(CurFm),
-      FormName, OldName, NewName, False)
+      TReportData(RD), FormName, OldName, NewName, False)
 end;
 
 function TActionCustom.RenameComponent(CurFm: TObject; const FormName, OldName,
@@ -1539,18 +1566,29 @@ begin
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
     Result := _RenameField(Self, EA.Controls, [eacComponent], TdxForm(CurFm),
-      FormName, OldName, NewName, False)
+      nil, FormName, OldName, NewName, False)
 end;
 
-function TActionCustom.RenameQuery(const OldName, NewName: String): Boolean;
+function TActionCustom.RenameQuery(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
   Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    Result := _RenameForm(Self, EA.Controls, [eacQuery], OldName, NewName, False);
+    Result := _RenameField(Self, EA.Controls, [eacQuery], TdxForm(CurFm),
+      nil, FormName, OldName, NewName, False)
 end;
+
+{var
+  EA: TExprAction;
+begin
+  Result := False;
+  EA := ScriptMan.Actions.FindAction(FActionId);
+  if EA <> nil then
+    Result := _RenameForm(Self, EA.Controls, [eacQuery], OldName, NewName, False);
+end; }
 
 function TActionCustom.RenameReport(const OldName, NewName: String): Boolean;
 var
@@ -1562,7 +1600,7 @@ begin
     Result := _RenameForm(Self, EA.Controls, [eacReport], OldName, NewName, False);
 end;
 
-function _RenameRpFieldInGrid(A: TActionCustom; ParentControls, Controls: TEAControls;
+(*function _RenameRpFieldInGrid(A: TActionCustom; ParentControls, Controls: TEAControls;
   ControlTypes: TEAControlTypes; var GridPropValue: String;
   RD: TReportData; const OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
 var
@@ -1653,7 +1691,7 @@ begin
 end;
 
 function _RenameRpField(A: TActionCustom; Controls: TEAControls; ControlTypes: TEAControlTypes;
-  RD: TReportData; const OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
+  CurFm: TdxForm; const FormName: String; RD: TReportData; const OldName, NewName: String; OnlyCheckExists: Boolean): Boolean;
 var
   i: Integer;
   EAC, EACSrc: TEAControl;
@@ -1704,17 +1742,17 @@ begin
   end;
 end;
 
-function TActionCustom.RenameRpField(RD: TObject; const OldName, NewName: String
-  ): Boolean;
+function TActionCustom.RenameRpField(CurFm: TObject; const FormName: String;
+  RD: TObject; const OldName, NewName: String): Boolean;
 var
   EA: TExprAction;
 begin
   Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    Result := _RenameRpField(Self, EA.Controls, [eacField], TReportData(RD),
-      OldName, NewName, False);
-end;
+    Result := _RenameRpField(Self, EA.Controls, [eacField], TdxForm(CurFm),
+      FormName, TReportData(RD), OldName, NewName, False);
+end;         *)
 
 function TActionCustom.RenameImage(const OldName, NewName: String): Boolean;
 var
@@ -1736,7 +1774,7 @@ begin
     Result := _RenameForm(Self, EA.Controls, [eacForm, eacChildForm], aName, '', True);
 end;
 
-function TActionCustom.FieldExists(CurFm: TObject; const FormName,
+function TActionCustom.FieldExists(CurFm, RD: TObject; const FormName,
   FieldName: String): Boolean;
 var
   EA: TExprAction;
@@ -1745,7 +1783,7 @@ begin
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
     Result := _RenameField(Self, EA.Controls, [eacField, eacObject], TdxForm(CurFm),
-      FormName, FieldName, '', True);
+      TReportData(RD), FormName, FieldName, '', True);
 end;
 
 function TActionCustom.ObjectExists(CurFm: TObject; const FormName,
@@ -1756,7 +1794,7 @@ begin
   Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    Result := _RenameField(Self, EA.Controls, [eacObject], TdxForm(CurFm),
+    Result := _RenameField(Self, EA.Controls, [eacObject], TdxForm(CurFm), nil,
       FormName, FieldName, '', True);
 end;
 
@@ -1769,18 +1807,29 @@ begin
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
     Result := _RenameField(Self, EA.Controls, [eacComponent], TdxForm(CurFm),
-      FormName, CmpName, '', True)
+      nil, FormName, CmpName, '', True)
 end;
 
-function TActionCustom.QueryExists(aName: String): Boolean;
+function TActionCustom.QueryExists(CurFm: TObject; const FormName, aName: String
+  ): Boolean;
 var
   EA: TExprAction;
 begin
   Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    Result := _RenameForm(Self, EA.Controls, [eacQuery], aName, '', True);
+    Result := _RenameField(Self, EA.Controls, [eacQuery], TdxForm(CurFm), nil,
+      FormName, aName, '', True);
 end;
+
+{var
+  EA: TExprAction;
+begin
+  Result := False;
+  EA := ScriptMan.Actions.FindAction(FActionId);
+  if EA <> nil then
+    Result := _RenameForm(Self, EA.Controls, [eacQuery], aName, '', True);
+end; }
 
 function TActionCustom.ReportExists(aName: String): Boolean;
 var
@@ -1792,17 +1841,17 @@ begin
     Result := _RenameForm(Self, EA.Controls, [eacReport], aName, '', True);
 end;
 
-function TActionCustom.RpFieldExists(RD: TObject; const FieldName: String
-  ): Boolean;
+{function TActionCustom.RpFieldExists(CurFm: TObject; const FormName: String;
+  RD: TObject; const FieldName: String): Boolean;
 var
   EA: TExprAction;
 begin
   Result := False;
   EA := ScriptMan.Actions.FindAction(FActionId);
   if EA <> nil then
-    Result := _RenameRpField(Self, EA.Controls, [eacField], TReportData(RD),
-      FieldName, '', True);
-end;
+    Result := _RenameRpField(Self, EA.Controls, [eacField], TdxForm(CurFm),
+      FormName, TReportData(RD), FieldName, '', True);
+end;      }
 
 function TActionCustom.TemplateExists(const FileName: String): Boolean;
 var
@@ -1959,7 +2008,7 @@ begin
   inherited Destroy;
 end;
 
-function TClearFieldsAction.RenameField(CurFm: TObject; const FormName,
+function TClearFieldsAction.RenameField(CurFm, RD: TObject; const FormName,
   OldName, NewName: String): Boolean;
 var
   i: Integer;
@@ -1978,7 +2027,7 @@ begin
   end;
 end;
 
-function TClearFieldsAction.FieldExists(CurFm: TObject; const FormName,
+function TClearFieldsAction.FieldExists(CurFm, RD: TObject; const FormName,
   FieldName: String): Boolean;
 begin
   Result := (CurFm <> nil) and (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) = 0) and
@@ -2036,7 +2085,7 @@ var
   RD: TReportData;
 begin
   Result := False;
-  RD := ReportMan.FindByName(FRpName);
+  RD := ReportMan.FindReportByName(FRpName);
   if (RD = nil) or (not UserMan.CheckRpVisible(RD.Id)) then Exit;
   ShowReportWindow(RD.Id);
   Result := True;
@@ -2102,8 +2151,8 @@ begin
   else Result := False;
 end;
 
-function TMassCalcAction.RenameField(CurFm: TObject; const aFormName, OldName,
-  NewName: String): Boolean;
+function TMassCalcAction.RenameField(CurFm, RD: TObject; const aFormName,
+  OldName, NewName: String): Boolean;
 begin
   if ((MyUtf8CompareText(aFormName, FFormName) = 0) or
     (MyUtf8CompareText(aFormName, FTableName) = 0)) and
@@ -2122,7 +2171,7 @@ begin
     (MyUtf8CompareText(aName, FTableName) = 0);
 end;
 
-function TMassCalcAction.FieldExists(CurFm: TObject; const aFormName,
+function TMassCalcAction.FieldExists(CurFm, RD: TObject; const aFormName,
   aFieldName: String): Boolean;
 begin
   Result := ((MyUtf8CompareText(aFormName, FFormName) = 0) or
@@ -2396,7 +2445,7 @@ begin
   Result := False;
 end;
 
-function TBaseAction.RenameField(CurFm: TObject; const FormName, OldName,
+function TBaseAction.RenameField(CurFm, RD: TObject; const FormName, OldName,
   NewName: String): Boolean;
 begin
   Result := False;
@@ -2408,7 +2457,8 @@ begin
   Result := False;
 end;
 
-function TBaseAction.RenameQuery(const OldName, NewName: String): Boolean;
+function TBaseAction.RenameQuery(CurFm: TObject; const FormName, OldName,
+  NewName: String): Boolean;
 begin
   Result := False;
 end;
@@ -2418,11 +2468,11 @@ begin
   Result := False;
 end;
 
-function TBaseAction.RenameRpField(RD: TObject; const OldName, NewName: String
-  ): Boolean;
+{function TBaseAction.RenameRpField(CurFm: TObject; const FormName: String;
+  RD: TObject; const OldName, NewName: String): Boolean;
 begin
   Result := False;
-end;
+end;}
 
 function TBaseAction.RenameImage(const OldName, NewName: String): Boolean;
 begin
@@ -2434,7 +2484,7 @@ begin
   Result := False;
 end;
 
-function TBaseAction.FieldExists(CurFm: TObject; const FormName,
+function TBaseAction.FieldExists(CurFm, RD: TObject; const FormName,
   FieldName: String): Boolean;
 begin
   Result := False;
@@ -2452,7 +2502,8 @@ begin
   Result := False;
 end;
 
-function TBaseAction.QueryExists(aName: String): Boolean;
+function TBaseAction.QueryExists(CurFm: TObject; const FormName, aName: String
+  ): Boolean;
 begin
   Result := False;
 end;
@@ -2462,11 +2513,11 @@ begin
   Result := False;
 end;
 
-function TBaseAction.RpFieldExists(RD: TObject; const FieldName: String
-  ): Boolean;
+{function TBaseAction.RpFieldExists(CurFm: TObject; const FormName: String;
+  RD: TObject; const FieldName: String): Boolean;
 begin
   Result := False;
-end;
+end;   }
 
 function TBaseAction.TemplateExists(const FileName: String): Boolean;
 begin

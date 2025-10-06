@@ -72,7 +72,7 @@ type
     //DataSet: TSQLQuery;
     //DataSource: TDataSource;
     Control: TComponent;
-    Column: TColumn;
+    Column, QryColumn: TColumn;
     TId: Integer;
     //SQL: String;
     ListFm: TListWindow;
@@ -80,7 +80,7 @@ type
     DSRi: Integer;
     //Popup: TPopupMenu;
     DSProc: TDataSetProcessor;
-    LCbx: TdxLookupComboBox;
+    LCbx: TdxLookupCellEditor;
   end;
 
   PQueryRec = ^TQueryRec;
@@ -94,7 +94,7 @@ type
     Simple: Boolean;
     Colors: TQueryColorList;
     RD: TReportData;
-    NeedRefresh, Changed, ParentChanged: Boolean;
+    NeedRefresh, Changed, ParentChanged, UserInput: Boolean;
   end;
 
   { TCopyPasteMenu }
@@ -121,7 +121,6 @@ type
     procedure DataSetBeforeInsert(DataSet: TDataSet);
     procedure DataSetBeforeOpen(DataSet: TDataSet);
     procedure DataSetBeforeScroll(DataSet: TDataSet);
-    //procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure QueryAfterClose(DataSet: TDataSet);
     procedure QueryAfterOpen(DataSet: TDataSet);
     procedure QueryBeforeClose(DataSet: TDataSet);
@@ -139,18 +138,33 @@ type
       Column: TColumn; AState: TGridDrawState);
     procedure LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet; OnlyClear: Boolean);
     procedure LCbxSetDisplayFormat(LCbx: TdxLookupComboBox; DS: TDataSet);
+    procedure LCbxSetKey(Sender: TObject);
     procedure LCbxSetupParams(LCbx: TdxLookupComboBox; RD: TReportData);
     procedure LCbxClearParams(RD: TReportData);
     procedure LCbxFilterData(Sender: TObject; const Text: String);
-    procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    //procedure LCbxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LCbxKeyMatch(Sender: TObject);
     procedure ListFieldSetText(Sender: TField; const aText: string);
+    procedure QueryAfterCancel(DataSet: TDataSet);
+    procedure QueryAfterPost(DataSet: TDataSet);
+    procedure QueryBeforePost(DataSet: TDataSet);
+    procedure QueryFieldSetText(Sender: TField; const aText: string);
+    procedure QueryFieldGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
+    procedure QueryFloatCellKeyPress(Sender: TObject; var Key: char);
+    procedure QueryGridCanSort(Sender: TObject; Index: Integer;
+      var Cancel: Boolean);
+    procedure QueryGridCheckBoxClick(Sender: TObject);
     procedure QueryGridDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure QueryGridEditorHide(Sender: TObject);
     procedure QueryGridKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure QueryGridPrepareCanvas(sender: TObject; DataCol: Integer;
       Column: TColumn; AState: TGridDrawState);
+    procedure QueryGridSelectEditor(Sender: TObject; Column: TColumn;
+      var Editor: TWinControl);
+    procedure QueryGridValidate(Sender: TObject; var Ok: Boolean);
     procedure TimerTimer(Sender: TObject);
     procedure QueryGridButtonClick2(Sender: TObject; Bn: TGridButtonType);
     procedure DataSetAfterOpen(DataSet: TDataSet);
@@ -195,6 +209,7 @@ type
     function SetNeedRefreshLinkedQueries(CurQ: PQueryRec): Boolean;
     procedure SetNeedBuildPivot(QRi: Integer);
   private
+    FCallerComponent: TComponent;
     FCallerObject: TComponent;
     FGotoEnable: Boolean;
     FItems: TList;
@@ -242,8 +257,6 @@ type
     procedure ApplyQuickFilter(AClearFilter: Boolean);
     procedure ClearAllFilters;
     function CalcColor(Fm: TdxForm; DS: TDataSet): TColor;
-    //procedure CalcQueryColor(RD: TReportData; Fm: TdxForm; RDS, DS: TDataSet;
-    //  const TargetField: String; out FieldName: String; out Color: TColor);
     procedure InsertObjectValues(Obj: TdxLookupComboBox);
     procedure FillTableFromObject(Obj: TdxLookupComboBox);
     procedure RefreshLookupsWithParams(const FieldName: String);
@@ -285,6 +298,7 @@ type
     procedure ClearChartSources(Fm: TdxForm);
     procedure FindImages(DSR: PDataSetRec);
     procedure UpdateRecIdFields(DSR: PDataSetRec);
+    procedure CreateLookupCellEditor(aGrid: TMyDBGrid; FieldId: Integer);
   public
     constructor Create;
     destructor Destroy; override;
@@ -300,7 +314,8 @@ type
     procedure OpenReport;
     procedure Close;
     procedure Append;
-    function AppendRecord(aPFm, aFm: TdxForm; aDS: TDataSet; RpId: Integer): Variant;
+    function AppendRecord(aPFm, aFm: TdxForm; aDS: TDataSet; RD: TReportData): Variant;
+    function EditQueryRecord(RD: TReportData; ViewOnly: Boolean): Integer;
     function AppendObject: Integer;
     procedure DuplicateRecord(DSRi: Integer; All: Boolean);
     function InnerEdit(DSRi: Integer; ShowMsg, DoEditing, CallFromScript: Boolean): TAccessStatus;
@@ -326,8 +341,10 @@ type
     procedure Recalculate(TId, FId: Integer; aExpr: String; UpdateObjects: Boolean);
     function DataSetCount: Integer;
     function QueryCount: Integer;
+    procedure QueryForceChangeFields(QRi: Integer);
     procedure ForceChangeFields(DSRi: Integer);
     function CheckHierarchyToLoopbackReferences(DSR: TDataSetRec): Boolean;
+    function QueryValidate(QRi: Integer): Boolean;
     function Validate(DSRi: Integer; ForceChanges: Boolean = True): Boolean;
     function Print(TemplateName: String): Boolean;
     procedure InnerPrint(const TemplateName: String; var OutName: String; out Errs: String; AOpenFile, ChangeOutName: Boolean);
@@ -341,6 +358,10 @@ type
     procedure HideNotif;
     procedure ShowImages(DSRi: Integer);
     procedure PrepareBeforeShowEditForm(DSRi: Integer);
+    procedure SaveQueries(DSRi: Integer);
+    procedure EnableQueryFieldsChange(QRi: Integer);
+    procedure DisableQueryFieldsChange(QRi: Integer);
+    procedure WriteFormFieldsToQueryFields;
     //procedure ClearQueryChangedFlag(DSRi: Integer);
     //property Printing: Boolean read FPrinting write FPrinting;
     property GotoEnable: Boolean read FGotoEnable write FGotoEnable;
@@ -349,6 +370,7 @@ type
     property Queries[Index: Integer]: PQueryRec read GetQueries;
     property OnStateChange: TNotifyEvent read FOnStateChange write FOnStateChange;
     property CallerObject: TComponent read FCallerObject write FCallerObject;
+    property CallerComponent: TComponent read FCallerComponent write FCallerComponent;
     //property ReadOnly: Boolean read FReadOnly write FReadOnly;
   end;
 
@@ -519,6 +541,7 @@ end;
 
 procedure TDataSetProcessor.DataSetAfterClose(DataSet: TDataSet);
 begin
+  SetNeedRefresh(DataSet.Tag);
   if FDuplicateFlag or FReCalculate or FPrinting then Exit;
 
   with GetDataSet(DataSet.Tag)^ do
@@ -613,12 +636,7 @@ var
   Q: TQueryRec;
 begin
   Q := PQueryRec(FQueries[DataSet.Tag])^;
-  SetQueryDisplayFormat(Q.RD, Q.DataSet);
-
-  {if FDuplicateFlag or FReCalculate or FPrinting then Exit;
-  // Перенес в RequeryQuery (12.04.2020)
-  with Q.Grid do
-    if OnAfterOpen <> nil then OnAfterOpen(Q.Grid);}
+  SetQueryDisplayFormat(Q.RD, Q.DataSet, Q.Grid);
 end;
 
 procedure TDataSetProcessor.QueryBeforeClose(DataSet: TDataSet);
@@ -719,18 +737,6 @@ begin
   	DSR.Form.OnFieldChange(DSR.Form, C, S);
 end;
 
-{procedure TDataSetProcessor.CellMaskEditEditingDone(Sender: TObject);
-var
-  Grid: TdxGrid;
-  E: TMaskCellEditor;
-begin
-  E := TMaskCellEditor(Sender);
-  Grid := TdxGrid(E.Grid);
-  if MaskedTextEmpty(E.Text, E.EditMask) and
-    (Grid.DataSource.DataSet.State in [dsInsert, dsEdit]) then
-    Grid.SelectedField.SetData(nil);
-end;   }
-
 procedure TDataSetProcessor.LCbxFilterData(Sender: TObject; const Text: String);
 var
   SQL: String;
@@ -750,7 +756,7 @@ begin
     DS := nil;
     try try
   	  SQL := SqlLCbxSelect(Cbx, GetDataSet(LR.DSRi)^.Form, Text, Trim(Text) <> '');
-      DS := DBase.OpenDataSet(SQL);
+      DS := DBase.OpenDataSet(SQL, True);
       LCbxSetDisplayFormat(Cbx, DS);
       LCbxFillGrid(Cbx, DS, False);
     except
@@ -795,7 +801,7 @@ begin
   end;
 end;
 
-procedure TDataSetProcessor.LCbxKeyDown(Sender: TObject; var Key: Word;
+{procedure TDataSetProcessor.LCbxKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
   LCbx: TdxLookupComboBox;
@@ -808,11 +814,15 @@ begin
     begin
   	  pLR := PLookupRec(FLookups[LCbx.Tag]);
   	  TdxGrid(pLR^.Column.Grid).EditorMode := False;
+      if pLR^.QryColumn <> nil then
+      begin
+        TdxQueryGrid(pLR^.QryColumn.Grid).EditorMode := False;
+      end;
       // Глушим клавишу, чтобы не сработала кнопка по умолчанию в окне редактирования.
       Key := 0;
     end;
   end;
-end;
+end; }
 
 procedure TDataSetProcessor.LCbxKeyMatch(Sender: TObject);
 var
@@ -846,6 +856,119 @@ begin
   end
 end;
 
+procedure TDataSetProcessor.QueryAfterCancel(DataSet: TDataSet);
+var
+  pQ: PQueryRec;
+begin
+  pQ := Queries[DataSet.Tag];
+  if pQ^.UserInput then
+  begin
+    pQ^.DSProc.MasterSet.Cancel;
+    pQ^.UserInput := False;
+    DisableQueryFieldsChange(DataSet.Tag);
+    UpdateQueryPopupState(pQ^);
+  end;
+end;
+
+procedure TDataSetProcessor.QueryAfterPost(DataSet: TDataSet);
+var
+  pQ: PQueryRec;
+  i: PtrInt;
+begin
+  i := DataSet.Tag;
+  pQ := Queries[i];
+  if pQ^.UserInput then
+  begin
+    //pQ^.DSProc.MasterSet.Post;
+    pQ^.UserInput := False;
+    //DisableQueryFieldsChange(i);
+
+    CalcAggFields(pQ^.DSRi, pQ^.RD.Name);
+    ClearAggCalcLabels(pQ^.DSRi, pQ^.RD.Name);
+    SetNeedBuildPivot(i);
+    BuildPivotTables(i);
+    CalcExprs(pQ^.DSRi);
+
+    UpdateQueryPopupState(pQ^);
+  end;
+end;
+
+procedure TDataSetProcessor.QueryBeforePost(DataSet: TDataSet);
+var
+  pQ: PQueryRec;
+  i: PtrInt;
+begin
+  i := DataSet.Tag;
+  pQ := Queries[i];
+  if pQ^.UserInput then
+  begin
+    pQ^.DSProc.MasterSet.Post;
+    DisableQueryFieldsChange(i);
+    pQ^.DSProc.WriteFormFieldsToQueryFields;
+  end;
+end;
+
+procedure TDataSetProcessor.QueryFieldSetText(Sender: TField;
+  const aText: string);
+var
+  Q: TQueryRec;
+  i, QRi: Integer;
+  pF: PRpField;
+begin
+  QRi := Sender.DataSet.Tag;
+  Q := Queries[QRi]^;
+  i := Q.RD.IndexOfNameDS(Sender.FieldName);
+  pF := Q.RD.TryGetRpField(i);
+  if MasterSet.State in [dsInsert, dsEdit] then
+  begin
+    if pF^.Tp <> flObject then
+      Q.DSProc.MasterSet.FieldByName(FieldStr(pF^.FId)).Text := aText;
+    DisableQueryFieldsChange(QRi);
+    Q.DSProc.WriteFormFieldsToQueryFields;
+    EnableQueryFieldsChange(QRi);
+  end;
+end;
+
+procedure TDataSetProcessor.QueryFieldGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  if not Sender.IsNull then
+    aText := FormatDateTime(TDateTimeField(Sender).DisplayFormat, Sender.AsDateTime);
+end;
+
+procedure TDataSetProcessor.QueryFloatCellKeyPress(Sender: TObject;
+  var Key: char);
+var
+  OldKey: Char;
+  Q: TQueryRec;
+begin
+  OldKey := Key;
+  Q := Queries[TComponent(Sender).Tag]^;
+  Q.Grid.EditorKeyPress(Sender, Key);
+  if (Key = #0) and (OldKey in [' ', '.']) then Key := DefaultFormatSettings.DecimalSeparator;
+end;
+
+procedure TDataSetProcessor.QueryGridCanSort(Sender: TObject; Index: Integer;
+  var Cancel: Boolean);
+var
+  G: TdxQueryGrid;
+  Col: TMyDBGridColumn;
+begin
+  G := TdxQueryGrid(Sender);
+  Col := G.Columns[Index-G.FixedCols];
+  if (G.DataSource.DataSet.State in [dsInsert, dsEdit]) or (Col.FieldName = '') then
+    Cancel := True;
+end;
+
+procedure TDataSetProcessor.QueryGridCheckBoxClick(Sender: TObject);
+var
+  Gr: TdxQueryGrid;
+begin
+  Gr := TdxQueryGrid(Sender);
+  if Gr.DataSource.DataSet.State in [dsInsert, dsEdit] then
+    Gr.SelectedField.Text := VarToStr(Gr.SelectedField.Value);
+end;
+
 procedure TDataSetProcessor.QueryGridDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
@@ -863,6 +986,25 @@ begin
   end;
 end;
 
+procedure TDataSetProcessor.QueryGridEditorHide(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  Ed: TWinControl;
+begin
+  QGrid := TdxQueryGrid(Sender);
+  Ed := QGrid.InplaceEditor;
+  if Ed is TdxDBImageCellEditor then
+    with TdxDBImageCellEditor(Ed) do
+    begin
+      if Img <> nil then Img.OnImgChange := nil
+    end
+  else if Ed is TdxFileCellEditor then
+    with TdxFileCellEditor(Ed) do
+    begin
+      if FileControl <> nil then FileControl.OnFileChange := nil;
+    end;
+end;
+
 procedure TDataSetProcessor.QueryGridKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
@@ -871,8 +1013,38 @@ begin
   if Key = VK_RETURN then
   begin
     Q := Queries[TComponent(Sender).Tag]^;
-  	with Q.Popup.Items[1] do
-    	if Visible and Enabled then Click;
+    if Q.DataSet.State in [dsInsert, dsEdit] then
+    begin
+      if Shift = [ssCtrl] then
+      begin
+        if Q.Grid.Validate then
+          Q.DataSet.Post;
+      end
+      else
+        // Если таблица редактируемая, то после перехода в редактирование и ,
+        // последующего нажатия ENTER редактор ячейки не появляется. Принудительно
+        // заставляем сработать события SelectEditor.
+        with Q.Grid do
+    	    if (not ReadOnly) and (Editor = nil) then ForceSelectEditor;
+    end
+    else
+      with Q.Popup.Items[1] do
+      	if Visible and Enabled then Click;
+  end
+  else if Key = VK_ESCAPE then
+  begin
+    Q := Queries[TComponent(Sender).Tag]^;
+    if Q.Grid.EditorMode then
+      Q.Grid.CancelEditing
+    else if Q.DataSet.State in [dsInsert, dsEdit] then
+    begin
+      if Q.DSProc.Form.ConfirmCancelEditing and Q.DSProc.AnyDataSetModified(0) then
+      begin
+        if MessageDlg(rsWarning, rsConfirmCancelEditMsg, mtConfirmation,
+            [mbYes, mbNo], 0) <> mrYes then Exit;
+      end;
+      Q.DataSet.Cancel;
+    end;
   end;
 end;
 
@@ -901,6 +1073,238 @@ begin
 	    Q.Grid.Canvas.Brush.Color:=Clr;
     end;
   end;
+end;
+
+procedure TDataSetProcessor.QueryGridSelectEditor(Sender: TObject;
+  Column: TColumn; var Editor: TWinControl);
+
+  procedure SetEditorReadOnly(Value: Boolean);
+  begin
+    if Editor is TCustomEdit then
+      TCustomEdit(Editor).ReadOnly := Value
+  end;
+
+var
+  QGrid: TdxQueryGrid;
+  Q: TQueryRec;
+  RD: TReportData;
+  n: Integer;
+  pF: PRpField;
+  Fm: TdxForm;
+  C: TComponent;
+  pLR: PLookupRec;
+  Tp: TRpFieldType;
+begin
+  QGrid := TdxQueryGrid(Sender);
+  Q := Queries[QGrid.QRi]^;
+  if QGrid.ReadOnly {or not (Q.DataSet.State in [dsInsert, dsEdit])} then
+  begin
+    Editor := nil;
+    Exit;
+  end;
+
+  RD := Q.RD;
+  n := RD.IndexOfNameDS(Column.FieldName);
+  if n < 0 then
+  begin
+    Editor := nil;
+    Exit;
+  end;
+
+  Tp := RD.GetFieldType(n);
+  if Tp = flImage then
+  begin
+    Editor := nil;
+    pF := RD.TryGetRpField(n);
+    if (pF^.Tp = flImage) and not RD.IsTableField(pF) then
+    begin
+      if Q.DSProc <> nil then
+        Fm := Q.DSProc.Form
+      else
+        Fm := FormMan.FindForm(pF^.TId);
+      C := FindById(Fm, pF^.FId);
+      if C is TdxDBImage then
+      begin
+        Editor := QGrid.GetImgEditor;
+        if Q.DataSet.State in [dsInsert, dsEdit] then
+          QGrid.GetImgEditor.SetImage(TdxDBImage(C), True)
+        else
+          QGrid.GetImgEditor.SetQueryField(n);
+      end;
+    end
+    else if (pF^.Tp = flObject) or RD.IsTableField(pF) then
+    begin
+      C := GetRpFieldComponent(pF^, True);
+      if C is TdxDBImage then
+      begin
+        Editor := QGrid.GetImgEditor;
+        QGrid.GetImgEditor.SetQueryField(n);
+      end;
+    end;
+
+    Exit;
+  end
+  else if Tp = flFile then
+  begin
+    Editor := nil;
+    pF := RD.TryGetRpField(n);
+    if (pF^.Tp = flFile) and not RD.IsTableField(pF) then
+    begin
+      if Q.DSProc <> nil then
+        Fm := Q.DSProc.Form
+      else
+        Fm := FormMan.FindForm(pF^.TId);
+      C := FindById(Fm, pF^.FId);
+      if C is TdxFile then
+      begin
+        Editor := QGrid.GetFileEditor;
+        if (Q.DataSet.State in [dsInsert, dsEdit]) and not Q.RD.IsTableField(pF) then
+          QGrid.GetFileEditor.SetFile(TdxFile(C), True)
+        else
+          QGrid.GetFileEditor.SetQueryField(n);
+      end;
+    end
+    else if (pF^.Tp = flObject) or RD.IsTableField(pF) then
+    begin
+      C := GetRpFieldComponent(pF^, True);
+      if C is TdxFile then
+      begin
+        Editor := QGrid.GetFileEditor;
+        QGrid.GetFileEditor.SetQueryField(n);
+      end;
+    end;
+
+    Exit;
+  end;
+
+  if not (Q.DataSet.State in [dsInsert, dsEdit]) then
+  begin
+    Editor := nil;
+    Exit;
+  end;
+
+  if Column.ButtonStyle = cbsCheckboxColumn then
+  begin
+    pF := RD.TryGetRpField(n);
+    Fm := Q.DSProc.Form;
+    C := FindById(Fm, pF^.FId);
+    if C is TdxCheckBox then
+      Column.ReadOnly :=  TdxCheckBox(C).ReadOnly or not TControl(C).Enabled
+        or not TControl(C).Visible
+    else
+    begin
+      Column.ReadOnly := True;
+      Editor := nil;
+    end;
+
+    Exit;
+  end;
+
+  if Editor = nil then Exit;
+
+  if Editor is TCustomEdit then
+  begin
+    FCPMenu.Control := TCustomEdit(Editor);
+    Editor.PopupMenu := FCPMenu;
+  end;
+
+  if not IsRpFieldNameDSEditable(RD, Column.FieldName) then
+  begin
+    SetEditorReadOnly(True);
+    Editor.Color := Column.Color;
+    Editor.Font := Column.Font;
+    Exit;
+  end;
+
+  pF := RD.TryGetRpField(n);
+  Fm := Q.DSProc.Form;
+  C := FindById(Fm, pF^.FId);
+
+  if ((Trim(GetExpression(C)) <> '') and not GetEditable(C)) or GetReadOnly(C)
+    or not TControl(C).Enabled or not TControl(C).Visible then
+  begin
+    if (C is TdxMemo) and NeedMemo(QGrid, Column) then
+    begin
+      Editor := QGrid.GetMemoEditor;
+      TCustomEdit(Editor).Alignment := Column.Alignment;
+    end;
+    if Editor is TCustomEdit then
+			TCustomEdit(Editor).ReadOnly := True
+    else
+	    Editor := nil;
+
+    if Editor <> nil then
+    begin
+		  Editor.Color := Column.Color;
+      Editor.Font := Column.Font;
+      //Editor.Font.Color := clWindowText;
+    end;
+
+    Exit;
+  end;
+
+  SetEditorReadOnly(False);
+
+  if C is TdxLookupComboBox then
+  begin
+    pLR := Q.DSProc.FindLookupById(pF^.FId);
+    pLR^.QryColumn := Column;
+    if pLR^.LCbx = nil then
+      Q.DSProc.CreateLookupCellEditor(QGrid, pF^.FId);
+    pLR^.LCbx.Layout := Column.Layout;
+    Editor := pLR^.LCbx;
+  end
+  else if C is TdxComboBox then
+  begin
+    if GetSourceTId(C) <> 0 then
+    begin
+      pLR := Q.DSProc.FindLookupById(pF^.FId);
+      if pLR^.NeedRefresh then
+      begin
+        Q.DSProc.RefreshComboBox(pLR^);
+        pLR^.NeedRefresh := False;
+      end;
+      C := pLR^.Control;
+    end;
+    QGrid.GetListEditor.Items := TdxComboBox(C).Items;
+    QGrid.GetListEditor.Style := TdxComboBox(C).Style;
+    QGrid.GetListEditor.DropdownCount := TdxComboBox(C).DropDownCount;
+    QGrid.GetListEditor.Layout := Column.Layout;
+    Editor := QGrid.GetListEditor;
+  end
+  else if (C is TdxEdit) and (TdxEdit(C).EditMask <> '') then
+  begin
+    QGrid.GetMaskEditor.EditMask := TdxEdit(C).EditMask;
+    QGrid.GetMaskEditor.Layout := Column.Layout;
+    QGrid.GetMaskEditor.Alignment := Column.Alignment;
+    Editor := QGrid.GetMaskEditor;
+  end
+  else if (C is TdxEdit) or (C is TdxMemo) then
+  begin
+    if NeedMemo(QGrid, Column) then
+    begin
+      QGrid.GetMemoEditor.Alignment := Column.Alignment;
+      Editor := QGrid.GetMemoEditor;
+    end;
+  end
+  else if C is TdxCalcEdit then
+  begin
+    Editor.Tag := QGrid.QRi;
+    Editor.OnKeyPress:=@QueryFloatCellKeyPress;
+  end
+  else if Column.Field.IsBlob then Editor := nil;
+
+  if Editor <> nil then
+  begin
+  	Editor.Color := Column.Color;
+    Editor.Font := Column.Font;
+    //Editor.Font.Color := clWindowText;
+  end;
+end;
+
+procedure TDataSetProcessor.QueryGridValidate(Sender: TObject; var Ok: Boolean);
+begin
+  Ok := QueryValidate(TdxQueryGrid(Sender).QRi);
 end;
 
 procedure TDataSetProcessor.TimerTimer(Sender: TObject);
@@ -972,7 +1376,7 @@ begin
         if DataType in [ftDate, ftFloat, ftString, ftTime, ftInteger] then
         begin
 	        OnSetText:=@FieldSetText;
-          if DataType = ftTime then OnGetText:=@FieldGetText;
+          if DataType = ftTime then OnGetText := @FieldGetText
         end;
       end;
       if C is TdxLookupComboBox then
@@ -1012,6 +1416,8 @@ begin
       if DSR.DataSet.State in [dsEdit, dsInsert] then DSR.DataSet.Post;
     end;
   end;
+
+  SaveQueries(DataSet.Tag);
 
   DSR := GetDataSet(DataSet.Tag)^;
   Fm := DSR.Form;
@@ -1289,10 +1695,23 @@ var
   RD: TReportData;
   LF: TLCbxListField;
   C: TComponent;
+  IsTree: Boolean;
+  S: String;
+  F: TField;
 
-  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean);
+  function GetVisibleColumnsCount: Integer;
+  var
+    j: Integer;
   begin
-    with Grid.Columns.Add do
+    Result := 0;
+    for j := 0 to Grid.Columns.Count - 1 do
+      if Grid.Columns[j].Visible then Inc(Result);
+  end;
+
+  function AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean): TDropDownListColumn;
+  begin
+    Result := Grid.Columns.Add;
+    with Result do
     begin
 			Title.Caption := Caption;
       if W > 0 then
@@ -1300,6 +1719,8 @@ var
 	      SizePriority := 0;
         Width := W;
       end
+      else if W < 0 then
+        Visible := False
       else
         SizePriority := 1;
       if IsCheckBox then ButtonStyle:=cbsCheckboxColumn;
@@ -1309,12 +1730,14 @@ var
 
 begin
   Grid := LCbx.DropDownList;
+  IsTree := LCbx.ShowAsTreeList;
 
   SrcFm := FormMan.FindForm(LCbx.SourceTId);
   RD := ReportMan.FindReport(LCbx.ListSource);
 
   Grid.BeginUpdate;
   Grid.Columns.Clear;
+
   if LCbx.ListSource = 0 then
   begin
     C := FindById(SrcFm, LCbx.SourceFId);
@@ -1332,11 +1755,14 @@ begin
     begin
       LF := LCbx.ListFields[i];
       idx := RD.IndexOfNameDS(LF.FieldName);
-      AddColumn(RD.GetFieldName(idx), LF.Width, C is TdxCheckBox, LF.Searchable);
+      AddColumn(RD.GetFieldName(idx), LF.Width, RD.GetFieldType(idx) = flBool, LF.Searchable);
     end;
   end;
 
-  if (LCbx.ListFields.Count = 0) or (LCbx.ListSource > 0) and (LCbx.ListFields.Count = 1) then
+  if IsTree then AddColumn('', -1, False, False);
+
+  if (LCbx.ListFields.Count = 0) or (LCbx.ListSource > 0) and (LCbx.ListFields.Count = 1)
+    or (GetVisibleColumnsCount = 1) then
     Grid.Options := Grid.Options - [loTitles]
   else
     Grid.Options := Grid.Options + [loTitles];
@@ -1364,6 +1790,21 @@ begin
       DSFields.Add(DS.FieldByName(LCbx.ListFields[i].FieldName));
   end;
 
+  if IsTree then
+  begin
+    F := TField(DSFields[1]);
+    DS.First;
+    while not DS.Eof do
+    begin
+      DS.Edit;
+      F.AsString := StringReplace(F.AsString, '\', #9, [rfReplaceAll]);
+      DS.Post;
+      DS.Next;
+    end;
+    // В запросе и так нормально, т. к. сортировка скорее всего будет по вычислямому полю
+    if LCbx.ListSource = 0 then TSQLQuery(DS).IndexFieldNames := F.FieldName;
+  end;
+
   DS.Last;
   DS.First;
 
@@ -1377,10 +1818,15 @@ begin
     Grid.RecId[r] := TField(DSFields[0]).AsInteger;
     for i := 1 to DSFields.Count - 1 do
       with TField(DSFields[i]) do
+      begin
         if DataType <> ftMemo then
-          Grid.Cells[i-1, r] := DisplayText
+          S := DisplayText
         else
-          Grid.Cells[i-1, r] := AsString;
+          S := AsString;
+        if IsTree and (i = 1) then S := Abrakadabra(S, #9);
+        Grid.Cells[i-1, r] := S;
+      end;
+    if IsTree then Grid.Cells[Grid.ColCount - 1, r] := TField(DSFields[1]).AsString;
     DS.Next;
     Inc(r);
   end;
@@ -1403,6 +1849,17 @@ begin
   begin
     C := FindById(SrcFm, LCbx.ListFields[i].FieldId);
     SetDSFieldDisplayFormat(DS.Fields[i+2], GetComponentDisplayFormat(SrcFm, C));
+  end;
+end;
+
+procedure TDataSetProcessor.LCbxSetKey(Sender: TObject);
+var
+  pLR: PLookupRec;
+begin
+  pLR := PLookupRec(FLookups[TComponent(Sender).Tag]);
+  if pLR^.QryColumn <> nil then
+  begin
+    pLR^.QryColumn.Field.Text := pLR^.QryColumn.Field.AsString;
   end;
 end;
 
@@ -1538,30 +1995,35 @@ begin
 	    DSR.Popup.Items[1].Click
     else
     begin
-      // Если таблица редактируемая, то после перехода в редактирование и ,
-      // последующего нажатия ENTER редактор ячейки не появляется. Принудительно
-      // заставляем сработать события SelectEditor.
-      with TdxGrid(Sender) do
-    	  if (not ReadOnly) and (Editor = nil) then ForceSelectEditor;
+      if Shift = [ssCtrl] then
+      begin
+        if Validate(i) then Post;
+      end
+      else
+        // Если таблица редактируемая, то после перехода в редактирование и ,
+        // последующего нажатия ENTER редактор ячейки не появляется. Принудительно
+        // заставляем сработать события SelectEditor.
+        with TdxGrid(Sender) do
+    	    if (not ReadOnly) and (Editor = nil) then ForceSelectEditor;
     end;
   end
   else if Key = VK_ESCAPE then
   begin
     DSR := GetDataSet(i)^;
-    if DSR.DataSet.State in [dsInsert, dsEdit] then
+    if DSR.Grid.EditorMode then
+      DSR.Grid.CancelEditing
+    else if DSR.DataSet.State in [dsInsert, dsEdit] then
     begin
-      ForceChangeFields(i);
-      if DSR.Form.ConfirmCancelEditing and AnyDataSetModified(i) {DSR.DataSet.Modified} then
+      ForceChangeFields(i);   // Похоже, это уже не нужно? 16.09.2025
+      if DSR.Form.ConfirmCancelEditing and AnyDataSetModified(i) then
       begin
         if MessageDlg(rsWarning, rsConfirmCancelEditMsg, mtConfirmation,
           [mbYes, mbNo], 0) <> mrYes then
         begin
-          //Key := 0;
           Exit;
         end;
       end;
       DSR.DataSet.Cancel;
-      //UpdateControlState(DSR);
     end;
   end;
 end;
@@ -1679,6 +2141,24 @@ procedure TDataSetProcessor.DataSetAfterCancel(DataSet: TDataSet);
     end;
   end;
 
+  procedure CancelEditingQueries(DSRi: Integer);
+  var
+    i: Integer;
+    pQ: PQueryRec;
+  begin
+    for i := 0 to QueryCount - 1 do
+    begin
+      pQ := Queries[i];
+      if pQ^.DSRi <> DSRi then Continue;
+      if pQ^.DataSet.State in [dsInsert, dsEdit] then
+      begin
+        if pQ^.Grid.EditorMode then
+          pQ^.Grid.EditorMode := False;
+        pQ^.DataSet.Cancel;
+      end;
+    end;
+  end;
+
   procedure CancelQueries(ParDSRi, DSRi: Integer);
   var
     i: Integer;
@@ -1690,6 +2170,12 @@ procedure TDataSetProcessor.DataSetAfterCancel(DataSet: TDataSet);
     begin
       pQ := Queries[i];
       if pQ^.DSRi <> DSRi then Continue;
+      if pQ^.DataSet.State in [dsInsert, dsEdit] then
+      begin
+        if pQ^.Grid.EditorMode then
+          pQ^.Grid.EditorMode := False;
+        pQ^.DataSet.Cancel;
+      end;
       if pQ^.Changed then
       begin
         pQ^.Changed := False;
@@ -1785,6 +2271,7 @@ begin
 
   if DSR.NewRecord then
   begin
+    CancelEditingQueries(i);
     SetNeedRefresh(i);
     ClearCalcLabels(i, '');
     ClearLabelChangedFlag(i);
@@ -2100,109 +2587,149 @@ var
   pLR: PLookupRec;
   DSR: TDataSetRec;
   C: TComponent;
-  H: Integer;
   Grid: TdxGrid;
-  F: TFont;
   i: PtrInt;
-  R: TRect;
 begin
-  if (TDBGrid(Sender).ReadOnly) or (TDBGrid(Sender).Parent = nil) then
+  i := TComponent(Sender).Tag;
+  DSR := GetDataSet(i)^;
+  Grid := DSR.Grid;
+
+  if Grid.ReadOnly or (Grid.Parent = nil) {or
+    not (DSR.DataSet.State in [dsInsert, dsEdit])} then
   begin
     Editor := nil;
     Exit;
   end;
 
-  i := TComponent(Sender).Tag;
-  DSR := GetDataSet(i)^;
-  if not (DSR.DataSet.State in [dsInsert, dsEdit]) then
+  C := FindById(DSR.Form, Column.Tag);
+
+  if C = nil then
   begin
-  	Editor := nil;
+    Editor := nil;
     Exit;
   end;
 
-  Grid := TdxGrid(Sender);
+  if C is TdxDBImage then
+  begin
+    Editor := Grid.GetImgEditor;
+    Grid.GetImgEditor.SetImage(TdxDBImage(C), False);
+    Editor.Color := Column.Color;
+    Exit;
+  end
+  else if C is TdxFile then
+  begin
+    Editor := Grid.GetFileEditor;
+    Grid.GetFileEditor.SetFile(TdxFile(C), False);
+    Exit;
+  end;
+
+  if not (DSR.DataSet.State in [dsInsert, dsEdit]) then
+  begin
+    Editor := nil;
+    Exit;
+  end;
+
+  if Column.ButtonStyle = cbsCheckboxColumn then
+  begin
+    //C := FindById(DSR.Form, Column.Tag);
+    //if C <> nil then
+      Column.ReadOnly := TdxCheckBox(C).ReadOnly or not TControl(C).Enabled
+        or not TControl(C).Visible;
+    Exit;
+  end;
+
+  if Editor = nil then Exit;
 
   // Сбрасываем флаг "Только чтение".
-  if Editor is TCustomEdit then TCustomEdit(Editor).ReadOnly := False
-  else if Editor is TPickListCellEditor then TPickListCellEditor(Editor).ReadOnly := False;
+  if Editor is TCustomEdit then TCustomEdit(Editor).ReadOnly := False;
 
-  pLR := FindLookupByColumn(Column);
+  if Editor is TCustomEdit then
+  begin
+    FCPMenu.Control := TCustomEdit(Editor);
+    Editor.PopupMenu := FCPMenu;
+  end;
 
-  C := FindById(DSR.Form, Column.Tag);
+  if ((GetExpression(C) > '') and not GetEditable(C)) or GetReadOnly(C) or
+    not TControl(C).Enabled or not TControl(C).Visible then
+  begin
+    if (C is TdxMemo) and NeedMemo(Grid, Column) then
+    begin
+      Editor := Grid.GetMemoEditor;
+      TCustomEdit(Editor).Alignment := Column.Alignment;
+    end;
+    if Editor is TCustomEdit then
+			TCustomEdit(Editor).ReadOnly := True
+    else
+	    Editor := nil;
+
+    if Editor <> nil then
+    begin
+		  Editor.Color := Column.Color;
+      Editor.Font := Column.Font;
+      //Editor.Font.Color := clWindowText;
+    end;
+
+    Exit;
+  end;
+
   if C is TdxLookupComboBox then
   begin
+    pLR := FindLookupByColumn(Column);
+    if pLR^.LCbx = nil then
+      CreateLookupCellEditor(Grid, Column.Tag);
+    pLR^.LCbx.Layout := Column.Layout;
     Editor := pLR^.LCbx;
-    R := Grid.CellRect(Grid.Col, Grid.Row);
-    R.Top := R.Top + (R.Height div 2 - pLR^.LCbx.Height div 2);
-    pLR^.LCbx.Left := R.Left;
-    pLR^.LCbx.Top := R.Top;
-    pLR^.LCbx.Width := R.Width - pLR^.LCbx.GetButtonWidths - ScaleToScreen(1);
   end
   else if C is TdxComboBox then
   begin
-    if Editor is TPickListCellEditor then
-    	with TPickListCellEditor(Editor) do
+    if GetSourceTId(C) <> 0 then
+    begin
+      pLR := FindLookupByColumn(Column);
+      if pLR^.NeedRefresh then
       begin
-      	AutoComplete:=True;
-        C := FindById(DSR.Form, Column.Tag);
-        if C <> nil then Style := TCustomComboBox(C).Style;
-        if (pLR <> nil) and (pLR^.NeedRefresh) then
-        begin
-          pLR^.NeedRefresh:=False;
-          RefreshComboBox(pLR^);
-          Items := Column.PickList;
-        end;
+        RefreshComboBox(pLR^);
+        pLR^.NeedRefresh := False;
       end;
+      C := pLR^.Control;
+    end;
+    Grid.GetListEditor.Items := TdxComboBox(C).Items;
+    Grid.GetListEditor.Style := TdxComboBox(C).Style;
+    Grid.GetListEditor.DropdownCount := TdxComboBox(C).DropDownCount;
+    Grid.GetListEditor.Layout := Column.Layout;
+    Editor := Grid.GetListEditor;
   end
   else if (C is TdxEdit) and (TdxEdit(C).EditMask <> '') then
   begin
-    Grid.MaskEdit.EditMask := TdxEdit(C).EditMask;
-    Editor := Grid.MaskEdit;
+    Grid.GetMaskEditor.EditMask := TdxEdit(C).EditMask;
+    Grid.GetMaskEditor.Layout := Column.Layout;
+    Grid.GetMaskEditor.Alignment := Column.Alignment;
+    Editor := Grid.GetMaskEditor;
   end
   else if (C is TdxEdit) or (C is TdxMemo) then
   begin
-    H := 0;
-    if Grid.HandleAllocated then
+    {if NeedMemo(Grid, column) then
     begin
-      F := Grid.Canvas.Font;
-      Grid.Canvas.Font := Grid.Font;
-      H := Grid.Canvas.TextHeight('Yy');
-      Grid.Canvas.Font := F;
-    end;
-    if Grid.DefaultRowHeight > H + H then
-    begin
-      Editor := Grid.Memo;
-    end;
+      Grid.GetMemoEditor.Alignment := Column.Alignment;
+      Editor := Grid.GetMemoEditor;
+    end;  }
   end
   else if C is TdxCalcEdit then
   begin
     Editor.Tag := i;
     Editor.OnKeyPress:=@FloatCellKeyPress;
   end
-  else if C is TdxCounter then
-    TCustomEdit(Editor).ReadOnly := TdxCounter(C).ReadOnly
-  else if (C is TdxObjectField) or (C is TdxFile) or (C is TdxRecordId) then
-    TCustomEdit(Editor).ReadOnly := True
-  else if Column.Field.IsBlob then Editor := nil;
-
-  if (C <> nil) and (GetExpression(C) > '') and (not GetEditable(C)) then
+  {else if C is TdxDBImage then
   begin
-    if Editor is TCustomEdit then
-			TCustomEdit(Editor).ReadOnly := True
-    else
-	    Editor := nil;
-  end;
+    Editor := Grid.GetImgEditor;
+    Grid.GetImgEditor.SetDBImage(TdxDBImage(C));
+  end}
+  else if Column.Field.IsBlob then Editor := nil;
 
   if Editor <> nil then
   begin
-		Editor.Color := clWindow;
-    Editor.Font := Grid.Font;
-    Editor.Font.Color := clWindowText;
-  end;
-  if (Editor is TCustomEdit) and not (Editor is TdxLookupComboBox) then
-  begin
-    FCPMenu.Control := TCustomEdit(Editor);
-    Editor.PopupMenu := FCPMenu;
+		Editor.Color := Column.Color;
+    Editor.Font := Column.Font;
+    //Editor.Font.Color := clWindowText;
   end;
 end;
 
@@ -2495,6 +3022,7 @@ begin
       pQ^.DSProc := TDataSetProcessor.Create;
       pQ^.DSProc.BindForm(RD.GetEditFormId, False, vtGridOnly);
       pQ^.DSProc.Form.Grid.ReadOnly := True;
+      pQ^.DSProc.CallerComponent := pQ^.Grid;
       with pQ^.Grid do
         if OnCreateForm <> nil then OnCreateForm(pQ^.Grid, pQ^.DSProc.Form);
     end;
@@ -2520,7 +3048,7 @@ begin
         begin
           DSP.OpenRecord(0);
           try
-            NewId := DSP.AppendRecord(FFm, DSR.Form, DSR.DataSet, pQ^.Grid.Id);
+            NewId := DSP.AppendRecord(FFm, DSR.Form, DSR.DataSet, pQ^.RD);
             if NewId <> Null then
 	            RefreshQueryAfterAppend(NewId);
           // По идее не должно быть этого исключения, т. к. ESourceFilterError
@@ -2538,7 +3066,7 @@ begin
         begin
           if DSP.OpenRecord(DS.Fields[0].AsInteger) then
           begin
-            if DSP.EditObject(not (DSR.DataSet.State in [dsInsert, dsEdit])) = mrOk then
+            if DSP.EditQueryRecord(pQ^.RD, not (DSR.DataSet.State in [dsInsert, dsEdit])) = mrOk then
 	            RefreshQueryAfterEdit;
           end;
         end;
@@ -2585,7 +3113,7 @@ end;
 procedure TDataSetProcessor.UpdateQueryPopupState(Q: TQueryRec);
 var
   Pop: TPopupMenu;
-  bCanEdit, bDSEdit, bActive, bHasRec: Boolean;
+  bCanEdit, bDSEdit, bActive, bHasRec, bQBrowse: Boolean;
   Bns: TGridButtons;
   DSR: TDataSetRec;
 begin
@@ -2597,10 +3125,12 @@ begin
     bCanEdit := UserMan.CheckFmEditing(Q.RD.GetEditFormId) and bDSEdit;
     bActive := Q.DataSet.Active;
     bHasRec := bActive and (Q.DataSet.RecordCount > 0);
-    Pop.Items[0].Enabled := bActive and bDSEdit and Pop.Items[0].Visible;
-    Pop.Items[1].Enabled:= bHasRec and Pop.Items[1].Visible;
-    Pop.Items[2].Enabled := bHasRec and bDSEdit and Pop.Items[2].Visible;
-    Pop.Items[4].Enabled := bHasRec and Pop.Items[4].Visible;
+    bQBrowse := not (Q.DataSet.State in [dsInsert, dsEdit]);
+    Pop.Items[0].Enabled := bActive and bDSEdit and Pop.Items[0].Visible and bQBrowse;
+    Pop.Items[1].Enabled:= bHasRec and Pop.Items[1].Visible and bQBrowse;
+    Pop.Items[2].Enabled := bHasRec and bDSEdit and Pop.Items[2].Visible and bQBrowse;
+    Pop.Items[4].Enabled := bHasRec and Pop.Items[4].Visible and bQBrowse;
+    Pop.Items[6].Enabled := bQBrowse;
 
     if bCanEdit then
     begin
@@ -2624,8 +3154,9 @@ begin
     Bns.Buttons[gbnEdit].ImageIndex := Pop.Items[1].ImageIndex;
     Bns.EnableButton(gbnDelete, Pop.Items[2].Enabled);
     Bns.EnableButton(gbnGoto, Pop.Items[4].Enabled);
+    Bns.EnableButton(gbnRefresh, Pop.Items[6].Enabled);
   end;
-  if Q.Grid.OnStateChange <> nil then Q.Grid.OnStateChange(Q.Grid);
+  Q.Grid.DoStateChange;
 end;
 
 procedure TDataSetProcessor.ExchangeRows(DSRi: Integer; MoveUp: Boolean);
@@ -3019,7 +3550,9 @@ begin
           if PageControl.ActivePage = C then
             SelectFirstVisiblePage(PageControl);
         end;
-    end;
+    end
+    else
+      SetTextHint(C, GetHintText(C));
 
     if C is TdxButton then
     	with TdxButton(C) do
@@ -3077,9 +3610,9 @@ begin
       else if HasReadOnly(C) then SetReadOnly(C, True);
       Bn := GetEditButton(C);
       if (Bn <> nil) and (not (C is TdxFile)) then Bn.Enabled := False;
-      Col := FindGridColumn(DSR.Grid, GetId(C));
-      TestNil(Col, 'BindControls: Col=nil (editing)');
-      Col.ReadOnly := True;
+      //Col := FindGridColumn(DSR.Grid, GetId(C));
+      //TestNil(Col, 'BindControls: Col=nil (editing)');
+      //Col.ReadOnly := True;
     end;
     //
   end;
@@ -3294,7 +3827,7 @@ begin
   aGrid.OnDrawColumnCell:=@GridDrawColumnCell;
   aGrid.OnPrepareCanvas:=@GridPrepareCanvas;
   aGrid.OnCellClick:=@GridCellClick;
-  aGrid.OnVaidate:=@GridValidate;
+  aGrid.OnValidate:=@GridValidate;
   aGrid.OnKeyDown:=@GridKeyDown;
   Pop := CreatePopupMenu(aGrid.Id = 0, True);
   aGrid.PopupMenu := Pop;
@@ -3330,6 +3863,8 @@ begin
     pDS^.EditFm.DataSet := DataSet;
     pDS^.EditFm.DSP := Self;
     pDS^.EditFm.DSRi:=i;
+    if Fm.ImageName <> '' then
+      pDS^.EditFm.SetIcon(Fm.ImageName);
   end;
   if (Fm.Filters.Count > 0) and (not FIsListForm) then
   begin
@@ -3511,11 +4046,11 @@ var
   i: Integer;
   Pop: TPopupMenu;
   DSP: TDataSetProcessor;
-  LCbx: TdxLookupComboBox;
+  //LCbx: TdxLookupComboBox;
 begin
   Pop := nil;
   DSP := nil;
-  LCbx := nil;
+  //LCbx := nil;
   if C is TdxLookupComboBox then
   begin
     with TdxLookupComboBox(C) do
@@ -3557,7 +4092,7 @@ begin
       //
       OnMenuClick := @LookupMenuClick;
 
-      LCbx := TdxLookupComboBox.Create(nil);
+      {LCbx := TdxLookupCellEditor.Create(nil);
       LCbx.Id := Id;
       LCbx.FieldName := FieldName;
       LCbx.SourceTId := SourceTId;
@@ -3582,8 +4117,9 @@ begin
       LCbx.ListKeyField := ListKeyField;
 			LCbx.OnNeedData := OnNeedData;
       LCbx.OnKeyMatch := OnKeyMatch;
+      LCbx.OnSetKey := @LCbxSetKey;
       LCbx.OnButtonClick := OnButtonClick;
-      LCbx.OnKeyDown:=@LCbxKeyDown;
+      //LCbx.OnKeyDown:=@LCbxKeyDown;
       LCbx.PopupMenu.Items[5].Visible := Pop.Items[5].Visible;
       LCbx.PopupMenu.Items[6].Visible := Pop.Items[6].Visible;
       LCbx.PopupMenu.Items[7].Visible := Pop.Items[7].Visible;
@@ -3598,7 +4134,7 @@ begin
 
       // Форма скрыта
       if not Pop.Items[5].Visible then
-        LCbx.HideButton := True;
+        LCbx.HideButton := True; }
     end;
 
   end
@@ -3619,19 +4155,20 @@ begin
   pLR^.Control := C;
   pLR^.TId:=GetSourceTId(C);
   pLR^.Column := FindGridColumn(aGrid, GetId(C));
+  pLR^.QryColumn := nil;
   pLR^.ListFm := nil;
   pLR^.NeedRefresh := True;
   pLR^.DSRi:=DSRi;
   pLR^.DSProc:=DSP;
-  pLR^.LCbx := LCbx;
+  pLR^.LCbx := nil; //LCbx;
   i := FLookups.Add(pLR);
   C.Tag := i;
   if Pop <> nil then Pop.Tag := i;
-  if LCbx <> nil then
+  {if LCbx <> nil then
   begin
     LCbx.Tag := i;
     LCbx.PopupMenu.Tag := i;
-  end;
+  end;}
 end;
 
 procedure TDataSetProcessor.AddLookups(aGrid: TdxGrid; DSRi: Integer);
@@ -3757,7 +4294,7 @@ begin
   inherited Destroy;
 end;
 
-procedure FillPickLists(Gr: TdxGrid; Fm: TdxForm);
+{procedure FillPickLists(Gr: TdxGrid; Fm: TdxForm);
 var
   i, Id: Integer;
   C: TComponent;
@@ -3769,7 +4306,7 @@ begin
     if (C <> nil) and (C is TdxComboBox) and (GetSourceFId(C) = 0) then
       Gr.Columns[i].PickList := TdxComboBox(C).Items;
   end;
-end;
+end; }
 
 procedure TDataSetProcessor.BindForm(FmId: Integer; IsListForm: Boolean;
   aViewType: TViewType);
@@ -3792,7 +4329,7 @@ begin
   AddEditingCtrls(0);
   AddQueries(0);
   //if not FFm.Grid.ReadOnly then
-    FillPickLists(FFm.Grid, FFm);
+    {FillPickLists(FFm.Grid, FFm);   }
   for i := 0 to FFm.ComponentCount - 1 do
   begin
     C := FFm.Components[i];
@@ -3802,8 +4339,8 @@ begin
       AddLookups(TdxGrid(C), FItems.Count - 1);
       AddEditingCtrls(FItems.Count - 1);
       AddQueries(FItems.Count - 1);
-      if TdxGrid(C).ReadOnly = False then
-        FillPickLists(TdxGrid(C), GetDataSet(FItems.Count - 1)^.Form);
+      {if TdxGrid(C).ReadOnly = False then
+        FillPickLists(TdxGrid(C), GetDataSet(FItems.Count - 1)^.Form); }
     end
   end;
   FMaster := GetDataSet(0);
@@ -4489,6 +5026,229 @@ begin
   end;
 end;
 
+procedure TDataSetProcessor.WriteFormFieldsToQueryFields;
+
+  function IsObjectSourceField(pF: PRpField): Boolean;
+  var
+    C: TComponent;
+  begin
+    Result := False;
+    if (pF^.Src <> nil) and (pF^.Src^.Src = nil) then
+    begin
+      C := GetRpFieldComponent(pF^, False);
+      if GetSourceFId(C) = pF^.Src^.FId then Result := True;
+    end;
+  end;
+
+var
+  QGrid: TdxQueryGrid;
+  i, j: Integer;
+  pF: PRpField;
+  Tp: TRpFieldType;
+  DSP: TDataSetProcessor;
+  Q: TQueryRec;
+  RD, ObjRD: TReportData;
+  DS: TSQLQuery;
+  SQL, sRecId: String;
+  DSR: TDataSetRec;
+begin
+  QGrid := TdxQueryGrid(FCallerComponent);
+  if not (QGrid.DataSource.DataSet.State in [dsInsert, dsEdit]) then Exit;
+
+  DSP := TDataSetProcessor(QGrid.DSP);
+  Q := DSP.Queries[QGrid.QRi]^;
+  RD := Q.RD;
+  DS := Q.DataSet;
+
+  DS.Fields[0].Value := MasterSet.Fields[0].Value;      // id
+
+  for i := 0 to RD.Sources[0]^.Fields.Count - 1 do
+  begin
+    pF := RD.Sources[0]^.Fields[i];
+    // Таблицу пропускаем
+    if pF^.TId <> RD.Sources[0]^.Id then Continue;
+
+    Tp := pF^.Tp;
+    if Tp = flObject then
+    begin
+      if IsObjectSourceField(pF) then
+      begin
+        if DS.FieldByName( RD.GetFieldNameDS(i) ).Value <>
+          MasterSet.FieldByName( FieldStr(pF^.FId) + 'l' ).Value then
+        begin
+
+          ObjRD := ExtractObjectFromReport(RD, pF);
+          if ObjRD.Sources[0]^.Fields.Count > 1 then
+          begin
+            sRecId := MasterSet.FieldByName( FieldStr(pF^.FId) ).AsString;
+            if sRecId <> '' then
+            begin
+              SQL := SQLObjectReportSelect(ObjRD, sRecId);
+              //Debug(SQL);
+              with DBase.OpenDataSet(SQL) do
+              try
+                for j := 1 to FieldCount - 1 do
+                begin
+                  // Порядок полей объекта такой же как в оринальном запросе
+                  DS.FieldByName( Fields[j].FieldName ).Value := Fields[j].Value;
+                end;
+              finally
+                Free;
+                FreeAndNil(ObjRD);
+              end;
+            end
+            else
+            begin
+              for j := 0 to ObjRD.Sources[0]^.Fields.Count -1 do
+              begin
+                pF := ObjRD.Sources[0]^.Fields[j];
+                DS.FieldByName( FieldStr(pF^.Id) ).SetData(nil);
+              end;
+            end;
+          end
+          // Если в запросе только поле списка, то нет смысла делать запрос к базе, а
+          // просто берем значение из формы.
+          else
+            DS.FieldByName(FieldStr(pF^.Id)).Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'l').Value;
+
+          FreeAndNil(ObjRD);
+        end;
+      end
+      else if pF^.Src = nil then
+        DS.FieldByName(FieldStr(pF^.Id)).Value := MasterSet.FieldByName(FieldStr(pF^.FId)).Value;
+    end
+    else if Tp = flFile then
+    begin
+      if DS.FieldByName(FieldStr(pF^.Id) + 'src').AsString <> MasterSet.FieldByName(FieldStr(pF^.FId) + 'src').AsString then
+      begin
+        DS.FieldByName(FieldStr(pF^.Id)).Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'd').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'src').Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'src').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'dest').Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'dest').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'data').Value := MasterSet.FieldByName(FieldStr(pF^.FId)).Value;
+      end;
+    end
+    else if Tp = flImage then
+    begin
+      if DS.FieldByName(FieldStr(pF^.Id)).AsString <> MasterSet.FieldByName(FieldStr(pF^.FId) + 'src').AsString then
+      begin
+        DS.FieldByName(FieldStr(pF^.Id)).Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'src').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'dest').Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'dest').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'thumb').Value := MasterSet.FieldByName(FieldStr(pF^.FId) + 'thumb').Value;
+        DS.FieldByName(FieldStr(pF^.Id) + 'data').Value := MasterSet.FieldByName(FieldStr(pF^.FId)).Value;
+      end;
+    end
+    else
+    begin
+      DS.FieldByName(FieldStr(pF^.Id)).Value :=
+        MasterSet.FieldByName(FieldStr(pF^.FId)).Value;
+    end;
+  end;
+
+  DSR := DSP.DataSets[Q.DSRi]^;
+  CalcQuery(RD, DS, DSR.Form, DSP.FMaster^.Form, DSR.DataSet, DSR.Err, True);
+end;
+
+procedure TDataSetProcessor.EnableQueryFieldsChange(QRi: Integer);
+var
+  Q: TQueryRec;
+  i: Integer;
+  F: TField;
+  RD: TReportData;
+begin
+  Q := Queries[QRi]^;
+  RD := Q.RD;
+  for i := 0 to Q.DataSet.Fields.Count - 1 do
+  begin
+    F := Q.DataSet.Fields[i];
+    if IsRpFieldNameDSEditable(RD, F.FieldName) then
+    begin
+      F.OnSetText := @QueryFieldSetText;
+      if F.DataType = ftTime then
+        F.OnGetText := @QueryFieldGetText;
+    end;
+  end;
+end;
+
+procedure TDataSetProcessor.DisableQueryFieldsChange(QRi: Integer);
+var
+  Q: TQueryRec;
+  i: Integer;
+  F: TField;
+begin
+  Q := Queries[QRi]^;
+  for i := 0 to Q.DataSet.Fields.Count - 1 do
+  begin
+    F := Q.DataSet.Fields[i];
+    F.OnSetText := nil;
+  end;
+end;
+
+procedure TDataSetProcessor.CreateLookupCellEditor(aGrid: TMyDBGrid;
+  FieldId: Integer);
+var
+  pLR: PLookupRec;
+  C: TdxLookupCellEditor;
+  LCbx: TdxLookupComboBox;
+  Pop: TPopupMenu;
+  i: Integer;
+begin
+  pLR := FindLookupById(FieldId);
+  i := FLookups.IndexOf(pLR);
+  C := TdxLookupCellEditor.Create(nil);
+  with TdxLookupComboBox(pLR^.Control) do
+  begin
+    Pop := PopupMenu;
+
+    C.Id := Id;
+    C.FieldName := FieldName;
+    C.SourceTId := SourceTId;
+    C.SourceFId := SourceFId;
+    C.Filter := Filter;
+    C.KeyField := KeyField;
+    C.ListFields.Assign(ListFields);
+    C.DropDownCount := DropDownCount;
+    C.ListWidthExtra := ListWidthExtra;
+    C.HideButton := HideButton;
+    C.HideList := HideList;
+    C.ReadOnly := ReadOnly;
+    C.DataSource := DataSource;
+    C.DataField := DataField;
+    C.Button.Transparent := False;
+    C.Button.Color := aGrid.Color;
+    C.DropDownButton.Transparent := False;
+    C.DropDownButton.Color := aGrid.Color;
+    C.DataSource := DataSource;
+    C.KeyField := KeyField;
+    C.ListSource := ListSource;
+    C.ListKeyField := ListKeyField;
+    C.ShowAsTreeList := ShowAsTreeList;
+	  C.OnNeedData := OnNeedData;
+    C.OnKeyMatch := OnKeyMatch;
+    C.OnSetKey := @LCbxSetKey;
+    C.OnButtonClick := OnButtonClick;
+    //C.OnKeyDown:=@LCbxKeyDown;
+    C.PopupMenu.Items[5].Visible := Pop.Items[5].Visible;
+    C.PopupMenu.Items[6].Visible := Pop.Items[6].Visible;
+    C.PopupMenu.Items[7].Visible := Pop.Items[7].Visible;
+    if UserMan.CheckFmEditing(SourceTId) = False then
+    begin
+      C.PopupMenu.Items[7].ImageIndex := IMG16_EYES;
+      C.PopupMenu.Items[7].Caption := rsLook;
+    end;
+    C.PopupMenu.Items[8].Visible := Pop.Items[8].Visible;
+    C.PopupMenu.Items[9].Visible := Pop.Items[9].Visible;
+    C.OnMenuClick:=@LookupMenuClick;
+
+    // Форма скрыта
+    if not Pop.Items[5].Visible then
+      C.HideButton := True;
+
+    C.Tag := i;
+    C.PopupMenu.Tag := i;
+  end;
+  pLR^.LCbx := C;
+end;
+
 procedure TDataSetProcessor.ShowImages(DSRi: Integer);
 var
   Images: TList;
@@ -4505,6 +5265,19 @@ begin
   ClearCalcLabels(DSRi, '');
   RefreshLookupsWithParams('');
   UpdateControlState(DSRi);
+end;
+
+procedure TDataSetProcessor.SaveQueries(DSRi: Integer);
+var
+  i: Integer;
+  Q: TQueryRec;
+begin
+  for i := 0 to QueryCount - 1 do
+  begin
+    Q := Queries[i]^;
+    if (Q.DSRi = DSRi) and (Q.DataSet.State in [dsInsert, dsEdit]) then
+      Q.DataSet.Post;
+  end;
 end;
 
 function TDataSetProcessor.AnyDataSetModified(DSRi: Integer): Boolean;
@@ -4637,15 +5410,15 @@ begin
 end;}
 
 function TDataSetProcessor.AppendRecord(aPFm, aFm: TdxForm; aDS: TDataSet;
-  RpId: Integer): Variant;
+  RD: TReportData): Variant;
 var
-  RD: TReportData;
   Flt: String;
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
 begin
   Result := Null;
   //FMaster^.Grid.EditorMode:=False;
   MasterSet.Append;
-  RD := ReportMan.FindReport(RpId);
   Flt := RD.GetSourceFilter;
   with TDSPAppendRecParser.Create do
   try
@@ -4658,8 +5431,48 @@ begin
   finally
     Free;
   end;
-  if FMaster^.EditFm <> nil then
-    if ShowEditForm(0) = mrOk then Result := MasterSet['id'];
+  QGrid := TdxQueryGrid(FCallerComponent);
+  if (QGrid <> nil) and not QGrid.ReadOnly and RD.Grid.Editable then
+  begin
+    DSP := TDataSetProcessor(QGrid.DSP);
+    DSP.Queries[QGrid.QRi]^.UserInput := True;
+    QGrid.Append;
+    WriteFormFieldsToQueryFields;
+    DSP.EnableQueryFieldsChange(QGrid.QRi);
+    DSP.UpdateQueryPopupState(DSP.Queries[QGrid.QRi]^);
+  end
+  else
+  begin
+    if FMaster^.EditFm <> nil then
+      if ShowEditForm(0) = mrOk then Result := MasterSet['id'];
+  end
+end;
+
+function TDataSetProcessor.EditQueryRecord(RD: TReportData; ViewOnly: Boolean
+  ): Integer;
+var
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
+begin
+  Result := mrNone;
+  if ViewOnly or (InnerEdit(0, True, True, False) <> asDeleted) then
+  begin
+    QGrid := TdxQueryGrid(FCallerComponent);
+    if (QGrid <> nil) and not QGrid.ReadOnly and RD.Grid.Editable then
+    begin
+      if MasterSet.State = dsEdit then
+      begin
+        DSP := TDataSetProcessor(QGrid.DSP);
+        DSP.Queries[QGrid.QRi]^.UserInput := True;
+        QGrid.Edit;
+        QGrid.DataSource.DataSet['id'] := QGrid.DataSource.DataSet['id'];
+        TDataSetProcessor(QGrid.DSP).EnableQueryFieldsChange(QGrid.QRi);
+        DSP.UpdateQueryPopupState(DSP.Queries[QGrid.QRi]^);
+      end;
+    end
+    else
+      Result := ShowEditForm(0)
+  end;
 end;
 
 function TDataSetProcessor.AppendObject: Integer;
@@ -5021,7 +5834,9 @@ function TDataSetProcessor.EditObject(ViewOnly: Boolean): Integer;
 begin
   Result := mrNone;
   if ViewOnly or (InnerEdit(0, True, True, False) <> asDeleted) then
-	  Result := ShowEditForm(0)
+  begin
+    Result := ShowEditForm(0)
+  end;
 end;
 
 function TDataSetProcessor.InnerDelete(DSRi: Integer; ShowMsg, DoDeleting,
@@ -5252,8 +6067,8 @@ begin
       Cbx.Items.Add(DS.Fields[1].AsString);
       DS.Next;
     end;
-    if not TDBGrid(LR.Column.Grid).ReadOnly then
-      LR.Column.PickList.Assign(Cbx.Items);
+    {if not TDBGrid(LR.Column.Grid).ReadOnly then
+      LR.Column.PickList.Assign(Cbx.Items);}
   finally
     DS.Free;
   end;
@@ -5755,12 +6570,12 @@ begin
     if (Flt <> '') and ((FieldName = '') or FieldExists(pLR^.DSRi, FieldName, Flt)) then
     begin
       pLR^.NeedRefresh:=True;
-      if pLR^.Control is TdxComboBox then
+      {if pLR^.Control is TdxComboBox then
       begin
         if not TDBGrid(pLR^.Column.Grid).ReadOnly then
           if pLR^.Column.PickList.Count = 0 then
             pLR^.Column.PickList.Add('');          // Чтобы был PickListCellEditor
-      end;
+      end;}
     end;
   end;
 end;
@@ -5877,6 +6692,8 @@ begin
       end;
       G.WordWrap:=Fm.Grid.WordWrap;
       G.AllowChangeSort:=Fm.Grid.AllowChangeSort;
+      G.TitleHeight:=Fm.Grid.TitleHeight;
+      G.TitleWordWrap:=Fm.Grid.TitleWordWrap;
     end;
   end;
 end;
@@ -6064,7 +6881,7 @@ begin
         if Form.OnStateChange <> nil then Form.OnStateChange(Form);
     for i := 0 to QueryCount - 1 do
       with Queries[i]^ do
-        if Grid.OnStateChange <> nil then Grid.OnStateChange(Grid);
+        Grid.DoStateChange;
   end
   else if DSR.Form.OnStateChange <> nil then DSR.Form.OnStateChange(DSR.Form);
 end;
@@ -6151,7 +6968,6 @@ begin
     if Col <> nil then
       DSR.Grid.SelectedField := Col.Field;
     MessageDlg(rsWarning, Msg, mtWarning, [mbOk], 0)
-    //ErrMsg(Msg);
   end
   else
   begin
@@ -6237,6 +7053,31 @@ begin
   end;
 end;
 
+function TDataSetProcessor.QueryValidate(QRi: Integer): Boolean;
+var
+  Q: TQueryRec;
+  pF: PRpField;
+  Column: TColumn;
+begin
+  QueryForceChangeFields(QRi);
+  Q := Queries[QRi]^;
+  if (Q.DataSet.State in [dsInsert, dsEdit]) and (Q.DSProc <> nil) then
+  begin
+    Result := Q.DSProc.Validate(0, False);
+    if not Result and (Q.DSProc.Form.Grid.SelectedColumn <> nil) then
+    begin
+      pF := Q.RD.Sources[0]^.Fields.FindFieldByFieldId( Q.DSProc.Form.Grid.SelectedColumn.Tag );
+      if pF <> nil then
+      begin
+        Column := Q.Grid.FindColumnByFieldName(pF^.Name);
+        if Column <> nil then Q.Grid.SelectedField := Column.Field;
+      end;
+    end;
+  end
+  else
+    Result := True;
+end;
+
 function TDataSetProcessor.Validate(DSRi: Integer; ForceChanges: Boolean
   ): Boolean;
 var
@@ -6249,7 +7090,15 @@ var
   DS: TSQLQuery;
   DSR: TDataSetRec;
   List: TList;
+  Q: TQueryRec;
 begin
+  for i := 0 to QueryCount - 1 do
+  begin
+    Q := Queries[i]^;
+    if Q.DSRi = DSRi then
+      if not Q.Grid.Validate then Exit(False);
+  end;
+
   if FSimpleMode and (DSRi = 0) then Exit(True);
 
   // Сначала проверяем дочерние.
@@ -6420,9 +7269,9 @@ begin
       pLR^.NeedRefresh:=True;
       if pLR^.Control is TdxComboBox then
       begin
-        if not TDBGrid(pLR^.Column.Grid).ReadOnly then
+        {if not TDBGrid(pLR^.Column.Grid).ReadOnly then
           if pLR^.Column.PickList.Count = 0 then
-            pLR^.Column.PickList.Add('');          // Чтобы был PickListCellEditor
+            pLR^.Column.PickList.Add('');   }       // Чтобы был PickListCellEditor
       end;
     end;
     if pLR^.ListFm <> nil then pLR^.ListFm.RefreshLookups(TId);
@@ -6634,23 +7483,38 @@ begin
   DBase.AttachDataSet(pQ^.DataSet);
   pQ^.DataSource := TDataSource.Create(nil);
   pQ^.DataSource.DataSet := pQ^.DataSet;
+  pQ^.DataSource.AutoEdit:=False;
   pQ^.DataSet.BeforeScroll:=@QueryBeforeScroll;
   pQ^.DataSet.AfterScroll:=@QueryAfterScroll;
   pQ^.DataSet.BeforeOpen:=@QueryBeforeOpen;
   pQ^.DataSet.AfterOpen:=@QueryAfterOpen;
   pQ^.DataSet.BeforeClose:=@QueryBeforeClose;
   pQ^.DataSet.AfterClose:=@QueryAfterClose;
+  pQ^.DataSet.BeforePost:=@QueryBeforePost;
+  pQ^.DataSet.AfterPost:=@QueryAfterPost;
+  pQ^.DataSet.AfterCancel:=@QueryAfterCancel;
   TdxDataSet(pQ^.DataSet).RD := RD;
   pQ^.Grid := QG;
-  QG.ReadOnly:=True;
-  QG.OnDblClick:=@QueryGridDblClick;
-  //QG.Options:= QG.Options - [dgTabs];
+  //QG.ReadOnly := True;
+  pQ^.Simple := RD.IsSimple;
+  if pQ^.Simple then
+  begin
+    QG.OnKeyDown:=@QueryGridKeyDown;
+    QG.OnDblClick:=@QueryGridDblClick;
+    QG.OnSelectEditor := @QueryGridSelectEditor;
+    QG.OnEditorHide := @QueryGridEditorHide;
+    QG.OnCheckboxClick := @QueryGridCheckBoxClick;
+    QG.OnValidate := @QueryGridValidate;
+  end;
+  QG.OnCanSort := @QueryGridCanSort;
+  QG.OnSortColumnChange:=@QueryGridSortChange;
+  QG.OnPrepareCanvas:=@QueryGridPrepareCanvas;
+  QG.OnDrawColumnCell:=@QueryGridDrawColumnCell;
   QG.DataSource := pQ^.DataSource;
   InitGrid(QG, RD);
   pQ^.Popup := TPopupMenu.Create(nil);
   pQ^.Popup.Images := Images16;
   pQ^.DSProc := nil;
-  pQ^.Simple := RD.IsSimple;
   if pQ^.Simple then
   begin
     pQ^.Popup.Items.Add( CreateMenuItem(pQ^.Popup, rsAppend, 0,
@@ -6712,15 +7576,11 @@ begin
   end;
   QG.PopupMenu := pQ^.Popup;
   pQ^.DSRi := DSRi;
-  QG.OnSortColumnChange:=@QueryGridSortChange;
-  //QG.OnDrawColumnCell:=@QueryGridDrawColumnCell;
-  QG.OnPrepareCanvas:=@QueryGridPrepareCanvas;
-  QG.OnDrawColumnCell:=@QueryGridDrawColumnCell;
-  if pQ^.Simple then QG.OnKeyDown:=@QueryGridKeyDown;
   pQ^.Colors := TQueryColorList.Create;
   pQ^.NeedRefresh:=True;
   pQ^.Changed:=False;
   pQ^.ParentChanged:=False;
+  pQ^.UserInput := False;
   BindPivotTables(DSR.Form, pQ^.DataSet);
   Result := pQ;
 end;
@@ -6736,8 +7596,11 @@ begin
   if FInserting then Exit;
 
   pQ := PQueryRec(FQueries[idx]);
-  pQ^.NeedRefresh := False;
   Q := pQ^;
+
+  if Q.DataSet.State in [dsInsert, dsEdit] then Q.DataSet.Cancel;
+
+  pQ^.NeedRefresh := False;
 
   Q.Colors.Clear;
   RD := Q.RD;
@@ -7106,6 +7969,24 @@ begin
   Result := FQueries.Count;
 end;
 
+// До проверки досрочно заканчиваем редактирование и записываем значение в поле.
+// В противном случае можно ошибочно пройти проверку, если пользователь кликнул
+// на другую запись во время редактирования.
+procedure TDataSetProcessor.QueryForceChangeFields(QRi: Integer);
+var
+  Q: TQueryRec;
+begin
+  Q := Queries[QRi]^;
+  with Q.Grid do
+    if EditorMode then
+    begin
+      if not (Editor is TdxDBImageCellEditor) and not (Editor is TdxFileCellEditor)
+        and (SelectedField <> nil) and (Editor.Caption <> SelectedField.Text) then
+        SelectedField.Text := Editor.Caption;
+      EditorMode:=False;
+    end;
+end;
+
 
 // Принудительно сохраняем значение в активное поле перед проверкой ввода или
 // перед проверкой на изменение
@@ -7137,15 +8018,10 @@ begin
   begin
     if Gr.Editor is TdxLookupComboBox then
       TdxLookupComboBox(Gr.Editor).ApplyChanges
-    {else if (Gr.Editor is TMaskCellEditor) and
-      MaskedTextEmpty(Gr.Editor.Caption, TMaskCellEditor(Gr.Editor).EditMask) then
-    begin
-      if Gr.SelectedField.Value <> Null then
-        Gr.SelectedField.SetData(nil)
-    end  }
-    else
-      if Gr.Editor.Caption <> Gr.SelectedField.Text then
-        Gr.SelectedField.Text := Gr.Editor.Caption;
+    else if not (Gr.Editor is TdxDBImageCellEditor) and
+      not (Gr.Editor is TdxFileCellEditor) then
+        if (Gr.SelectedField <> nil) and (Gr.Editor.Caption <> Gr.SelectedField.Text) then
+          Gr.SelectedField.Text := Gr.Editor.Caption;
     Gr.EditorMode:=False;
   end;
   //

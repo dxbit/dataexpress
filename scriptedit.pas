@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -105,7 +105,10 @@ function TScriptEdit.AddMark(ImageIndex, Line: Integer): TSynEditMark;
 var
   Mrk: TSynEditMark;
 begin
-  Mrk := TSynEditMark.Create(Self);
+  if ImageIndex >= IDX_BREAKPOINT then
+    Mrk := TSynEditMark.Create(Self)
+  else
+    Mrk := TSynEditBookMark.Create(Self);
   Mrk.ImageList := FImageList;
   Mrk.ImageIndex := ImageIndex;
   Mrk.Line := Line;
@@ -224,14 +227,19 @@ begin
   begin
     M := Marks[i];
     //if not M.IsBookmark then Continue;
-    Mark := TSynEditMark.Create(Memo);
-    Mark.BookmarkNumber := M.BookmarkNumber;
+    if M.IsBookmark then
+    begin
+      Mark := TSynEditBookMark.Create(Memo);
+      Mark.BookmarkNumber := M.BookmarkNumber;
+	    Mark.ImageIndex := M.BookmarkNumber
+    end
+    else
+    begin
+      Mark := TSynEditMark.Create(Memo);
+    	Mark.ImageIndex := IDX_BREAKPOINT;		// Брейкпоинт
+    end;
     Mark.Column := M.Column;
     Mark.Line := M.Row;
-    if M.IsBookmark then
-	    Mark.ImageIndex := M.BookmarkNumber
-    else
-    	Mark.ImageIndex := IDX_BREAKPOINT;		// Брейкпоинт
     Mark.Visible:=True;
     Memo.Marks.Add(Mark);
   end;
@@ -271,7 +279,8 @@ begin
   for i := 0 to Memo.Marks.Count - 1 do
   begin
   	Mark := Memo.Marks[i];
-    if Mark.ImageIndex = IDX_RUNLINE then Continue;
+    if (Mark.ImageIndex = IDX_RUNLINE) or (Mark.ImageIndex = 0) and not Mark.IsBookmark then Continue;
+
 	  M := AMarks.AddMark;
   	M.BookmarkNumber := Mark.BookmarkNumber;
     M.Column := Mark.Column;
@@ -302,21 +311,27 @@ begin
 end;
 
 function TScriptEdit.FindAndDeleteBookmark(Num: Integer): Boolean;
-var
+begin
+  Result := IsBookmark(Num);
+  if Result then ClearBookMark(Num);
+end;
+
+{var
   Mrk: TSynEditMark;
   i: Integer;
 begin
   Result := False;
-  for i := 0 to Marks.Count - 1 do
+
+  for i := Marks.Count - 1 downto 0 do
   begin
     Mrk := Marks[i];
     if Mrk.BookmarkNumber = Num then
     begin
       DeleteMark(Mrk);
-    	Exit(True);
+      Break;
     end;
   end;
-end;
+end;}
 
 end.
 

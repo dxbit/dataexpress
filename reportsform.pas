@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -296,7 +296,7 @@ begin
   i := List.ItemIndex;
   RD := TReportData(List.Items.Objects[i]);
 
-  if CheckExistsInActions(nil, renReport, RD.Name) then Exit;
+  if CheckExistsInActions(nil, nil, renReport, RD.Name) then Exit;
 
   FDelRps.Add(Pointer(RD.Id));
   ReportMan.DeleteReport(RD);
@@ -323,8 +323,8 @@ begin
   begin
     if OldName <> S then
     begin
-      if FInDesigner then RenameInActions(nil, renReport, OldName, S)
-      else if CheckExistsInActions(nil, renReport, OldName, LineEnding +
+      if FInDesigner then RenameInActions(nil, nil, renReport, OldName, S)
+      else if CheckExistsInActions(nil, nil, renReport, OldName, LineEnding +
         rsCantRenameReportMsg) then Exit;
     end;
     RD.Name := S;

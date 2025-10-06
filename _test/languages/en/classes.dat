@@ -141,7 +141,8 @@ Constants
 		fmShareDenyRead = $30
 		fmShareDenyNone = $40
 	Misc
-		LineEnding = #13#10
+		LineEnding = #13#10 - Windows or #10 - Linux
+		PathDelim = \ - Windows or / - Linux
 	ModalResult
 		mrNone = 0
 		mrOk = 1
@@ -356,6 +357,7 @@ Events
 	TPrintEvent = procedure (Sender: TObject; Action: TPrintAction; const SourceName, FieldName: String; var Value: String; var Accept: Boolean)
 	TRedirectEvent = procedure (Sender: TObject; const ASrc: String; var ADest: String)
 	TReplaceTagEvent = procedure (Sender: TObject; const TagString: String; TagParams: TStringList; var ReplaceText: String)
+	TDBGridSelEditorEvent = procedure (Sender: TObject; Column: TColumn; var Editor: TWinControl)
 	TScrollEvent = procedure (Sender: TObject; ScrollCode: TScrollCode; var ScrollPos: Integer)
 	TStringListCompareEvent = function (Sender: TStringList; const s1, s2: String): Integer
 	TTVAdvancedCustomDrawEvent = procedure (Sender: TCustomTreeView; const ARect: TRect; Stage: TCustomDrawStage; var DefaultDraw: Boolean)
@@ -497,7 +499,8 @@ Types
 	TScrollBarKind = (sbHorizontal, sbVertical)
 	TScrollCode = (scLineUp, scLineDown, scPageUp, scPageDown, scPosition, scTrack, scTop, scBottom, scEndScroll)
 	TScrollStyle = (ssNone, ssHorizontal, ssVertical, ssBoth)
-	TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle)
+	TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle, stSquaredDiamond, stDiamond, stTriangle, stTriangleLeft, stTriangleRight, stTriangleDown, stStar, stStarDown, stPolygon)
+	TShapeTypeEx = (steNone, steVertLine, steHorzLine, steBDiagonal, steFDiagonal, steCross, steDiagCross)
 	TShiftStateEnum = (ssShift, ssAlt, ssCtrl, ssLeft, ssRight, ssMiddle, ssDouble, ssMeta, ssSuper, ssHyper, ssAltGr, ssCaps, ssNum,ssScroll,ssTriple,ssQuad, ssExtra1, ssExtra2)
 	TShiftState = set of TShiftStateEnum
 	TShortCut = Word
@@ -606,7 +609,7 @@ Procedures & Functions
 		function BeginYear(D: TDateTime): TDateTime
 		function CalcPeriod(D1, D2: TDateTime; Detail: Integer; IsAge: Boolean): String
 		function Date: TDateTime
-		function DateTimeToFileDate(DateTime : TDateTime) : Longint
+		function DateTimeToFileDate(DateTime: TDateTime): Int64
 		function DayOf(const AValue: TDateTime): Word
 		function DayOfTheWeek(const DateTime: TDateTime): Word
 		function DaysBetween(const ANow, AThen: TDateTime): Integer
@@ -618,7 +621,7 @@ Procedures & Functions
 		function EndQuarter(D: TDateTime): TDateTime
 		function EndWeek(D: TDateTime): TDateTime
 		function EndYear(D: TDateTime): TDateTime
-		function FileDateToDateTime (Filedate : Longint) :TDateTime
+		function FileDateToDateTime(Filedate: Int64): TDateTime
 		function FmtDate(D: TDateTime): String
 		function FormatDateTime(const fmt: string; D: TDateTime): string
 		function GetMonthName(D: TDateTime; Brief: Boolean): String
@@ -682,11 +685,11 @@ Procedures & Functions
 		function ExtractFileName(const FileName: string): string
 		function ExtractFileNameOnly(const AFilename: string): string
 		function ExtractFilePath(const FileName: string): string
-		function FileAge(const FileName: string): Longint
+		function FileAge(const FileName: string): Int64
 		function FileExists(const Filename: string): boolean
 		function FileGetAttr(const FileName: String): Longint
 		function FileSetAttr(const Filename: String; Attr: longint): Longint
-		function FileSetDate(const FileName: String; Age: Longint): Longint
+		function FileSetDate(const FileName: String; Age: Int64): Longint
 		function FileSize(const FileName: String): Int64
 		procedure FindAllDirectories(AList: TStrings; const SearchPath: String; SearchSubDirs: Boolean)
 		procedure FindAllFiles(AList: TStrings; const SearchPath: String; SearchMask: String; SearchSubDirs: Boolean; DirAttr: Word)
@@ -742,6 +745,7 @@ Procedures & Functions
 		function CreateGUIDString: String
 		procedure Dec(Var: Ordinal)
 		procedure Exclude(var S: Set; X: Ordinal)
+		procedure FreeAndNil(var Obj: TObject)
 		function GetBuildDate: TDateTime
 		function GetFormatSettings: TFormatSettings
 		function GetExprVar(const AName: String): Variant
@@ -1186,6 +1190,7 @@ TCsvData = class(TObject)
 	property CellHintPriority: TCellHintPriority [rw]
 	property Columns: TDBGridColumns [r]
 	property DefaultRowHeight: Integer [rw]
+	proeprty EditorMode: Boolean [rw]
 	property ExtendedColSizing: Boolean [rw]
 	property FixedColor: TColor [rw]
 	property FixedCols: Integer [rw]
@@ -1204,6 +1209,7 @@ TCsvData = class(TObject)
 	property OnDrawColumnTitle: TDrawColumnCellEvent [rw]
 	property OnGetCellHint: TDbGridCellHintEvent [rw]
 	property OnPrepareCanvas: TPrepareDbGridCanvasEvent [rw]
+	property OnSelectEditor: TDBGridSelEditorEvent [rw]
 	property Options: TDBGridOptions [rw]
 	property ReadOnly: Boolean [rw]
 	property Scrollbars: TScrollStyle [rw]
@@ -1306,6 +1312,7 @@ TField = class(TComponent)
 	property OldValue: Variant [r]
 	property ReadOnly: Boolean [rw]
 	property State: TDataSetState [r]
+	property Text: String [rw]
 	property Value: Variant [rw]
 #TFileDialog = class(TCommonDialog)
 	property DefaultExt: String [rw]
@@ -1585,8 +1592,10 @@ TJSONObject = class(TJSONData)
 	property Elements[Name: String]: TJSONData [rw] default 
 	property Names[Index: Integer]: String [r]
 TKGrid = class(TCustomControl)
+	function CellRect(ACol, ARow: Integer; out R: TRect; VisibleOnly: Boolean): Boolean
 	function CellSelected(ACol, ARow: Integer): Boolean
 	procedure DeleteRow(At: Integer)
+	function MouseToCell(X, Y: Integer; var ACol, ARow: Integer): Boolean
 	property Flat: Boolean [rw]
 	property Cells[Col, Row: Integer]: String [rw]
 	property CellSpan[Col, Row: Integer]: TKGridCellSpan [rw]
@@ -1686,6 +1695,7 @@ TMainFm = class(TForm)
 	property StatusBar: TStatusBar [r]
 	property ToolBar: TToolBar [r]
 TMainMenu = class(TMenu)
+TMaskCellEditor = class(TCustomEdit)
 TMaskEditEx = class(TCustomEdit)
 	function MaskTextEmpty: Boolean
 	function ValidateText: Boolean
@@ -1911,6 +1921,7 @@ TStatusPanels = class(TCollection)
 	function CopyFrom(Source: TStream; Count: Int64): Int64
 	property Position: Int64 [rw]
 	property Size: Int64 [rw] 
+TStringCellEditor = class(TCustomEdit)
 TStringList = class(TStrings)
 	function Find(S: string; var Index: Integer): Boolean
 	procedure Sort
@@ -2320,6 +2331,7 @@ TdxComboBox = class(TCustomComboBox)
 	property Sorted: Boolean [rw]
 	property SourceFormName: String [r]
 	property SourceFieldName: String [r]
+TdxComboBoxCellEditor = class(TCustomComboBox)
 TdxCounter = class(TDBEdit)
 	property CheckExpression: String [r]
 	property FieldName: String [r]
@@ -2343,6 +2355,7 @@ TdxDBImage = class(TdxImage)
 	property StoredFileName: String [r]
 	property ThumbSize: Integer [r]   
 	property OnImageLoad: TImageLoadEvent [rw]
+TdxDBImageCellEditor = class(TBitBtn)
 TdxDateEdit = class(TCustomDBEditButton)
 	property CheckExpression: String [r]
 	property DateNow: Boolean [r]
@@ -2380,6 +2393,7 @@ TdxFile = class(TCustomDBEditButton)
 	property StorageFolder: String [r]
 	property StorageType: Integer [r]
 	property StoredFileName: String [r]
+TdxFileCellEditor = class(TBitBtn)
 TdxForm = class(TCustomPanel)
 	constructor Create(const FormName: String)
 	function Append: TAccessStatus
@@ -2525,6 +2539,7 @@ TdxImage = class(TGraphicControl)
 TdxLabel = class(TLabel)
 	property FieldName: String [r]
 	property Expression: String [r]
+TdxLookupCellEditor = class(TdxLookupComboBox)
 TdxLookupComboBox = class(TDBEdit)
 	property Button: TSpeedButton [r]
 	property CheckExpression: String [r]
@@ -2559,6 +2574,7 @@ TdxMemo = class(TCustomMemo)
 	property Required: Boolean [r]
 	property SourceFormName: String [r]
 	property SourceFieldName: String [r]
+TdxMemoCellEditor = class(TCustomMemo)
 TdxObjectField = class(TDBEdit)
 	property FieldName: String [r]
 	property Id: Integer [r]
@@ -2569,6 +2585,7 @@ TdxPivotGrid = class(TKGrid)
 	property OnBuild: TNotifyEvent [rw]
 TdxQueryGrid = class(TDBGrid)
 	function BOF: Boolean
+	procedure Cancel
 	procedure ClearRowsSelection
 	procedure Close
 	function ControlsDisabled: Boolean
@@ -2578,6 +2595,7 @@ TdxQueryGrid = class(TDBGrid)
 	function EOF: Boolean
 	procedure EnableControls
 	procedure EnableScrollEvents
+	function FindColumnByFieldName(const FieldName: String): TColumn
 	function FindColumnByTitle(const Title: String): TColumn
 	function GetSourceFileName(const FieldName: String): String
 	function GetStoredFileName(const FieldName: String): String
@@ -2590,6 +2608,7 @@ TdxQueryGrid = class(TDBGrid)
 	procedure MovePrior
 	procedure MoveTo(RecNo: Integer)
 	procedure MoveToSelectedRow(Index: Integer)
+	procedure Post
 	function RecId: Integer
 	function RecNo: Integer
 	function RecordCount: Integer
@@ -2598,6 +2617,7 @@ TdxQueryGrid = class(TDBGrid)
 	procedure SaveToFile(const FieldName, AFileName: String)
 	procedure SaveToStream(const FieldName: String; St: TStream)
 	function ScrollEventsDisabled: Boolean
+	function Validate: Boolean
 	property AllowChangeSort: Boolean [rw]
 	property AsDT[Name: String]: TDateTime [r]
 	property AsF[Name: String]: Extended [r]
@@ -2620,6 +2640,7 @@ TdxQueryGrid = class(TDBGrid)
 	property SelectedRowCount: Integer [r]
 	property SelectedTextColor: TColor [rw]
 	property SortColumns: TSortColumns [r]
+	property State: TDataSetState [r]
 TdxRecordId = class(TDBEdit)
 	property FieldName: String [r]
 	property Id: Integer [r]
@@ -2659,6 +2680,7 @@ TdxSQLQuery = class(TObject)
 	property UseExecuteBlock: Boolean [rw]
 	property UseGenerator: TUseGeneratorOption [rw]
 TdxShape = class(TShape)
+	property ShapeEx: TShapeTypeEx [rw]
 TdxTabSheet = class(TTabSheet)
 TdxTimeEdit = class(TCustomDBEditButton)
 	property CheckExpression: String [r]

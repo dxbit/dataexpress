@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -224,6 +224,19 @@ type
     procedure PopupMenu(C: TdxCalcEdit);
   end;
 
+  { TFormGlyphMenu }
+
+  TFormGlyphMenu = class(TPopupMenu)
+  private
+    FCmp: TdxForm;
+    procedure MenuClick(Sender: TObject);
+  protected
+    procedure DoPopup(Sender: TObject); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure PopupMenu(C: TdxForm);
+  end;
+
 var
   DateEditMnu: TDateEditMenu;
   //CalcEditMnu: TCalcEditMenu;
@@ -237,6 +250,7 @@ var
   BtnGlyphMnu: TButtonGlyphMenu;
   QGridMoreMenu: TQueryGridMoreMenu;
   CalcEditMoreMnu: TCalcEditMoreMenu;
+  FormGlyphMnu: TFormGlyphMenu;
 
 implementation
 
@@ -266,6 +280,41 @@ begin
 end;
 
 procedure TCalcEditMoreMenu.PopupMenu(C: TdxCalcEdit);
+begin
+  FCmp := C;
+  Popup;
+end;
+
+{ TFormGlyphMenu }
+
+procedure TFormGlyphMenu.MenuClick(Sender: TObject);
+begin
+  case TComponent(Sender).Tag of
+    0: if ShowImagesForm(True, FCmp.ImageName, False) = mrOk then
+      FCmp.ImageName := ImagesFm.SelectedImageName;
+    1: FCmp.ImageName := '';
+    3: FCmp.ShowImageInTab := not FCmp.ShowImageInTab;
+  end;
+end;
+
+procedure TFormGlyphMenu.DoPopup(Sender: TObject);
+begin
+  inherited DoPopup(Sender);
+  Items[1].Enabled := FCmp.ImageName <> '';
+  Items[3].Checked := FCmp.ShowImageInTab;
+end;
+
+constructor TFormGlyphMenu.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Images := Images16;
+  Items.Add( CreateMenuItem(Self, rsSelectFromGallery, 0, 0, @MenuClick, IMG16_IMAGE) );
+  Items.Add( CreateMenuItem(Self, rsClear, 1, 0, @MenuClick, IMG16_DELETE) );
+  Items.Add( CreateMenuItem(Self, '-', 2, 0, nil) );
+  Items.Add( CreateMenuItem(Self, rsShowGlyphInTab, 3, 0, @MenuClick) );
+end;
+
+procedure TFormGlyphMenu.PopupMenu(C: TdxForm);
 begin
   FCmp := C;
   Popup;
@@ -418,6 +467,9 @@ begin
         if FCmp.SoftCheck then
           Info(rsSoftCheckEnableMsg);
       end;
+    8: if ShowImagesForm(True, FCmp.ImageName, False) = mrOk then
+      FCmp.ImageName := ImagesFm.SelectedImageName;
+    9: FCmp.ShowImageInTab := not FCmp.ShowImageInTab;
   end;
 end;
 

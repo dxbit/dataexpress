@@ -26,7 +26,8 @@ uses
   Classes, {Windows, }SysUtils, strconsts, Menus, DBGrids, dxctrls, DXReports,
   Lists, Db, Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons,
   SynEdit, LclType, ImgList, formmanager, reportmanager, process, Utf8Process,
-  TypInfo, Types, IBConnection, crossapi {$ifdef linux}, BaseUnix{$endif};
+  TypInfo, Types, IBConnection, crossapi {$ifdef linux}, BaseUnix{$endif},
+  uPSRuntime, Grids;
 
 //const
   //BUILD_DATE = '22.3.12';
@@ -44,7 +45,7 @@ procedure ErrMsg(const Msg: String; Log: Boolean = False; const Context: String 
 procedure ErrMsgFmt(const Msg: String; Params: array of const; Log: Boolean = False; const Context: String = '');
 procedure ClearList(L: TList);
 function ConfirmDelete: Boolean;
-//procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
+//procedure SetMenuItemImage(MI: TMenuItem; const ImageName: String);
 function CreateMenuItem(aMenu: TMenu; const Caption: String; Tag: PtrInt; aShortCut: TShortCut;
   Handler: TNotifyEvent; ImageIndex: Integer = -1): TMenuItem;
 function SortColumnToId(Gr: TdxGrid): Integer;
@@ -102,7 +103,7 @@ function LookupFieldValue(aForm, aParForm: TdxForm; aDS: TDataSet;
 function FormLookupFieldValue(aForm: TdxForm; aDS: TDataSet; const aFieldName: String): Variant;
 function CreateLabel(AOwner: TWinControl; const aCaption: String): TLabel;
 procedure AnchorCtrl(aControl, aTarget: TControl; aSpace: Integer);
-function CheckDuplicateQueryName(const aName: String; aRD: TReportData): Boolean;
+function CheckDuplicateReportName(const aName: String; aRD: TReportData): Boolean;
 function GetParentForm(aC: TControl): TCustomForm;
 {procedure DisableDataSetScroll(DS: TDataSet; var BeforeScroll, AfterScroll: TDataSetNotifyEvent;
   var B: TBookmark; var State: TDataSetState);
@@ -153,6 +154,7 @@ procedure UpdatePivotFieldCaptions(Fm: TdxForm; RD: TReportData);
 procedure SetNodeImageIndex(N: TTreeNode; Idx: Integer);
 function GetUnixFileManager: String;
 procedure AddFormHeight(Form: TForm);
+procedure AddFormWidth(Form: TForm);
 //procedure UpdateMemoScrollBars(M: TCustomSynEdit);
 function MyUtf8CompareText(const S1, S2: String): PtrInt;
 function SortStr(const S: String): String;
@@ -209,11 +211,11 @@ function ReplVertLine(const S: String): String;
 function ToHtml(const S: String): String;
 procedure SplitComponentName(const AName: String; out ANameStr: String;
   out ANameNum: Integer);
-procedure RenameInActions(CurObj: TObject; RenameObject: TRenameObject;
+procedure RenameInActions(CurFm: TdxForm; RD: TReportData; RenameObject: TRenameObject;
   const OldName, NewName: String);
 procedure RenameImagesInForm(Fm: TdxForm; const OldName, NewName: String);
 procedure RenameImages(const OldName, NewName: String);
-function CheckExistsInActions(CurObj: TObject; RenameObject: TRenameObject;
+function CheckExistsInActions(CurFm: TdxForm; RD: TReportData; RenameObject: TRenameObject;
   const aName: String; const ExtraMsg: String = ''): Boolean;
 function CheckImageExistsInActions(const aName: String; out Msg: String): Boolean;
 procedure UpdateImagesInForm(Fm: TdxForm);
@@ -256,6 +258,7 @@ procedure SetupBitBtn(Bn: TCustomBitBtn; const ResName: String);
 procedure SetupSpeedButton(Bn: TSpeedButton; const ResName: String);
 function CreateBitmapFromRes(const ResName: String): TCustomBitmap;
 procedure ConvertToDXMainVersion2(AMain, AFmMan: TObject);
+function GetDefaultDateTime(DT: TDateTime): TDateTime;
 procedure SetFileDateTime(const FlNm: String; DT: TDateTime);
 //procedure SetFileDateTime(Handle: THandle; DT: TDateTime);
 function GetFileDateTime(const FlNm: String): TDateTime;
@@ -263,6 +266,13 @@ function SameFileDateTime(const FlNm: String; ATime: TDateTime): Boolean;
 function TryTextToDate(AText: String; out ResDate: TDateTime): Boolean;
 function TextToDate(AText: String): TDateTime;
 function GetCurrentFirebirdDir: String;
+function FindQueryInForm(Fm: TdxForm; const QueryName: String; SkipQueryId: Integer = 0): TReportData;
+function FindTableInForm(AForm: TdxForm; const AName: String): TdxForm;
+function MakeUniqueQueryName(Fm: TdxForm; const QueryName: String): String;
+function IsRpFieldNameDSEditable(RD: TReportData; FieldNameDS: String): Boolean;
+function NeedMemo(Grid: TDBGrid; Column: TColumn): Boolean;
+procedure PositionCellEditor(Grid: TCustomGrid; Editor: TWinControl; R: TRect; Layout: TTextLayout; HasBorder: Boolean);
+function Abrakadabra(const Path: String; Delim: Char): String;
 
 implementation
 
@@ -271,7 +281,7 @@ uses
   expressions, dbengine, Math, sqlgen, dxusers,
   pivotgrid, Variants, maskedit, outputform, mytypes, StrUtils,
   BGRABitmap, LConvEncoding, dxfiles, myctrls, dateutils, scriptmanager,
-  uPSRuntime, SQLDb, appimagelists, dxactions, dxmains, LazFileUtils, imagemanager,
+  SQLDb, appimagelists, dxactions, dxmains, LazFileUtils, imagemanager,
   scriptfuncs, msgform, mainframe, designerframe, mylogger;
 
 procedure TestNil(P: Pointer; const Msg: String);
@@ -327,14 +337,17 @@ begin
   Result := MessageDlg(rsWarning, rsConfirmDelete, mtWarning, [mbYes, mbNo], 0) = mrYes;
 end;
 
-{procedure SetMenuItemImage(MI: TMenuItem; const ResName: String);
+{procedure SetMenuItemImage(MI: TMenuItem; const ImageName: String);
 var
-  B: TCustomBitmap;
+  Bmp: TBGRABitmap;
+  St: TStream;
 begin
-  B := CreateBitmapFromLazarusResource(ResName);
-  MI.Bitmap.Assign(B);
-  B.Free;
-end;      }
+  ImageMan.GetImageStreamPPI(ImageName, St);
+  Bmp := TBGRABitmap.Create(St);
+  MI.Bitmap.Assign(Bmp);
+  Bmp.Free;
+  St.Free;
+end;  }
 
 function CreateMenuItem(aMenu: TMenu; const Caption: String; Tag: PtrInt;
   aShortCut: TShortCut; Handler: TNotifyEvent; ImageIndex: Integer): TMenuItem;
@@ -841,7 +854,7 @@ var
 begin
   with C do
   begin
-    if (SourceTable = FmId) or (SourceTId = FmId) then
+    if (SourceTable = FmId) {or (SourceTId = FmId)} then    // Закомментировал, потому что формы удалять запрещено
     begin
       SourceTable := 0;
       FillFilter := '';
@@ -869,7 +882,10 @@ procedure _CheckDeleteForm(Fm: TdxForm; DelC, CurC: TComponent);
 var
   TId: Integer;
 begin
-  if (CurC is TdxComboBox) or (CurC is TdxLookupComboBox) or (CurC is TdxMemo) then
+  // Ниже код закомментирован, потому что теперь удалять форму запрещено, если
+  // на нее есть ссылки !!!
+
+  {if (CurC is TdxComboBox) or (CurC is TdxLookupComboBox) or (CurC is TdxMemo) then
   begin
     TId := GetSourceTId(CurC);
     if TId = GetId(DelC) then
@@ -879,7 +895,9 @@ begin
     end;
     if CurC is TdxLookupComboBox then
     	CheckFillTablePropsForm(Fm, TdxLookupComboBox(CurC), GetId(DelC));
-  end
+  end }
+  if CurC is TdxLookupComboBox then
+  	CheckFillTablePropsForm(Fm, TdxLookupComboBox(CurC), GetId(DelC));
 end;
 
 procedure CheckFillTablePropsField(Fm: TdxForm; C: TdxLookupComboBox; ObjFmId, FId: Integer);
@@ -1747,7 +1765,7 @@ begin
   aControl.Anchors := [akLeft, akTop, akRight];
 end;
 
-function CheckDuplicateQueryName(const aName: String; aRD: TReportData): Boolean;
+function CheckDuplicateReportName(const aName: String; aRD: TReportData): Boolean;
 var
   i: Integer;
   Fm: TdxForm;
@@ -1766,7 +1784,7 @@ begin
   for i := 0 to ReportMan.ReportCount - 1 do
   begin
     RD := ReportMan.Reports[i];
-    if (RD <> aRD) and (MyUtf8CompareText(aName, RD.Name) = 0) then
+    if (RD <> aRD) and (RD.Kind = rkReport) and (MyUtf8CompareText(aName, RD.Name) = 0) then
     begin
       ErrMsg(rsReportNameExists);
       Exit(False);
@@ -2476,7 +2494,7 @@ var
     begin
       Col := RD.Grid.Columns[j];
       FI := Fields.FindFieldByFieldName(Col.FieldNameDS);
-      if FI <> nil then FI.Caption := Col.Caption;
+      if FI <> nil then FI.Caption := Col.FieldName;
     end;
   end;
 
@@ -2525,7 +2543,7 @@ end;
 procedure AddFormHeight(Form: TForm);
 begin
   {$ifdef linux}
-  Form.Height := Form.Height + 36;
+  Form.Height := Form.Height + 44;
   {$endif}
 end;
 
@@ -2535,6 +2553,13 @@ begin
   M.ScrollBars:=ssNone;
   M.ScrollBars:=ssBoth;
 end;}
+
+procedure AddFormWidth(Form: TForm);
+begin
+  {$ifdef linux}
+  Form.Width := Form.Width + 50;
+  {$endif}
+end;
 
 // В линукс-версии 1.8.2-1.8.4 MyUtf8CompareText работает некорректно.
 function MyUtf8CompareText(const S1, S2: String): PtrInt;
@@ -2863,6 +2888,7 @@ procedure ChangeScaleControl(C: TControl; ToPPI, FromPPI: Integer);
     Col: TColumn;
   begin
     G.DefaultRowHeight := ScaleV(G.DefaultRowHeight);
+    G.TitleHeight := ScaleV(G.TitleHeight);
     if not G.TitleFont.IsEqual(G.Font) then
       G.TitleFont.Height := ScaleV(G.TitleFont.Height);
     if not G.Buttons.IsParentFont then
@@ -2937,6 +2963,7 @@ begin
 
   G := RD.Grid;
   G.DefaultRowHeight:=ScaleV(G.DefaultRowHeight);
+  G.TitleHeight:=ScaleV(G.TitleHeight);
   G.Font.Height:=ScaleV(G.Font.Height);
   G.TitleFont.Height:=ScaleV(G.TitleFont.Height);
   for i := 0 to G.ColumnCount - 1 do
@@ -3450,17 +3477,17 @@ begin
   end;
 end;
 
-procedure RenameInActions(CurObj: TObject; RenameObject: TRenameObject;
-  const OldName, NewName: String);
+procedure RenameInActions(CurFm: TdxForm; RD: TReportData;
+  RenameObject: TRenameObject; const OldName, NewName: String);
 var
   i, j: Integer;
-  Fm, CurFm: TdxForm;
+  Fm: TdxForm;
   AR: TActionRunner;
   Xml: String;
-  RD: TReportData;
   C: TComponent;
   Bn: TdxButton;
   RenameOk: Boolean;
+  CurFmName: String;
 
   procedure ProcessLines(Lines: TActionLines);
   var
@@ -3480,11 +3507,11 @@ var
         A := Line.Action;
         case RenameObject of
           renForm: Ok := A.RenameForm(OldName, NewName);
-          renField: Ok := A.RenameField(Fm, CurFm.FormCaption, OldName, NewName);
+          renField: Ok := A.RenameField(Fm, RD, CurFmName, OldName, NewName);
           renComponent: Ok := A.RenameComponent(Fm, CurFm.FormCaption, OldName, NewName);
-          renQuery: Ok := A.RenameQuery(OldName, NewName);
+          renQuery: Ok := A.RenameQuery(Fm, CurFm.FormCaption, OldName, NewName);
           renReport: Ok := A.RenameReport(OldName, NewName);
-          renRpField: Ok := A.RenameRpField(RD, OldName, NewName);
+          renRpField: Ok := A.RenameField(Fm, RD, CurFmName, OldName, NewName);
           renImage: Ok := A.RenameImage(OldName, NewName);
         end;
       end;
@@ -3501,8 +3528,17 @@ var
   end;
 
 begin
-  if CurObj is TdxForm then CurFm := TdxForm(CurObj)
-  else if CurObj is TReportData then RD := TReportData(CurObj);
+  {if CurObj is TdxForm then CurFm := TdxForm(CurObj)
+  else if CurObj is TReportData then
+  begin
+    RD := TReportData(CurObj);
+    if RD.Kind = rkQuery then
+
+  end;
+
+     }
+  CurFmName := '';
+  if CurFm <> nil then CurFmName := CurFm.FormCaption;
 
   AR := TActionRunner.Create;
   for i := 0 to FormMan.FormCount - 1 do
@@ -3579,15 +3615,15 @@ begin
     RenameImagesInForm(FormMan.Forms[i], OldName, NewName);
 end;
 
-function InnerCheckExistInActions(CurObj: TObject; RenameObject: TRenameObject;
+function InnerCheckExistInActions(CurFm: TdxForm; RD: TReportData; RenameObject: TRenameObject;
   const aName: String; out Msg: String): Boolean;
 var
   i, j: Integer;
-  Fm, CurFm: TdxForm;
+  Fm: TdxForm;
   AR: TActionRunner;
   S: String;
-  RD: TReportData;
   C: TComponent;
+  CurFmName, RpName: String;
 
   procedure ProcessLines(Lines: TActionLines; const BnName: String);
   var
@@ -3608,12 +3644,12 @@ var
         A := Line.Action;
         case RenameObject of
           renForm: if (Fm = nil) or (Fm.FormCaption <> aName) then Exists := A.FormExists(aName);
-          renField: Exists := A.FieldExists(Fm, CurFm.FormCaption, aName);
+          renField: Exists := A.FieldExists(Fm, RD, CurFmName, aName);
           renObject: Exists := A.ObjectExists(Fm, CurFm.FormCaption, aName);
           renComponent: Exists := A.ComponentExists(Fm, CurFm.FormCaption, aName);
-          renQuery: Exists := A.QueryExists(aName);
+          renQuery: Exists := A.QueryExists(Fm, CurFm.FormCaption, aName);
           renReport: Exists := A.ReportExists(aName);
-          renRpField: Exists := A.RpFieldExists(RD, aName);
+          renRpField: Exists := A.FieldExists(Fm, RD, CurFmName, aName);
           renImage: Exists := A.ImageExists(aName);
         end;
         if Exists then
@@ -3639,8 +3675,13 @@ var
 
 begin
   S := '';
-  if CurObj is TdxForm then CurFm := TdxForm(CurObj)
-  else if CurObj is TReportData then RD := TReportData(CurObj);
+  //if CurObj is TdxForm then CurFm := TdxForm(CurObj)
+  //else if CurObj is TReportData then RD := TReportData(CurObj);
+
+  CurFmName := '';
+  RpName := '';
+  if CurFm <> nil then CurFmName := CurFm.FormCaption;
+  if RD <> nil then RpName := RD.Name;
 
   AR := TActionRunner.Create;
   for i := 0 to FormMan.FormCount - 1 do
@@ -3663,12 +3704,13 @@ begin
   Msg := S;
 end;
 
-function CheckExistsInActions(CurObj: TObject; RenameObject: TRenameObject;
-  const aName: String; const ExtraMsg: String): Boolean;
+function CheckExistsInActions(CurFm: TdxForm; RD: TReportData;
+  RenameObject: TRenameObject; const aName: String; const ExtraMsg: String
+  ): Boolean;
 var
   S: String;
 begin
-  Result := InnerCheckExistInActions(CurObj, RenameObject, aName, S);
+  Result := InnerCheckExistInActions(CurFm, RD, RenameObject, aName, S);
   if Result then
     Info(Format(rsCmpUsedInActions,
       [RenameObjectToString(RenameObject), aName, Spaces + S, ExtraMsg]));
@@ -3677,7 +3719,7 @@ end;
 function CheckImageExistsInActions(const aName: String; out Msg: String
   ): Boolean;
 begin
-  Result := InnerCheckExistInActions(nil, renImage, aName, Msg);
+  Result := InnerCheckExistInActions(nil, nil, renImage, aName, Msg);
 end;
 
 procedure UpdateImagesInForm(Fm: TdxForm);
@@ -3928,18 +3970,33 @@ end;
 function ConstructDBOpenFilter(IsOpenDialog: Boolean): String;
 begin
   Result := '';
+  {$ifdef windows}
   if AppConfig.SupportDXDB then
   begin
     if IsOpenDialog then
       Result := Result + rsDialogFilterAllBases;
     Result := Result + rsDialogFilterDXDB;
   end;
-  Result := Result + rsDialogFilter;
+  Result := Result + rsDialogFilterFDB + rsDialogFilterAllFiles;
+  {$else}
+  if GetCurrentFirebirdDir = 'fb25' then
+    Result := Result + rsDialogFilterFDB
+  else
+    Result := Result + rsDialogFilterDXDB;
+  Result := Result + rsDialogFilterAllFiles;
+  {$endif}
 end;
 
 function GetDefaultDBExt: String;
 begin
+  {$ifdef windows}
   Result := IIF(AppConfig.SupportDXDB, 'dxdb', 'fdb');
+  {$else}
+  if GetCurrentFirebirdDir = 'fb25' then
+    Result := 'fdb'
+  else
+    Result := 'dxdb';
+  {$endif}
 end;
 
 procedure LogString(const Msg, Context: String);
@@ -4200,6 +4257,7 @@ var
   Col: TMyDBGridColumn;
   x, y: Integer;
 begin
+  Grid.AdjustInnerCellRect(R);
   Grid.Canvas.FillRect(R);
 
   Col := TMyDBGridColumn(Column);
@@ -4689,6 +4747,147 @@ begin
   Result := Utf8Copy(S, RPos(PathDelim, S) + 1, 255);
 end;
 
+function FindQueryInForm(Fm: TdxForm; const QueryName: String;
+  SkipQueryId: Integer): TReportData;
+var
+  i, RpId: Integer;
+  C: TComponent;
+  RD: TReportData;
+begin
+  Result := nil;
+  for i := 0 to Fm.ComponentCount - 1 do
+  begin
+    C := Fm.Components[i];
+    if C is TdxQueryGrid then
+    begin
+      RpId := GetId(C);
+      if (RpId = SkipQueryId) or (RpId = 0) then Continue;
+
+      RD := ReportMan.FindReport(RpId);
+      if MyUtf8CompareText(QueryName, RD.Name) = 0 then
+      begin
+        Result := RD;
+        Exit;
+      end;
+    end;
+  end;
+end;
+
+function FindTableInForm(AForm: TdxForm; const AName: String): TdxForm;
+var
+  i: Integer;
+  Fm: TdxForm;
+begin
+  Result := nil;
+  for i := 0 to FormMan.FormCount - 1 do
+  begin
+    Fm := FormMan.Forms[i];
+    if (Fm.PId = AForm.Id) and (MyUtf8CompareText(Fm.FormCaption, AName) = 0) then
+      Exit(Fm);
+  end;
+end;
+
+function MakeUniqueQueryName(Fm: TdxForm; const QueryName: String): String;
+var
+  n: Integer;
+  Nm, QryNm: String;
+begin
+  SplitComponentName(QueryName, QryNm, n);
+  Inc(n);
+  while True do
+  begin
+    Nm := QryNm + IntToStr(n);
+    if (FindQueryInForm(Fm, Nm) = nil) and (FindTableInForm(Fm, Nm) = nil) then Exit(Nm);
+    Inc(n);
+  end;
+end;
+
+function IsRpFieldNameDSEditable(RD: TReportData; FieldNameDS: String): Boolean;
+var
+  i: Integer;
+  ft: TRpFieldType;
+  pF, pLF: PRpField;
+  IsObjectField: Boolean;
+  Fm: TdxForm;
+  C: TComponent;
+begin
+  i := RD.IndexOfNameDS(FieldNameDS);
+  if i < 0 then Exit(False);
+
+  ft := RD.GetFieldType(i);
+  pF := RD.TryGetRpField(i);
+  IsObjectField := (pF <> nil) and (pF^.Tp = flObject) and (GetLowField(pF) <> pF);
+  if IsObjectField and not RD.IsTableField(pF) then
+  begin
+    pLF := GetLowField(pF);
+    Fm := FormMan.FindForm(pF^.TId);
+    C := FindById(Fm, pF^.FId);
+    // Если это поле списка, то редактировать можно.
+    if GetSourceFId(C) = pLF^.FId then Exit(True);
+  end;
+  if RD.IsCalcField(i) or RD.IsTableField(pF) or (ft in [flObject,
+    flRecId, flFile, flImage]) or IsObjectField then Result := False
+  else
+    Result := True;
+end;
+
+function NeedMemo(Grid: TDBGrid; Column: TColumn): Boolean;
+var
+  H: Integer;
+  F: TFont;
+begin
+  H := 0;
+  if Grid.HandleAllocated then
+  begin
+    F := Grid.Canvas.Font;
+    Grid.Canvas.Font := Column.Font;
+    H := Grid.Canvas.TextHeight(' ');
+    Grid.Canvas.Font := F;
+  end;
+  Result := Grid.DefaultRowHeight >= H + H;
+end;
+
+procedure PositionCellEditor(Grid: TCustomGrid; Editor: TWinControl; R: TRect; Layout: TTextLayout; HasBorder: Boolean);
+var
+  h: Integer;
+begin
+  Grid.AdjustInnerCellRect(R);
+  if not HasBorder then
+    R.Inflate(-constCellPadding, -constCellPadding, -constCellPadding, -constCellPadding);
+  if (Editor is TCustomEdit) and (TCustomEdit(Editor).BorderStyle = bsNone)
+    and Grid.HandleAllocated then
+  begin
+    Grid.Canvas.Font := Editor.Font;
+    h := Grid.Canvas.TextHeight(' ');
+  end
+  else
+    h := Editor.Height;
+  if R.Height < h then R.Height := h
+  else
+  begin
+    case Layout of
+      tlTop: ;
+      tlCenter: R.Top := R.Top + Round((R.Height - h) / 2);
+      tlBottom: R.Top := R.Bottom - h;
+    end;
+  end;
+  R.Bottom := R.Top + h;
+  if Editor is TdxLookupCellEditor then
+    R.Right := R.Right - TdxLookupCellEditor(Editor).GetButtonWidths;
+  Editor.SetBounds(R.Left, R.Top, R.Right-R.Left, R.Bottom-R.Top);
+end;
+
+function Abrakadabra(const Path: String; Delim: Char): String;
+var
+  SL: TStringList;
+begin
+  Result := '';
+  SL := TStringList.Create;
+  SplitStr(Path, Delim, SL);
+  if SL.Count > 0 then
+    Result := DupeString('  ', SL.Count - 1) + SL[SL.Count - 1];
+  SL.Free;
+end;
 
 end.
 

@@ -627,13 +627,13 @@ begin
     begin
       pF := FRD.Sources[0]^.Fields[i];
       SqlF := FSqlFields.FindByName(pF^.Name);
-      if (SqlF = nil) and CheckExistsInActions(FRD, renRpField, pF^.Name) then Exit(False);
+      if (SqlF = nil) and CheckExistsInActions(FCurrentForm, FRD, renRpField, pF^.Name) then Exit(False);
     end;
   for i := 0 to FRD.SqlFields.Count - 1 do
   begin
     OldSqlF := FRD.SqlFields[i];
     SqlF := FSqlFields.FindFieldDS(OldSqlF.FieldNameDS);
-    if (SqlF = nil) and CheckExistsInActions(FRD, renRpField, OldSqlF.Name) then Exit(False);
+    if (SqlF = nil) and CheckExistsInActions(FCurrentForm, FRD, renRpField, OldSqlF.Name) then Exit(False);
   end;
 end;
 
@@ -647,7 +647,7 @@ begin
   begin
     OldSqlF := FRD.SqlFields[i];
     SqlF := FSqlFields.FindFieldDS(OldSqlF.FieldNameDS);
-    if (SqlF <> nil) and (SqlF.Name <> OldSqlF.Name) and CheckExistsInActions(FRD,
+    if (SqlF <> nil) and (SqlF.Name <> OldSqlF.Name) and CheckExistsInActions(FCurrentForm, FRD,
       renRpField, OldSqlF.Name, LineEnding + rsCantRenameRpFieldMsg) then Exit(True);
   end;
 end;
@@ -674,7 +674,7 @@ begin
     OldSqlF := FRD.SqlFields[i];
     SqlF := FSqlFields.FindFieldDS(OldSqlF.FieldNameDS);
     if (SqlF <> nil) and (SqlF.Name <> OldSqlF.Name) then
-      RenameInActions(FRD, renRpField, OldSqlF.Name, SqlF.Name);
+      RenameInActions(FCurrentForm, FRD, renRpField, OldSqlF.Name, SqlF.Name);
   end;
 end;
 
@@ -818,6 +818,8 @@ begin
   SidePages.Width := ScaleToScreen(AppConfig.SQLEditorRightPanelWidth);
 
   FStructTree.BuildTree;
+
+  FCurrentForm := nil;
 
   Result := ShowModal;
 end;

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -322,7 +322,7 @@ begin
     Caption := rsSelectQueryField;
     if ShowForm(RD) = mrOk then
     begin
-      Col := RD.Grid.FindColumnByTitle(FieldName);
+      Col := RD.Grid.FindColumnByName(FieldName);
       Result := RD.Grid.FindColumnIndex(Col);
     end;
   finally
@@ -347,12 +347,12 @@ begin
     N := Tree.Selected;
     if N.Parent <> nil then N := N.Parent;
     Col := FRD.Grid.Columns[i];
-    Tree.Items.AddChildObject(N, Col.Caption, Pointer(i+1));
+    Tree.Items.AddChildObject(N, Col.FieldName, Pointer(i+1));
     N.Expand(False);
     FL := GetCollection(N.Index);
     FI := FL.AddField;
     FI.FieldName:=Col.FieldNameDS;
-    FI.Caption:=Col.Caption;
+    FI.Caption:=Col.FieldName;
     FieldIndex := FRD.IndexOfNameDS(Col.FieldNameDS);
     Tp := FRD.GetFieldType(FieldIndex);
     {if not Col.IsCalcField then
@@ -475,7 +475,7 @@ begin
     N := Tree.Items[i];
     if N.Parent = nil then Continue;
     idx := Integer(N.Data)-1;
-    //ShowMessage(FRD.Grid.Columns[idx].Caption);
+    //ShowMessage(FRD.Grid.Columns[idx].FieldName);
     DS.FieldDefs.Add(FRD.Grid.Columns[idx].FieldNameDS, ftString, 200);
   end;
   DS.CreateTable;
@@ -484,8 +484,8 @@ begin
   for i := 0 to DS.Fields.Count - 1 do
   begin
     F := DS.Fields[i];
-    Col := FRD.Grid.FindColumnByFieldName(F.FieldName);
-    F.AsString := Col.Caption;
+    Col := FRD.Grid.FindColumnByFieldNameDS(F.FieldName);
+    F.AsString := Col.FieldName;
   end;
   DS.Post;
 end;
@@ -537,11 +537,11 @@ procedure TPivotGridFm.BuildTree;
     for i := 0 to FL.Count - 1 do
     begin
       S := FL[i].FieldName;
-      Col := FRD.Grid.FindColumnByFieldName(S);
+      Col := FRD.Grid.FindColumnByFieldNameDS(S);
       if Col <> nil then
       begin
         m := FRD.Grid.FindColumnIndex(Col);
-        Tree.Items.AddChildObject(N, Col.Caption, Pointer(m+1));
+        Tree.Items.AddChildObject(N, Col.FieldName, Pointer(m+1));
       end;
     end;
     N.Expand(False);

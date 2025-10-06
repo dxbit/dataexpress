@@ -129,8 +129,8 @@ begin
     Align:=alClient;
     Flat:=True;
     CharCase:=ecNormal;
-    //SetTreeFilterSilently(FTree, '');
-    FilteredTreeview := FTree;
+    SetTreeFilterSilently(FTree, '');
+    //FilteredTreeview := FTree;
     BorderSpacing.Top := 2;
     BorderSpacing.Bottom := 2;
   end;

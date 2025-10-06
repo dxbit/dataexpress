@@ -41,6 +41,7 @@ type
     FOnFormResize: TNotifyEvent;
     FXPress, FYPress: Boolean;
     FDummyX, FDummyY: TLabel;
+    function GetControlRect: TRect;
   public
     procedure Bind(aControl: TDesignerBox; aForm: TdxForm; AOffset: Integer);
     procedure UnBind;
@@ -56,17 +57,20 @@ uses
 
 procedure TFormResizer.Bind(aControl: TDesignerBox; aForm: TdxForm;
   AOffset: Integer);
+var
+  R: TRect;
 begin
   FControl := aControl;
   FForm := aForm;
   FOffset := AOffset;
   FSpace := ScaleToScreen(8);
+  R := GetControlRect;
   FControl.OnMouseMove:=@ControlMouseMove;
   FControl.OnMouseUp:=@ControlMouseUp;
   FDummyX := TLabel(FControl.Owner.FindComponent('DummyX'));
   FDummyY := TLabel(FControl.Owner.FindComponent('DummyY'));
-  FDummyX.Left := FOffset + FForm.Width + FSpace;
-  FDummyY.Top := FOffset + FForm.Height + FSpace;
+  FDummyX.Left := FOffset + R.Right + FSpace;
+  FDummyY.Top := FOffset + R.Bottom + FSpace;
 end;
 
 procedure TFormResizer.UnBind;
@@ -84,7 +88,7 @@ procedure TFormResizer.ControlMouseMove(Sender: TObject; Shift: TShiftState; X,
 var
   R: TRect;
 begin
-  R := FForm.BoundsRect;
+  R := GetControlRect;
   R.Offset(FOffset, FOffset);
   X := FControl.HorzScrollBar.Position + X;
   Y := FControl.VertScrollBar.Position + Y;
@@ -106,6 +110,7 @@ begin
   begin
     if FXPress then
     begin
+      FControl.Cursor := crSizeWE;
       R.Right := X - 1;
       FForm.Width := R.Width;
       {$ifdef linux}
@@ -114,6 +119,7 @@ begin
     end
     else if FYPress then
     begin
+      FControl.Cursor := crSizeNS;
       R.Bottom := Y - 1;
       FForm.Height := R.Height;
       {$ifdef linux}
@@ -133,11 +139,21 @@ begin
   begin
     FXPress := False;
     FYPress := False;
-    R := FForm.BoundsRect;
+    //R := FForm.BoundsRect;
+    R := GetControlRect;
     R.Offset(FOffset, FOffset);
     FDummyX.Left := R.Right + FSpace;
     FDummyY.Top := R.Bottom + FSpace;
   end;
+end;
+
+function TFormResizer.GetControlRect: TRect;
+begin
+  {$ifdef windows}
+  Result := FForm.BoundsRect;
+  {$else}
+  Result := FControl.DesignFm.BoundsRect;
+  {$endif}
 end;
 
 end.

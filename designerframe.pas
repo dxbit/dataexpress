@@ -2139,7 +2139,8 @@ begin
     case DCI.Status of
       dstNew:
         if DCI.IsForm then AddStr := AddStr + SQLCreateTable(DCI.Id, DCI.PId)
-        else AddStr := AddStr + SQLCreateField(DCI.Id, DCI.FmId, DCI.FieldSize, DCI.ClsName);
+        else AddStr := AddStr + SQLCreateField(DCI.Id, DCI.FmId, DCI.FieldSize,
+          DCI.ClsName);
       dstDelete:
         if DCI.IsForm then DelStr := DelStr + SQLDeleteTable(DCI.Id, DCI.PId)
         else DelStr := DelStr + SQLDeleteField(DCI.Id, DCI.FmId, DCI.ClsName);
@@ -2428,6 +2429,7 @@ begin
   BtnGlyphMnu := TButtonGlyphMenu.Create(nil);
   QGridMoreMenu := TQueryGridMoreMenu.Create(nil);
   CalcEditMoreMnu := TCalcEditMoreMenu.Create(nil);
+  FormGlyphMnu := TFormGlyphMenu.Create(nil);
 
   TabSheet2.Caption := rsSummary;
   TabSheet3.Caption := rsComponents;
@@ -2494,6 +2496,7 @@ begin
   FreeAndNil(ScriptFm);
 
   HidePropsForm;
+  FormGlyphMnu.Free;
   CalcEditMoreMnu.Free;
   QGridMoreMenu.Free;
   BtnGlyphMnu.Free;
@@ -2657,11 +2660,35 @@ var
   RD: TReportData;
   Sc: TRpSource;
   Frm: TdxForm;
+  ObjMsg: String;
+  C: TComponent;
 begin
+  if Fm.PId = 0 then
+  begin
+    ObjMsg := '';
+    for j := 0 to FormMan.FormCount - 1 do
+    begin
+      Frm := FormMan.Forms[j];
+      for z := 0 to Frm.ComponentCount - 1 do
+      begin
+        C := Frm.Components[z];
+        if ((C is TdxLookupComboBox) or (C is TdxComboBox) or (C is TdxMemo)) and
+          (GetSourceTId(C) = Fm.Id) then
+          ObjMsg := ObjMsg + Format('    %s (%s)', [GetFieldName(C), Frm.FormCaption]) + LineEnding;
+      end;
+    end;
+    if ObjMsg <> '' then
+    begin
+      ObjMsg := Format(rsCantDelFormMsgFields, [LineEnding + SortStr(ObjMsg)]);
+      ErrMsgFmt(rsCantDelFormMsg, [Fm.FormCaption, ObjMsg]);
+      Exit(False);
+    end;
+  end;
+
   for j := 0 to FormMan.FormCount - 1 do
   begin
     Frm := FormMan.Forms[j];
-    if CheckExistsInActions(Frm, renForm, Fm.FormCaption) then Exit(False);
+    if CheckExistsInActions(Frm, nil, renForm, Fm.FormCaption) then Exit(False);
   end;
 
   RptMsg := ''; QryMsg := '';

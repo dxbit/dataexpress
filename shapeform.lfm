@@ -1,23 +1,24 @@
 object ShapeFm: TShapeFm
-  Left = 516
-  Height = 351
-  Top = 263
-  Width = 434
+  Left = 418
+  Height = 490
+  Top = 167
+  Width = 784
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'ShapeFm'
-  ClientHeight = 351
-  ClientWidth = 434
+  ClientHeight = 490
+  ClientWidth = 784
   Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnCreate = FormCreate
   object GroupBox1: TGroupBox
     Left = 8
-    Height = 184
+    Height = 232
     Top = 8
-    Width = 240
+    Width = 440
     Caption = 'Фигура'
-    ClientHeight = 159
-    ClientWidth = 234
+    ClientHeight = 212
+    ClientWidth = 436
     TabOrder = 0
     object Shape1: TShape
       Left = 40
@@ -26,14 +27,15 @@ object ShapeFm: TShapeFm
       Width = 33
       Shape = stCircle
     end
-    object RadioButton1: TRadioButton
+    object CircleRbn: TRadioButton
       AnchorSideTop.Control = Shape1
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 15
-      Top = 25
-      Width = 14
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 0
+      OnChange = RadioButtonChange
     end
     object Shape2: TShape
       Left = 112
@@ -42,14 +44,15 @@ object ShapeFm: TShapeFm
       Width = 24
       Shape = stEllipse
     end
-    object RadioButton2: TRadioButton
+    object EllipseRbn: TRadioButton
       AnchorSideTop.Control = Shape2
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 15
-      Top = 25
-      Width = 14
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 1
+      OnChange = RadioButtonChange
     end
     object Shape3: TShape
       Left = 176
@@ -58,119 +61,307 @@ object ShapeFm: TShapeFm
       Width = 33
       Shape = stSquare
     end
-    object RadioButton3: TRadioButton
+    object SquareRbn: TRadioButton
       AnchorSideTop.Control = Shape3
       AnchorSideTop.Side = asrCenter
       Left = 152
-      Height = 15
-      Top = 25
-      Width = 14
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 2
+      OnChange = RadioButtonChange
     end
     object Shape4: TShape
-      Left = 40
+      Left = 248
       Height = 32
-      Top = 64
+      Top = 16
       Width = 25
     end
-    object RadioButton4: TRadioButton
+    object RectRbn: TRadioButton
       AnchorSideTop.Control = Shape4
       AnchorSideTop.Side = asrCenter
-      Left = 16
-      Height = 15
-      Top = 73
-      Width = 14
+      Left = 224
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 3
+      OnChange = RadioButtonChange
     end
     object Shape5: TShape
-      Left = 112
+      Left = 320
       Height = 32
-      Top = 64
+      Top = 16
       Width = 33
       Shape = stRoundSquare
     end
-    object RadioButton5: TRadioButton
+    object RoundSquareRbn: TRadioButton
       AnchorSideTop.Control = Shape5
       AnchorSideTop.Side = asrCenter
-      Left = 88
-      Height = 15
-      Top = 73
-      Width = 14
+      Left = 296
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 4
+      OnChange = RadioButtonChange
     end
     object Shape6: TShape
-      Left = 176
+      Left = 384
       Height = 32
-      Top = 64
+      Top = 16
       Width = 24
       Shape = stRoundRect
     end
-    object RadioButton6: TRadioButton
+    object RoundRectRbn: TRadioButton
       AnchorSideTop.Control = Shape6
       AnchorSideTop.Side = asrCenter
-      Left = 152
-      Height = 15
-      Top = 73
-      Width = 14
+      Left = 360
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 5
+      OnChange = RadioButtonChange
     end
     object Shape7: TShape
       Left = 40
       Height = 32
-      Top = 112
+      Top = 64
       Width = 31
       Shape = stSquaredDiamond
     end
-    object RadioButton7: TRadioButton
+    object SquareDiamondRbn: TRadioButton
       AnchorSideTop.Control = Shape7
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 15
-      Top = 121
-      Width = 14
+      Height = 17
+      Top = 72
+      Width = 18
       TabOrder = 6
+      OnChange = RadioButtonChange
     end
     object Shape8: TShape
       Left = 112
       Height = 32
-      Top = 112
+      Top = 64
       Width = 25
       Shape = stDiamond
     end
-    object RadioButton8: TRadioButton
+    object DiamondRbn: TRadioButton
       AnchorSideTop.Control = Shape8
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 15
-      Top = 121
-      Width = 14
+      Height = 17
+      Top = 72
+      Width = 18
       TabOrder = 7
+      OnChange = RadioButtonChange
     end
     object Shape9: TShape
       Left = 176
       Height = 32
-      Top = 112
+      Top = 64
       Width = 33
       Shape = stTriangle
     end
-    object RadioButton9: TRadioButton
+    object TriangleRbn: TRadioButton
       AnchorSideTop.Control = Shape9
       AnchorSideTop.Side = asrCenter
       Left = 152
-      Height = 15
-      Top = 121
-      Width = 14
+      Height = 17
+      Top = 72
+      Width = 18
       TabOrder = 8
+      OnChange = RadioButtonChange
+    end
+    object Shape23: TShape
+      Left = 248
+      Height = 32
+      Top = 64
+      Width = 33
+      Shape = stTriangleDown
+    end
+    object TriangleDownRbn: TRadioButton
+      AnchorSideTop.Control = Shape23
+      AnchorSideTop.Side = asrCenter
+      Left = 224
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 9
+      OnChange = RadioButtonChange
+    end
+    object Shape24: TShape
+      Left = 320
+      Height = 32
+      Top = 64
+      Width = 33
+      Shape = stTriangleLeft
+    end
+    object TriangleLeftRbn: TRadioButton
+      AnchorSideTop.Control = Shape24
+      AnchorSideTop.Side = asrCenter
+      Left = 296
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 10
+      OnChange = RadioButtonChange
+    end
+    object Shape25: TShape
+      Left = 384
+      Height = 32
+      Top = 64
+      Width = 33
+      Shape = stTriangleRight
+    end
+    object TriangleRightRbn: TRadioButton
+      AnchorSideTop.Control = Shape25
+      AnchorSideTop.Side = asrCenter
+      Left = 360
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 11
+      OnChange = RadioButtonChange
+    end
+    object Shape26: TShape
+      Left = 40
+      Height = 32
+      Top = 112
+      Width = 33
+      Shape = stStar
+    end
+    object StarRbn: TRadioButton
+      AnchorSideTop.Control = Shape26
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 12
+      OnChange = RadioButtonChange
+    end
+    object Shape27: TShape
+      Left = 112
+      Height = 32
+      Top = 112
+      Width = 33
+      Shape = stStarDown
+    end
+    object StarDownRbn: TRadioButton
+      AnchorSideTop.Control = Shape27
+      AnchorSideTop.Side = asrCenter
+      Left = 88
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 13
+      OnChange = RadioButtonChange
+    end
+    object VertLineRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 152
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 14
+      OnChange = RadioButtonChange
+    end
+    object Shape28: TShapeEx
+      Left = 176
+      Height = 32
+      Top = 112
+      Width = 33
+      ShapeEx = steVertLine
+    end
+    object HorzLineRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 224
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 15
+      OnChange = RadioButtonChange
+    end
+    object Shape29: TShapeEx
+      Left = 248
+      Height = 32
+      Top = 112
+      Width = 33
+      ShapeEx = steHorzLine
+    end
+    object BDiagRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 296
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 16
+      OnChange = RadioButtonChange
+    end
+    object Shape30: TShapeEx
+      Left = 320
+      Height = 32
+      Top = 112
+      Width = 32
+      ShapeEx = steBDiagonal
+    end
+    object FDiagRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 360
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 17
+      OnChange = RadioButtonChange
+    end
+    object Shape31: TShapeEx
+      Left = 384
+      Height = 32
+      Top = 112
+      Width = 32
+      ShapeEx = steFDiagonal
+    end
+    object CrossRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 17
+      Top = 168
+      Width = 18
+      TabOrder = 18
+      OnChange = RadioButtonChange
+    end
+    object Shape32: TShapeEx
+      Left = 40
+      Height = 32
+      Top = 160
+      Width = 32
+      ShapeEx = steCross
+    end
+    object DiagCrossRbn: TRadioButton
+      AnchorSideTop.Side = asrCenter
+      Left = 88
+      Height = 17
+      Top = 168
+      Width = 18
+      TabOrder = 19
+      OnChange = RadioButtonChange
+    end
+    object Shape33: TShapeEx
+      Left = 112
+      Height = 32
+      Top = 160
+      Width = 32
+      ShapeEx = steDiagCross
     end
   end
   object GroupBox2: TGroupBox
-    Left = 256
+    Left = 8
     Height = 184
-    Top = 8
+    Top = 248
     Width = 168
     Caption = 'Стиль линии'
-    ClientHeight = 159
-    ClientWidth = 162
+    ClientHeight = 164
+    ClientWidth = 164
     TabOrder = 1
     object Shape10: TShape
       Left = 40
@@ -179,14 +370,15 @@ object ShapeFm: TShapeFm
       Width = 33
       Shape = stSquare
     end
-    object RadioButton10: TRadioButton
+    object PSolidRbn: TRadioButton
       AnchorSideTop.Control = Shape10
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 15
-      Top = 25
-      Width = 14
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 0
+      OnChange = RadioButtonChange
     end
     object Shape11: TShape
       Left = 112
@@ -196,14 +388,15 @@ object ShapeFm: TShapeFm
       Pen.Style = psDash
       Shape = stSquare
     end
-    object RadioButton11: TRadioButton
+    object PDashRbn: TRadioButton
       AnchorSideTop.Control = Shape11
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 15
-      Top = 25
-      Width = 14
+      Height = 17
+      Top = 24
+      Width = 18
       TabOrder = 1
+      OnChange = RadioButtonChange
     end
     object Shape12: TShape
       Left = 39
@@ -213,14 +406,15 @@ object ShapeFm: TShapeFm
       Pen.Style = psDashDot
       Shape = stSquare
     end
-    object RadioButton12: TRadioButton
+    object PDashDotRbn: TRadioButton
       AnchorSideTop.Control = Shape12
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 15
-      Top = 121
-      Width = 14
+      Height = 17
+      Top = 120
+      Width = 18
       TabOrder = 4
+      OnChange = RadioButtonChange
     end
     object Shape13: TShape
       Left = 39
@@ -230,14 +424,15 @@ object ShapeFm: TShapeFm
       Pen.Style = psDashDotDot
       Shape = stSquare
     end
-    object RadioButton13: TRadioButton
+    object PDashDotDotRbn: TRadioButton
       AnchorSideTop.Control = Shape13
       AnchorSideTop.Side = asrCenter
       Left = 16
-      Height = 15
-      Top = 73
-      Width = 14
+      Height = 17
+      Top = 72
+      Width = 18
       TabOrder = 2
+      OnChange = RadioButtonChange
     end
     object Shape14: TShape
       Left = 111
@@ -247,14 +442,15 @@ object ShapeFm: TShapeFm
       Pen.Style = psDot
       Shape = stSquare
     end
-    object RadioButton14: TRadioButton
+    object PDotRbn: TRadioButton
       AnchorSideTop.Control = Shape14
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 15
-      Top = 73
-      Width = 14
+      Height = 17
+      Top = 72
+      Width = 18
       TabOrder = 3
+      OnChange = RadioButtonChange
     end
     object Shape15: TShape
       Left = 111
@@ -264,61 +460,65 @@ object ShapeFm: TShapeFm
       Pen.Style = psClear
       Shape = stSquare
     end
-    object RadioButton15: TRadioButton
+    object PClearRbn: TRadioButton
       AnchorSideTop.Control = Shape15
       AnchorSideTop.Side = asrCenter
       Left = 88
-      Height = 15
-      Top = 121
-      Width = 14
+      Height = 17
+      Top = 120
+      Width = 18
       TabOrder = 5
+      OnChange = RadioButtonChange
     end
   end
   object Label1: TLabel
-    AnchorSideTop.Control = SpinEdit1
+    AnchorSideTop.Control = LineWidthSpn
     AnchorSideTop.Side = asrCenter
-    Left = 16
-    Height = 17
-    Top = 205
-    Width = 96
+    Left = 456
+    Height = 15
+    Top = 348
+    Width = 89
     Caption = 'Толщина линии'
     ParentColor = False
   end
-  object SpinEdit1: TSpinEdit
+  object LineWidthSpn: TSpinEdit
     AnchorSideLeft.Side = asrBottom
-    Left = 128
-    Height = 26
-    Top = 200
+    Left = 568
+    Height = 23
+    Top = 344
     Width = 50
     BorderSpacing.Left = 8
-    TabOrder = 2
+    MaxValue = 1000
+    MinValue = 1
+    TabOrder = 3
     Value = 1
+    OnChange = RadioButtonChange
   end
   object Label2: TLabel
     AnchorSideTop.Control = PenColor
     AnchorSideTop.Side = asrCenter
-    Left = 16
-    Height = 17
-    Top = 235
-    Width = 71
+    Left = 456
+    Height = 15
+    Top = 380
+    Width = 64
     Caption = 'Цвет линии'
     ParentColor = False
   end
   object Label3: TLabel
     AnchorSideTop.Control = BrushColor
     AnchorSideTop.Side = asrCenter
-    Left = 16
-    Height = 17
-    Top = 267
-    Width = 81
+    Left = 456
+    Height = 15
+    Top = 412
+    Width = 73
     Caption = 'Цвет заливки'
     ParentColor = False
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 36
-    Top = 309
-    Width = 422
+    Height = 34
+    Top = 450
+    Width = 772
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -327,23 +527,203 @@ object ShapeFm: TShapeFm
     CloseButton.DefaultCaption = True
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
-    TabOrder = 3
+    TabOrder = 4
     ShowButtons = [pbOK, pbCancel]
   end
   object PenColor: TColorSampler
-    Left = 128
+    Left = 568
     Height = 23
-    Top = 232
+    Top = 376
     Width = 88
     ParentShowHint = False
     ShowHint = True
+    OnChange = RadioButtonChange
   end
   object BrushColor: TColorSampler
-    Left = 128
+    Left = 568
     Height = 23
-    Top = 264
+    Top = 408
     Width = 88
     ParentShowHint = False
     ShowHint = True
+    OnChange = RadioButtonChange
+  end
+  object GroupBox3: TGroupBox
+    Left = 208
+    Height = 184
+    Top = 248
+    Width = 240
+    Caption = 'Стиль заливки'
+    ClientHeight = 164
+    ClientWidth = 236
+    TabOrder = 2
+    object Shape16: TShape
+      Left = 40
+      Height = 32
+      Top = 16
+      Width = 33
+      Brush.Color = clBlack
+      Shape = stSquare
+    end
+    object BSolidRbn: TRadioButton
+      AnchorSideTop.Control = Shape16
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 17
+      Top = 24
+      Width = 18
+      TabOrder = 0
+      OnChange = RadioButtonChange
+    end
+    object Shape17: TShape
+      Left = 112
+      Height = 32
+      Top = 16
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsBDiagonal
+      Shape = stSquare
+    end
+    object BBDiagRbn: TRadioButton
+      AnchorSideTop.Control = Shape17
+      AnchorSideTop.Side = asrCenter
+      Left = 88
+      Height = 17
+      Top = 24
+      Width = 18
+      TabOrder = 1
+      OnChange = RadioButtonChange
+    end
+    object Shape18: TShape
+      Left = 111
+      Height = 32
+      Top = 64
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsVertical
+      Shape = stSquare
+    end
+    object BVertLineRbn: TRadioButton
+      AnchorSideTop.Control = Shape18
+      AnchorSideTop.Side = asrCenter
+      Left = 88
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 4
+      OnChange = RadioButtonChange
+    end
+    object Shape19: TShape
+      Left = 183
+      Height = 32
+      Top = 16
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsFDiagonal
+      Shape = stSquare
+    end
+    object BFDiagRbn: TRadioButton
+      AnchorSideTop.Control = Shape19
+      AnchorSideTop.Side = asrCenter
+      Left = 160
+      Height = 17
+      Top = 24
+      Width = 18
+      TabOrder = 2
+      OnChange = RadioButtonChange
+    end
+    object Shape20: TShape
+      Left = 39
+      Height = 32
+      Top = 64
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsHorizontal
+      Shape = stSquare
+    end
+    object BHorzLineRbn: TRadioButton
+      AnchorSideTop.Control = Shape20
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 3
+      OnChange = RadioButtonChange
+    end
+    object Shape21: TShape
+      Left = 183
+      Height = 32
+      Top = 64
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsCross
+      Shape = stSquare
+    end
+    object BCrossRbn: TRadioButton
+      AnchorSideTop.Control = Shape21
+      AnchorSideTop.Side = asrCenter
+      Left = 160
+      Height = 17
+      Top = 72
+      Width = 18
+      TabOrder = 5
+      OnChange = RadioButtonChange
+    end
+    object BDiagCrossRbn: TRadioButton
+      AnchorSideTop.Control = Shape22
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 6
+      OnChange = RadioButtonChange
+    end
+    object Shape22: TShape
+      Left = 39
+      Height = 32
+      Top = 112
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsDiagCross
+      Shape = stSquare
+    end
+    object BClearRbn: TRadioButton
+      AnchorSideTop.Control = Shape34
+      AnchorSideTop.Side = asrCenter
+      Left = 89
+      Height = 17
+      Top = 120
+      Width = 18
+      TabOrder = 7
+      OnChange = RadioButtonChange
+    end
+    object Shape34: TShape
+      Left = 112
+      Height = 32
+      Top = 112
+      Width = 33
+      Brush.Color = clBlack
+      Brush.Style = bsClear
+      Shape = stSquare
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 456
+    Height = 320
+    Top = 8
+    Width = 320
+    Caption = 'Образец'
+    ClientHeight = 300
+    ClientWidth = 316
+    TabOrder = 5
+    object SampleShp: TShapeEx
+      Left = 24
+      Height = 232
+      Top = 32
+      Width = 272
+      ShapeEx = steNone
+    end
   end
 end

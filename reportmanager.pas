@@ -52,8 +52,8 @@ type
     procedure DeleteReport(RD: TReportData);
     function ReportCount: Integer;
     function FindReport(aId: Integer): TReportData;
-    function FindQueryByName(const aName: String): TReportData;
-    function FindByName(const aName: String): TReportData;
+    //function FindQueryByName(const aName: String): TReportData;
+    function FindReportByName(const aName: String): TReportData;
     procedure GetReports(L: TStrings);
     procedure CorrectMaxId;
     function CloneManager: TReportManager;
@@ -472,7 +472,7 @@ begin
     if Reports[i].Id = aId then Exit(Reports[i]);
 end;
 
-function TReportManager.FindQueryByName(const aName: String): TReportData;
+{function TReportManager.FindQueryByName(const aName: String): TReportData;
 var
   i: Integer;
   RD: TReportData;
@@ -484,9 +484,9 @@ begin
     if (RD.Kind = rkQuery) and (MyUtf8CompareText(aName, RD.Name) = 0) then
       Exit(RD);
   end;
-end;
+end;  }
 
-function TReportManager.FindByName(const aName: String): TReportData;
+function TReportManager.FindReportByName(const aName: String): TReportData;
 var
   i: Integer;
   RD: TReportData;
@@ -495,7 +495,7 @@ begin
   for i := 0 to ReportCount - 1 do
   begin
     RD := Reports[i];
-    if MyUtf8CompareText(aName, RD.Name) = 0 then
+    if (RD.Kind = rkReport) and (MyUtf8CompareText(aName, RD.Name) = 0) then
       Exit(RD);
   end;
 end;
@@ -552,7 +552,7 @@ var
 begin
   SplitComponentName(AnyName, S, n);
   Inc(n);
-  while FindByName(S + IntToStr(n)) <> nil do
+  while FindReportByName(S + IntToStr(n)) <> nil do
     Inc(n);
   Result := S + IntToStr(n);  end;
 

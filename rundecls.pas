@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -92,6 +92,7 @@ procedure RIRegister_TreeView(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_TrayIcon(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_CsvData(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_dxRecordId(Cl: TPSRuntimeClassImporter);
+procedure RIRegister_CellEditors(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_Functions(Exec: TPSExec);
 
 implementation
@@ -99,7 +100,8 @@ implementation
 uses
   ScriptFuncs, maskedit, mainform, ExtCtrls, Math, exprfuncs, DateUtils,
   apputils, pivotgrid, reportwindow, IniFiles, BGRABitmap, Clipbrd, MyCtrls,
-  DxSQLQuery, HMAC, Variants, dxcharts, imagemanager, mytypes, lists;
+  DxSQLQuery, HMAC, Variants, dxcharts, imagemanager, mytypes, lists,
+  datasetprocessor;
 
 function TJSONDataJSONType(Self: TJSONData): TJSONtype; begin Result := Self.JSONType; end;
 procedure TJSONDataCount_R(Self: TJSONData; var T: Integer); begin T := Self.Count; end;
@@ -998,6 +1000,7 @@ begin
 
   with Cl.Add(TKGrid) do
   begin
+    RegisterMethod(@TKGrid.CellRect, 'CellRect');
     RegisterVirtualMethod(@TKGrid.CellSelected, 'CellSelected');
     RegisterVirtualMethod(@TKGrid.DeleteRow, 'DeleteRow');
     {RegisterMethod(@TKGrid.DeleteCol, 'DeleteCol');
@@ -1026,7 +1029,6 @@ begin
 
   with Cl.Add(TdxPivotGrid) do
   begin
-
   end;
 end;
 
@@ -1150,6 +1152,7 @@ procedure TdxQueryGridAsS_R(Self: TdxQueryGrid; var T: String; I: String); begin
 procedure TdxQueryGridOnCreateForm_R(Self: TdxQueryGrid; var T: TCreateFormEvent); begin T := Self.OnCreateForm; end;
 procedure TdxQueryGridOnCreateForm_W(Self: TdxQueryGrid; T: TCreateFormEvent); begin Self.OnCreateForm := T; end;
 procedure TdxQueryGridEditable_R(Self: TdxQueryGrid; var T: Boolean); begin T := Self.Editable; end;
+procedure TdxQueryGridState_R(Self: TdxQueryGrid; var T: TDataSetState); begin T := Self.State; end;
 
 procedure RIRegister_dxQueryGrid(Cl: TPSRuntimeClassImporter);
 begin
@@ -1173,6 +1176,10 @@ begin
     RegisterMethod(@TdxQueryGrid.GotoRecord, 'GotoRecord');
     RegisterMethod(@TdxQueryGrid.Refresh, 'Refresh');
     RegisterMethod(@TdxQueryGrid.Close, 'Close');
+    RegisterMethod(@TdxQueryGrid.FindColumnByFieldName, 'FindColumnByFieldName');
+    RegisterMethod(@TdxQueryGrid.Post, 'Post');
+    RegisterMethod(@TdxQueryGrid.Cancel, 'Cancel');
+    RegisterMethod(@TdxQueryGrid.Validate, 'Validate');
 
     RegisterMethod(@TdxQueryGrid.DisableScrollEvents, 'DisableScrollEvents');
     RegisterMethod(@TdxQueryGrid.EnableScrollEvents, 'EnableScrollEvents');
@@ -1187,6 +1194,7 @@ begin
     RegisterEventPropertyHelper(@TdxQueryGridOnCreateForm_R, @TdxQueryGridOnCreateForm_W,
       'OnCreateForm');
     RegisterPropertyHelper(@TdxQueryGridEditable_R, nil, 'Editable');
+    RegisterPropertyHelper(@TdxQueryGridState_R, nil, 'State');
 
     RegisterMethod(@TdxQueryGrid.GetSourceFileName, 'GetSourceFileName');
     RegisterMethod(@TdxQueryGrid.GetStoredFileName, 'GetStoredFileName');
@@ -1451,8 +1459,8 @@ procedure TDBGridBorderColor_W(Self: TDBGrid; T: TColor); begin Self.BorderColor
 //procedure TDBGridDefaultTextStyle_W(Self: TDBGrid; T: TTextStyle); begin Self.DefaultTextStyle := T; end;
 //procedure TDBGridEditorBorderStyle_R(Self: TDBGrid; var T: TBorderStyle); begin T := Self.EditorBorderStyle; end;
 //procedure TDBGridEditorBorderStyle_W(Self: TDBGrid; T: TBorderStyle); begin Self.EditorBorderStyle := T; end;
-//procedure TDBGridEditorMode_R(Self: TDBGrid; var T: Boolean); begin T := Self.EditorMode; end;
-//procedure TDBGridEditorMode_W(Self: TDBGrid; T: Boolean); begin Self.EditorMode := T; end;
+procedure TDBGridEditorMode_R(Self: TDBGrid; var T: Boolean); begin T := Self.EditorMode; end;
+procedure TDBGridEditorMode_W(Self: TDBGrid; T: Boolean); begin Self.EditorMode := T; end;
 procedure TDBGridExtendedColSizing_R(Self: TDBGrid; var T: Boolean); begin T := Self.ExtendedColSizing; end;
 procedure TDBGridExtendedColSizing_W(Self: TDBGrid; T: Boolean); begin Self.ExtendedColSizing := T; end;
 //procedure TDBGridFastEditing_R(Self: TDBGrid; var T: Boolean); begin T := Self.FastEditing; end;
@@ -1473,8 +1481,20 @@ procedure TDBGridSelectedField_R(Self: TDBGrid; var T: TField); begin T := Self.
 procedure TDBGridSelectedIndex_R(Self: TDBGrid; var T: Integer); begin T := Self.SelectedIndex; end;
 procedure TDBGridReadOnly_R(Self: TDBGrid; var T: Boolean); begin T := Self.ReadOnly; end;
 procedure TDBGridReadOnly_W(Self: TDBGrid; T: Boolean);
+var
+  QGrid: TdxQueryGrid;
 begin
   Self.ReadOnly := T;
+  if Self is TdxQueryGrid then
+  begin
+    QGrid := TdxQueryGrid(Self);
+    if QGrid.DSP <> nil then
+      with TDataSetProcessor(QGrid.DSP).Queries[QGrid.QRi]^ do
+        if Simple then
+          RD.Grid.Editable := not T
+        else
+          Exit;
+  end;
   if T then Self.Options := Self.Options - [dgEditing]
   else Self.Options := Self.Options + [dgEditing];
 end;
@@ -1508,7 +1528,7 @@ begin
   else
   begin
     QG := TdxQueryGrid(Self.Grid);
-    Col := QG.FindColumnByTitle(FieldName);
+    Col := QG.FindColumnByFieldName(FieldName);
     if Col = nil then raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
     QG.SortCols.AddCol(Col, Desc);
   end;
@@ -1531,7 +1551,7 @@ begin
   else
   begin
     QG := TdxQueryGrid(Self.Grid);
-    Col := QG.FindColumnByTitle(FieldName);
+    Col := QG.FindColumnByFieldName(FieldName);
     if Col = nil then raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
     Result := QG.SortCols.FindCol(Col);
   end;
@@ -1556,7 +1576,7 @@ begin
   else
   begin
     QG := TdxQueryGrid(Self.Grid);
-    Col := QG.FindColumnByTitle(FieldName);
+    Col := QG.FindColumnByFieldName(FieldName);
     if Col = nil then raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
     CD := QG.SortCols.FindCol(Col);
     if CD <> nil then QG.SortCols.RemoveCol(CD);
@@ -1593,7 +1613,7 @@ begin
   else
   begin
     QG := TdxQueryGrid(Self.Col.Grid);
-    Col := QG.FindColumnByTitle(T);
+    Col := QG.FindColumnByFieldName(T);
     if Col = nil then raise Exception.CreateFmt(rsFieldNotFound, [T]);
   end;
   Self.Col := Col;
@@ -1641,7 +1661,7 @@ begin
     RegisterPropertyHelper(@TDBGridBorderColor_R, @TDBGridBorderColor_W, 'BorderColor');
     //RegisterPropertyHelper(@TDBGridDefaultTextStyle_R, @TDBGridDefaultTextStyle_W, 'DEFAULTTEXTSTYLE');
     //RegisterPropertyHelper(@TDBGridEditorBorderStyle_R, @TDBGridEditorBorderStyle_W, 'EditorBorderStyle');
-    //RegisterPropertyHelper(@TDBGridEditorMode_R, @TDBGridEditorMode_W, 'EditorMode');
+    RegisterPropertyHelper(@TDBGridEditorMode_R, @TDBGridEditorMode_W, 'EditorMode');
     RegisterPropertyHelper(@TDBGridExtendedColSizing_R, @TDBGridExtendedColSizing_W, 'ExtendedColSizing');
     //RegisterPropertyHelper(@TDBGridFastEditing_R, @TDBGridFastEditing_W, 'FastEditing');
     RegisterPropertyHelper(@TDBGridFocusColor_R, @TDBGridFocusColor_W, 'FocusColor');
@@ -2159,8 +2179,8 @@ procedure TFIELDALIGNMENT_W(Self: TFIELD; const T: TALIGNMENT); begin Self.ALIGN
 procedure TFIELDALIGNMENT_R(Self: TFIELD; var T: TALIGNMENT); begin T := Self.ALIGNMENT; end;
 procedure TFIELDVALUE_W(Self: TFIELD; const T: VARIANT); begin Self.VALUE := T; end;
 procedure TFIELDVALUE_R(Self: TFIELD; var T: VARIANT); begin T := Self.VALUE; end;
-//procedure TFIELDTEXT_W(Self: TFIELD; const T: String); begin Self.TEXT := T; end;
-//procedure TFIELDTEXT_R(Self: TFIELD; var T: String); begin T := Self.TEXT; end;
+procedure TFIELDTEXT_W(Self: TFIELD; const T: String); begin Self.TEXT := T; end;
+procedure TFIELDTEXT_R(Self: TFIELD; var T: String); begin T := Self.TEXT; end;
 procedure TFIELDOLDVALUE_R(Self: TFIELD; var T: VARIANT); begin T := Self.OLDVALUE; end;
 procedure TFIELDISNULL_R(Self: TFIELD; var T: BOOLEAN); begin T := Self.ISNULL; end;
 procedure TFIELDDATATYPE_R(Self: TFIELD; var T: TFIELDTYPE); begin T := Self.DATATYPE; end;
@@ -2222,7 +2242,7 @@ Begin
     RegisterPropertyHelper(@TFIELDDATATYPE_R,nil,'DataType');
     RegisterPropertyHelper(@TFIELDISNULL_R,nil,'IsNull');
     RegisterPropertyHelper(@TFIELDOLDVALUE_R,nil,'OldValue');
-    //RegisterPropertyHelper(@TFIELDTEXT_R,@TFIELDTEXT_W,'Text');
+    RegisterPropertyHelper(@TFIELDTEXT_R,@TFIELDTEXT_W,'Text');
     RegisterPropertyHelper(@TFIELDVALUE_R,@TFIELDVALUE_W,'Value');
     RegisterPropertyHelper(@TFIELDALIGNMENT_R,@TFIELDALIGNMENT_W,'Alignment');
     RegisterPropertyHelper(@TFIELDREADONLY_R,@TFIELDREADONLY_W,'ReadOnly');
@@ -2338,6 +2358,8 @@ begin
   RIRegister_Json(Cl);
   RIRegister_CsvData(Cl);
   RIRegister_dxRecordId(Cl);
+
+  RIRegister_CellEditors(Cl);
 end;
 
 procedure TTreeNodeAbsoluteIndex_R(Self: TTreeNode; var T: Integer); begin T := Self.AbsoluteIndex; end;
@@ -2666,6 +2688,85 @@ begin
   end;
 end;
 
+function RegFunctions86_64(Caller: TPSExec; p: TPSExternalProcRec; Global,
+  Stack: TPSStack): Boolean;
+var
+  R: TRect;
+  resData: Pointer;
+  val: TPSVariantIFC;
+  Obj: TObject;
+begin
+  Result := True;
+  case PtrUInt(p.Ext1) of
+    1: Stack.SetReal(-1, _MyFrac(Stack.GetReal(-2)));                                         // Frac
+    2: Stack.SetReal(-1, Power(Stack.GetReal(-2), Stack.GetReal(-3)));                        // Power
+    3: Stack.SetReal(-1, MathRound(Stack.GetReal(-2), Stack.GetInt(-3)));                     // Round
+    4: Stack.SetReal(-1, DAvg(Stack.GetClass(-2), Stack.GetString(-3)));                      // DAvg
+    5: Stack.SetReal(-1, DSum(Stack.GetClass(-2), Stack.GetString(-3)));                      // DSum
+    6:                                                                                        // Rect
+      begin
+        R := Rect(Stack.GetInt(-2), Stack.GetInt(-3), Stack.GetInt(-4), Stack.GetInt(-5));
+        resData := @PPSVariantData(Stack.Items[Stack.Count - 1])^.Data;
+        resData := Pointer(resData^);
+        TRect(resData^) := R; // или, что то же самое, Move(R, resData^, SizeOf(R));
+      end;
+    7:                                                                                        // FreeAndNil
+      begin
+        val := NewTPSVariantIFC(Stack[Stack.Count-1],true);
+        if val.aType.BaseType = 25 {btClass} then
+        begin
+          Obj := TObject(val.Dta^);
+          if Obj is TdxForm then TObjectDestroyForm(TdxForm(Obj))
+          else Obj.Free;
+          Stack.SetClass(-1, nil);
+        end
+        else
+          // Caller.CMD_Err(erInvalidType);
+          Result := False;                    // Сделал как в uPSRuntime
+      end
+    else
+      Result := False;
+  end;
+end;
+
+procedure RIRegister_CellEditors(Cl: TPSRuntimeClassImporter);
+begin
+  with Cl.Add(TStringCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TMaskCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TdxMemoCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TdxComboBoxCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TdxLookupCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TdxDBImageCellEditor) do
+  begin
+
+  end;
+
+  with Cl.Add(TdxFileCellEditor) do
+  begin
+
+  end;
+end;
+
 procedure RIRegister_Functions(Exec: TPSExec);
 begin
   Exec.RegisterDelphiFunction(@MessageBox, 'MsgBox', cdRegister);
@@ -2687,10 +2788,10 @@ begin
   Exec.RegisterDelphiFunction(@MyUTF16ToUTF8, 'Utf16ToUtf8', cdRegister);
 
   Exec.RegisterDelphiFunction(@FileExistsUtf8, 'FileExists', cdRegister);
-  Exec.RegisterDelphiFunction(@FileAgeUtf8, 'FileAge', cdRegister);
+  Exec.RegisterDelphiFunction(@MyFileAge, 'FileAge', cdRegister);
   Exec.RegisterDelphiFunction(@DirectoryExistsUtf8, 'DirectoryExists', cdRegister);
   Exec.RegisterDelphiFunction(@ExpandFileNameUtf8, 'ExpandFileName', cdRegister);
-  Exec.RegisterDelphiFunction(@FileSetDateUtf8, 'FileSetDate', cdRegister);
+  Exec.RegisterDelphiFunction(@MyFileSetDate, 'FileSetDate', cdRegister);
   Exec.RegisterDelphiFunction(@FileGetAttrUtf8, 'FileGetAttr', cdRegister);
   Exec.RegisterDelphiFunction(@FileSetAttrUtf8, 'FileSetAttr', cdRegister);
   Exec.RegisterDelphiFunction(@DeleteFileUtf8, 'DeleteFile', cdRegister);
@@ -2730,17 +2831,17 @@ begin
   Exec.RegisterDelphiFunction(@EvalExpr, 'EvalExpr', cdRegister);
 
   Exec.RegisterDelphiFunction(@DCount, 'DCount', cdRegister);
-  Exec.RegisterDelphiFunction(@DSum, 'DSum', cdRegister);
-  Exec.RegisterDelphiFunction(@DAvg, 'DAvg', cdRegister);
+  //Exec.RegisterDelphiFunction(@DSum, 'DSum', cdRegister);
+  //Exec.RegisterDelphiFunction(@DAvg, 'DAvg', cdRegister);
   Exec.RegisterDelphiFunction(@DMax, 'DMax', cdRegister);
   Exec.RegisterDelphiFunction(@DMin, 'DMin', cdRegister);
   Exec.RegisterDelphiFunction(@DMerge, 'DMerge', cdRegister);
   Exec.RegisterDelphiFunction(@ToWordsRu, 'ToWords', cdRegister);
   Exec.RegisterDelphiFunction(@RurToWords, 'RurToWords', cdRegister);
   Exec.RegisterDelphiFunction(@Nz, 'Nz', cdRegister);
-  Exec.RegisterDelphiFunction(@MathRound, 'RoundTo', cdRegister);
-  Exec.RegisterDelphiFunction(@_MyFrac, 'Frac', cdRegister);
-  Exec.RegisterDelphiFunction(@Power, 'Power', cdRegister);
+  //Exec.RegisterDelphiFunction(@MathRound, 'RoundTo', cdRegister);
+  //Exec.RegisterDelphiFunction(@_MyFrac, 'Frac', cdRegister);
+  //Exec.RegisterDelphiFunction(@Power, 'Power', cdRegister);
   Exec.RegisterDelphiFunction(@YearsBetweenEx, 'YearsBetween', cdRegister);
   Exec.RegisterDelphiFunction(@MonthsBetweenEx, 'MonthsBetween', cdRegister);
   Exec.RegisterDelphiFunction(@WeeksBetweenEx, 'WeeksBetween', cdRegister);
@@ -2826,7 +2927,7 @@ begin
   Exec.RegisterDelphiFunction(@MySameValue, 'SameValue', cdRegister);
 
   Exec.RegisterDelphiFunction(@Point, 'Point', cdRegister);
-  Exec.RegisterDelphiFunction(@Rect, 'Rect', cdRegister);
+  //Exec.RegisterDelphiFunction(@Rect, 'Rect', cdRegister);
 
   Exec.RegisterDelphiFunction(@GetId, 'GetComponentId', cdRegister);
   Exec.RegisterDelphiFunction(@GetFieldName, 'GetComponentFieldName', cdRegister);
@@ -2871,6 +2972,15 @@ begin
 
   Exec.RegisterDelphiFunction(@SetVar, 'SetExprVar', cdRegister);
   Exec.RegisterDelphiFunction(@GetVar, 'GetExprVar', cdRegister);
+
+  // Функции с результатом Extended (для совместимости с линукс x86_64.
+  Exec.RegisterFunctionName('FRAC', @RegFunctions86_64, Pointer(1), nil);
+  Exec.RegisterFunctionName('POWER', @RegFunctions86_64, Pointer(2), nil);
+  Exec.RegisterFunctionName('ROUNDTO', @RegFunctions86_64, Pointer(3), nil);
+  Exec.RegisterFunctionName('DAVG', @RegFunctions86_64, Pointer(4), nil);
+  Exec.RegisterFunctionName('DSUM', @RegFunctions86_64, Pointer(5), nil);
+  Exec.RegisterFunctionName('RECT', @RegFunctions86_64, Pointer(6), nil);
+  Exec.RegisterFunctionName('FREEANDNIL', @RegFunctions86_64, Pointer(7), nil);
 end;
 
 end.

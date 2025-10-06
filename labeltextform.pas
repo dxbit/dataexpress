@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,19 +33,27 @@ type
   TLabelTextFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     ImageList1: TImageList;
-    Memo1: TMemo;
+    Memo: TMemo;
     ToolBar1: TToolBar;
-    Bn1: TToolButton;
-    Bn2: TToolButton;
-    Bn3: TToolButton;
-    procedure Bn1Click(Sender: TObject);
-    procedure Bn2Click(Sender: TObject);
-    procedure Bn3Click(Sender: TObject);
+    LeftBn: TToolButton;
+    CenterBn: TToolButton;
+    RightBn: TToolButton;
+    ToolButton1: TToolButton;
+    WordWrapBn: TToolButton;
+    TopBn: TToolButton;
+    MiddleBn: TToolButton;
+    BottomBn: TToolButton;
+    ToolButton5: TToolButton;
+    AutoSizeBn: TToolButton;
+    procedure LeftBnClick(Sender: TObject);
+    procedure CenterBnClick(Sender: TObject);
+    procedure RightBnClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { private declarations }
+    FLabel: TdxLabel;
   public
     { public declarations }
     function ShowForm(C: TdxLabel): Integer;
@@ -74,62 +82,90 @@ end;
 
 procedure TLabelTextFm.FormCreate(Sender: TObject);
 begin
-  SetupImageList(ImageList1, ['leftjustify16', 'centertext16', 'rightjustify16']);
+  SetupImageList(ImageList1, ['leftjustify16', 'centertext16', 'rightjustify16',
+    'toplayout16', 'centerlayout16', 'bottomlayout16', 'lock16', 'wordwrap16']);
   Caption := rsLblText;
+  LeftBn.Hint := rsLeftJustify;
+  CenterBn.Hint := rsCenter;
+  RightBn.Hint := rsRightJustify;
+  TopBn.Hint := rsLayoutTop;
+  MiddleBn.Hint := rsCenter;
+  BottomBn.Hint := rsLayoutBottom;
+  AutoSizeBn.Hint := rsAutoSize;
+  WordWrapBn.Hint := rsWordWrap;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
 end;
 
 procedure TLabelTextFm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+var
+  S: String;
 begin
   if ModalResult = mrOk then
-    if Trim(Memo1.Text) = '' then
+  begin
+    S := Trim(Memo.Text);
+    if S = '' then
     begin
       ErrMsg(rsLabelEmpty);
       CanClose := False;
-    end;
+    end
+    else if Trim(FLabel.Expression) <> '' then
+      CanClose := CheckDuplicateFieldName(S, FLabel) and CheckFieldName(S);
+  end;
 end;
 
-procedure TLabelTextFm.Bn1Click(Sender: TObject);
+procedure TLabelTextFm.LeftBnClick(Sender: TObject);
 begin
-  Memo1.Alignment:=taLeftJustify;
+  Memo.Alignment:=taLeftJustify;
 end;
 
-procedure TLabelTextFm.Bn2Click(Sender: TObject);
+procedure TLabelTextFm.CenterBnClick(Sender: TObject);
 begin
-  Memo1.Alignment:=taCenter;
+  Memo.Alignment:=taCenter;
 end;
 
-procedure TLabelTextFm.Bn3Click(Sender: TObject);
+procedure TLabelTextFm.RightBnClick(Sender: TObject);
 begin
-  Memo1.Alignment:=taRightJustify;
+  Memo.Alignment:=taRightJustify;
 end;
 
 procedure TLabelTextFm.FormShow(Sender: TObject);
 begin
-  Memo1.SetFocus;
+  Memo.SetFocus;
 end;
 
 function TLabelTextFm.ShowForm(C: TdxLabel): Integer;
 begin
-  if Trim(C.Expression) <> '' then
+  {if Trim(C.Expression) <> '' then
   begin
     Info(rsTextPropNotAvail);
     Exit;
-  end;
-  Bn1.Down:=C.Alignment = taLeftJustify;
-  Bn2.Down:=C.Alignment = taCenter;
-  Bn3.Down:=C.Alignment = taRightJustify;
-  Memo1.Alignment:=C.Alignment;
-  Memo1.Text := C.Caption;
+  end;  }
+  FLabel := C;
+  LeftBn.Down := C.Alignment = taLeftJustify;
+  CenterBn.Down := C.Alignment = taCenter;
+  RightBn.Down := C.Alignment = taRightJustify;
+  TopBn.Down := C.Layout = tlTop;
+  MiddleBn.Down := C.Layout = tlCenter;
+  BottomBn.Down := C.Layout = tlBottom;
+  AutoSizeBn.Down := C.AutoSize;
+  WordWrapBn.Down := C.WordWrap;
+
+  Memo.Alignment:=C.Alignment;
+  Memo.Text := C.Caption;
   Result := ShowModal;
   if Result = mrOk then
   begin
-    if Bn1.Down then C.Alignment:=taLeftJustify
-    else if Bn2.Down then C.Alignment:=taCenter
-    else if Bn3.Down then C.Alignment:=taRightJustify;
-    C.Caption := Memo1.Text;
-    C.FieldName := Memo1.Text;
+    if LeftBn.Down then C.Alignment := taLeftJustify
+    else if CenterBn.Down then C.Alignment := taCenter
+    else if RightBn.Down then C.Alignment := taRightJustify;
+    if TopBn.Down then C.Layout := tlTop
+    else if MiddleBn.Down then C.Layout := tlCenter
+    else if BottomBn.Down then C.Layout := tlBottom;
+    C.AutoSize := AutoSizeBn.Down;
+    C.WordWrap := WordWrapBn.Down;
+    C.Caption := Memo.Text;
+    C.FieldName := Memo.Text;
   end;
 end;
 

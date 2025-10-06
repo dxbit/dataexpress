@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -308,13 +308,13 @@ begin
   for i := 0 to FRD.Totals.Count - 1 do
   begin
     T := FRD.Totals[i];
-    Col := FRD.Grid.FindColumnByFieldName(T.FieldNameDS);
+    Col := FRD.Grid.FindColumnByFieldNameDS(T.FieldNameDS);
     //if Col = nil then Continue;
     r := i + 1;
     Grid.RowCount := r + 1;
     Grid.Cells[0, r] := T.Caption;
     if Col <> nil then
-	    Grid.Cells[1, r] := Col.Caption;
+	    Grid.Cells[1, r] := Col.FieldName;
     n := Grid.Columns[2].PickList.IndexOfObject(TObject(PtrInt(T.Func)));
     if n >= 0 then
     begin
@@ -335,7 +335,7 @@ begin
   begin
     T := FRD.Totals.AddTotal;
     T.Caption := Grid.Cells[0, i];
-    Col := FRD.Grid.FindColumnByTitle(Grid.Cells[1, i]);
+    Col := FRD.Grid.FindColumnByName(Grid.Cells[1, i]);
     if Col <> nil then
 	    T.FieldNameDS:=Col.FieldNameDS;
     T.Func := TRpTotalFunc(PtrInt(Grid.Objects[2, i]));
@@ -436,7 +436,7 @@ begin
       Exit;
     end;
     // Проверка совместимости типа поля и функции
-    Col := FRD.Grid.FindColumnByTitle(Grid.Cells[1, i]);
+    Col := FRD.Grid.FindColumnByName(Grid.Cells[1, i]);
     if Col <> nil then
     begin
       Tp := FRD.GetFieldType( FRD.IndexOfNameDS(Col.FieldNameDS) );

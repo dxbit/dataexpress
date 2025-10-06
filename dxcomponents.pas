@@ -8,7 +8,7 @@ unit dxcomponents;
 interface
 
 uses
-  CtrlUtils, DialogGrid, CheckTreeView, TreeViewEx, LazarusPackageIntf;
+  CtrlUtils, DialogGrid, CheckTreeView, TreeViewEx, ShapeEx, LazarusPackageIntf;
 
 implementation
 
@@ -16,6 +16,7 @@ procedure Register;
 begin
   RegisterUnit('CtrlUtils', @CtrlUtils.Register);
   RegisterUnit('TreeViewEx', @TreeViewEx.Register);
+  RegisterUnit('ShapeEx', @ShapeEx.Register);
 end;
 
 initialization

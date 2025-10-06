@@ -37,6 +37,7 @@ type
     CellFont: TComboBoxAdv;
     CellFontColor: TColorButtonEx;
     CellFontS: TToggleBox;
+    TitleHeightChk: TCheckBox;
     GridTitleFont: TComboBoxAdv;
     GridTitleFontS: TToggleBox;
     GridColor: TColorButtonEx;
@@ -77,6 +78,7 @@ type
     SelTextColor: TColorButtonEx;
     ResetCellFontBn: TSpeedButton;
     ResetTitleFontBn: TSpeedButton;
+    TitleHeightEdt: TSpinEdit;
     VertLines: TCheckBox;
     HorzLines: TCheckBox;
     GridOptions: TCheckListBox;
@@ -137,10 +139,12 @@ type
     procedure ResetCellFontBnClick(Sender: TObject);
     procedure ResetTitleFontBnClick(Sender: TObject);
     procedure TitleFontStyleChange(Sender: TObject);
+    procedure TitleHeightChkChange(Sender: TObject);
+    procedure TitleHeightEdtChange(Sender: TObject);
     procedure VisibleColsClick(Sender: TObject);
   private
     FForm: TdxForm;
-    //FRD: TReportData;
+    FRD: TReportData;
     Grid: TMyGrid;
     FCols: TList;
     FRowSelect, FReadOnly, FAllowChangeSort, FColMove, FShowRowDeleteButton: Boolean;
@@ -161,6 +165,7 @@ type
       var aText: String);
     procedure GridHeaderSizing(sender: TObject; const IsColumn: boolean;
       const aIndex, aSize: Integer);
+    function CanEditGrid: Boolean;
   public
     { public declarations }
     function ShowForm(aForm: TdxForm): Integer;
@@ -180,7 +185,7 @@ uses
   dximages, formmanager;
 
 const
-  EDIT_OPT_IDX = 10;
+  EDIT_OPT_IDX = 11;
   {SM_CXSIZEFRAME = 32;
   SM_CXVSCROLL = 2;}
 
@@ -214,7 +219,7 @@ type
     procedure ChkChange(Sender: TObject);
   public
     constructor CreateNew(AOwner: TComponent; Num: Integer=0); override;
-    function ShowForm(ACol: TGridColumn; AForm: TdxForm): Integer;
+    function ShowForm(ACol: TMyGridColumn): Integer;
   end;
 
 { TColumnTitleDlg }
@@ -278,14 +283,11 @@ begin
   ClientHeight := 124;
 end;
 
-function TColumnTitleDlg.ShowForm(ACol: TGridColumn; AForm: TdxForm): Integer;
-var
-  C: TComponent;
+function TColumnTitleDlg.ShowForm(ACol: TMyGridColumn): Integer;
 begin
   FEdit.Text := ACol.Title.Caption;
   FOldText := FEdit.Text;
-  C := FindById(AForm, ACol.Tag);
-  FFieldName := GetFieldName(C);
+  FFieldName := ACol.FieldName;
   FChk.Checked := FFieldName = FEdit.Text;
   Result := ShowModal;
   if Result = mrOk then
@@ -509,17 +511,13 @@ end;
 procedure TGrdFm.GridGetCellText(Sender: TObject; aCol, aRow: Integer;
   var aText: String);
 var
-  Cmp: TComponent;
-  Col: TGridColumn;
+  Col: TMyGridColumn;
 begin
-  if FForm = nil then Exit;
-
   if (aRow = 0) and (aCol > 0) then
   begin
     Col := Grid.Columns[aCol-1];
-    Cmp := FindById(FForm, Col.Tag);
-    if GetFieldName(Cmp) <> Col.Title.Caption then
-      aText := Format('%s (%s)', [Col.Title.Caption, GetFieldName(Cmp)]);
+    if Col.FieldName <> Col.Title.Caption then
+      aText := Format('%s (%s)', [Col.Title.Caption, Col.FieldName]);
   end;
 end;
 
@@ -535,6 +533,12 @@ begin
   for i := R.Left to R.Right do
     if Grid.Columns[i - Grid.FixedCols].Visible then
       Grid.ColWidths[i] := aSize;
+end;
+
+function TGrdFm.CanEditGrid: Boolean;
+begin
+  Result := (FForm <> nil) or (FRD <> nil) and (FRD.Kind = rkQuery) and
+    FRD.IsSimple;
 end;
 
 procedure TGrdFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -563,7 +567,7 @@ begin
   Opt := Grid.Options;
   with GridOptions do
   begin
-    if FForm <> nil then
+    if CanEditGrid then
     begin
       if (ItemIndex = EDIT_OPT_IDX) and Checked[EDIT_OPT_IDX] then
         Checked[0] := False;
@@ -572,7 +576,7 @@ begin
     if (ItemIndex = 0) and Checked[0] then
     begin
       Checked[1] := False;
-      if FForm <> nil then Checked[EDIT_OPT_IDX] := False;
+      if CanEditGrid then Checked[EDIT_OPT_IDX] := False;
     end;
     if (ItemIndex = 1) and Checked[1] then
       Checked[0] := False;
@@ -584,13 +588,14 @@ begin
     if Checked[3] then Include(Opt, goTruncCellHints)
     else Exclude(Opt, goTruncCellHints);
     Grid.WordWrap := Checked[4];
-    if Checked[5] then Include(Opt, goThumbTracking)
+    Grid.TitleWordWrap := Checked[5];
+    if Checked[6] then Include(Opt, goThumbTracking)
     else Exclude(Opt, goThumbTracking);
-    FColMove := Checked[6];
-    FAllowChangeSort := Checked[7];
-    Grid.Indicator := Checked[8];
-    FShowRowDeleteButton := Checked[9];
-    if FForm <> nil then FReadOnly := not Checked[EDIT_OPT_IDX];
+    FColMove := Checked[7];
+    FAllowChangeSort := Checked[8];
+    Grid.Indicator := Checked[9];
+    FShowRowDeleteButton := Checked[10];
+    if CanEditGrid then FReadOnly := not Checked[EDIT_OPT_IDX];
   end;
   Grid.Options := Opt;
   FModified := True;
@@ -744,12 +749,12 @@ end;
 
 procedure TGrdFm.MenuItem26Click(Sender: TObject);
 var
-  Col: TGridColumn;
+  Col: TMyGridColumn;
 begin
   Col := Grid.SelectedColumn;
   with TColumnTitleDlg.CreateNew(nil) do
   try
-    if ShowForm(Col, FForm) = mrOk then FModified := True;
+    if ShowForm(Col) = mrOk then FModified := True;
   finally
     Free;
   end;
@@ -923,7 +928,7 @@ end;
 procedure TGrdFm.ColumnMnuPopup(Sender: TObject);
 var
   P: TPoint;
-  b, IsHeader, bb: Boolean;
+  b, IsHeader: Boolean;
   n: Integer;
 begin
   P := ColumnMnu.PopupPoint;
@@ -935,13 +940,13 @@ begin
     ColumnMnu.Tag := 0;
 
   b := (Grid.Columns.Count > 0) and Grid.SelectedColumn.Visible;
-  bb := FForm <> nil;
+  //bb := FForm <> nil;
 
   MenuItem8.Enabled := b;
   MenuItem9.Enabled := b;
-  MenuItem26.Visible := bb;
+  //MenuItem26.Visible := bb;
   MenuItem26.Enabled := b and (Grid.Selection.Width = 0);
-  MenuItem27.Visible := bb;
+  //MenuItem27.Visible := bb;
   MenuItem29.Enabled := b;
   MenuItem3.Enabled := b;
   MenuItem4.Enabled := b;
@@ -1023,6 +1028,10 @@ begin
   GridTitleFontS.Checked := False;
   GridTitleFontSize.Value := 10;
   GridTitleFontColor.ButtonColor := clDefault;
+  TitleHeightChk.Checked := False;
+  TitleHeightEdt.Value := 0;
+  Grid.TitleHeight := -1;
+  Grid.TitleWordWrap := False;
   // Опции
   with GridOptions do
   begin
@@ -1031,12 +1040,13 @@ begin
     Checked[2] := False;
     Checked[3] := True;
     Checked[4] := False;
-    Checked[5] := True;
-    Checked[6] := False;
-    Checked[7] := True;
+    Checked[5] := False;
+    Checked[6] := True;
+    Checked[7] := False;
     Checked[8] := True;
-    Checked[9] := False;
-    if FForm <> nil then Checked[EDIT_OPT_IDX] := False;
+    Checked[9] := True;
+    Checked[10] := False;
+    if CanEditGrid then Checked[EDIT_OPT_IDX] := False;
   end;
   FStopChangeEvents := False;
 
@@ -1056,10 +1066,13 @@ begin
   Grid.Options := [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine,
   	goHeaderHotTracking, goHeaderPushedLook, goDrawFocusSelected, goRangeSelect,
     goSelectionActive, goColMoving, goColSizing, goThumbTracking, goTruncCellHints];
+  Grid.WordWrap := False;
+  Grid.Indicator := True;
   FRowSelect := False;
   FReadOnly := True;
   FColMove := False;
   FAllowChangeSort := True;
+  FShowRowDeleteButton := False;
   for i := 0 to Grid.Columns.Count - 1 do
   begin
     C := Grid.Columns[i];
@@ -1150,6 +1163,7 @@ begin
   GridTitleFontU.Caption := rsFontUnderline;
   GridTitleFontS.Caption := rsFontStrikeOut;
   GridTitleFontSize.Hint := rsFontSize;
+  TitleHeightChk.Caption := rsHeight;
 
   OptionsGrp.Caption := rsOptions;
   {with GridOptions do
@@ -1214,6 +1228,7 @@ begin
     SetFocus;
     Selection := Rect(-1, -1, -1, -1);
   end;
+  TitleHeightChk.OnChange(TitleHeightChk);
 end;
 
 procedure TGrdFm.HelpButtonClick(Sender: TObject);
@@ -1366,6 +1381,25 @@ begin
   FModified := True;
 end;
 
+procedure TGrdFm.TitleHeightChkChange(Sender: TObject);
+begin
+  TitleHeightEdt.Enabled := TitleHeightChk.Checked;
+  if TitleHeightChk.Checked then
+  begin
+    if TitleHeightEdt.Value = 0 then
+      TitleHeightEdt.Value := Grid.DefaultRowHeight
+    else
+      TitleHeightEdtChange(TitleHeightEdt);
+  end
+  else
+    Grid.TitleHeight := -1;
+end;
+
+procedure TGrdFm.TitleHeightEdtChange(Sender: TObject);
+begin
+  Grid.TitleHeight := TitleHeightEdt.Value;
+end;
+
 procedure CopySortColsToDxGrid(G1: TMyGrid; G2: TdxGrid);
 var
   i: Integer;
@@ -1405,13 +1439,13 @@ var
   Cmp: TComponent;
   FGrid: TdxGrid;
 begin
-  MenuItem26.Visible := True;
-  MenuItem27.Visible := True;
+  //MenuItem26.Visible := True;
+  //MenuItem27.Visible := True;
   with GridOptions do
   begin
     Clear;
     Items.AddStrings([rsRowSelect, rsHighlightCurLine, rsEllipsisInCell, rsShowHints,
-      rsWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
+      rsWordWrap, rsTitleWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
       rsIndicator, rsShowRowDeleteButton, rsEditing]);
   end;
   //if GridOptions.Count = EDIT_OPT_IDX then GridOptions.Items.AddStrings([rsEditing, rsShowRowDeleteButton]);
@@ -1419,6 +1453,7 @@ begin
   Caption := rsTable + ': ' + aForm.FormCaption;
   FForm := aForm;
   FGrid := aForm.Grid;
+  FRD := nil;
 
   FStopChangeEvents := True;
   // Сетка
@@ -1458,6 +1493,8 @@ begin
   GridTitleFontS.Checked := fsStrikeOut in FGrid.TitleFont.Style;
   GridTitleFontSize.Value := FGrid.TitleFont.Size;
   GridTitleFontColor.ButtonColor := FGrid.TitleFont.Color;
+  TitleHeightChk.Checked := FGrid.TitleHeight >= 0;
+  TitleHeightEdt.Value := FGrid.TitleHeight;
   // Опции
   with GridOptions do
   begin
@@ -1466,11 +1503,12 @@ begin
     Checked[2] := dgCellEllipsis in FGrid.Options;;
     Checked[3] := dgTruncCellHints in FGrid.Options;
     Checked[4] := FGrid.WordWrap;
-    Checked[5] := dgThumbTracking in FGrid.Options;
-    Checked[6] := dgColumnMove in FGrid.Options;
-    Checked[7] := FGrid.AllowChangeSort;
-    Checked[8] := dgIndicator in FGrid.Options;
-    Checked[9] := FGrid.ShowRowDeleteButton;
+    Checked[5] := FGrid.TitleWordWrap;
+    Checked[6] := dgThumbTracking in FGrid.Options;
+    Checked[7] := dgColumnMove in FGrid.Options;
+    Checked[8] := FGrid.AllowChangeSort;
+    Checked[9] := dgIndicator in FGrid.Options;
+    Checked[10] := FGrid.ShowRowDeleteButton;
     Checked[EDIT_OPT_IDX] := not FGrid.ReadOnly;
   end;
   FStopChangeEvents := False;
@@ -1531,8 +1569,9 @@ begin
     C.Title.Color := C2.Title.Color;
     C.Title.Alignment := C2.Title.Alignment;
     C.Title.Layout := C2.Title.Layout;
+    C.FieldName := GetFieldName(Cmp);
     if C2.Title.Caption = ' ' then
-      C.Title.Caption := GetFieldName(Cmp)
+      C.Title.Caption := C.FieldName
     else
       C.Title.Caption := C2.Title.Caption;
     C.Width:=C2.Width;
@@ -1543,6 +1582,7 @@ begin
   end;
   CopySortColsToMyGrid(FGrid, Grid);
   Grid.WordWrap:=FGrid.WordWrap;
+  Grid.TitleWordWrap := FGrid.TitleWordWrap;
   FAllowChangeSort:=FGrid.AllowChangeSort;
   FShowRowDeleteButton:=FGrid.ShowRowDeleteButton;
 
@@ -1566,6 +1606,10 @@ begin
   //FGrid.TitleFont.SetDefault;
   FGrid.TitleFont := Grid.TitleFont;
   FGrid.Flat:=Grid.Flat;
+  if TitleHeightChk.Checked then
+    FGrid.TitleHeight := TitleHeightEdt.Value
+  else
+    FGrid.TitleHeight := -1;
 
   if FRowSelect then FGrid.Options := FGrid.Options + [dgRowSelect]
   else FGrid.Options := FGrid.Options - [dgRowSelect];
@@ -1606,8 +1650,8 @@ begin
     C2.Title.Color := C.Title.Color;
     C2.Title.Alignment := C.Title.Alignment;
     C2.Title.Layout := C.Title.Layout;
-    Cmp := FindById(FForm, C2.Tag);
-    if GetFieldName(Cmp) = C.Title.Caption then
+    //Cmp := FindById(FForm, C2.Tag);
+    if C.FieldName = C.Title.Caption then
       C2.Title.Caption := ' '
     else
       C2.Title.Caption := C.Title.Caption;
@@ -1619,6 +1663,7 @@ begin
   end;
   CopySortColsToDxGrid(Grid, FGrid);
   FGrid.WordWrap:=Grid.WordWrap;
+  FGrid.TitleWordWrap := Grid.TitleWordWrap;
   FGrid.AllowChangeSort:=FAllowChangeSort;
   FGrid.ShowRowDeleteButton:=FShowRowDeleteButton;
 end;
@@ -1685,22 +1730,25 @@ var
   Col: TMyGridColumn;
   L: TList;
 begin
-  MenuItem26.Visible := True;
-  MenuItem27.Visible := True;
+  //MenuItem26.Visible := True;
+  //MenuItem27.Visible := True;
+  FForm := nil;
+  FRD := RD;
+
   with GridOptions do
   begin
     Clear;
     Items.AddStrings([rsRowSelect, rsHighlightCurLine, rsEllipsisInCell, rsShowHints,
-      rsWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
+      rsWordWrap, rsTitleWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
       rsIndicator, rsShowRowDeleteButton]);
+    if CanEditGrid then
+      Items.Add(rsEditing);
   end;
   {if GridOptions.Count > EDIT_OPT_IDX then
   begin
     GridOptions.Items.Delete(EDIT_OPT_IDX+1);
     GridOptions.Items.Delete(EDIT_OPT_IDX);
   end;   }
-
-  FForm := nil;
 
   Caption := rsTable + ': ' + RD.Name;
   Grid.Columns.Clear;
@@ -1740,6 +1788,8 @@ begin
   GridTitleFontU.Checked := fsUnderline in G.TitleFont.Style;
   GridTitleFontSize.Value := G.TitleFont.Size;
   GridTitleFontColor.ButtonColor := G.TitleFont.Color;
+  TitleHeightChk.Checked := G.TitleHeight >= 0;
+  TitleHeightEdt.Value := G.TitleHeight;
   // Опции
   with GridOptions do
   begin
@@ -1748,11 +1798,13 @@ begin
     Checked[2] := G.CellEllipsis;
     Checked[3] := G.ShowHints;
     Checked[4] := G.WordWrap;
-    Checked[5] := G.ThumbTracking;
-    Checked[6] := G.ColMove;
-    Checked[7] := G.AllowChangeSort;
-    Checked[8] := G.Indicator;
-    Checked[9] := G.ShowRowDeleteButton;
+    Checked[5] := G.TitleWordWrap;
+    Checked[6] := G.ThumbTracking;
+    Checked[7] := G.ColMove;
+    Checked[8] := G.AllowChangeSort;
+    Checked[9] := G.Indicator;
+    Checked[10] := G.ShowRowDeleteButton;
+    if CanEditGrid then Checked[EDIT_OPT_IDX] := G.Editable;
   end;
   FStopChangeEvents := False;
 
@@ -1760,16 +1812,6 @@ begin
     Grid.BorderLinePos := QGrid.ClientWidth
   else
     Grid.BorderLinePos := 0;
-  {else
-  begin
-    x := ScaleToScreen(900);
-    if Win32MajorVersion = 10 then Dec(x, 2)
-    else Dec(x, GetSystemMetrics(SM_CXSIZEFRAME) * 2);
-    Dec(x, GetSystemMetrics(SM_CXVSCROLL));
-    if G.Flat then Dec(x, 2)
-    else Dec(x, 4);
-    Grid.BorderLinePos := x;
-  end;}
 
   Grid.Color:=G.Color;
   Grid.AlternateColor:=G.AlternateColor;
@@ -1778,7 +1820,6 @@ begin
   Grid.InactiveSelectedColor:=G.InactiveSelectedColor;
   Grid.InactiveSelectedTextColor:=G.InactiveSelectedTextColor;
   Grid.FixedColor:=G.FixedColor;
-  //Grid.FixedHotColor := G.FixedHotColor;
   Grid.GridLineColor:=G.GridLineColor;
   Grid.GridLineStyle:=G.GridLineStyle;
   Grid.Flat:=G.Flat;
@@ -1787,7 +1828,6 @@ begin
   if G.HorzLines then Grid.Options:=Grid.Options + [goHorzLine]
   else Grid.Options:=Grid.Options - [goHorzLine];
   Grid.DefaultRowHeight:=G.DefaultRowHeight;
-  //Grid.TitleFont.SetDefault;
   Grid.Font := G.Font;
   Grid.TitleFont := G.TitleFont;
   L := TList.Create;
@@ -1802,7 +1842,11 @@ begin
     Col.Font := C.Font;
     Col.Title.Color:=C.FixedColor;
     Col.Title.Font := C.TitleFont;
-    Col.Title.Caption:=C.Caption;
+    Col.FieldName := C.FieldName;
+    if C.FieldName = C.Caption then
+      Col.Title.Caption := C.FieldName
+    else
+      Col.Title.Caption := C.Caption;
     Col.Tag := i;
     Col.Width:=C.Width;
     Col.Visible:=C.Visible;
@@ -1817,6 +1861,7 @@ begin
   end;
   CopySortColsToMyGrid(G, Grid);
   Grid.WordWrap:=G.WordWrap;
+  Grid.TitleWordWrap:=G.TitleWordWrap;
   FRowSelect := G.RowSelect;
   if G.RowHighlight then Grid.Options := Grid.Options + [goRowHighlight]
   else Grid.Options := Grid.Options - [goRowHighlight];
@@ -1830,6 +1875,7 @@ begin
   FAllowChangeSort:=G.AllowChangeSort;
   Grid.Indicator := G.Indicator;
   FShowRowDeleteButton := G.ShowRowDeleteButton;
+  FReadOnly := not G.Editable;
   Grid.PopupMenu := ColumnMnu;
 
   FillTestText;
@@ -1851,6 +1897,7 @@ begin
   G.VertLines := goVertLine in Grid.Options;
   G.HorzLines := goHorzLine in Grid.Options;
   G.DefaultRowHeight:=Grid.DefaultRowHeight;
+  G.TitleHeight:=Grid.TitleHeight;
   G.Font.Assign(Grid.Font);
   G.TitleFont.Assign(Grid.TitleFont);
   for i := 0 to Grid.Columns.Count - 1 do
@@ -1878,6 +1925,7 @@ begin
   end;
   CopySortColsToRpGrid(L, Grid, G);
   G.WordWrap := Grid.WordWrap;
+  G.TitleWordWrap := Grid.TitleWordWrap;
   G.RowSelect := FRowSelect;
   G.RowHighlight := goRowHighlight in Grid.Options;
   G.CellEllipsis := goCellEllipsis in Grid.Options;
@@ -1887,6 +1935,7 @@ begin
   G.AllowChangeSort := FAllowChangeSort;
   G.Indicator := Grid.Indicator;
   G.ShowRowDeleteButton := FShowRowDeleteButton;
+  G.Editable := not FReadOnly;
   L.Free;
 end;
 

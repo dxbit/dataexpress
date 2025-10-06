@@ -78,7 +78,7 @@ procedure SIRegister_dxFormTree(Cl: TPSPascalCompiler);
 procedure SIRegister_FormView(Cl: TPSPascalCompiler);
 procedure SIRegister_Window(Cl: TPSPascalCompiler);
 procedure SIRegister_MainFm(Cl: TPSPascalCompiler);
-procedure SIRegister_TFIELD(CL: TPSPascalCompiler);
+procedure SIRegister_TFIELD(CL: TPSPascalCompiler; IsWeb: Boolean);
 procedure SIRegister_Splitter(CL: TPSPascalCompiler);
 procedure SIRegister_ButtonPanel(CL: TPSPascalCompiler);
 procedure SIRegister_StatusBar(CL: TPSPascalCompiler);
@@ -88,6 +88,7 @@ procedure SIRegister_TreeView(Cl: TPSPascalCompiler);
 procedure SIRegister_TrayIcon(Cl: TPSPascalCompiler);
 procedure SIRegister_CSVData(Cl: TPSPascalCompiler);
 procedure SIRegister_dxRecordId(Cl: TPSPascalCompiler);
+procedure SIRegister_CellEditors(Cl: TPSPascalCompiler);
 procedure SIRegister_Consts(Cl: TPSPascalCompiler);
 procedure SIRegister_Functions(Cl: TPSPascalCompiler; Web: Boolean);
 procedure SIRegister_dxControlsWeb(Cl: TPSPascalCompiler);
@@ -764,8 +765,8 @@ begin
     RegisterMethod('procedure AutoSizeGrid(Priority: TKGridMeasureCellPriority; FixedCells: Boolean);');
     RegisterMethod('procedure AutoSizeRow(ARow: Integer; FixedCells: Boolean);');}
     RegisterMethod('function CellSelected(ACol, ARow: Integer): Boolean; virtual');
-    {RegisterMethod('function CellRect(ACol, ARow: Integer; out R: TRect; VisibleOnly: Boolean): Boolean;');
-    RegisterMethod('function CellToPoint(ACol, ARow: Integer; var Point: TPoint; VisibleOnly: Boolean): Boolean; virtual;');
+    RegisterMethod('function CellRect(ACol, ARow: Integer; out R: TRect; VisibleOnly: Boolean): Boolean;');
+    {RegisterMethod('function CellToPoint(ACol, ARow: Integer; var Point: TPoint; VisibleOnly: Boolean): Boolean; virtual;');
     RegisterMethod('function CellVisible(ACol, ARow: Integer): Boolean; virtual;');
     RegisterMethod('procedure ClearCol(ACol: Integer); virtual;');
     RegisterMethod('procedure ClearGrid; virtual;');
@@ -1037,6 +1038,10 @@ begin
     RegisterMethod('function GotoRecord(aRecId: Integer): Boolean');
     RegisterMethod('procedure Refresh');
     RegisterMethod('procedure Close');
+    RegisterMethod('function FindColumnByFieldName(const FieldName: String): TColumn');
+    RegisterMethod('procedure Post');
+    RegisterMethod('procedure Cancel');
+    RegisterMethod('function Validate: Boolean');
 
     RegisterMethod('procedure DisableScrollEvents');
     RegisterMethod('procedure EnableScrollEvents');
@@ -1051,6 +1056,7 @@ begin
     RegisterProperty('AsS', 'String String', iptR);
     RegisterProperty('ManualRefresh', 'Boolean', iptRW);
     RegisterProperty('Editable', 'Boolean', iptR);
+    RegisterProperty('State', 'TDataSetState', iptR);
 
     RegisterProperty('OnAfterClose', 'TNotifyEvent', iptRW);
     RegisterProperty('OnAfterOpen', 'TNotifyEvent', iptRW);
@@ -1188,9 +1194,19 @@ end;
 
 procedure SIRegister_dxShape(Cl: TPSPascalCompiler);
 begin
+  {
+
+  with Cl.AddClassN(Cl.FindClass('TControl'), 'TdxShape') do
+  begin
+    RegisterProperty('Brush', 'TBrush', iptRW);
+	  RegisterProperty('Pen', 'TPen', iptRW);
+	  RegisterProperty('Shape', 'TShapeType', iptRW);
+
+  end;}
+  Cl.AddTypeS('TShapeTypeEx', '(steNone, steVertLine, steHorzLine, steBDiagonal, steFDiagonal, steCross, steDiagCross)');
   with Cl.AddClassN(Cl.FindClass('TShape'), 'TdxShape') do
   begin
-
+    RegisterProperty('ShapeEx', 'TShapeTypeEx', iptRW);
   end;
 end;
 
@@ -1393,6 +1409,7 @@ begin
   Cl.AddTypeS('TDrawColumnCellEvent', 'procedure(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState)');
   Cl.AddTypeS('TDbGridCellHintEvent', 'procedure(Sender: TObject; Column: TColumn; var AText: String)');
   Cl.AddTypeS('TPrepareDbGridCanvasEvent', 'procedure(sender: TObject; DataCol: Integer; Column: TColumn; AState: TGridDrawState)');
+  Cl.AddTypeS('TDBGridSelEditorEvent', 'procedure(Sender: TObject; Column: TColumn; var Editor: TWinControl)');
 
   with Cl.AddClassN(cl.FindClass('TCUSTOMGRID'), 'TCUSTOMDBGRID') do
   begin
@@ -1405,7 +1422,7 @@ begin
     RegisterProperty('BorderColor', 'TColor', iptrw);
     //RegisterProperty('DefaultTextStyle', 'TTextStyle', iptrw);
     //RegisterProperty('EditorBorderStyle', 'TBorderStyle', iptrw);
-    //RegisterProperty('EditorMode', 'Boolean', iptrw);
+    RegisterProperty('EditorMode', 'Boolean', iptrw);
     RegisterProperty('ExtendedColSizing', 'Boolean', iptrw);
     //RegisterProperty('FastEditing', 'Boolean', iptrw);
     RegisterProperty('FocusColor', 'TColor', iptrw);
@@ -1458,6 +1475,7 @@ begin
     RegisterProperty('OnMouseLeave', 'TNotifyEvent', iptRW);
     RegisterProperty('OnMouseMove', 'TMouseMoveEvent', iptRW);
     RegisterProperty('OnMouseUp', 'TMouseEvent', iptRW); }
+    RegisterProperty('OnSelectEditor', 'TDBGridSelEditorEvent', iptRW);
   end;
 
   with Cl.FindClass('TGRIDCOLUMN') do
@@ -1494,6 +1512,8 @@ begin
     RegisterProperty('InactiveSelectedTextColor', 'TColor', iptRW);
     RegisterProperty('AllowChangeSort', 'Boolean', iptRW);
     RegisterProperty('SortColumns', 'TSortColumns', iptR);
+    RegisterProperty('DefaultRowHeight', 'Integer', iptRW);
+    RegisterProperty('Options', 'TDBGridOptions', iptRW);
   end;
 end;
 
@@ -2226,7 +2246,7 @@ begin
   end;
 end;
 
-procedure SIRegister_TFIELD(CL: TPSPascalCompiler);
+procedure SIRegister_TFIELD(CL: TPSPascalCompiler; IsWeb: Boolean);
 Begin
   cl.AddTypeS('TFieldType', '(ftUnknown, ftString, ftSmallint, ftInteger, ftWord, ftBoolean, ftFloat, ftCurrency, ftBCD, ftDate, ftTime, ftDateTime,'+
     'ftBytes, ftVarBytes, ftAutoInc, ftBlob, ftMemo, ftGraphic, ftFmtMemo, ftParadoxOle, ftDBaseOle, ftTypedBinary, ftCursor, ftFixedChar, ftWideString,'+
@@ -2253,7 +2273,7 @@ Begin
     //RegisterProperty('EditMask', 'String', iptrw);
     RegisterProperty('IsNull', 'Boolean', iptr);
     RegisterProperty('OldValue', 'Variant', iptr);
-    //RegisterProperty('Text', 'string', iptrw);
+    if not IsWeb then RegisterProperty('Text', 'string', iptrw);
     //RegisterProperty('ValidChars', 'TFieldChars', iptrw);
     RegisterProperty('Value', 'Variant', iptrw);
     RegisterProperty('Alignment', 'TAlignment', iptrw);
@@ -2756,9 +2776,48 @@ begin
   end;
 end;
 
+procedure SIRegister_CellEditors(Cl: TPSPascalCompiler);
+begin
+  with Cl.AddClassN(Cl.FindClass('TCustomEdit'), 'TStringCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TStringCellEditor'), 'TMaskCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TCustomMemo'), 'TdxMemoCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TCustomComboBox'), 'TdxComboBoxCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TdxLookupComboBox'), 'TdxLookupCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TBitBtn'), 'TdxDBImageCellEditor') do
+  begin
+
+  end;
+
+  with Cl.AddClassN(Cl.FindClass('TBitBtn'), 'TdxFileCellEditor') do
+  begin
+
+  end;
+end;
+
 procedure SIRegister_Consts(Cl: TPSPascalCompiler);
 begin
   Cl.AddConstantN('LineEnding', 'String').SetString(LineEnding);
+  Cl.AddConstantN('PathDelim', 'Char').SetChar( {$IFDEF WINDOWS}'\'{$ELSE}'/'{$ENDIF} );
 
   Cl.AddConstantN('faReadOnly', 'LongInt').SetInt(faReadOnly);
   Cl.AddConstantN('faHidden', 'LongInt').SetInt(faHidden);
@@ -2836,10 +2895,10 @@ begin
   Cl.AddTypeS('TCopyFileFlag', '(cffOverwriteFile, cffCreateDestDirectory, cffPreserveTime)');
   Cl.AddTypeS('TCopyFileFlags', 'set of TCopyFileFlag');
   Cl.AddDelphiFunction('function FileExists(const Filename: string): boolean;');
-  Cl.AddDelphiFunction('function FileAge(const FileName: string): Longint;');
+  Cl.AddDelphiFunction('function FileAge(const FileName: string): int64;');
   Cl.AddDelphiFunction('function DirectoryExists(const Directory: string): Boolean;');
   Cl.AddDelphiFunction('function ExpandFileName(const FileName, BaseDir: string): string;');
-  Cl.AddDelphiFunction('function FileSetDate(const FileName: String; Age: Longint): Longint;');
+  Cl.AddDelphiFunction('function FileSetDate(const FileName: String; Age: int64): Longint;');
   Cl.AddDelphiFunction('function FileGetAttr(const FileName: String): Longint;');
   Cl.AddDelphiFunction('function FileSetAttr(const Filename: String; Attr: longint): Longint;');
   Cl.AddDelphiFunction('function DeleteFile(const FileName: String): Boolean;');
@@ -2863,8 +2922,8 @@ begin
   Cl.AddDelphiFunction('function GetTempFileName: String');
   Cl.AddDelphiFunction('function GetTempDir: String');
   Cl.AddDelphiFunction('function ShellExecute(const Operation, FileName, Params, WorkDir: String; ShowCmd: LongInt): Boolean');
-  Cl.AddDelphiFunction('Function DateTimeToFileDate(DateTime : TDateTime) : Longint');
-	Cl.AddDelphiFunction('Function FileDateToDateTime (Filedate : Longint) :TDateTime');
+  Cl.AddDelphiFunction('Function DateTimeToFileDate(DateTime : TDateTime) : int64');
+	Cl.AddDelphiFunction('Function FileDateToDateTime (Filedate : int64) :TDateTime');
   Cl.AddDelphiFunction('function FileSize(const Filename: string): int64');
   Cl.AddDelphiFunction('function Random(n: LongInt): LongInt');
   Cl.AddDelphiFunction('function DCount(DataSet: TObject): Integer');
@@ -2999,6 +3058,13 @@ begin
 
   Cl.AddDelphiFunction('function IIF(Cond, V1, V2: Variant): Variant');
   Cl.AddDelphiFunction('function CreateGUIDString: String');
+
+  with Cl.AddFunction('procedure FreeAndNil;').Decl do
+    with AddParam do
+    begin
+      OrgName := 'x';
+      Mode := pmInOut;
+    end;
 end;
 
 procedure SIRegister_dxControlsWeb(Cl: TPSPascalCompiler);
@@ -3172,12 +3238,14 @@ begin
     RegisterProperty('StorageType', 'Integer', iptR);
     RegisterProperty('StoredFileName', 'String', iptR);
   end;
-  Cl.AddTypeS('TShapeType', '(stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle)');
+  Cl.AddTypeS('TShapeType', '(stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle, stSquaredDiamond, stDiamond, stTriangle, stTriangleLeft, stTriangleRight, stTriangleDown, stStar, stStarDown, stPolygon)');
+  Cl.AddTypeS('TShapeTypeEx', '(steNone, steVertLine, steHorzLine, steBDiagonal, steFDiagonal, steCross, steDiagCross)');
   with Cl.AddClassN(Cl.FindClass('TControl'), 'TdxShape') do
   begin
     RegisterProperty('Brush', 'TBrush', iptRW);
 	  RegisterProperty('Pen', 'TPen', iptRW);
 	  RegisterProperty('Shape', 'TShapeType', iptRW);
+    RegisterProperty('ShapeEx', 'TShapeTypeEx', iptRW);
   end;
   Cl.AddClassN(Cl.FindClass('TControl'), 'TdxGrid');
   SIRegister_dxQueryGrid(Cl, True);
@@ -3253,7 +3321,7 @@ begin
   SIRegister_IniFiles(Cl);
   SIRegister_Clipboard(Cl);
 
-  SIRegister_TField(Cl);
+  SIRegister_TField(Cl, False);
   SIRegister_DBEdit(Cl);
   SIRegister_CustomDBEditButton(Cl);
   SIRegister_DBCalcEdit(Cl);
@@ -3307,13 +3375,14 @@ begin
   SIRegister_CSVData(Cl);
 
   SIRegister_dxRecordId(Cl);
+  SIRegister_CellEditors(Cl);
 end;
 
 procedure SIRegister_AllWeb(Cl: TPSPascalCompiler);
 begin
   SIRegister_dxTypes(Cl, True);
   SIRegister_IniFiles(Cl);
-  SIRegister_TField(Cl);
+  SIRegister_TField(Cl, True);
   SIRegister_dxSQLQuery(Cl, True);
   SIRegister_HttpServer(Cl, True);
   SIRegister_HttpClient(Cl);

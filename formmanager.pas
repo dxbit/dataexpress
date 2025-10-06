@@ -71,6 +71,7 @@ type
     //procedure SetDefaultIndexes;
     procedure Clear;
     function MakeUniqueFormName(const AnyFormName: String): String;
+    function MakeUniqueTableName(AForm: TdxForm; const AnyFormName: String): String;
     function MakeUniqueFormComponentName(const AnyName: String): String;
     procedure ReplaceForm(OldFm, NewFm: TdxForm);
     procedure AddForm(Fm: TdxForm);
@@ -416,7 +417,8 @@ begin
     for i := 0 to FormCount - 1 do
     begin
       Fm := Forms[i];
-      if Cache.FormExists(Fm.Id) or not Fm.FormChanged then Continue;
+      if Cache.FormExists(Fm.Id) or not Fm.FormChanged then
+        Continue;
 
       WriteComponent(MS, Fm);
 
@@ -969,6 +971,21 @@ begin
   SplitComponentName(AnyFormName, S, n);
   Inc(n);
   while FindFormByName(S + IntToStr(n)) <> nil do
+    Inc(n);
+  Result := S + IntToStr(n);
+end;
+
+function TFormManager.MakeUniqueTableName(AForm: TdxForm;
+  const AnyFormName: String): String;
+var
+  S: String;
+  n: Integer;
+begin
+  SplitComponentName(AnyFormName, S, n);
+  Inc(n);
+  while FindFormByName(S + IntToStr(n)) <> nil do
+    Inc(n);
+  while FindQueryInForm(AForm, S + IntToStr(n)) <> nil do
     Inc(n);
   Result := S + IntToStr(n);
 end;

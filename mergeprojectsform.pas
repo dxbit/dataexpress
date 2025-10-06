@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -192,6 +192,7 @@ var
         case RenameObject of
           renForm: A.RenameForm(OldName, NewName);
           renImage: A.RenameImage(OldName, NewName);
+          renReport: A.RenameReport(OldName, NewName);
         end;
       end;
     end;
@@ -778,7 +779,7 @@ begin
   repeat
     Inc(n);
     Nm := S + IntToStr(n);
-  until (ReportMan.FindByName(Nm) = nil) and (FRpMan.FindByName(Nm) = nil);
+  until (ReportMan.FindReportByName(Nm) = nil) and (FRpMan.FindReportByName(Nm) = nil);
   Result := Nm;
 end;
 
@@ -1477,14 +1478,15 @@ begin
   for i := 0 to RL.Count - 1 do
   begin
     RD := RL[i].RD;
-    Fm := RL[i].Form;
-    if ReportMan.FindByName(RD.Name) <> nil then
+    //Fm := RL[i].Form;
+    if (RD.Kind = rkReport) and (ReportMan.FindReportByName(RD.Name) <> nil) then
     begin
       Tmp := MakeUniqueMergedReportName(RD.Name + '_');
-      if Fm = nil then
-        RenReps := RenReps + RD.Name + ' -> ' + Tmp + LineEnding
-      else
-        RenQry := RenQry + Fm.FormCaption + ': ' + RD.Name + ' -> ' + Tmp + LineEnding;
+      //if Fm = nil then
+        RenReps := RenReps + RD.Name + ' -> ' + Tmp + LineEnding;
+      //else
+      //  RenQry := RenQry + Fm.FormCaption + ': ' + RD.Name + ' -> ' + Tmp + LineEnding;
+      ProcessRenameInActions(FL, renReport, RD.Name, Tmp);
       RD.Name := Tmp;
     end;
     ReportMan.AddCopyReport(RD);
@@ -1551,13 +1553,13 @@ begin
   for i := 0 to RL.Count - 1 do
   begin
     RD := RL[i].RD;
-    Fm := RL[i].Form;
-    if ReportMan.FindByName(RD.Name) <> nil then
+    //Fm := RL[i].Form;
+    if (RD.Kind = rkReport) and (ReportMan.FindReportByName(RD.Name) <> nil) then
     begin
-      if Fm = nil then
+      //if Fm = nil then
         RenReps := RenReps + RD.Name + LineEnding
-      else
-        RenQry := RenQry + Fm.FormCaption + ': ' + RD.Name + LineEnding;
+      //else
+      //  RenQry := RenQry + Fm.FormCaption + ': ' + RD.Name + LineEnding;
     end;
   end;
   RenExt := '';

@@ -23,9 +23,10 @@ unit MyCtrls;
 interface
 
 uses
-  Classes, SysUtils, types, StdCtrls, ExtCtrls, EditBtn, Controls, Grids, lists,
+  Classes, SysUtils, types, StdCtrls, ExtCtrls, Controls, Grids, lists,
   DBGrids, Graphics, LclType, Menus, strconsts, db, Forms, ComCtrls,
-  Buttons, LMessages, maskedit, IpHtml, IpFileBroker, InterfaceBase;
+  Buttons, LMessages, maskedit, IpHtml, IpFileBroker, InterfaceBase, BGRABitmap,
+  dximages, dxfiles;
 
 type
 
@@ -47,6 +48,7 @@ type
     FAutoAlignment: Boolean;
     FAutoLayout: Boolean;
     FDataType: TMyGridColumnDataType;
+    FFieldName: String;
     procedure SetAutoAlignment(AValue: Boolean);
     procedure SetAutoLayout(AValue: Boolean);
   protected
@@ -55,6 +57,7 @@ type
   public
     constructor Create(ACollection: TCollection); override;
     property DataType: TMyGridColumnDataType read FDataType write FDataType;
+    property FieldName: String read FFieldName write FFieldName;
     procedure UpdateAutoLayout;
   published
     property AutoAlignment: Boolean read FAutoAlignment write SetAutoAlignment;
@@ -81,15 +84,23 @@ type
     FSelectedTextColor: TColor;
     FSortCols: TSortColumns;
     FBorderLinePos: Integer;
+    FTitleHeight: Integer;
+    FTitleWordWrap: Boolean;
     FWordWrap: Boolean;
     function GetColumns: TMyGridColumns;
+    function GetDefRowHeight: Integer;
     function GetIndicator: Boolean;
+    function GetSelectedColumn: TMyGridColumn;
     procedure SetColumns(AValue: TMyGridColumns);
+    procedure SetDefRowHeight(AValue: Integer);
     procedure SetInactiveSelectedColor(AValue: TColor);
     procedure SetInactiveSelectedTextColor(AValue: TColor);
     procedure SetIndicator(AValue: Boolean);
     procedure SetSelectedTextColor(AValue: TColor);
+    procedure SetTitleHeight(AValue: Integer);
+    procedure SetTitleWordWrap(AValue: Boolean);
     procedure SetWordWrap(AValue: Boolean);
+    procedure UpdateTitleHeight;
   protected
     function CreateColumns: TGridColumns; override;
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
@@ -113,11 +124,15 @@ type
     property InactiveSelectedTextColor: TColor read FInactiveSelectedTextColor write
       SetInactiveSelectedTextColor;
     property Indicator: Boolean read GetIndicator write SetIndicator;
+    property TitleHeight: Integer read FTitleHeight write SetTitleHeight;
+    property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap;
     property BorderLinePos: Integer read FBorderLinePos write FBorderLinePos;
+    property SelectedColumn: TMyGridColumn read GetSelectedColumn;
     property OnCanSort: TMyGridCanSortEvent read FOnCanSort write FOnCanSort;
     property OnGetCellText: TGetCellTextEvent read FOnGetCellText write FOnGetCellText;
   published
     property Columns: TMyGridColumns read GetColumns write SetColumns;
+    property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight;
   end;
 
   { TDropDownListColumn }
@@ -247,27 +262,33 @@ type
 
   TMaskCellEditor = class(TStringCellEditor)
   private
+    FLayout: TTextLayout;
     FGrid: TMyDBGrid;
+    procedure MenuHandler(Sender: TObject);
+    procedure MenuPopup(Sender: TObject);
   protected
     procedure msg_SetMask(var Msg: TGridMessage); message GM_SETMASK;
-    //procedure msg_GetValue(var Msg: TGridMessage); message GM_GETVALUE;
+    procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
   public
+    constructor Create(Aowner: TComponent); override;
     procedure ValidateEdit; override;
     property EditMask;
-    property Grid: TMyDBGrid read FGrid write FGrid;
+    property Layout: TTextLayout read FLayout write FLayout;
   end;
 
-  { TMemoCellEditor }
+  { TdxMemoCellEditor }
 
-  TMemoCellEditor = class(TCustomMemo)
+  TdxMemoCellEditor = class(TCustomMemo)
   private
     FGrid: TMyDBGrid;
     FCol,FRow:Integer;
+    procedure MenuHandler(Sender: TObject);
+    procedure MenuPopup(Sender: TObject);
   protected
     procedure WndProc(var TheMessage : TLMessage); override;
     procedure Change; override;
     procedure KeyDown(var Key : Word; Shift : TShiftState); override;
-    procedure msg_SetMask(var Msg: TGridMessage); message GM_SETMASK;
     procedure msg_SetValue(var Msg: TGridMessage); message GM_SETVALUE;
     procedure msg_GetValue(var Msg: TGridMessage); message GM_GETVALUE;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
@@ -277,7 +298,23 @@ type
   public
     constructor Create(Aowner : TComponent); override;
     procedure EditingDone; override;
-    property OnEditingDone;
+  end;
+
+  { TdxComboBoxCellEditor }
+
+  TdxComboBoxCellEditor = class(TPickListCellEditor)
+  private
+    FGrid: TMyDBGrid;
+    FLayout: TTextLayout;
+    procedure MenuHandler(Sender: TObject);
+    procedure MenuPopup(Sender: TObject);
+  protected
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
+    procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
+  public
+    constructor Create(AOwner: TComponent); override;
+    property Layout: TTextLayout read FLayout write FLayout;
   end;
 
   { TMyDBGridColumn }
@@ -319,6 +356,8 @@ type
 
   { TMyDBGrid }
 
+  TdxGridValidateEvent = procedure (Sender: TObject; var Ok: Boolean) of object;
+
   TMyDBGrid = class(TDBGrid)
   private
     FAllowChangeSort: Boolean;
@@ -328,29 +367,44 @@ type
     FHideButtons: Boolean;
     FInactiveSelectedColor: TColor;
     FOnCanSort: TMyGridCanSortEvent;
+    FOnEditorHide: TNotifyEvent;
     FOnSortColumnChange: TNotifyEvent;
+    FOnValidate: TdxGridValidateEvent;
     FSelectedTextColor: TColor;
     FSortAZ: Boolean;
     FSortCols: TSortColumns;
     FSortColumn: Integer;
     FStopTab: Boolean;
+    FTitleHeight: Integer;
+    FTitleWordWrap: Boolean;
     FUp, FDown: TBitmap;
     FOnButtonClick: TGridButtonClick;
     FShowButtons: Boolean;
     FButtons: TGridButtons;
-    FMemo: TMemoCellEditor;
-    //FMaskEdit: TMaskCellEditor;
+    FMemo: TdxMemoCellEditor;
+    FMaskEdit: TMaskCellEditor;
+    FListEdit: TdxComboBoxCellEditor;
+    FImgEdit: TdxDBImageCellEditor;
+    FFileEdit: TdxFileCellEditor;
     FWordWrap: Boolean;
+    function DoValidate: Boolean;
     procedure ButtonClick(Sender: TObject; Bn: TGridButtonType);
     function GetButtonFont: TFont;
     function GetColumns: TMyDBGridColumns;
+    function GetDefRowHeight: Integer;
+    function GetOptions: TDbGridOptions;
     function GetSelectedRowCount: Integer;
     function GetVisibleCaptions: TGridButtonSet;
     procedure ReadSortCols(Reader: TReader);
     procedure SetAlignButtons(AValue: TAlignment);
     procedure SetButtonFont(AValue: TFont);
     procedure SetColumns(AValue: TMyDBGridColumns);
+    procedure SetDefRowHeight(AValue: Integer);
+    procedure SetOptions(AValue: TDbGridOptions);
+    procedure SetTitleHeight(AValue: Integer);
+    procedure SetTitleWordWrap(AValue: Boolean);
     procedure SetVisibleCaptions(AValue: TGridButtonSet);
+    procedure SetWordWrap(AValue: Boolean);
     procedure WriteSortCols(Writer: TWriter);
     function GetButtonsColor: TColor;
     function GetButtonSize: Integer;
@@ -363,11 +417,12 @@ type
     procedure SetVisibleButtons(AValue: TGridButtonSet);
     procedure WMSetFocus(var Message: TLMSetFocus); message LM_SETFOCUS;
     procedure WMKillFocus(var Message: TLMKillFocus); message LM_KILLFOCUS;
+    procedure UpdateTitleHeight;
   protected
     function  CreateColumns: TGridColumns; override;
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String); override;
-    procedure DrawFixedText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
+    //procedure DrawFixedText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
     procedure DrawCell(aCol,aRow: Integer; aRect: TRect; aState:TGridDrawState); override;
     function GetTruncCellHintText(aCol, aRow: Integer): string; override;
     procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
@@ -376,19 +431,33 @@ type
     procedure DefineProperties(Filer: TFiler); override;
     procedure SetParent(NewParent: TWinControl); override;
     procedure BoundsChanged; override;
-    procedure SelectEditor; override;
     procedure SetVisible(Value: Boolean); override;
     procedure SetEnabled(Value: Boolean); override;
     procedure DoOnResize; override;
-  protected
+    function GetBufferCount: Integer; override;
     function EditorIsReadOnly: boolean; override;
     procedure PrepareCanvas(aCol, aRow: Integer; aState: TGridDrawState); override;
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+      override;
+    procedure WMVScroll(var Message: TLMVScroll); message LM_VScroll;
+    procedure WMHScroll(var message: TLMHScroll); message LM_HSCROLL;
+    procedure WMMouseWheel(var Message: TLMMouseEvent); message LM_MOUSEWHEEL;
+    function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
+    procedure DoEditorHide; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure EditorTextChanged(const aCol, aRow: Integer; const aText: string); override;
     function ColumnFromCol(aCol: Integer): TColumn;
     function ColFromColumn(C: TColumn): Integer;
+    procedure ForceSelectEditor;
+    procedure CancelEditing;
+    function GetMemoEditor: TdxMemoCellEditor;
+    function GetMaskEditor: TMaskCellEditor;
+    function GetListEditor: TdxComboBoxCellEditor;
+    function GetImgEditor: TdxDBImageCellEditor;
+    function GetFileEditor: TdxFileCellEditor;
     //procedure RefreshGrid;
     property Buttons: TGridButtons read FButtons;
     property SortCols: TSortColumns read FSortCols;
@@ -396,12 +465,15 @@ type
     property OnCanSort: TMyGridCanSortEvent read FOnCanSort write FOnCanSort;
     property OnSortColumnChange: TNotifyEvent read FOnSortColumnChange write
       FOnSortColumnChange;
+    property OnValidate: TdxGridValidateEvent read FOnValidate
+      write FOnValidate;
   public
     procedure PositionButtons;
     procedure MoveToSelectedRow(i: Integer);
     procedure ClearRowsSelection;
     function CurrentRowSelected: Boolean;
     function FindColumnByTitle(const Title: String): TColumn;
+    function FindColumnByFieldNameDS(const FieldNameDS: String): TColumn;
     property SelectedRowCount: Integer read GetSelectedRowCount;
     property Col;
     property Row;
@@ -427,16 +499,21 @@ type
       SetAlignButtons;
     property HideButtonsWhenLostFocus: Boolean read FHideButtons
       write FHideButtons;
-    property WordWrap: Boolean read FWordWrap write FWordWrap;
+    property WordWrap: Boolean read FWordWrap write SetWordWrap default False;
     property AllowChangeSort: Boolean read FAllowChangeSort write
       FAllowChangeSort;
     property OnButtonClick: TGridButtonClick read FOnButtonClick write
       FOnButtonClick;
+    property OnEditorHide: TNotifyEvent read FOnEditorHide write FOnEditorHide;
     property StopTab: Boolean read FStopTab write FStopTab default True;
     property TabStop stored False;
     property PopupMenu stored False;
     property ParentFont stored False;
     property Hidden: Boolean read FHidden write FHidden default False;
+    property TitleHeight: Integer read FTitleHeight write SetTitleHeight default -1;
+    property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight;
+    property Options: TDbGridOptions read GetOptions write SetOptions;
+    property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap;
   end;
 
   { TTreeSearchForm }
@@ -486,6 +563,19 @@ type
       override;
   end;
 
+  { TMyImageList }
+
+  TMyImageList = class(TImageList)
+  private
+    FNames: TStringList;
+    FUserImagesIndex: Integer;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    function AddImage(const ImageName: String): Integer;
+    property UserImagesIndex: Integer read FUserImagesIndex write FUserImagesIndex;
+  end;
+
 procedure MaskingControl(aOwner: TComponent; aControl: TControl);
 function GetBnCaption(Bn: TGridButtonType): String;
 
@@ -493,7 +583,7 @@ implementation
 
 uses
   QuickSearchForm, apputils, dateutils, LazUtf8, Dialogs, imagemanager, base64,
-  appimagelists, appsettings;
+  appimagelists, appsettings, Clipbrd, dxctrls;
 
 procedure MaskingControl(aOwner: TComponent; aControl: TControl);
 begin
@@ -737,6 +827,41 @@ begin
   end;
 end;
 
+{ TMyImageList }
+
+constructor TMyImageList.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FNames := TStringList.Create;
+end;
+
+destructor TMyImageList.Destroy;
+begin
+  FNames.Free;
+  inherited Destroy;
+end;
+
+function TMyImageList.AddImage(const ImageName: String): Integer;
+var
+  St: TStream;
+  Bmp: TBGRABitmap;
+begin
+  Result := FNames.IndexOf(ImageName);
+  if Result >= 0 then Exit(Result + FUserImagesIndex);
+
+  Bmp := nil;
+  ImageMan.GetImageStreamPPI(ImageName, St);
+  if St <> nil then
+    try
+      Bmp := TBGRABitmap.Create(St);
+      Result := Self.Add(Bmp.Bitmap, nil);
+      FNames.Add(ImageName);
+    finally
+      St.Free;
+      FreeAndNil(Bmp);
+    end;
+end;
+
 { TDropDownList }
 
 function TDropDownList.GetColumns: TDropDownListColumns;
@@ -878,16 +1003,57 @@ end;  }
 
 { TMaskCellEditor }
 
+procedure TMaskCellEditor.MenuHandler(Sender: TObject);
+begin
+  case TMenuItem(Sender).Tag of
+    1: CutToClipboard;
+    2: CopyToClipboard;
+    3: PasteFromClipboard;
+  end;
+end;
+
+procedure TMaskCellEditor.MenuPopup(Sender: TObject);
+begin
+  with PopupMenu do
+  begin
+    Items[0].Enabled := not ReadOnly and (SelText <> '');
+    Items[1].Enabled := SelText <> '';
+    Items[2].Enabled := not ReadOnly;
+  end;
+end;
+
 procedure TMaskCellEditor.msg_SetMask(var Msg: TGridMessage);
 begin
 
 end;
 
-{procedure TMaskCellEditor.msg_GetValue(var Msg: TGridMessage);
+procedure TMaskCellEditor.msg_SetGrid(var Msg: TGridMessage);
 begin
-  inherited msg_GetValue(Msg);
-  if MaskedTextEmpty(Text, EditMask) then Msg.Value := '';
-end;}
+  inherited msg_SetGrid(Msg);
+  FGrid := TMyDBGrid(Msg.Grid);
+  Msg.Options := Msg.Options - EO_AUTOSIZE;
+end;
+
+procedure TMaskCellEditor.msg_SetBounds(var Msg: TGridMessage);
+begin
+  PositionCellEditor(FGrid, Self, Msg.CellRect, FLayout, False);
+end;
+
+constructor TMaskCellEditor.Create(Aowner: TComponent);
+var
+  Pop: TPopupMenu;
+begin
+  inherited Create(Aowner);
+  AutoSize := True;
+  BorderStyle := bsNone;
+  Pop := TPopupMenu.Create(Self);
+  Pop.Images := Images16;
+  Pop.Items.Add( CreateMenuItem(Pop, rsCut, 1, ShortCut(VK_X, [ssCtrl]), @MenuHandler, IMG16_CUT) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsCopy, 2, ShortCut(VK_C, [ssCtrl]), @MenuHandler, IMG16_COPY) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsPaste, 3, ShortCut(VK_V, [ssCtrl]), @MenuHandler, IMG16_PASTE) );
+  Pop.OnPopup := @MenuPopup;
+  PopupMenu := Pop;
+end;
 
 procedure TMaskCellEditor.ValidateEdit;
 begin
@@ -911,9 +1077,28 @@ begin
   Result := MaskedTextEmpty(Text, EditMask);
 end;
 
-{ TMemoCellEditor }
+{ TdxMemoCellEditor }
 
-procedure TMemoCellEditor.WndProc(var TheMessage: TLMessage);
+procedure TdxMemoCellEditor.MenuPopup(Sender: TObject);
+begin
+  with PopupMenu do
+  begin
+    Items[0].Enabled := not ReadOnly and (SelText <> '');
+    Items[1].Enabled := SelText <> '';
+    Items[2].Enabled := not ReadOnly;
+  end;
+end;
+
+procedure TdxMemoCellEditor.MenuHandler(Sender: TObject);
+begin
+  case TMenuItem(Sender).Tag of
+    1: CutToClipboard;
+    2: CopyToClipboard;
+    3: PasteFromClipboard;
+  end;
+end;
+
+procedure TdxMemoCellEditor.WndProc(var TheMessage: TLMessage);
 begin
   if FGrid<>nil then
     case TheMessage.Msg of
@@ -928,7 +1113,7 @@ begin
   inherited WndProc(TheMessage);
 end;
 
-procedure TMemoCellEditor.Change;
+procedure TdxMemoCellEditor.Change;
 begin
   inherited Change;
   if (FGrid<>nil) and Visible then begin
@@ -936,7 +1121,7 @@ begin
   end;
 end;
 
-procedure TMemoCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+procedure TdxMemoCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
   function AllSelected: boolean;
   begin
     result := (SelLength>0) and (SelLength=UTF8Length(Text));
@@ -1001,59 +1186,127 @@ begin
   end;
 end;
 
-procedure TMemoCellEditor.msg_SetMask(var Msg: TGridMessage);
-begin
-
-end;
-
-procedure TMemoCellEditor.msg_SetValue(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_SetValue(var Msg: TGridMessage);
 begin
   Text:=Msg.Value;
   SelStart := UTF8Length(Text);
 end;
 
-procedure TMemoCellEditor.msg_GetValue(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_GetValue(var Msg: TGridMessage);
 begin
   Msg.Col:=FCol;
   Msg.Row:=FRow;
   Msg.Value:=Text;
 end;
 
-procedure TMemoCellEditor.msg_SetGrid(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_SetGrid(var Msg: TGridMessage);
 begin
   FGrid:=TMyDBGrid(Msg.Grid);
   Msg.Options:=EO_AUTOSIZE or EO_SELECTALL or EO_HOOKKEYPRESS or EO_HOOKKEYUP;
 end;
 
-procedure TMemoCellEditor.msg_SelectAll(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_SelectAll(var Msg: TGridMessage);
 begin
   SelectAll;
 end;
 
-procedure TMemoCellEditor.msg_SetPos(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_SetPos(var Msg: TGridMessage);
 begin
   FCol := Msg.Col;
   FRow := Msg.Row;
 end;
 
-procedure TMemoCellEditor.msg_GetGrid(var Msg: TGridMessage);
+procedure TdxMemoCellEditor.msg_GetGrid(var Msg: TGridMessage);
 begin
   Msg.Grid := FGrid;
   Msg.Options:= EO_IMPLEMENTED;
 end;
 
-constructor TMemoCellEditor.Create(Aowner: TComponent);
+constructor TdxMemoCellEditor.Create(Aowner: TComponent);
+var
+  Pop: TPopupMenu;
 begin
   inherited Create(Aowner);
+  BorderStyle := bsNone;
   AutoSize := False;
   ScrollBars:=ssVertical;
+  Pop := TPopupMenu.Create(Self);
+  Pop.Images := Images16;
+  Pop.Items.Add( CreateMenuItem(Pop, rsCut, 1, ShortCut(VK_X, [ssCtrl]), @MenuHandler, IMG16_CUT) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsCopy, 2, ShortCut(VK_C, [ssCtrl]), @MenuHandler, IMG16_COPY) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsPaste, 3, ShortCut(VK_V, [ssCtrl]), @MenuHandler, IMG16_PASTE) );
+  Pop.OnPopup := @MenuPopup;
+  PopupMenu := Pop;
 end;
 
-procedure TMemoCellEditor.EditingDone;
+procedure TdxMemoCellEditor.EditingDone;
 begin
   inherited EditingDone;
   if FGrid<>nil then
     FGrid.EditingDone;
+end;
+
+{ TdxComboBoxCellEditor }
+
+procedure TdxComboBoxCellEditor.MenuPopup(Sender: TObject);
+begin
+  with TPopupMenu(Sender) do
+  begin
+    Items[0].Enabled := not ReadOnly and (SelText <> '');
+    Items[1].Enabled := SelText <> '';
+    Items[2].Enabled := not ReadOnly;
+  end;
+end;
+
+procedure TdxComboBoxCellEditor.MenuHandler(Sender: TObject);
+begin
+  case TMenuItem(Sender).Tag of
+    1:
+      begin
+        Clipboard.AsText := SelText;
+        SelText := '';
+      end;
+    2: Clipboard.AsText := SelText;
+    3: SelText := Clipboard.AsText;
+  end;
+end;
+
+procedure TdxComboBoxCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_DOWN) and not DroppedDown then
+  begin
+    Key := 0;
+    DroppedDown := True;
+  end;
+  inherited KeyDown(Key, Shift);
+end;
+
+procedure TdxComboBoxCellEditor.msg_SetGrid(var Msg: TGridMessage);
+begin
+  inherited msg_SetGrid(Msg);
+  FGrid := TMyDBGrid(Msg.Grid);
+  Msg.Options := Msg.Options - EO_AUTOSIZE;
+end;
+
+procedure TdxComboBoxCellEditor.msg_SetBounds(var Msg: TGridMessage);
+begin
+  PositionCellEditor(FGrid, Self, Msg.CellRect, FLayout, True);
+end;
+
+constructor TdxComboBoxCellEditor.Create(AOwner: TComponent);
+var
+  Pop: TPopupMenu;
+begin
+  inherited Create(AOwner);
+  AutoComplete := True;
+
+  Pop := TPopupMenu.Create(Self);
+  Pop.Images := Images16;
+  Pop.Items.Add( CreateMenuItem(Pop, rsCut, 1, ShortCut(VK_X, [ssCtrl]), @MenuHandler, IMG16_CUT) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsCopy, 2, ShortCut(VK_C, [ssCtrl]), @MenuHandler, IMG16_COPY) );
+  Pop.Items.Add( CreateMenuItem(Pop, rsPaste, 3, ShortCut(VK_V, [ssCtrl]), @MenuHandler, IMG16_PASTE) );
+  Pop.OnPopup := @MenuPopup;
+  PopupMenu := Pop;
 end;
 
 { TGridButton }
@@ -1331,6 +1584,16 @@ begin
   Result := ( 299 * red(AValue) + 587 * green(AValue) + 114 * blue(AValue) > 150000{127500} );
 end;
 
+function TMyDBGrid.DoValidate: Boolean;
+var
+  Ok: Boolean;
+begin
+  Ok := True;
+  if (FOnValidate <> nil) and (DataSource.DataSet.State in [dsInsert, dsEdit]) then
+    FOnValidate(Self, Ok);
+  Result := Ok;
+end;
+
 procedure TMyDBGrid.ButtonClick(Sender: TObject; Bn: TGridButtonType);
 begin
   if FOnButtonClick <> nil then
@@ -1345,6 +1608,16 @@ end;
 function TMyDBGrid.GetColumns: TMyDBGridColumns;
 begin
   Result := TMyDBGridColumns( inherited Columns );
+end;
+
+function TMyDBGrid.GetDefRowHeight: Integer;
+begin
+  Result := inherited DefaultRowHeight;
+end;
+
+function TMyDBGrid.GetOptions: TDbGridOptions;
+begin
+  Result := inherited Options;
 end;
 
 function TMyDBGrid.GetSelectedRowCount: Integer;
@@ -1396,10 +1669,43 @@ begin
   inherited Columns := TMyDBGridColumns(AValue);
 end;
 
+procedure TMyDBGrid.SetDefRowHeight(AValue: Integer);
+begin
+  inherited DefaultRowHeight := AValue;
+  UpdateTitleHeight;
+end;
+
+procedure TMyDBGrid.SetOptions(AValue: TDbGridOptions);
+begin
+  inherited Options := AValue;
+  UpdateTitleHeight;
+end;
+
+procedure TMyDBGrid.SetTitleHeight(AValue: Integer);
+begin
+  if FTitleHeight=AValue then Exit;
+  FTitleHeight:=AValue;
+  UpdateTitleHeight;
+end;
+
+procedure TMyDBGrid.SetTitleWordWrap(AValue: Boolean);
+begin
+  if FTitleWordWrap=AValue then Exit;
+  FTitleWordWrap:=AValue;
+  Invalidate;
+end;
+
 procedure TMyDBGrid.SetVisibleCaptions(AValue: TGridButtonSet);
 begin
   FButtons.VisibleCaptions:=AValue;
   FButtons.Invalidate;
+end;
+
+procedure TMyDBGrid.SetWordWrap(AValue: Boolean);
+begin
+  if FWordWrap=AValue then Exit;
+  FWordWrap:=AValue;
+  Invalidate;
 end;
 
 procedure TMyDBGrid.WriteSortCols(Writer: TWriter);
@@ -1572,17 +1878,19 @@ begin
   FSortCols.Grid := Self;
   FButtons := TGridButtons.Create(Self);
   FButtons.OnButtonClick:=@ButtonClick;
-  FMemo := TMemoCellEditor.Create(nil);
+  //FMemo := TdxMemoCellEditor.Create(nil);
   DefaultRowHeight := GetDefaultRowHeight;
   // Говорят устраняет мерцание в RDP.
   DoubleBuffered := True;
+  FTitleHeight := -1;
 end;
 
 destructor TMyDBGrid.Destroy;
 begin
-  FMemo.Free;
-  //FreeAndNil(FUp);
-  //FreeAndNil(FDown);
+  FreeAndNil(FImgEdit);
+  FreeAndNil(FListEdit);
+  FreeAndNil(FMemo);
+  FreeAndNil(FMaskEdit);
   FSortCols.Free;
   inherited Destroy;
 end;
@@ -1602,6 +1910,51 @@ begin
   Result := 0;
   if C <> nil then
     Result := GridColumnFromColumnIndex(C.Index);
+end;
+
+procedure TMyDBGrid.ForceSelectEditor;
+begin
+  SelectEditor;
+end;
+
+procedure TMyDBGrid.CancelEditing;
+begin
+  EditorCancelEditing;
+end;
+
+function TMyDBGrid.GetMemoEditor: TdxMemoCellEditor;
+begin
+  if FMemo = nil then
+    FMemo := TdxMemoCellEditor.Create(nil);
+  Result := FMemo;
+end;
+
+function TMyDBGrid.GetMaskEditor: TMaskCellEditor;
+begin
+  if FMaskEdit = nil then
+    FMaskEdit := TMaskCellEditor.Create(nil);
+  Result := FMaskEdit;
+end;
+
+function TMyDBGrid.GetListEditor: TdxComboBoxCellEditor;
+begin
+  if FListEdit = nil then
+    FListEdit := TdxComboBoxCellEditor.Create(nil);
+  Result := FListEdit;
+end;
+
+function TMyDBGrid.GetImgEditor: TdxDBImageCellEditor;
+begin
+  if FImgEdit = nil then
+    FImgEdit := TdxDBImageCellEditor.Create(nil);
+  Result := FImgEdit;
+end;
+
+function TMyDBGrid.GetFileEditor: TdxFileCellEditor;
+begin
+  if FFileEdit = nil then
+    FFileEdit := TdxFileCellEditor.Create(nil);
+  Result := FFileEdit;
 end;
 
 {procedure TMyDBGrid.RefreshGrid;
@@ -1635,6 +1988,11 @@ begin
     C := Columns[i];
     if MyUtf8CompareText(C.Title.Caption, Title) = 0 then Exit(C);
   end;
+end;
+
+function TMyDBGrid.FindColumnByFieldNameDS(const FieldNameDS: String): TColumn;
+begin
+  Result := Columns.ColumnByFieldname(FieldNameDS);
 end;
 
 function TMyDBGrid.GetButtonSize: Integer;
@@ -1728,6 +2086,19 @@ begin
   inherited;
 end;
 
+procedure TMyDBGrid.UpdateTitleHeight;
+begin
+  if dgTitles in Options then
+  begin
+    if FTitleHeight >= 0 then
+      RowHeights[0] := FTitleHeight
+    else
+      RowHeights[0] := DefaultRowHeight;
+  end
+  else if RowCount > 0 then
+    RowHeights[0] := DefaultRowHeight;
+end;
+
 function TMyDBGrid.CreateColumns: TGridColumns;
 begin
   Result := TMyDBGridColumns.Create(Self, TMyDBGridColumn);
@@ -1738,7 +2109,9 @@ procedure TMyDBGrid.DrawCellText(aCol, aRow: Integer; aRect: TRect;
 var
   TS: TTextStyle;
 begin
-  if FWordWrap then
+  if EditorMode and (Col = aCol) and (Row = aRow) and (Editor <> nil) and (Editor <> FFileEdit) then Exit;
+
+  if (not (gdFixed in aState) and FWordWrap) or ((gdFixed in aState) and FTitleWordWrap and (aRow = 0)) then
   begin
     TS := Canvas.TextStyle;
     TS.Wordbreak:=True;
@@ -1748,12 +2121,12 @@ begin
   inherited DrawCellText(aCol, aRow, aRect, aState, aText);
 end;
 
-procedure TMyDBGrid.DrawFixedText(aCol, aRow: Integer; aRect: TRect;
+{procedure TMyDBGrid.DrawFixedText(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState);
 var
   TS: TTextStyle;
 begin
-  if FWordWrap then
+  if FTitleWordWrap then
   begin
     TS := Canvas.TextStyle;
     TS.Wordbreak:=True;
@@ -1761,7 +2134,7 @@ begin
     Canvas.TextStyle := TS;
   end;
   inherited DrawFixedText(aCol, aRow, aRect, aState);
-end;
+end;  }
 
 procedure TMyDBGrid.SetParent(NewParent: TWinControl);
 begin
@@ -1776,11 +2149,6 @@ procedure TMyDBGrid.BoundsChanged;
 begin
   inherited BoundsChanged;
   PositionButtons;
-end;
-
-procedure TMyDBGrid.SelectEditor;
-begin
-  inherited SelectEditor;
 end;
 
 procedure TMyDBGrid.SetVisible(Value: Boolean);
@@ -1803,6 +2171,14 @@ begin
   inherited DoOnResize;
 end;
 
+function TMyDBGrid.GetBufferCount: Integer;
+begin
+  if FTitleHeight < 0 then
+    Result:=inherited GetBufferCount
+  else
+    Result := (ClientHeight - FTitleHeight) div DefaultRowHeight;
+end;
+
 procedure TMyDBGrid.EditorTextChanged(const aCol, aRow: Integer;
   const aText: string);
 begin
@@ -1822,7 +2198,12 @@ begin
 
   if gdSelected in aState then
   begin
-		if not Focused then
+    if EditorMode and (Col = aCol) and (Row = aRow) and (Editor <> nil) and
+      (Editor <> FFileEdit) and (Editor <> FImgEdit) then
+    begin
+      Canvas.Brush.Color := Editor.Color
+    end
+    else if not Focused then
     begin
       if FInactiveSelectedColor <> clNone then
       	Canvas.Brush.Color := FInactiveSelectedColor;
@@ -1841,12 +2222,94 @@ begin
   end;
 end;
 
+procedure TMyDBGrid.KeyDown(var Key: Word; Shift: TShiftState);
+begin
+  if (Key in [VK_UP, VK_DOWN, VK_NEXT, VK_PRIOR]) and (not DoValidate) then
+  begin
+    Key := 0;
+    Exit;
+  end
+  else if Key = VK_ESCAPE then
+  begin
+    if OnKeyDown <> nil then OnKeyDown(Self, Key, Shift);
+    Key := 0;
+  end;
+  inherited KeyDown(Key, Shift);
+end;
+
+procedure TMyDBGrid.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
+var
+  C, R: Longint;
+begin
+  if DataSource = nil then Exit;
+
+  if DataSource.DataSet.State in [dsInsert, dsEdit] then
+  begin
+    MouseToCell(X, Y, C, R);
+    if (R <> Row) and (not DoValidate) then Exit;
+  end;
+  inherited MouseDown(Button, Shift, X, Y);
+end;
+
+procedure TMyDBGrid.WMVScroll(var Message: TLMVScroll);
+begin
+  if DataSource = nil then Exit;
+
+  if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
+  inherited WMVScroll(Message);
+end;
+
+procedure TMyDBGrid.WMHScroll(var message: TLMHScroll);
+begin
+  if EditorMode then EditorMode := False;
+  inherited WMHScroll(message);
+end;
+
+procedure TMyDBGrid.WMMouseWheel(var Message: TLMMouseEvent);
+begin
+  if DataSource = nil then Exit;
+
+  if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
+  inherited WMMouseWheel(Message);
+end;
+
+function TMyDBGrid.EditorCanAcceptKey(const ch: TUTF8Char): boolean;
+begin
+  Result:=inherited EditorCanAcceptKey(ch);
+  // Первый нажатый символ при неактивном редакторе объекта не вызывает KeyDown
+  // компонента, следовательно, не срабатывает фильтрация и
+  // потеря фокуса не восстанавливает значение.
+  if Result and (Editor <> nil) and (Editor is TdxLookupCellEditor) then
+  	TdxLookupCellEditor(Editor).Changing:=True;
+end;
+
+procedure TMyDBGrid.DoEditorHide;
+begin
+  if FOnEditorHide <> nil then FOnEditorHide(Self);
+  inherited DoEditorHide;
+end;
+
 { TMyGrid }
 
 procedure TMyGrid.SetSelectedTextColor(AValue: TColor);
 begin
   if FSelectedTextColor=AValue then Exit;
   FSelectedTextColor:=AValue;
+  Invalidate;
+end;
+
+procedure TMyGrid.SetTitleHeight(AValue: Integer);
+begin
+  if FTitleHeight=AValue then Exit;
+  FTitleHeight:=AValue;
+  UpdateTitleHeight;
+end;
+
+procedure TMyGrid.SetTitleWordWrap(AValue: Boolean);
+begin
+  if FTitleWordWrap=AValue then Exit;
+  FTitleWordWrap:=AValue;
   Invalidate;
 end;
 
@@ -1859,6 +2322,19 @@ begin
   for i := 0 to Columns.Count - 1 do
     Columns[i].UpdateAutoLayout;
   Invalidate;
+end;
+
+procedure TMyGrid.UpdateTitleHeight;
+begin
+  if FixedRows > 0 then
+  begin
+    if FTitleHeight >= 0 then
+      RowHeights[0] := FTitleHeight
+    else
+      RowHeights[0] := DefaultRowHeight;
+  end
+  else
+    RowHeights[0] := DefaultRowHeight;
 end;
 
 function TMyGrid.CreateColumns: TGridColumns;
@@ -1878,14 +2354,30 @@ begin
   Result := TMyGridColumns( inherited Columns );
 end;
 
+function TMyGrid.GetDefRowHeight: Integer;
+begin
+  Result := inherited DefaultRowHeight;
+end;
+
 function TMyGrid.GetIndicator: Boolean;
 begin
   Result := ColWidths[0] > 0;
 end;
 
+function TMyGrid.GetSelectedColumn: TMyGridColumn;
+begin
+  Result := TMyGridColumn( inherited SelectedColumn );
+end;
+
 procedure TMyGrid.SetColumns(AValue: TMyGridColumns);
 begin
   inherited Columns := AValue;
+end;
+
+procedure TMyGrid.SetDefRowHeight(AValue: Integer);
+begin
+  inherited DefaultRowHeight := AValue;
+  UpdateTitleHeight;
 end;
 
 procedure TMyGrid.SetInactiveSelectedTextColor(AValue: TColor);
@@ -1912,12 +2404,11 @@ var
   TS: TTextStyle;
 begin
   if FOnGetCellText <> nil then FOnGetCellText(Self, aCol, aRow, aText);
-  if FWordWrap then
+  if (FWordWrap and (ARow > 0)) or (FTitleWordWrap and (ARow = 0)) then
   begin
     TS := Canvas.TextStyle;
     TS.Wordbreak:=True;
     TS.SingleLine:=False;
-    //TS.Layout:=tlTop;
     Canvas.TextStyle := TS;
   end;
   inherited DrawCellText(aCol, aRow, aRect, aState, aText);
@@ -2097,6 +2588,7 @@ begin
     goSelectionActive, goColMoving, goColSizing, goThumbTracking, goTruncCellHints,
     goSmoothScroll];
   TitleFont.Name := 'Verdana';      // Сбрасываем флаг FTitleFontIsDefault
+  FTitleHeight := -1;
 end;
 
 destructor TMyGrid.Destroy;

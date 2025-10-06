@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -246,6 +246,7 @@ type
   TQueryCbx = class(TSortedActionCbx)
   public
     procedure Fill; override;
+    function GetSourceForm: TdxForm;
   end;
 
   { TObjectCbx }
@@ -1236,13 +1237,13 @@ var
   RD: TReportData;
 begin
   Clear;
-  Fm := nil;
-  if FSourceCbx = nil then
+  Fm := GetSourceForm;
+  {if FSourceCbx = nil then
     Fm := FCurForm
   else if (FSourceCbx is TFormCbx) or (FSourceCbx is TChildFormCbx) then
     Fm := FormMan.FindFormByName(FSourceCbx.Text)
   else if FSourceCbx is TObjectCbx then
-  	Fm := TObjectCbx(FSourceCbx).GetSourceForm;
+  	Fm := TObjectCbx(FSourceCbx).GetSourceForm; }
   if Fm = nil then Exit;
   for i := 0 to Fm.ComponentCount - 1 do
   begin
@@ -1254,6 +1255,17 @@ begin
     end;
   end;
   if Items.Count > 0 then Items.Add('');
+end;
+
+function TQueryCbx.GetSourceForm: TdxForm;
+begin
+  Result := nil;
+  if FSourceCbx = nil then
+    Result := FCurForm
+  else if (FSourceCbx is TFormCbx) or (FSourceCbx is TChildFormCbx) then
+    Result := FormMan.FindFormByName(FSourceCbx.Text)
+  else if FSourceCbx is TObjectCbx then
+  	Result := TObjectCbx(FSourceCbx).GetSourceForm;
 end;
 
 { TChildFormCbx }
@@ -2107,10 +2119,12 @@ procedure TFormCbx.FillQueryForms;
 var
   S: TCaption;
   RD: TReportData;
+  Fm: TdxForm;
 begin
   S := FSourceCbx.Text;
   if S = '' then Exit;
-  RD := ReportMan.FindQueryByName(S);
+  Fm := TQueryCbx(FSourceCbx).GetSourceForm;
+  RD := FindQueryInForm(Fm, S);
   if RD = nil then Exit;
   RD.GetSourceForms(Items);
 
@@ -2189,7 +2203,7 @@ begin
     else if FSourceCbx is TObjectCbx then
 	  	Fm := TObjectCbx(FSourceCbx).GetSourceForm
     else if (FSourceCbx is TQueryCbx) or (FSourceCbx is TReportCbx) then
-      RD := ReportMan.FindByName(S);
+      RD := ReportMan.FindReportByName(S);
   end
   else
   	Fm := FCurForm;
@@ -2206,7 +2220,9 @@ end;
 function TFieldCbx.GetSourceObject: TObject;
 var
   S: TCaption;
+  Fm: TdxForm;
 begin
+  Result := nil;
   if FSourceCbx <> nil then
   begin
     S := FSourceCbx.Text;
@@ -2214,8 +2230,14 @@ begin
 		  Result := FormMan.FindFormByName(S)
     else if FSourceCbx is TObjectCbx then
 	  	Result := TObjectCbx(FSourceCbx).GetSourceForm
-    else if (FSourceCbx is TQueryCbx) or (FSourceCbx is TReportCbx) then
-      Result := ReportMan.FindByName(S);
+    else if FSourceCbx is TQueryCbx then
+    begin
+      Fm := TQueryCbx(FSourceCbx).GetSourceForm;
+      if Fm <> nil then
+        Result := FindQueryInForm(Fm, S);
+    end
+    else if FSourceCbx is TReportCbx then
+      Result := ReportMan.FindReportByName(S);
   end
   else
   	Result := FCurForm;

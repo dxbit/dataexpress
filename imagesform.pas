@@ -272,7 +272,7 @@ begin
   begin
     ImageMan.RenameImage(OldName, S);
     RenameImages(OldName, S);
-    RenameInActions(nil, renImage, OldName, S);
+    RenameInActions(nil, nil, renImage, OldName, S);
     ImageCache.RenameImage(OldName, S);
     Tree.Selected.Text := S;
   end;
@@ -295,7 +295,7 @@ begin
     if (Msg = '') or ((Msg <> '') and (Confirm(rsWarning, Msg + rsContinueToDelete) = mrYes)) then
     begin
       RenameImages(S, '');
-      RenameInActions(nil, renImage, S, '');
+      RenameInActions(nil, nil, renImage, S, '');
       ImageMan.DeleteImage(S);
       ImageCache.DeleteImage(S);
       N := Tree.Selected.GetNextSibling;

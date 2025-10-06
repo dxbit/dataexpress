@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -116,7 +116,7 @@ type
     procedure AddDataRecsQ(pD: PDataRec);
     procedure AddDataRecQ(QG: TdxQueryGrid; aParent: PDataRec);
     function GetData(i: Integer): PDataRec;
-    function FindDataByFormCaption(const S: String): PDataRec;
+    function FindDataByFormCaption(PParentD: PDataRec; const S: String): PDataRec;
     function LookupFieldValue(Form: TdxForm; const FieldName: String; DataSet: TDataSet): String;
     procedure AddError(const S: String);
     function DoCalcField(pD: PDataRec; const FldNm: String; var V: Variant): Boolean;
@@ -1253,16 +1253,21 @@ begin
   Result := PDataRec(FData[i]);
 end;
 
-function TXmlReport.FindDataByFormCaption(const S: String): PDataRec;
+function TXmlReport.FindDataByFormCaption(PParentD: PDataRec; const S: String
+  ): PDataRec;
 var
   i: Integer;
   pD: PDataRec;
 begin
   Result := nil;
+  if (PParentD <> nil) and (PParentD^.RD <> nil) then
+    PParentD := PParentD^.Parent;
+
   for i := 0 to FData.Count - 1 do
   begin
-    pD := getData(i);
-    if MyUtf8CompareText(pD^.BandName, S) = 0 then Exit(pD);
+    pD := GetData(i);
+    if ((pD^.Parent = PParentD) or (PParentD = nil) and (pD^.Parent = FData[0]))
+      and (MyUtf8CompareText(pD^.BandName, S) = 0) then Exit(pD);
   end;
 end;
 
@@ -1644,7 +1649,7 @@ var
 begin
   Result := ''; dt := ''; pr := 0;
   idx := D.RD.IndexOfName(FieldName);
-  //Col := D.RD.Grid.FindColumnByTitle(FieldName);
+  //Col := D.RD.Grid.FindColumnByName(FieldName);
   //if Col <> nil then
   if idx >= 0 then
   begin
@@ -1733,13 +1738,10 @@ end;
 
 procedure TXmlReport.PrintImage(C: TdxDBImage; DS: TDataSet);
 var
-  FileName, Dir, Ext, FlNm: String;
+  FileName, Dir, Ext: String;
   BlankImage, NeedConvert: Boolean;
 begin
-  //Ext := ExtractFileExt(GetImageFileName(C, DS));
-  FlNm := FieldStr(C);
-  if not C.IsQuery then FlNm := FlNm + 'src';
-  Ext := ExtractFileExt(DS.FieldByName(FlNm).AsString);
+  Ext := ExtractFileExt(DS.FieldByName(C.Src).AsString);
   BlankImage := Ext = '';
   Dir := FImagesFolder;
 
@@ -1792,9 +1794,6 @@ begin
   if pF = nil then Exit;
 
   SrcImg := TdxDBImage(GetRpFieldComponent(pF^, True));
-  {pF := GetLowField(pF);
-  SrcFm := FormMan.FindForm(pF^.TId);
-  SrcImg := TdxDBImage(FindById(SrcFm, pF^.FId));}
 
   TmpImg := TdxDBImage.Create(nil);
   TmpImg.DataSource := DS.DataSource;
@@ -2244,7 +2243,7 @@ begin
           Form.DoPrintEvent(paBeginData, BnNm, '', Tmp, Accept);
 
           pOldD := pD;
-          pD := FindDataByFormCaption(BnNm);
+          pD := FindDataByFormCaption(pOldD, BnNm);
           if Accept and (pD = nil) then pD := AddVirtualData(BnNm);
 
           if pD <> nil then

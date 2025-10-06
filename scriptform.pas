@@ -26,7 +26,7 @@ uses
   Classes, SysUtils, types, FileUtil, SynHighlighterPas, Forms,
   Controls, Graphics, Dialogs, ComCtrls, StdCtrls, ExtCtrls, Menus, strconsts,
   dxctrls, LclType, EditBtn, Buttons, SynEditTypes, SynEdit, SynEditMarks,
-  scriptmanager, scriptedit, classestree, modulestree, crossapi;
+  scriptmanager, scriptedit, classestree, modulestree, crossapi, SynEditKeyCmds;
 
 type
 
@@ -170,7 +170,9 @@ type
     FFullScreen: Boolean;
     FRealBounds: TRect;
     procedure DoSearchText(ContinueSearch, Backward: Boolean);
-    procedure MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    //procedure MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure MemoProcessCommand(Sender: TObject;
+      var Command: TSynEditorCommand; var AChar: TUTF8Char; Data: pointer);
     procedure ShowSearchForm(Replace: Boolean);
     procedure SetControlState;
     procedure CreateEditor(SD: TScriptData);
@@ -300,7 +302,7 @@ begin
   end;
 end;
 
-procedure TScriptFm.MemoKeyDown(Sender: TObject; var Key: Word;
+{procedure TScriptFm.MemoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
   i: Integer;
@@ -316,8 +318,29 @@ begin
     for i := 0 to Notebook.PageCount - 1 do
     begin
       Edit := TScriptEdit(Notebook.Page[i].Controls[0]);
-      if Edit = Memo then Continue;
+      //if Edit = Memo then Continue;
       Edit.FindAndDeleteBookmark(Key - VK_0);
+    end;
+  end;
+end;  }
+
+procedure TScriptFm.MemoProcessCommand(Sender: TObject;
+  var Command: TSynEditorCommand; var AChar: TUTF8Char; Data: pointer);
+var
+  i: Integer;
+  Edit: TScriptEdit;
+begin
+  if (Command >= 302) and (Command <= 310) then
+  begin
+  	FindBookmark(Command - 301);
+  end
+  else if (Command >= 352) and (Command <= 360) then
+  begin
+    for i := 0 to Notebook.PageCount - 1 do
+    begin
+      Edit := TScriptEdit(Notebook.Page[i].Controls[0]);
+      if Edit = Memo then Continue;
+      Edit.FindAndDeleteBookmark(Command - 351);
     end;
   end;
 end;
@@ -329,7 +352,7 @@ var
   S: String;
 begin
   Opt := [];
-  S := Memo.GetWordAtRowCol(Memo.CaretXY);
+  S := Memo.GetWordAtRowCol(Memo.LogicalCaretXY);
   mr := ShowSearchReplaceForm(S, Replace, Memo.SelText <> '');
   if mr in [mrOk, mrYesToAll] then
     with SearchReplaceFm do
@@ -405,7 +428,8 @@ begin
   M.Parent := Pg;
   M.Align := alClient;
   M.OnStatusChange:=@MemoStatusChange;
-  M.OnKeyDown:=@MemoKeyDown;
+  //M.OnKeyDown:=@MemoKeyDown;
+  M.OnProcessCommand:=@MemoProcessCommand;
   M.PopupMenu := EditMenu;
   M.LoadData(SD);
 end;
@@ -1120,7 +1144,7 @@ end;
 
 procedure TScriptFm.FindScriptMnuClick(Sender: TObject);
 begin
-  ShowFindScriptForm(Memo.GetWordAtRowCol(Memo.CaretXY));
+  ShowFindScriptForm(Memo.GetWordAtRowCol(Memo.LogicalCaretXY));
 end;
 
 procedure TScriptFm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1650,7 +1674,7 @@ procedure TScriptFm.MenuItem6Click(Sender: TObject);
 var
   S: String;
 begin
-  S := Memo.GetWordAtRowCol(Memo.CaretXY);
+  S := Memo.GetWordAtRowCol(Memo.LogicalCaretXY);
   if S <> '' then FTree.SetFilter(S);
 end;
 

@@ -324,6 +324,7 @@ msgid "[All fields]"
 msgstr ""
 
 #: strconsts.rsallfilesfilter
+msgctxt "strconsts.rsallfilesfilter"
 msgid "All files (*.*)|*.*"
 msgstr ""
 
@@ -506,6 +507,10 @@ msgstr ""
 
 #: strconsts.rsauto
 msgid "Auto"
+msgstr ""
+
+#: strconsts.rsautosize
+msgid "Auto size"
 msgstr ""
 
 #: strconsts.rsautotaborder
@@ -745,6 +750,11 @@ msgstr ""
 msgid "Can not delete form [%s], because it used in %s."
 msgstr ""
 
+#: strconsts.rscantdelformmsgfields
+#, object-pascal-format
+msgid "fields:%s"
+msgstr ""
+
 #: strconsts.rscantdelformmsgqry
 #, object-pascal-format
 msgid "queries:%s"
@@ -917,6 +927,10 @@ msgstr ""
 msgid "Check"
 msgstr ""
 
+#: strconsts.rscheckforshortcuts
+msgid "Check for shortcuts at startup"
+msgstr ""
+
 #: strconsts.rscheckingdata
 msgid "Checking data..."
 msgstr ""
@@ -935,6 +949,10 @@ msgstr ""
 
 #: strconsts.rscheckvalue
 msgid "Check value"
+msgstr ""
+
+#: strconsts.rschildformnameexists
+msgid "A child form with the same name already exists."
 msgstr ""
 
 #: strconsts.rschocolate
@@ -1788,17 +1806,21 @@ msgstr ""
 msgid "Diagonal to right lines"
 msgstr ""
 
-#: strconsts.rsdialogfilter
-msgctxt "strconsts.rsdialogfilter"
-msgid "DataExpress databases (*.fdb)|*.fdb;*.FDB|All files (*.*)|*.*"
-msgstr ""
-
 #: strconsts.rsdialogfilterallbases
 msgid "All DataExpress databases (*.dxdb, *.fdb)|*.dxdb;*.DXDB;*.fdb;*.FDB|"
 msgstr ""
 
+#: strconsts.rsdialogfilterallfiles
+msgctxt "strconsts.rsdialogfilterallfiles"
+msgid "All files (*.*)|*.*"
+msgstr ""
+
 #: strconsts.rsdialogfilterdxdb
 msgid "New DataExpress databases (*.dxdb)|*.dxdb;*.DXDB|"
+msgstr ""
+
+#: strconsts.rsdialogfilterfdb
+msgid "DataExpress databases (*.fdb)|*.fdb;*.FDB|"
 msgstr ""
 
 #: strconsts.rsdiamond
@@ -2111,6 +2133,10 @@ msgstr ""
 
 #: strconsts.rsentertext
 msgid "Enter text"
+msgstr ""
+
+#: strconsts.rsentertexthint
+msgid "Enter text hint"
 msgstr ""
 
 #: strconsts.rsentertypename
@@ -2649,6 +2675,10 @@ msgstr ""
 
 #: strconsts.rsfilling
 msgid "Filling"
+msgstr ""
+
+#: strconsts.rsfillstyle
+msgid "Fill style"
 msgstr ""
 
 #: strconsts.rsfilltable
@@ -3240,10 +3270,6 @@ msgstr ""
 
 #: strconsts.rshighlightcurline
 msgid "Highlight current line"
-msgstr ""
-
-#: strconsts.rshint
-msgid "Hint"
 msgstr ""
 
 #: strconsts.rshintoutputdefaultfolder
@@ -4283,6 +4309,10 @@ msgstr ""
 msgid "No data to import. The file is empty."
 msgstr ""
 
+#: strconsts.rsnodesktopshortcutmsg
+msgid "No desktop shortcuts were found to successfully launch DataExpress. Do you want to create them?"
+msgstr ""
+
 #: strconsts.rsnoformsavailable
 msgid "No forms available."
 msgstr ""
@@ -4752,6 +4782,10 @@ msgstr ""
 msgid "Points"
 msgstr ""
 
+#: strconsts.rspopuphint
+msgid "Popup hint"
+msgstr ""
+
 #: strconsts.rsposition
 msgid "Position"
 msgstr ""
@@ -4878,6 +4912,18 @@ msgstr ""
 
 #: strconsts.rsqueryname
 msgid "Query name"
+msgstr ""
+
+#: strconsts.rsquerynameexists
+msgid "A query with the same name already exists."
+msgstr ""
+
+#: strconsts.rsquerynameexistsinparent
+msgid "A query with the same name already exists in parent form."
+msgstr ""
+
+#: strconsts.rsquerynamenotsamecurform
+msgid "The query name cannot be the same as the current form name."
 msgstr ""
 
 #: strconsts.rsquerynotfound
@@ -5072,7 +5118,7 @@ msgid "Report name"
 msgstr ""
 
 #: strconsts.rsreportnameexists
-msgid "A report or query with the same name already exists."
+msgid "A report with the same name already exists."
 msgstr ""
 
 #: strconsts.rsreportnotfound
@@ -5572,6 +5618,10 @@ msgstr ""
 msgid "The shortcut \"DataExpress FB5\" is not found on the desktop. Create it?"
 msgstr ""
 
+#: strconsts.rsshowastreelist
+msgid "Show as tree list"
+msgstr ""
+
 #: strconsts.rsshowbutton
 msgid "Show button"
 msgstr ""
@@ -5582,6 +5632,10 @@ msgstr ""
 
 #: strconsts.rsshowcolumntotal
 msgid "Show column total"
+msgstr ""
+
+#: strconsts.rsshowglyphintab
+msgid "Show glyph in tab"
 msgstr ""
 
 #: strconsts.rsshowgrandtotal
@@ -6036,6 +6090,10 @@ msgstr ""
 msgid "Text editor"
 msgstr ""
 
+#: strconsts.rstexthint
+msgid "Text hint"
+msgstr ""
+
 #: strconsts.rstextlengthexceedmemo
 msgid "Text length exceeded. Adding text to a memo is not possible."
 msgstr ""
@@ -6095,6 +6153,10 @@ msgstr ""
 
 #: strconsts.rstitle
 msgid "Title"
+msgstr ""
+
+#: strconsts.rstitlewordwrap
+msgid "Title word wrap"
 msgstr ""
 
 #: strconsts.rstoday

@@ -69,8 +69,9 @@ resourcestring
   rsHelp = 'Help';
   rsAbout = 'About';
   rsCreateDialogTitle = 'Create new database';
-  rsDialogFilter = 'DataExpress databases (*.fdb)|*.fdb;*.FDB|All files (*.*)|*.*';
+  rsDialogFilterFDB = 'DataExpress databases (*.fdb)|*.fdb;*.FDB|';
   rsDialogFilterDXDB = 'New DataExpress databases (*.dxdb)|*.dxdb;*.DXDB|';
+  rsDialogFilterAllFiles = 'All files (*.*)|*.*';
   rsDialogFilterAllBases = 'All DataExpress databases (*.dxdb, *.fdb)|*.dxdb;*.DXDB;*.fdb;*.FDB|';
   rsCanNotDeleteFile = 'Can not delete the file.';
   rsOpenDatabase = 'Open database';
@@ -543,7 +544,7 @@ resourcestring
   rsFormQryNotFound = 'Form or query not found: %s';
   rsFormNotAvail = 'In this expression forms is not available.';
   rsFieldNotDate = 'Field [%s] not date.';
-  rsHint = 'Hint';
+  rsPopupHint = 'Popup hint';
   rsHelpText = 'Help text';
   rsBold = 'Bold <Ctrl-B>';
   rsItalic = 'Italic <Ctrl-I>';
@@ -672,6 +673,7 @@ resourcestring
   rsClearHistoryMsg = 'You want to clear the history of recently opened '
     +'databases. Continue?';
   rsWordWrap = 'Word wrap';
+  rsTitleWordWrap = 'Title word wrap';
   rsRecents = 'Recents';
   rsImportErrorRow = 'Row %d: %s';
   rsButton = 'Button';
@@ -760,7 +762,7 @@ resourcestring
   rsCalcLabelCaptionExists = 'A calculation label with same caption already exists.';
   rsCalcLabelCaptionExists2 = 'This property is not available, because a calculation label same caption already exists.';
   rsFormNameExists = 'A form with the same name already exists.';
-  rsReportNameExists = 'A report or query with the same name already exists.';
+  rsReportNameExists = 'A report with the same name already exists.';
   rsComponentNameEmpty = 'Component name is empty.';
   rsDuplicateFieldName = 'Duplicate field name.';
   rsDuplicateSqlFieldName = 'Duplicate SQL field name.';
@@ -1210,6 +1212,7 @@ resourcestring
   rsCantDelFormMsg = 'Can not delete form [%s], because it used in %s.';
   rsCantDelFormMsgRpt = 'reports:%s';
   rsCantDelFormMsgQry = 'queries:%s';
+  rsCantDelFormMsgFields = 'fields:%s';
   rsCantDelFieldMsg = 'Can not delete field [%s], because it used in %s.';
   rsScript = 'Script';
   rsCreateFormModuleMsg = 'The form module [%s] has not yet been created. '
@@ -1848,6 +1851,20 @@ resourcestring
     +'the desktop. Create it?';
   rsShortcutFB5NotFound = 'The shortcut "DataExpress FB5" is not found on '
     +'the desktop. Create it?';
+  rsShowGlyphInTab = 'Show glyph in tab';
+  rsQueryNameNotSameCurForm = 'The query name cannot be the same as the '
+    +'current form name.';
+  rsQueryNameExists = 'A query with the same name already exists.';
+  rsQueryNameExistsInParent = 'A query with the same name already exists in parent form.';
+  rsChildFormNameExists = 'A child form with the same name already exists.';
+  rsFillStyle = 'Fill style';
+  rsNoDesktopShortcutMsg = 'No desktop shortcuts were found to successfully '
+    +'launch DataExpress. Do you want to create them?';
+  rsCheckForShortcuts = 'Check for shortcuts at startup';
+  rsShowAsTreeList = 'Show as tree list';
+  rsTextHint = 'Text hint';
+  rsEnterTextHint = 'Enter text hint';
+  rsAutoSize = 'Auto size';
 
 implementation
 

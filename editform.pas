@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, ButtonPanel, strconsts, dxctrls, DbCtrls,
-  StdCtrls, Controls, Db, SqlDb, Dialogs, LclType, Buttons, LCLIntf;
+  StdCtrls, Controls, Db, SqlDb, Dialogs, LclType, Buttons, LCLIntf, BGRABitmap;
 
 type
 
@@ -43,6 +43,7 @@ type
     //procedure CorrectSize;
     procedure SetForm(AValue: TdxForm);
     //procedure SetFocusControl(GoForward: Boolean);
+    function FocusedGridIsEditing: Boolean;
   protected
     procedure DoShow; override;
     procedure DoClose(var CloseAction: TCloseAction); override;
@@ -53,6 +54,7 @@ type
     function ShowModal: Integer; override;
     procedure Show;
     function ShowForm: Integer;
+    procedure SetIcon(const ImageName: String);
     property Form: TdxForm read FForm write SetForm;
     property DataSet: TSQLQuery read FDataSet write FDataSet;
     property DSP: TObject read FDSP write FDSP;
@@ -65,7 +67,7 @@ type
 implementation
 
 uses
-  helpviewform, apputils, datasetprocessor;
+  helpviewform, apputils, datasetprocessor, imagemanager;
 
 { TEditWindow }
 
@@ -140,6 +142,30 @@ begin
   //CorrectSize;
 end;
 
+function TEditWindow.FocusedGridIsEditing: Boolean;
+var
+  DSProc: TDataSetProcessor;
+  i: Integer;
+  DSR: TDataSetRec;
+  Q: TQueryRec;
+begin
+  Result := False;
+
+  DSProc := TDataSetProcessor(FDSP);
+  if FDSRi = 0 then
+    for i := 1 to DSProc.DataSetCount - 1 do
+    begin
+      DSR := DSProc.DataSets[i]^;
+      if DSR.Grid.Focused and (DSR.DataSet.State in [dsInsert, dsEdit]) then Exit(True);
+    end;
+
+  for i := 0 to DSProc.QueryCount - 1 do
+  begin
+    Q := DSProc.Queries[i]^;
+    if (Q.DSRi = FDSRi) and Q.Grid.Focused and (Q.DataSet.State in [dsInsert, dsEdit]) then Exit(True);
+  end;
+end;
+
 {procedure TEditWindow.SetFocusControl(GoForward: Boolean);
 begin
   if not (ActiveControl is TdxGrid) then
@@ -175,6 +201,8 @@ begin
   inherited KeyDown(Key, Shift);
   if (Key = VK_RETURN) and (Shift = [ssCtrl]) then
   begin
+    if FocusedGridIsEditing then Exit;
+
     Key := 0;
     if FDataSet.State in [dsInsert, dsEdit] then
     	ModalResult := mrOk
@@ -183,6 +211,8 @@ begin
   end
   else if (Key = VK_ESCAPE) and (Shift = [ssShift]) then
   begin
+    if FocusedGridIsEditing then Exit;
+
     Key := 0;
     if FDataSet.State in [dsInsert, dsEdit] then
     	ModalResult := mrCancel
@@ -292,6 +322,19 @@ begin
   end
   else
     FDataSet.Cancel;
+end;
+
+procedure TEditWindow.SetIcon(const ImageName: String);
+var
+  St: TStream;
+  Bmp: TBGRABitmap;
+begin
+  ImageMan.GetImageStreamPPI(ImageName, St);
+  St.Position := 0;
+  Bmp := TBGRABitmap.Create(St);
+  Icon.Assign(Bmp.Bitmap);
+  Bmp.Free;
+  St.Free;
 end;
 
 end.

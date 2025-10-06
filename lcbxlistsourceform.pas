@@ -31,6 +31,7 @@ uses
 
 type
   TLCbxListSourceFm = class(TForm)
+    ShowAsTreeListChk: TCheckBox;
     MoreBn: TBitBtn;
     ButtonPanel1: TButtonPanel;
     ListMsgTxt: TStaticText;
@@ -62,6 +63,7 @@ type
   private
     { private declarations }
     FLCbx: TdxLookupComboBox;
+    FFm: TdxForm;
     procedure FillForms;
     procedure FillFields;
     procedure FillListFields;
@@ -89,7 +91,7 @@ implementation
 
 uses
   apputils, formmanager, reportmanager, dxreports, dximages, dxfiles, helpmanager,
-  mytypes, designerframe, templatefieldsform, lcbxlistsourcemoreform;
+  mytypes, designerframe, templatefieldsform, lcbxlistsourcemoreform, formdesigner;
 
 {$R *.lfm}
 
@@ -212,6 +214,7 @@ begin
   Fields.Columns[2].Title.Caption := rsIncludeInSearch;
   HideList.Caption := rsHideList;
   HideButton.Caption := rsHideButton;
+  ShowAsTreeListChk.Caption := rsShowAsTreeList;
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
@@ -396,7 +399,7 @@ begin
   else Result := True;
 
   if Result and (GetForm.Id <> FLCbx.SourceTId) then
-    CheckExistsInActions(FLCbx.Owner, renObject, FLCbx.FieldName, LineEnding +
+    CheckExistsInActions(FFm, nil, renObject, FLCbx.FieldName, LineEnding +
       rsChangeObjSourceActionsMsg);
 end;
 
@@ -443,13 +446,12 @@ end;
 
 function TLCbxListSourceFm.ShowForm(LCbx: TdxLookupComboBox): Integer;
 var
-  Fm: TdxForm;
   OldFId, OldTId: Integer;
 begin
   FLCbx := LCbx;
   OldTId := LCbx.SourceTId;
   OldFId := LCbx.SourceFId;
-  Fm := TdxForm(LCbx.Owner);
+  FFm := TdxForm(LCbx.Owner);
 
   FillForms;
   SetForm;
@@ -461,6 +463,7 @@ begin
   RowCnt.Value := LCbx.DropDownCount;
   HideList.Checked := LCbx.HideList;
   HideButton.Checked := LCbx.HideButton;
+  ShowAsTreeListChk.Checked := LCbx.ShowAsTreeList;
   if LCbx.UpdateTree then UpdateTree.ItemIndex := 1
   else UpdateTree.ItemIndex := 0;
 
@@ -484,6 +487,7 @@ begin
   LCbx.HideList := HideList.Checked;
   LCbx.HideButton := HideButton.Checked;
   LCbx.UpdateTree := UpdateTree.ItemIndex = 1;
+  LCbx.ShowAsTreeList := ShowAsTreeListChk.Checked;
 
   LCbxListSourceMoreFm.Save(LCbx);
 
@@ -491,8 +495,8 @@ begin
 
   if OldFId <> GetId(GetField) then
   begin
-    if (Fm.ParentField = LCbx.Id) and (not IsCorrectParentField(Fm, LCbx)) then
-    	Fm.ParentField := 0;
+    if (FFm.ParentField = LCbx.Id) and (not IsCorrectParentField(FFm, LCbx)) then
+    	FFm.ParentField := 0;
     DesignFr.NeedAllCalcRecordSize:=True;
   end;
   if OldTId <> GetForm.Id then

@@ -105,7 +105,7 @@ type
     procedure StartReadTrans;
     //procedure Rollback;
     function Connected: Boolean;
-    function OpenDataSet(const SQL: String): TSQLQuery;
+    function OpenDataSet(const SQL: String; EditDataSet: Boolean = False): TSQLQuery;
     //function OpenSysTable(const SQL, Table: String): TSQLQuery;
     procedure CreateDatabase;
     procedure UpdateDatabase;
@@ -234,6 +234,7 @@ end;
 
 procedure TFBLoader.LoadFirebirdLibrary(DB: TDBEngine);
 begin
+  {$ifdef windows}
   if not AppConfig.SupportDXDB then
   begin
     if IsLibraryLoaded and IsFirebird5Lib then
@@ -246,6 +247,7 @@ begin
     end;
     Exit;
   end;
+  {$endif}
 
 
   if Enabled then
@@ -540,7 +542,8 @@ begin
   Result := FConn.Connected;
 end;
 
-function TDBEngine.OpenDataSet(const SQL: String): TSQLQuery;
+function TDBEngine.OpenDataSet(const SQL: String; EditDataSet: Boolean
+  ): TSQLQuery;
 var
   KeyField: TField;
 begin
@@ -550,6 +553,7 @@ begin
   Result.UpdateTransaction := FUpdateTrans;
   Result.DataBase := FConn;
   Result.SQL.Text := SQL;
+  if EditDataSet then Result.DeleteSQL.Text := 'delete id from rdb$database';
   try
     Result.Open;
     KeyField := Result.FindField('id');
@@ -585,6 +589,8 @@ end; }
 
 procedure TDBEngine.CreateDatabase;
 begin
+  if FPwd = '' then FPwd := 'masterkey';
+  FConn.Password := FPwd;
   FBLoader.LoadFirebirdLibrary(Self);
   FConn.CreateDB;
   Execute('CREATE TABLE DX_FORMS (ID INTEGER, FORM BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +

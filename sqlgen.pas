@@ -1374,7 +1374,9 @@ begin
     end;
   end;
 
-	Wh := SqlLookupFilter(Fm, Fm.ParentForm, Fm.DataSet, LCbx, AliasSL, JStr);
+  Wh := '';
+  if Fm <> nil then
+  	Wh := SqlLookupFilter(Fm, Fm.ParentForm, Fm.DataSet, LCbx, AliasSL, JStr);
 
   if Trim(Fragments) <> '' then
   begin

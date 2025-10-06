@@ -65,6 +65,7 @@ type
     procedure ClearBreakpoints;
     function HasBreakpoints: Boolean;
     function FindBreakpoint(aRow: Integer): TSourceMarkData;
+    function FindBookmark(aNum: Integer): TSourceMarkData;
     procedure DeleteBreakpoint(Mark: TSourceMarkData);
     property Marks[Index: Integer]: TSourceMarkData read GetMarks; default;
   end;
@@ -1262,6 +1263,19 @@ begin
   begin
     M := Marks[i];
     if (M.Row = aRow) and (M.IsBookmark = False) then Exit(M);
+  end;
+end;
+
+function TSourceMarks.FindBookmark(aNum: Integer): TSourceMarkData;
+var
+  i: Integer;
+  M: TSourceMarkData;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    M := Marks[i];
+    if M.BookmarkNumber = aNum then Exit(M);
   end;
 end;
 

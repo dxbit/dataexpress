@@ -179,7 +179,7 @@ begin
               Msg := LineEnding + rsShowOldFieldNameBeforeRename
             else
               Msg := '';
-            if CheckExistsInActions(FRD, renRpField, FOldFieldNames[i], Msg) then Exit;
+            if CheckExistsInActions(FForm, FRD, renRpField, FOldFieldNames[i], Msg) then Exit;
           end;
           Grid.DeleteRow(Grid.Row);
         end;
@@ -353,11 +353,11 @@ begin
     if (idx >= 0) and (FOldFieldNames[idx] <> Grid.Cells[0, i]) then
     begin
       if FInDesigner then
-        RenameInActions(FRD, renRpField, FOldFieldNames[idx], Grid.Cells[0, i])
+        RenameInActions(FForm, FRD, renRpField, FOldFieldNames[idx], Grid.Cells[0, i])
       else
       begin
         Grid.Col := 0; Grid.Row := i;
-        if CheckExistsInActions(FRD, renRpField, FOldFieldNames[idx], Lineending +
+        if CheckExistsInActions(FForm, FRD, renRpField, FOldFieldNames[idx], Lineending +
           rsShowOldFieldNameBeforeRename) then Exit(False);
       end;
     end;

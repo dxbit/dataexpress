@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -154,7 +154,7 @@ begin
       if not DS.Active then Exit(False); //raise EGetQueryDataError.Create('Dataset inactive');
       if FieldName <> '' then
       begin
-        Col := RD.Grid.FindColumnByTitle(FieldName);
+        Col := RD.Grid.FindColumnByName(FieldName);
         if Col = nil then raise Exception.Create(Format(rsFieldNotFound, [FieldName]));
         F := DS.FieldByName(Col.FieldNameDS);
       end;
@@ -1343,7 +1343,7 @@ begin
     end
     else if RD <> nil then
     begin
-      rC := RD.Grid.FindColumnByTitle(S);
+      rC := RD.Grid.FindColumnByName(S);
       if rC = nil then raise Exception.Create(Format(rsFieldNotFound, [S]));
       F := DS.FieldByName(rC.FieldNameDS);
     end;

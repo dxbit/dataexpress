@@ -10,6 +10,7 @@ object ScriptFm: TScriptFm
   KeyPreview = True
   Position = poOwnerFormCenter
   ShowInTaskBar = stAlways
+  LCLVersion = '4.3.0.0'
   OnActivate = FormActivate
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
@@ -57,7 +58,7 @@ object ScriptFm: TScriptFm
       TabOrder = 1
       object Notebook: TNotebook
         Left = 0
-        Height = 375
+        Height = 374
         Top = 0
         Width = 880
         Align = alClient
@@ -66,8 +67,8 @@ object ScriptFm: TScriptFm
       end
       object StatusBar: TStatusBar
         Left = 0
-        Height = 22
-        Top = 375
+        Height = 23
+        Top = 374
         Width = 880
         Panels = <        
           item

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -84,6 +84,19 @@ implementation
 
 uses
   zipper, myzipper, apputils, appsettings;
+
+function FileAgesIsEqual(Age1, Age2: Integer): Boolean;
+begin
+  {$ifdef windows}
+  Result := Age1 = Age2;
+  {$else}
+  // Непонятно почему, но в линукс между сохраненным в xml FileAge файла и
+  // фактическим FileAge может быть разница 1, хотя в менеджере файлов и базе
+  // обновлений вижу одно и то же время. Если разница между временем файла
+  // не больше 2, считаем их одинаковыми.
+  Result := Abs(Age1 - Age2) <= 2;
+  {$endif}
+end;
 
 { TUpdateFileList }
 
@@ -415,7 +428,13 @@ begin
     S := AppPath + F.FileName;
     //Debug(S);
     //Debug(IntToStr(FileAge(S)) + ' - ' + IntToStr(F.Time));
-    if not FileExists(S) or (FileAge(S) <> F.Time) then Exit(True);
+    if not FileExists(S) or not FileAgesIsEqual(FileAge(S), F.Time) then
+    begin
+      {Debug(S);
+      Debug(FileAge(S));
+      Debug(F.Time);}
+      Exit(True);
+    end;
   end;
 end;
 

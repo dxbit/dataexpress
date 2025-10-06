@@ -9,14 +9,13 @@ object WarnFm: TWarnFm
   ClientHeight = 183
   ClientWidth = 508
   Color = clWhite
+  Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 26
-    Top = 151
+    Height = 27
+    Top = 150
     Width = 496
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -41,9 +40,9 @@ object WarnFm: TWarnFm
   end
   object Label1: TLabel
     Left = 112
-    Height = 25
+    Height = 27
     Top = 8
-    Width = 58
+    Width = 62
     Alignment = taCenter
     Caption = 'Label1'
     Font.Color = clRed
@@ -58,9 +57,10 @@ object WarnFm: TWarnFm
     AnchorSideTop.Control = Label2
     AnchorSideTop.Side = asrBottom
     Left = 112
-    Height = 19
-    Top = 121
-    Width = 119
+    Height = 21
+    Top = 123
+    Width = 132
+    Anchors = [akLeft, akBottom]
     BorderSpacing.Top = 16
     Caption = 'Я знаю, что делаю'
     Color = clBtnFace
@@ -73,8 +73,9 @@ object WarnFm: TWarnFm
     AnchorSideTop.Side = asrBottom
     Left = 112
     Height = 64
-    Top = 41
+    Top = 43
     Width = 384
+    Anchors = [akTop, akLeft, akBottom]
     AutoSize = False
     BorderSpacing.Top = 8
     Caption = 'Label2'

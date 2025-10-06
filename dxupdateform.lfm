@@ -1,19 +1,19 @@
 object DXUpdateFm: TDXUpdateFm
   Left = 543
-  Height = 84
+  Height = 79
   Top = 340
   Width = 320
   BorderStyle = bsNone
   Caption = 'DXUpdateFm'
-  ClientHeight = 84
+  ClientHeight = 79
   ClientWidth = 320
   Position = poScreenCenter
-  LCLVersion = '4.0.0.2'
+  LCLVersion = '4.3.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
   object Shape1: TShape
     Left = 0
-    Height = 84
+    Height = 79
     Top = 0
     Width = 320
     Brush.Style = bsClear

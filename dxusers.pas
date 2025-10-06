@@ -1098,6 +1098,7 @@ begin
     if DS.RecordCount = 0 then
     begin
       FRecordNotExists := True;
+      FLastModified := GetDefaultDateTime(0);
       Exit;
     end;
     St := nil;

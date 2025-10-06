@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -179,9 +179,9 @@ begin
     r := i + 1;
     Grid.RowCount := r + 1;
     Grid.Cells[0, r] := ColorToString(CD.Color);
-    Col := FRD.Grid.FindColumnByFieldName(CD.FieldNameDS);
+    Col := FRD.Grid.FindColumnByFieldNameDS(CD.FieldNameDS);
     if Col <> nil then
-      Grid.Cells[1, r] := Col.Caption;
+      Grid.Cells[1, r] := Col.FieldName;
     //Grid.Objects[1, r] := Col;
     Grid.Cells[2, r] := CD.Expr;
   end;
@@ -198,7 +198,7 @@ begin
   for i := 0 to FRD.Grid.ColumnCount - 1 do
   begin
     Col := FRD.Grid.Columns[i];
-    SL.Add(Col.Caption);
+    SL.Add(Col.FieldName);
   end;
   SL.Sort;
   Grid.Columns[1].PickList := SL;
@@ -221,7 +221,7 @@ begin
     //Col := TRpGridColumn(Grid.Objects[1, i]);
     Col := nil;
     if Grid.Cells[1, i] <> '' then
-	    Col := FRD.Grid.FindColumnByTitle(Grid.Cells[1, i]);
+	    Col := FRD.Grid.FindColumnByName(Grid.Cells[1, i]);
     if Col <> nil then
       CD.FieldNameDS:=Col.FieldNameDS;
     CD.Expr:=Grid.Cells[2, i];
@@ -238,7 +238,7 @@ begin
   begin
     S := Grid.Cells[1, i];
     if (S > '') and
-    	(FRD.Grid.FindColumnByTitle(S) = nil) then
+    	(FRD.Grid.FindColumnByName(S) = nil) then
     begin
       ErrMsgFmt(rsFieldNotFound, [S]);
       Grid.SetFocus;

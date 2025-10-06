@@ -34,6 +34,7 @@ type
   TSettingsFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     Caching: TCheckBox;
+    CheckShortcutsChk: TCheckBox;
     LogErrorsChk: TCheckBox;
     SupportDXDB: TCheckBox;
     ShowGridChk: TCheckBox;
@@ -167,12 +168,20 @@ begin
   Caching.Caption := rsCacheMetadata;
   SupportDXDB.Caption := rsSupportDXDB;
   LogErrorsChk.Caption := rsErrorLogging;
+  CheckShortcutsChk.Caption := rsCheckForShortcuts;
+  {$ifdef windows}
+  CheckShortcutsChk.Visible := False;
+  {$endif}
 
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
   ButtonPanel1.HelpButton.Caption := rsHelp;
 
   SetupSpeedButton(InfoLangBn, 'info16');
+
+  {$ifdef linux}
+  SupportDXDB.Enabled := False;
+  {$endif}
 
   //AddFormHeight(Self);
 end;
@@ -279,6 +288,7 @@ begin
   Caching.Checked := AppConfig.Caching;
   SupportDXDB.Checked := AppConfig.SupportDXDB;
   LogErrorsChk.Checked := AppConfig.LogErrors;
+  CheckShortcutsChk.Checked := AppConfig.CheckShortcuts;
 
   DesignTab.TabVisible := IsDeveloper and not IsEmptyApp;
   if Pages.ActivePage = DesignTab then Pages.ActivePage := IntfTab;
@@ -313,7 +323,8 @@ begin
 
   AppConfig.Caching := Caching.Checked;
   AppConfig.SupportDXDB := SupportDXDB.Checked;
-  Appconfig.LogErrors := LogErrorsChk.Checked;
+  AppConfig.LogErrors := LogErrorsChk.Checked;
+  AppConfig.CheckShortcuts := CheckShortcutsChk.Checked;
 
   if ComboBox1.ItemIndex <> OldItemIndex then
     Info(rsNewLangApply);

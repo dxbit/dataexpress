@@ -7,11 +7,11 @@ object LoginFm: TLoginFm
   Caption = 'Вход'
   ClientHeight = 210
   ClientWidth = 302
+  Position = poMainFormCenter
+  LCLVersion = '4.3.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poMainFormCenter
-  LCLVersion = '3.0.0.3'
   object Label1: TLabel
     Left = 16
     Height = 15

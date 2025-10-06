@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -151,6 +151,7 @@ begin
   HtmlPan.DataProvider := THtmlProvider.Create(Self);
   HtmlPan.BorderSpacing.Left := 4;
   HtmlPan.BorderSpacing.Right := 4;
+  AddFormWidth(Self);
 end;
 
 procedure TModulesFm.FormKeyDown(Sender: TObject; var Key: Word;

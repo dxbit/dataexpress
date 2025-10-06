@@ -45,6 +45,10 @@
             <IncludeFiles Value="$(ProjOutDir)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
+          </CodeGeneration>
           <Linking>
             <Debugging>
               <DebugInfoType Value="dsDwarf3"/>
@@ -58,7 +62,7 @@
           </Linking>
           <Other>
             <ExecuteAfter>
-              <Command Value="bash copy.sh"/>
+              <Command Value="copy.bat"/>
             </ExecuteAfter>
           </Other>
         </CompilerOptions>

@@ -80,9 +80,10 @@ end;
 procedure TStructTree.BuildTree;
 var
   i, j: Integer;
-  Fm: TdxForm;
-  FmNode, N: TTreeNode;
+  Fm, PFm: TdxForm;
+  FmNode, N, ChildN, ParentN: TTreeNode;
   C: TComponent;
+  HandledList: TList;
 begin
   inherited BuildTree;
 
@@ -91,8 +92,9 @@ begin
   begin
     Fm := FormMan.Forms[i];
     if Fm.ViewType = vtSimpleForm then Continue;
+    if (Fm.PId > 0) and (FormMan.FindForm(Fm.PId).ViewType = vtSimpleForm) then Continue;
 
-    FmNode := Tree.Items.AddChild(nil, Fm.FormCaption + ' (T' + IntToStr(Fm.Id) + ')');
+    FmNode := Tree.Items.AddChildObject(nil, Fm.FormCaption + ' (T' + IntToStr(Fm.Id) + ')', Fm);
     if Fm.PId = 0 then
       SetImageIdx(FmNode, 0)
     else
@@ -108,6 +110,28 @@ begin
     end;
   end;
   Tree.AlphaSort;
+
+  HandledList := TList.Create;
+
+  N := Tree.Items.TopLvlItems[Tree.Items.TopLvlCount - 1];
+  while N <> nil do
+  begin
+    Fm := TdxForm(N.Data);
+    if (Fm.PId > 0) and (HandledList.IndexOf(Fm) < 0) then
+    begin
+      PFm := FormMan.FindForm(Fm.PId);
+      ParentN := Tree.Items.FindNodeWithData(PFm);
+      ChildN := N;
+      N := N.GetPrevSibling;
+      ChildN.MoveTo(ParentN, naInsertBehind);
+      HandledList.Add(Fm);
+    end
+    else
+      N := N.GetPrevSibling;
+  end;
+
+  HandledList.Free;
+
   Tree.EndUpdate;
 end;
 

@@ -1015,7 +1015,6 @@ begin
   Id := GetId(C);
   FmId := GetId(C.Owner);
   FieldSize := GetFieldSize(C);
-  //OldSize := GetOldSize(C);
   for i := 0 to Count - 1 do
   begin
     DCI := CacheItems[i];
@@ -1356,6 +1355,7 @@ procedure TFormDesigner.SurfaceAddComponent(Sender: TObject;
     Fm: TdxForm;
   begin
     Fm := FormMan.CreateNewChildForm(TdxForm(Container).Id);
+    Fm.FormCaption := FormMan.MakeUniqueTableName(TdxForm(Container), rsForm);
     //Fm.PId:=TdxForm(Container).Id;
     SetId(C, Fm.Id);
     DesignFr.FormsTreeView.AddForm(Fm, True);
@@ -1375,7 +1375,7 @@ procedure TFormDesigner.SurfaceAddComponent(Sender: TObject;
     RD := ReportMan.CreateNewReport;
     RD.Kind:=rkQuery;
     if QG.Id = 0 then
-      RD.Name := ReportMan.MakeUniqueName(rsQuery)  //rsQuery + IntToStr(RD.Id)
+      RD.Name := MakeUniqueQueryName(Form, rsQuery) //ReportMan.MakeUniqueName(rsQuery)
     else
     begin
       OldId := RD.Id;
@@ -1387,11 +1387,11 @@ procedure TFormDesigner.SurfaceAddComponent(Sender: TObject;
         MS.Position:=0;
         RD.LoadFromStream(MS);
         MS.Free;
-        RD.Name := ReportMan.MakeUniqueName(RD.Name); //RD.Name + IntToStr(OldId);
+        RD.Name := MakeUniqueQueryName(Form, RD.Name); //ReportMan.MakeUniqueName(RD.Name);
         RD.Id := OldId;
       end
       else
-        RD.Name := ReportMan.MakeUniqueName(rsQuery) //rsQuery + IntToStr(RD.Id)
+        RD.Name := MakeUniqueQueryName(Form, rsQuery) //ReportMan.MakeUniqueName(rsQuery)
     end;
     QG.Id:=RD.Id;
   end;
@@ -2235,10 +2235,10 @@ begin
   begin
     C := TControl(L[i]);
 
-    if HasFId(C) and CheckExistsInActions(Fm, renField, GetFieldName(C)) then Exit(False);
-    if (C is TdxQueryGrid) and CheckExistsInActions(Fm, renQuery, TdxQueryGrid(C).QueryName) then
+    if HasFId(C) and CheckExistsInActions(Fm, nil, renField, GetFieldName(C)) then Exit(False);
+    if (C is TdxQueryGrid) and CheckExistsInActions(Fm, nil, renQuery, TdxQueryGrid(C).QueryName) then
       Exit(False);
-    if CheckExistsInActions(Fm, renComponent, C.Name) then Exit(False);
+    if CheckExistsInActions(Fm, nil, renComponent, C.Name) then Exit(False);
 
     if C is TdxGrid then
     begin

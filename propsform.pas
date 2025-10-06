@@ -141,6 +141,8 @@ const
   C_PRINTCHART = 72;
   C_IMAGES = 73;
   C_IMAGEPROPS = 74;
+  C_FORMGLYPH = 75;
+  C_HINTTEXT = 76;
 
 var
   PropsFrm: TPropsForm;
@@ -429,7 +431,7 @@ begin
     C_QUERYSTYLE: QueryStyleDlg(TdxQueryGrid(C));
     C_QCALCFIELDS: QueryCalcDlg(C);
     C_DEFAULTVALUE: DefaultValueDlg(C);
-    C_HINT: ShowHintForm(TdxLabel(C));
+    C_HINT: ShowHintForm(C);
     C_HELPTEXT: FormDesign.Form.HelpText.Text := ShowHelpTextForm(FormDesign.Form.HelpText.Text);
     C_HIERARCHY: ShowHierarchyForm(FormDesign.Form);
     C_TREE: ShowTreeForm(FormDesign.Form);
@@ -459,6 +461,8 @@ begin
       ShowMemoSourceForm(TdxMemo(C));
     C_IMAGEPROPS:
       ShowImagePropsForm(TdxImage(C));
+    C_FORMGLYPH: FormGlyphMnu.PopupMenu(FormDesign.Form);
+    C_HINTTEXT: ShowHintTextDlg(C);
   end;
   DesignFr.UpdateStatusBar;
 
@@ -495,18 +499,18 @@ begin
   begin
     if TdxForm(AValue).PId = 0 then
       SetArray(Props, [C_FORMCAPTION, C_COLOR, C_FONT, C_GRID,
-        C_VIEWTYPE, C_TEMPLATE, C_CALCFIELDS, C_FORMFILTERS, C_COLORING, C_HELPTEXT, C_HIERARCHY, C_TREE, C_FORMACTIONS, C_FORMMORE])
+        C_VIEWTYPE, C_TEMPLATE, C_CALCFIELDS, C_FORMFILTERS, C_COLORING, C_HELPTEXT, C_HIERARCHY, C_TREE, C_FORMACTIONS, C_FORMGLYPH, C_FORMMORE])
     else
-      SetArray(Props, [C_FORMCAPTION, C_COLOR, C_FONT, C_GRID, C_CALCFIELDS, C_COLORING, C_SHOP, C_HELPTEXT, C_FORMACTIONS, C_FORMMORE])
+      SetArray(Props, [C_FORMCAPTION, C_COLOR, C_FONT, C_GRID, C_CALCFIELDS, C_COLORING, C_SHOP, C_HELPTEXT, C_FORMACTIONS, C_FORMGLYPH, C_FORMMORE])
   end
   else if AValue is TdxLabel then
     SetArray(Props, [C_COMPONENTNAME, C_LABELCAPTION, C_LBLTEXT, C_COLOR, C_FONT, C_EXPR, C_HINT])
   else if AValue is TdxEdit then
-    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_FIELDSIZE, C_EDITMASK, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE])
+    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_FIELDSIZE, C_EDITMASK, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE, C_HINTTEXT])
   else if AValue is TdxCalcEdit then
-    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_PRECISSION, C_EXPR, C_CHECKVALUE, C_RANGE, C_DEFAULTVALUE, C_CALCEDITMORE])
+    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_PRECISSION, C_EXPR, C_CHECKVALUE, C_RANGE, C_DEFAULTVALUE, C_HINTTEXT, C_CALCEDITMORE])
   else if AValue is TdxDateEdit then
-    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_DATENOW, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE])
+    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_DATENOW, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE, C_HINTTEXT])
   else if AValue is TdxMemo then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_FIELDSIZE, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE, C_PICKLIST, C_LISTFILTER])
   else if AValue is TdxCheckBox then
@@ -514,7 +518,7 @@ begin
   else if AValue is TdxComboBox then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_FIELDSIZE, C_LIST, C_LISTSOURCE, C_LISTFILTER, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE])
   else if AValue is TdxLookupComboBox then
-    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_LINKFORM, C_LISTFILTER, C_INSERTVALUES, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE])
+    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_LINKFORM, C_LISTFILTER, C_INSERTVALUES, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE, C_HINTTEXT])
   else if AValue is TdxGrid then
     SetArray(Props, [C_COMPONENTNAME, C_FORM, C_GRIDBUTTONS])
   else if AValue is TdxGroupBox then
@@ -537,11 +541,11 @@ begin
   else if AValue is TdxObjectField then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_OBJFIELDS])
   else if AValue is TdxTimeEdit then
-    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_CURTIME, C_TIMEFMT, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE])
+    SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_CURTIME, C_TIMEFMT, C_EXPR, C_CHECKVALUE, C_DEFAULTVALUE, C_HINTTEXT])
   else if AValue is TdxCounter then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_COUNTER, C_CHECKVALUE, C_READONLY])
   else if AValue is TdxButton then
-    SetArray(Props, [C_COMPONENTNAME, C_LABELCAPTION, C_FONT, C_BUTTONGLYPH, C_ACTION])
+    SetArray(Props, [C_COMPONENTNAME, C_LABELCAPTION, C_FONT, C_BUTTONGLYPH, C_ACTION, C_HINT])
   else if AValue is TdxPivotGrid then
     SetArray(Props, [C_COMPONENTNAME, C_SELECTQUERY, C_QUERYSOURCE, C_QCALCFIELDS, C_QUERYFILTER,
       C_PIVOTGRID])
@@ -565,7 +569,7 @@ end;
 
 function TPropsForm.CreateButton(aKind: Integer): TSpeedButton;
 const
-  Glyphs: array [1..74] of String = ('id24', 'color24', 'font24', 'form24',
+  Glyphs: array [1..76] of String = ('id24', 'color24', 'font24', 'form24',
     'list24', 'listsource24', 'print24', 'id24', 'prec24', 'date24', 'grid24',
     'label24', 'tab_add24', 'tab_remove24', 'left24', 'right24', 'label24',
     'label24', 'shape24', 'box24', 'thumbsize24', 'open24', 'save24', 'delete24',
@@ -576,9 +580,10 @@ const
     'default24', 'help24', 'parent24', 'tree24', 'gridbuttons24', 'colors24',
     'action24', 'image24', 'id24', 'pivottable24', 'query24', 'id24',
     'scrollbars24', 'editmask24', 'more24', 'more24', 'action24', 'more24',
-    'object24', 'printimage24', 'chart24', 'print24', 'image24', 'more24');
+    'object24', 'printimage24', 'chart24', 'print24', 'image24', 'more24',
+    'image24', 'help24');
 var
-  Hints: array [1..74] of String;
+  Hints: array [1..76] of String;
 begin
   Hints[1] := rsFieldName;
   Hints[2] := rsColor;
@@ -631,7 +636,7 @@ begin
   Hints[49] := rsShopping;
   Hints[50] := rsCalcFields;
   Hints[51] := rsDefaultValue;
-  Hints[52] := rsHint;
+  Hints[52] := rsPopupHint;
   Hints[53] := rsHierarchy;
   Hints[54] := rsTree;
   Hints[55] := rsButtons;
@@ -654,6 +659,8 @@ begin
   Hints[72] := rsPrintChart;
   Hints[73] := rsSelectFromGallery;
   Hints[74] := rsImageProps;
+  Hints[75] := rsGlyph;
+  Hints[76] := rsTextHint;
 
   Result := TSpeedButton.Create(Self);
   Result.Width:=ScaleToScreen(32);

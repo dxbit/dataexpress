@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Controls, BGRABitmap, BGRABitmapTypes, BGRAThumbnail,
   FPimage, Db, BufDataSet, Graphics, strconsts, ExtCtrls, Dialogs,
-  forms, BGRAReadTiff;
+  forms, BGRAReadTiff, Grids, DBGrids, LclType, Buttons, Menus;
 
 type
 
@@ -105,6 +105,7 @@ type
     FId: Integer;
     FIsQuery: Boolean;
     FOnImageLoad: TImageLoadEvent;
+    FOnImgChange: TNotifyEvent;
     FPrintSize: Integer;
     FReadOnly: Boolean;
     FRequired: Boolean;
@@ -139,9 +140,14 @@ type
     procedure SaveToFile(const FileName: String);
     procedure SaveToStream(St: TStream);
     function WasChanged: Boolean;
+    procedure DoImgChange;
+    procedure DoCommand(CmdId: Integer);
+    function CanCommand(CmdId: Integer): Boolean;
+    function Src: String;
     property SourceFileName: String read GetSourceFileName;
     property StoredFileName: String read GetStoredFileName;
     property IsQuery: Boolean read FIsQuery write FIsQuery;
+    property OnImgChange: TNotifyEvent read FOnImgChange write FOnImgChange;
   published
     property Id: Integer read FId write FId;
     property FieldName: String read FFieldName write SetFieldName;
@@ -154,6 +160,30 @@ type
     property PrintSize: Integer read FPrintSize write FPrintSize;
     property ShowThumbnail: Boolean read FShowThumbnail write FShowThumbnail;
     property OnImageLoad: TImageLoadEvent read FOnImageLoad write FOnImageLoad;
+  end;
+
+  { TdxDBImageCellEditor }
+
+  TdxDBImageCellEditor = class(TBitBtn)
+  private
+    FGrid: TCustomGrid;
+    FPop: TPopupMenu;
+    FImg: TdxDBImage;
+    FFieldIdx: Integer;
+    procedure ImageChange(Sender: TObject);
+    procedure PopupHandler(Sender: TObject);
+    procedure PopupPopup(Sender: TObject);
+  protected
+    procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
+    procedure msg_Ready(var Msg: TGridMessage); message GM_READY;
+    procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
+  public
+    constructor Create(TheOwner: TComponent); override;
+    procedure Click; override;
+    procedure SetImage(AImg: TdxDBImage; IsQuery: Boolean);
+    procedure SetQueryField(AFieldIdx: Integer);
+    property Img: TdxDBImage read FImg;
   end;
 
 procedure CreateThumbnail(const FileName: String; Image: TdxDBImage; DS: TDataSet);
@@ -169,8 +199,8 @@ procedure GetImageSize(const FileName: String; var Size: TPoint);
 implementation
 
 uses
-  bgrareadjpeg, LazUtf8, fpreadjpeg, Types, sqlgen, apputils, Menus, fileUtil,
-  imagemanager, appimagelists, scriptfuncs;
+  bgrareadjpeg, LazUtf8, fpreadjpeg, Types, sqlgen, apputils, fileUtil,
+  imagemanager, appimagelists, scriptfuncs, dxreports, datasetprocessor;
 
 const
   StorageTypeDB = 0;
@@ -282,7 +312,6 @@ begin
   Result := nil;
   FlNm := FieldStr(Image.Id);
   Tp := Image.StorageType;
-  //if (Tp = StorageTypeDB) and (DS.State in [dsInsert, dsEdit]) then Tp := StorageTypeLink;
   case Tp of
     StorageTypeDb:
       begin
@@ -297,8 +326,7 @@ begin
       end;
     StorageTypeLink:
       begin
-        if not Image.IsQuery then FlNm := FlNm + 'src';
-        FileName := DS.FieldByName(FlNm).AsString;
+        FileName := DS.FieldByName(Image.Src).AsString;
         if FileExists(FileName) then
           Result := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
       end;
@@ -315,8 +343,7 @@ begin
   case Image.StorageType of
     StorageTypeDB:
       begin
-        if not Image.IsQuery then FlNm := FlNm + 'src';
-        S := DS.FieldByName(FlNm).AsString;
+        S := DS.FieldByName(Image.Src).AsString;
         if S <> '' then
           Result := ExtractFilePath(S) + GetUniqueFileName(DS.FieldByName('id').AsInteger,
             Image.Id, ExtractFileName(S));
@@ -330,8 +357,7 @@ begin
       end;
     StorageTypeLink:
       begin
-        if not Image.IsQuery then FlNm := FlNm + 'src';
-        Result := DS.FieldByName(FlNm).AsString;
+        Result := DS.FieldByName(Image.Src).AsString;
       end;
   end;
 end;
@@ -424,6 +450,8 @@ begin
     DS.FieldByName(FNm).SetData(nil);
   // Просто меняем значение поля для определения, что blob был изменен.
   DS.FieldByName(FNm + 'c').AsInteger:=DS.FieldByName(FNm + 'c').AsInteger+1;
+
+  Image.DoImgChange;
 
   except
     on E: Exception do
@@ -550,71 +578,16 @@ begin
 end;
 
 procedure TdxDBImage.PopupHandler(Sender: TObject);
-var
-  FNm, FlName, ErrStr: String;
 begin
-  FNm := FieldStr(FId);
-  case TMenuItem(Sender).Tag of
-    0:
-      begin
-        FlName := GetImageFileName(Self, DS);
-        if FStorageType = StorageTypeDB then
-        begin
-          FlName := GetOutputDir + ExtractFileName(FlName);
-          //FlName := GetOutputDir + FlName;
-          ErrStr := SaveImageToFile(FlName, Self, DS);
-          if ErrStr <> '' then
-          begin
-            ErrMsg(ErrStr, True, 'OpenImage');
-            Exit;
-          end;
-        end;
-        //if FileExistsUtf8(FlName) then
-        OpenFile(FlName);
-      end;
-    1:
-      begin
-        FlName := OpenPictureDialog;
-        if (FlName = '') or (not CheckFileName(FlName)) then Exit;
-        ErrStr := LoadImageFromFile(FlName, Self, DS);
-        if ErrStr = '' then
-        begin
-          FIsNewImage := True;
-          ShowImage;
-        end
-        else
-        	ErrMsg(rsFailedToLoadImage + Spaces + ErrStr, True, 'LoadImage');
-      end;
-    2:
-      begin
-        FlName := ExtractFileName(DS.FieldByName(FNm + 'src').AsString);
-        FlName := SaveFileDialog(rsSaveImage, FlName);
-        if FlName = '' then Exit;
-        ErrStr := SaveImageToFile(FlName, Self, DS);
-        if ErrStr <> '' then ErrMsg(rsFailedToSaveImage + Spaces + ErrStr, True, 'SaveImage');
-      end;
-    3:
-      begin
-        Clear;
-        //Repaint;
-      end;
-  end;
+  DoCommand(TComponent(Sender).Tag);
 end;
 
 procedure TdxDBImage.PopupMenuPopup(Sender: TObject);
-var
-  F: TField;
-  b: Boolean;
 begin
-  F := DS.FieldByName(FieldStr(Id) + 'src');
-  b := (not F.IsNull) {and (
-    ((F.OldValue = F.Value) and (FStorageType = StorageTypeDB)) or
-    (FStorageType <> StorageTypeDB))};
-  PopupMenu.Items[0].Enabled:=b;
-  PopupMenu.Items[1].Enabled:=(DS.State in [dsInsert, dsEdit]) and (not ReadOnly);
-  PopupMenu.Items[2].Enabled:=b;
-  PopupMenu.Items[3].Enabled:=(DS.State in [dsInsert, dsEdit]) and
-    (not F.IsNull) and (not ReadOnly);
+  PopupMenu.Items[0].Enabled := CanCommand(0);
+  PopupMenu.Items[1].Enabled := CanCommand(1);
+  PopupMenu.Items[2].Enabled := CanCommand(2);
+  PopupMenu.Items[3].Enabled := CanCommand(3);
 end;
 
 function TdxDBImage.DS: TDataSet;
@@ -635,7 +608,7 @@ begin
     else
       St := GetImageStream(Self, DS);
     TImageLoader(FLoader).Stream := St;
-    FLoadFailed := (St = nil) and (not DS.FieldByName(FieldStr(FId) + 'src').IsNull);
+    FLoadFailed := (St = nil) and (not DS.FieldByName(Src).IsNull);
   end;
   if FLoadFailed then DoLoadImage(lsFail);
 end;
@@ -744,7 +717,7 @@ begin
     FreeAndNil(FLoader);
   end;
   FBmp.SetSize(0, 0);
-  FLoading := not DS.FieldByName(FieldStr(FId) + 'src').IsNull;
+  FLoading := not DS.FieldByName(Src).IsNull;
   Repaint;
   FLoader := TImageLoader.Create(Self);
   FOldWidth := Width;
@@ -764,6 +737,9 @@ begin
   DS.FieldByName(FNm + 'c').SetData(nil);
   FLoadFailed:=False;
   FLoading:=False;
+
+  DoImgChange;
+
   Invalidate;
 end;
 
@@ -806,13 +782,83 @@ begin
   Result := F.Value <> F.OldValue;
 end;
 
-function TdxDBImage.GetSourceFileName: String;
-var
-  FlNm: String;
+procedure TdxDBImage.DoImgChange;
 begin
-  FlNm := FieldStr(FId);
-  if not FIsQuery then FlNm := FlNm + 'src';
-  Result := DS.FieldByName(FlNm).AsString;
+  if FOnImgChange <> nil then
+    FOnImgChange(Self);
+end;
+
+procedure TdxDBImage.DoCommand(CmdId: Integer);
+var
+  FNm, FlName, ErrStr: String;
+begin
+  FNm := FieldStr(FId);
+  case CmdId of
+    0:
+      begin
+        FlName := GetImageFileName(Self, DS);
+        if FStorageType = StorageTypeDB then
+        begin
+          FlName := GetOutputDir + ExtractFileName(FlName);
+          ErrStr := SaveImageToFile(FlName, Self, DS);
+          if ErrStr <> '' then
+          begin
+            ErrMsg(ErrStr, True, 'OpenImage');
+            Exit;
+          end;
+        end;
+        OpenFile(FlName);
+      end;
+    1:
+      begin
+        FlName := OpenPictureDialog;
+        if (FlName = '') or (not CheckFileName(FlName)) then Exit;
+        ErrStr := LoadImageFromFile(FlName, Self, DS);
+        if ErrStr = '' then
+        begin
+          FIsNewImage := True;
+          ShowImage;
+        end
+        else
+        	ErrMsg(rsFailedToLoadImage + Spaces + ErrStr, True, 'LoadImage');
+      end;
+    2:
+      begin
+        FlName := ExtractFileName(DS.FieldByName(Src).AsString);
+        FlName := SaveFileDialog(rsSaveImage, FlName);
+        if FlName = '' then Exit;
+        ErrStr := SaveImageToFile(FlName, Self, DS);
+        if ErrStr <> '' then ErrMsg(rsFailedToSaveImage + Spaces + ErrStr, True, 'SaveImage');
+      end;
+    3:
+      begin
+        Clear;
+      end;
+  end;
+end;
+
+function TdxDBImage.CanCommand(CmdId: Integer): Boolean;
+var
+  F: TField;
+begin
+  F := DS.FieldByName(Src);
+  case CmdId of
+    0: Result := not F.IsNull;
+    1: Result := (DS.State in [dsInsert, dsEdit]) and not ReadOnly;
+    2: Result := not F.IsNull;
+    3: Result := (DS.State in [dsInsert, dsEdit]) and not F.IsNull and not ReadOnly;
+  end;
+end;
+
+function TdxDBImage.Src: String;
+begin
+  Result := FieldStr(FId);
+  if not FIsQuery then Result := Result + 'src';
+end;
+
+function TdxDBImage.GetSourceFileName: String;
+begin
+  Result := DS.FieldByName(Src).AsString;
 end;
 
 function TdxDBImage.GetStoredFileName: String;
@@ -830,6 +876,162 @@ begin
   if FFieldName=AValue then Exit;
   FFieldName:=AValue;
   Invalidate;
+end;
+
+{ TdxDBImageCellEditor }
+
+procedure TdxDBImageCellEditor.PopupHandler(Sender: TObject);
+var
+  n: PtrInt;
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
+  Q: TQueryRec;
+  pF: PRpField;
+  C, TmpImg: TdxDBImage;
+begin
+  n := TComponent(Sender).Tag;
+  if FImg <> nil then
+    FImg.DoCommand(n)
+  else
+  begin
+    QGrid := TdxQueryGrid(FGrid);
+    DSP := TDataSetProcessor(QGrid.DSP);
+    Q := DSP.Queries[QGrid.QRi]^;
+    pF := Q.RD.TryGetRpField(FFieldIdx);
+
+    C := TdxDBImage(GetRpFieldComponent(pF^, True));
+    TestNil(C, 'TdxImageCellEditor.PopupHandler: C = nil');
+
+    TmpImg := TdxDBImage.Create(nil);
+    with TmpImg do
+    try
+      Id := pF^.Id;
+      StorageType := C.StorageType;
+      StorageFolder := C.StorageFolder;
+      IsQuery := True;
+      DataSource := QGrid.DataSource;
+      DoCommand(n);
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TdxDBImageCellEditor.ImageChange(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  DSProc: TDataSetProcessor;
+  Q: TQueryRec;
+  i: Integer;
+begin
+  QGrid := TdxQueryGrid(FGrid);
+  DSProc := TDataSetProcessor(QGrid.DSP);
+  i := QGrid.QRi;
+  Q := DSProc.Queries[i]^;
+  DSProc.DisableQueryFieldsChange(i);
+  Q.DSProc.WriteFormFieldsToQueryFields;
+  DSProc.EnableQueryFieldsChange(i);
+end;
+
+procedure TdxDBImageCellEditor.PopupPopup(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
+  Q: TQueryRec;
+  FlNm: String;
+begin
+  if FImg <> nil then
+  begin
+    FPop.Items[0].Enabled := FImg.CanCommand(0);
+    FPop.Items[1].Enabled := FImg.CanCommand(1);
+    FPop.Items[1].Visible := True;
+    FPop.Items[2].Enabled := FImg.CanCommand(2);
+    FPop.Items[3].Enabled := FImg.CanCommand(3);
+    FPop.Items[3].Visible := True;
+  end
+  else
+  begin
+    QGrid := TdxQueryGrid(FGrid);
+    DSP := TDataSetProcessor(QGrid.DSP);
+    Q := DSP.Queries[QGrid.QRi]^;
+    FlNm := Q.RD.GetFieldNameDS(FFieldIdx);
+    FPop.Items[0].Enabled := not Q.DataSet.FieldByName(FlNm).IsNull;
+    FPop.Items[1].Enabled := False;
+    FPop.Items[1].Visible := False;
+    FPop.Items[2].Enabled := FPop.Items[0].Enabled;
+    FPop.Items[3].Enabled := False;
+    FPop.Items[3].Visible := False;
+  end;
+end;
+
+procedure TdxDBImageCellEditor.msg_SetGrid(var Msg: TGridMessage);
+begin
+  FGrid:=Msg.Grid;
+  Msg.Options:=EO_HOOKKEYDOWN or EO_HOOKKEYPRESS or EO_HOOKKEYUP;
+end;
+
+procedure TdxDBImageCellEditor.msg_SetBounds(var Msg: TGridMessage);
+var
+  r: TRect;
+  W: Integer;
+begin
+  r := Msg.CellRect;
+  FGrid.AdjustInnerCellRect(r);
+  W := ScaleToScreen(DEFBUTTONWIDTH);
+  if r.Right-r.Left>W then
+    r.Left:=r.Right-W;
+  SetBounds(r.Left, r.Top, r.Right-r.Left, r.Bottom-r.Top);
+end;
+
+procedure TdxDBImageCellEditor.msg_Ready(var Msg: TGridMessage);
+begin
+  Width := ScaleToScreen(DEFBUTTONWIDTH);
+end;
+
+procedure TdxDBImageCellEditor.msg_GetGrid(var Msg: TGridMessage);
+begin
+  Msg.Grid := FGrid;
+  Msg.Options:= EO_IMPLEMENTED;
+end;
+
+constructor TdxDBImageCellEditor.Create(TheOwner: TComponent);
+begin
+  inherited Create(TheOwner);
+  Images := Images16;
+  ImageIndex := IMG16_IMAGE;
+  Spacing:=0;
+
+  FPop := TPopupMenu.Create(Self);
+  FPop.Images := Images16;
+  FPop.Items.Add( CreateMenuItem(FPop, rsLook, 0, 0, @PopupHandler, IMG16_EYES) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsLoadFile, 1, 0, @PopupHandler, IMG16_DB) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsSaveFile, 2, 0, @PopupHandler, IMG16_SAVE) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsClear, 3, 0, @PopupHandler, IMG16_DELETE) );
+  FPop.OnPopup := @PopupPopup;
+  PopupMenu := FPop;
+end;
+
+procedure TdxDBImageCellEditor.Click;
+var
+  P: TPoint;
+begin
+  inherited Click;
+  P := ClientToScreen(Point(0, Height));
+  FPop.Popup(P.X, P.Y);
+end;
+
+procedure TdxDBImageCellEditor.SetImage(AImg: TdxDBImage; IsQuery: Boolean);
+begin
+  FImg := AImg;
+  if IsQuery then
+    FImg.OnImgChange := @ImageChange;
+  FFieldIdx := -1;
+end;
+
+procedure TdxDBImageCellEditor.SetQueryField(AFieldIdx: Integer);
+begin
+  FFieldIdx := AFieldIdx;
+  FImg := nil;
 end;
 
 { TdxImage }

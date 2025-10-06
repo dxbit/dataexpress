@@ -92,6 +92,7 @@ type
     FBns: TButtonPanel;
     FCmp: TdxQueryGrid;
     FRD: TReportData;
+    function CheckDuplicateName(const AName: String): Boolean;
   protected
     procedure DoShow; override;
   public
@@ -146,6 +147,16 @@ type
     property SizeChanged: Boolean read FSizeChanged;
   end;
 
+  { THintTextDlg }
+
+  THintTextDlg = class(TForm)
+  private
+    FEdit: TEdit;
+  public
+    constructor CreateNew(AOwner: TComponent; Num: Integer=0); override;
+    function ShowForm(ACmp: TComponent): Integer;
+  end;
+
 function FormNameDlg(Fm: TdxForm): Integer;
 function FieldNameDlg(C: TComponent): Integer;
 //function PrecissionDlg(C: TComponent): Boolean;
@@ -171,6 +182,7 @@ function ComponentNameDlg(C: TComponent): Integer;
 function ReportNameDlg(const aCaption: String; var aName: String; aRD: TReportData): Integer;
 function ShowLabelCaptionDlg(ALabel: TdxLabel): Integer;
 function FontDlg(C: TControl): Integer;
+function ShowHintTextDlg(ACmp: TComponent): Integer;
 
 implementation
 
@@ -205,6 +217,15 @@ begin
   begin
     if not (C is TdxForm) then
       SetParentFont(C, C.Font.IsEqual(C.Parent.Font));
+  end;
+end;
+
+function ShowHintTextDlg(ACmp: TComponent): Integer;
+begin
+  with THintTextDlg.CreateNew(MainFm) do
+  begin
+    Result := ShowForm(ACmp);
+    Free;
   end;
 end;
 
@@ -588,6 +609,7 @@ var
   i: Integer;
   Fm: TdxForm;
   RD: TReportData;
+  C: TComponent;
 begin
   Result := True;
   for i := 0 to FormMan.FormCount - 1 do
@@ -605,10 +627,20 @@ begin
       Exit(False);
     end;
   end;
+  if FindQueryInForm(aFm, aName) <> nil then
+  begin
+    ErrMsg(rsQueryNameExists);
+    Exit(False);
+  end
+  else if (aFm.PId > 0) and (FindQueryInForm(FormMan.FindForm(aFm.PId), aName) <> nil) then
+  begin
+    ErrMsg(rsQueryNameExistsInParent);
+    Exit(False);
+  end;
   for i := 0 to ReportMan.ReportCount - 1 do
   begin
     RD := ReportMan.Reports[i];
-    if MyUtf8CompareText(aName, RD.Name) = 0 then
+    if (RD.Kind = rkReport) and (MyUtf8CompareText(aName, RD.Name) = 0) then
     begin
       ErrMsg(rsReportNameExists);
       Exit(False);
@@ -744,6 +776,50 @@ begin
   if not Result and FEdit.CanFocus then FEdit.SetFocus;
 end;
 
+{ THintTextDlg }
+
+constructor THintTextDlg.CreateNew(AOwner: TComponent; Num: Integer);
+var
+  L: TLabel;
+begin
+  inherited CreateNew(AOwner, Num);
+  Caption := rsTextHint;
+  BorderStyle:=bsDialog;
+  Position := poOwnerFormCenter;
+  L := TLabel.Create(Self);
+  L.Parent := Self;
+  L.Left := 8; L.Top := 8;
+  L.Caption := rsEnterTextHint;
+  FEdit := TEdit.Create(Self);
+  with FEdit do
+  begin
+		Parent := Self;
+    AnchorSideTop.Control := L;
+    AnchorSideTop.Side := asrBottom;
+    BorderSpacing.Top := 2;
+    Text := '';
+    Left := 8;
+    Width := 328;
+  end;
+  with TButtonPanel.Create(Self) do
+  begin
+    Parent := Self;
+    ShowButtons := [pbOk, pbCancel];
+    OkButton.Caption := rsOk;
+    CancelButton.Caption := rsCancel;
+  end;
+  ClientWidth := 345;
+  ClientHeight := 104;
+end;
+
+function THintTextDlg.ShowForm(ACmp: TComponent): Integer;
+begin
+  FEdit.Text := GetHintText(ACmp);
+  Result := ShowModal;
+  if Result = mrOk then
+    SetHintText(ACmp, FEdit.Text);
+end;
+
 { TLabelCaptionDlg }
 
 constructor TLabelCaptionDlg.CreateNew(AOwner: TComponent; Num: Integer);
@@ -853,7 +929,7 @@ begin
   Result:=inherited CloseQuery;
   if ModalResult <> mrOk then Exit;
   S := FRpNm.Text;
-  Result := CheckFormName(S) and CheckDuplicateQueryName(S, FRD);
+  Result := CheckFormName(S) and CheckDuplicateReportName(S, FRD);
 end;
 
 function TReportNameDlg.ShowForm(var RpName: String; aRD: TReportData): Integer;
@@ -869,6 +945,22 @@ end;
 procedure TQueryNameDlg.HelpBnClick(Sender: TObject);
 begin
   OpenHelp('queryname');
+end;
+
+function TQueryNameDlg.CheckDuplicateName(const AName: String): Boolean;
+var
+  Fm: TdxForm;
+begin
+  Result := False;
+  Fm := TdxForm(FCmp.Owner);
+  if MyUtf8CompareText(AName, Fm.FormCaption) = 0 then
+    ErrMsg(rsQueryNameNotSameCurForm)
+  else if FindTableInForm(Fm, AName) <> nil then
+    ErrMsg(rsChildFormNameExists)
+  else if FindQueryInForm(Fm, AName, GetId(FCmp)) <> nil then
+    ErrMsg(rsQueryNameExists)
+  else
+    Result := True;
 end;
 
 procedure TQueryNameDlg.DoShow;
@@ -920,18 +1012,18 @@ begin
   OldName := FCmp.Name;
   NewName := FCmpNm.Text;
 
-  if CheckFormName(NewRDName) and CheckDuplicateQueryName(NewRDName, FRD) and
+  if CheckFormName(NewRDName) and CheckDuplicateName(NewRDName) {CheckDuplicateReportName(NewRDName, FRD)} and
     TrySetComponentName(FCmp, NewName) then
   begin
     if OldRDName <> NewRDName then
     begin
       FRD.Name := NewRDName;
-      RenameInActions(TdxForm(FCmp.Owner), renQuery, OldRDName, NewRDName);
+      RenameInActions(TdxForm(FCmp.Owner), nil, renQuery, OldRDName, NewRDName);
     end;
     if OldName <> NewName then
     begin
       RenameComponentInRights(TdxForm(FCmp.Owner), OldName, NewName);
-      RenameInActions(TdxForm(FCmp.Owner), renComponent, OldName, NewName);
+      RenameInActions(TdxForm(FCmp.Owner), nil, renComponent, OldName, NewName);
     end;
   end
   else Result := False;
@@ -1041,9 +1133,9 @@ begin
       FCmp.RecordsCaption := FRecsCaption.Text;
       FCmp.RecordCaption := FRecCaption.Text;
       if OldFormName <> NewFormName then
-        RenameInActions(FCmp, renForm, OldFormName, NewFormName);
+        RenameInActions(FCmp, nil, renForm, OldFormName, NewFormName);
       if OldName <> NewName then
-        RenameInActions(FCmp, renComponent, OldName, NewName);
+        RenameInActions(FCmp, nil, renComponent, OldName, NewName);
       Result := True;
     end
     else
@@ -1111,7 +1203,7 @@ begin
     if OldName <> NewName then
     begin
       RenameComponentInRights(TdxForm(FCmp.Owner), OldName, NewName);
-      RenameInActions(TdxForm(FCmp.Owner), renComponent, OldName, NewName);
+      RenameInActions(TdxForm(FCmp.Owner), nil, renComponent, OldName, NewName);
     end;
   end
   else Result := False;
@@ -1188,12 +1280,12 @@ begin
     if OldFieldName <> NewFieldName then
     begin
       SetFieldName(FCmp, NewFieldName);
-      RenameInActions(Fm, renField, OldFieldName, NewFieldName);
+      RenameInActions(Fm, nil, renField, OldFieldName, NewFieldName);
     end;
     if OldName <> NewName then
     begin
       RenameComponentInRights(Fm, OldName, NewName);
-      RenameInActions(Fm, renComponent, OldName, NewName);
+      RenameInActions(Fm, nil, renComponent, OldName, NewName);
     end;
   end
   else Result := False;

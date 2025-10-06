@@ -12,9 +12,10 @@ object ProgressFm: TProgressFm
   LCLVersion = '3.2.0.0'
   object Shape1: TShape
     Left = 0
-    Height = 84
+    Height = 79
     Top = 0
     Width = 320
+    Align = alClient
     Brush.Style = bsClear
   end
   object Image1: TImage

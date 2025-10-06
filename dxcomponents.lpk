@@ -30,6 +30,11 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="TreeViewEx"/>
       </Item>
+      <Item>
+        <Filename Value="shapeex.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ShapeEx"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>

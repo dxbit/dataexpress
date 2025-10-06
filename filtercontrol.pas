@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Grids, strconsts, StdCtrls, dxctrls, myclasses,
   Controls, DXReports, Menus, Graphics, ComCtrls, timeedit, Dialogs,
-  LclType, EditBtn;
+  LclType, EditBtn, Db, SqlDb, MemDS, MyCtrls;
 
 type
 
@@ -52,6 +52,23 @@ type
     property BorderStyle;
     property OnChange;
     property OnEditingDone;
+  end;
+
+  { TFilterLookupComboBox }
+
+  TFilterLookupComboBox = class(TdxLookupCellEditor)
+  private
+    FDummyDS: TMemDataSet;
+    procedure LCbxFillGrid(DS: TDataSet; OnlyClear: Boolean);
+    procedure LCbxKeyMatch(Sender: TObject);
+    procedure LCbxSetDisplayFormat(DS: TDataSet);
+    procedure LCbxNeedData(Sender: TObject; const AText: String);
+    procedure LCbxSetKey(Sender: TObject);
+  protected
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure SetLCbx(Src: TdxLookupComboBox);
   end;
 
   { TFilterEdit }
@@ -213,7 +230,7 @@ type
     FNumEdit: TFilterRange;
     FDateEdit: TFilterPeriod;
     FBoolEdit: TFilterComboBox;
-    FObjEdit: TFilterComboBox;
+    FObjEdit: TFilterLookupComboBox;
     FListEdit: TFilterComboBox;
     FOnChange: TNotifyEvent;
     FTimeEdit: TTimeIntervalEdit;
@@ -232,7 +249,7 @@ type
     function InitBoolEdit: TWinControl;
     function InitListEdit: TWinControl;
     function InitObjEdit: TWinControl;
-    procedure FillObjEdit;
+    //procedure FillObjEdit;
     procedure FieldsEditingDone(Sender: TObject);
     procedure SetAllowAddFields(AValue: Boolean);
     procedure AddField;
@@ -249,6 +266,7 @@ type
     procedure DoEnter; override;
     procedure DoExit; override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
+    function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
   protected
     procedure FillFields(L: TStrings); virtual;
     function LookupField(Obj: TObject; const aFieldName: String): TObject; virtual;
@@ -788,24 +806,16 @@ end;
 
 function TFilterControl.InitObjEdit: TWinControl;
 begin
-  FillObjEdit;
-  FObjEdit.Key:=PtrInt(Objects[Col, Row]);
+  FObjEdit.SetLCbx(TdxLookupComboBox(LookupField(Objects[0, Row], Cells[0, Row])));
+  FObjEdit.Field.AsString := Cells[Col, Row];
+  if Objects[Col, Row] <> nil then
+    FObjEdit.KeyValue := PtrInt(Objects[Col, Row])
+  else
+    FObjEdit.KeyValue := Null;
   Result := FObjEdit;
 end;
 
-function Abrakadabra(const Path: String): String;
-var
-  SL: TStringList;
-begin
-  Result := '';
-  SL := TStringList.Create;
-  SplitStr(Path, #9, SL);
-  if SL.Count > 0 then
-    Result := DupeString('  ', SL.Count - 1) + SL[SL.Count - 1];
-  SL.Free;
-end;
-
-procedure TFilterControl.FillObjEdit;
+{procedure TFilterControl.FillObjEdit;
 var
   C: TdxLookupComboBox;
   SQL: String;
@@ -856,7 +866,7 @@ begin
     FObjEdit.Items.AddStrings(SL);
   end;
   SL.Free;
-end;
+end;   }
 
 procedure TFilterControl.SelectEditor;
 var
@@ -892,14 +902,6 @@ begin
           if Cmp is TdxComboBox then Editor := InitListEdit;
         end;
     end;
-    {Obj := TComponent(LookupField(Objects[0, Row], Cells[0, Row]));
-    if Obj = nil then Editor := nil
-    else if (Obj is TdxCalcEdit) or (Obj is TdxCounter) then Editor := InitNumEdit
-    else if Obj is TdxDateEdit then Editor := InitDateEdit
-    else if Obj is TdxCheckBox then Editor := InitBoolEdit
-    else if Obj is TdxComboBox then Editor := InitListEdit
-    else if Obj is TdxLookupComboBox then Editor := InitObjEdit
-    else if Obj is TdxTimeEdit then Editor := InitTimeEdit   }
   end;
 end;
 
@@ -924,6 +926,16 @@ begin
   else if (Key in [VK_C, VK_V]) and (ssCtrl in Shift) and not EditorMode then Key := 0;
   inherited KeyDown(Key, Shift);
   if OldKey = VK_ESCAPE then Key := OldKey;
+end;
+
+function TFilterControl.EditorCanAcceptKey(const ch: TUTF8Char): boolean;
+begin
+  Result:=inherited EditorCanAcceptKey(ch);
+  // Первый нажатый символ при неактивном редакторе объекта не вызывает KeyDown
+  // компонента, следовательно, не срабатывает фильтрация и
+  // потеря фокуса не восстанавливает значение.
+  if Result and (Editor <> nil) and (Editor is TFilterLookupComboBox) then
+  	TFilterLookupComboBox(Editor).Changing:=True;
 end;
 
 procedure TFilterControl.FillFields(L: TStrings);
@@ -1065,10 +1077,10 @@ begin
   {$endif}
   FBoolEdit.OnEditingDone:=@EditorEditingDone;
   FBoolEdit.OnChange:=@EditorChange;
-  FObjEdit := TFilterComboBox.Create(Self);
-  FObjEdit.IsObject := True;
-  FObjEdit.AutoComplete:=True;
-  FObjEdit.OnEditingDone:=@EditorEditingDone;
+  FObjEdit := TFilterLookupComboBox.Create(Self);
+  //FObjEdit.IsObject := True;
+  //FObjEdit.AutoComplete:=True;
+  //FObjEdit.OnEditingDone:=@EditorEditingDone;
   FObjEdit.OnChange:=@EditorChange;
   FListEdit := TFilterComboBox.Create(Self);
   FListEdit.AutoComplete:=True;
@@ -2097,6 +2109,267 @@ begin
   AutoComplete := True;
   // Блокируем системное меню
   PopupMenu := TPopupMenu.Create(Self);
+end;
+
+{ TFilterLookupComboBox }
+
+procedure TFilterLookupComboBox.LCbxFillGrid(DS: TDataSet; OnlyClear: Boolean);
+var
+  Fm: TdxForm;
+  SL: TStringListUtf8;
+  i, r: Integer;
+  ShowTree, IsMemo: Boolean;
+  Grid: TDropDownList;
+begin
+  Grid := DropdownList;
+  if OnlyClear then
+  begin
+    Grid.RowCount := 0;
+    Grid.RowCount := 1;
+    Exit;
+  end;
+
+  DS.Last;
+  DS.First;
+
+  Grid.BeginUpdate;
+
+  try
+
+  ShowTree := False;
+  SL := TStringListUtf8.Create;
+  Fm := FormMan.FindForm(SourceTId);
+  ShowTree := (Fm.ParentField > 0) and (GetFormParentFieldFieldId(Fm) = SourceFId);
+  IsMemo := DS.Fields[0].DataType = ftMemo;
+  Grid.RowCount := DS.RecordCount;
+  r := 0;
+  with DS do
+    while not Eof do
+    begin
+      if not ShowTree then
+      begin
+        Grid.RecId[r] := DS.Fields[0].AsInteger;
+        if not IsMemo then
+          Grid.Cells[0, r] := DS.Fields[1].AsString
+        else
+          Grid.Cells[0, r] := DS.Fields[1].DisplayText;
+      end
+      else
+      begin
+        // Группы могут быть неправильно отсортированы. Из-за этого
+        // в списке подгруппы могут быть расположены не в той группе.
+        // Это возникает из-за того, что в названии группы может входить
+        // символы, которые меньше слеша. Поэтому я меняю слеш на табуляцию -
+        // символ, который меньше любого символа в названии...
+        SL.AddObject( StringReplace(Fields[1].AsString, '\', #9, [rfReplaceAll]),
+          TObject(PtrInt(Fields[0].AsInteger)) );
+      end;
+      Inc(r);
+      Next;
+    end;
+
+  if ShowTree then
+  begin
+    // ... Теперь сортировка иерархических групп будет правильной
+    SL.Sort;
+    for i := 0 to SL.Count - 1 do
+    begin
+      Grid.RecId[i] := PtrInt(SL.Objects[i]);
+    	Grid.Cells[0, i] := Abrakadabra(SL[i], #9);
+    end;
+  end;
+
+  finally
+    SL.Free;
+    Grid.EndUpdate;
+  end;
+end;
+
+(*procedure TFilterLookupComboBox.LCbxFillGrid(DS: TDataSet; OnlyClear: Boolean);
+var
+  r, i: Integer;
+  Grid: TDropDownList;
+  DSFields: TList;
+  SrcFm: TdxForm;
+  C: TComponent;
+
+  procedure AddColumn(const Caption: String; W: Integer; IsCheckBox, ASearchable: Boolean);
+  begin
+    with Grid.Columns.Add do
+    begin
+			Title.Caption := Caption;
+      if W > 0 then
+      begin
+	      SizePriority := 0;
+        Width := W;
+      end
+      else
+        SizePriority := 1;
+      if IsCheckBox then ButtonStyle:=cbsCheckboxColumn;
+      Searchable := ASearchable;
+    end;
+  end;
+
+begin
+  Grid := DropDownList;
+
+  SrcFm := FormMan.FindForm(SourceTId);
+
+  Grid.BeginUpdate;
+  Grid.Columns.Clear;
+  if ListSource = 0 then
+  begin
+    C := FindById(SrcFm, SourceFId);
+    AddColumn(GetFieldName(C), 0, False, True);
+  end;
+
+  Grid.Options := Grid.Options - [loTitles];
+
+  Grid.EndUpdate;
+
+  if OnlyClear then
+  begin
+    Grid.RowCount := Grid.FixedRows;
+    Grid.RowCount := Grid.RowCount + 1;
+    Exit;
+  end;
+
+  DSFields := TList.Create;
+
+  if ListSource = 0 then
+  begin
+    for i := 0 to DS.Fields.Count - 1 do
+      DSFields.Add(DS.Fields[i]);
+  end;
+
+  DS.Last;
+  DS.First;
+
+  Grid.BeginUpdate;
+  Grid.RowCount := DS.RecordCount + Grid.FixedRows;
+  Grid.Row := 0;
+
+  ShowTree := (SrcFm.ParentField > 0) and (GetFormParentFieldFieldId(SrcFm) = SourceFId);
+
+  r := Grid.FixedRows;
+  while not DS.EOF do
+  begin
+    Grid.RecId[r] := TField(DSFields[0]).AsInteger;
+    for i := 1 to DSFields.Count - 1 do
+      with TField(DSFields[i]) do
+        if DataType <> ftMemo then
+          Grid.Cells[i-1, r] := DisplayText
+        else
+          Grid.Cells[i-1, r] := AsString;
+    DS.Next;
+    Inc(r);
+  end;
+  Grid.EndUpdate;
+
+  DSFields.Free;
+end;  *)
+
+procedure TFilterLookupComboBox.LCbxKeyMatch(Sender: TObject);
+begin
+  if KeyValue = Null then
+    Field.SetData(nil)
+  else
+	  Field.Value := GetObjFieldValue(Self, KeyValue, True);
+end;
+
+procedure TFilterLookupComboBox.LCbxSetDisplayFormat(DS: TDataSet);
+var
+  SrcFm: TdxForm;
+  C: TComponent;
+begin
+  SrcFm := FormMan.FindForm(SourceTId);
+  C := FindById(SrcFm, SourceFId);
+  SetDSFieldDisplayFormat(DS.Fields[1], GetComponentDisplayFormat(SrcFm, C));
+end;
+
+procedure TFilterLookupComboBox.LCbxNeedData(Sender: TObject;
+  const AText: String);
+var
+  DS: TSQLQuery;
+  SQL: String;
+begin
+  DS := nil;
+  try try
+  	SQL := SqlLCbxSelect(Self, nil, AText, Trim(AText) <> '');
+    DS := DBase.OpenDataSet(SQL);
+    LCbxSetDisplayFormat(DS);
+    LCbxFillGrid(DS, False);
+  except
+    on E: Exception do
+    begin
+      ErrMsg(E.Message);
+      LCbxFillGrid(nil, True);
+    end;
+  end;
+  finally
+    FreeAndNil(DS);
+  end;
+end;
+
+procedure TFilterLookupComboBox.LCbxSetKey(Sender: TObject);
+begin
+  if FOwnerGrid = nil then Exit;
+
+  with TStringGrid(FOwnerGrid) do
+  begin
+    Cells[Col, Row] := Field.AsString;
+    Objects[Col, Row] := TObject(DataSource.DataSet.Fields[0].AsInteger);
+  end;
+end;
+
+procedure TFilterLookupComboBox.msg_SetBounds(var Msg: TGridMessage);
+var
+  R: TRect;
+begin
+  R := Msg.CellRect;
+  if R.Height < Height then R.Height := Height;
+  R.Right := R.Right - GetButtonWidths;
+  BoundsRect := R;
+end;
+
+constructor TFilterLookupComboBox.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Id := 5;
+  DataSource := TDataSource.Create(Self);
+  FDummyDS := TMemDataset.Create(Self);
+  DataSource.DataSet := FDummyDS;
+  with FDummyDS do
+  begin
+    FieldDefs.Add('f5', ftInteger);
+    FieldDefs.Add('f5l', ftString, 8000);
+    CreateTable;
+    Open;
+    Append;
+  end;
+  KeyField := 'f5';
+  DataField := 'f5l';
+  HideButton := True;
+  DropDownButton.Transparent:=False;
+  with DropDownList do
+  begin
+    Options := Options - [loTitles];
+    with Columns.Add do
+    begin
+      SizePriority := 1;
+      Searchable := True;
+    end;
+  end;
+  OnNeedData := @LCbxNeedData;
+  OnKeyMatch := @LCbxKeyMatch;
+  OnSetKey := @LCbxSetKey;
+end;
+
+procedure TFilterLookupComboBox.SetLCbx(Src: TdxLookupComboBox);
+begin
+  SourceTId := Src.SourceTId;
+  SourceFId := Src.SourceFId;
+  DropDownCount := Src.DropDownCount;
 end;
 
 end.

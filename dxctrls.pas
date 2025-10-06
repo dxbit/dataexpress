@@ -26,8 +26,8 @@ uses
   Classes, SysUtils, Types, Controls, DBCtrls, StdCtrls, ExtCtrls, DBGrids,
   DbCtrlsEx, BGRABitmap, ComCtrls, Db, Grids, Graphics, strconsts, Menus,
   Buttons, Forms, timeedit, LazUtf8, LclType, lists, myctrls, LMessages,
-  DxActions, myclasses,
-  mytypes, sqldb, dximages, dxfiles, LclIntf, treeviewex;
+  DxActions, myclasses, mytypes, sqldb, dximages, dxfiles, LclIntf, treeviewex,
+  ShapeEx;
 
 const
   StorageTypeDB = 0;
@@ -541,7 +541,7 @@ type
 
   TdxLookupComboBox = class(TDBEditEx)
   private
-    FAutoComplete: Boolean;
+    //FAutoComplete: Boolean;
     FCheckExpression: String;
     FClearTableBeforeFill: Boolean;
     FDefaultValue: String;
@@ -559,16 +559,17 @@ type
     FFieldName: String;
     FFilter: String;
     FId: Integer;
-    FItemHeight: Integer;
+    //FItemHeight: Integer;
     //FItemIndex: Integer;
     FKeyField: String;
-    FListField: String;
-    FListFieldIndex: Integer;
+    //FListField: String;
+    //FListFieldIndex: Integer;
     FListFields: TLCbxListFields;
     FListKeyField: String;
     FListSource: Integer;
+    FShowAsTreeList: Boolean;
     FListWidthExtra: Integer;
-    FLookupCache: Boolean;
+    //FLookupCache: Boolean;
     FOnButtonClick: TNotifyEvent;
     //FOnCbxChange: TNotifyEvent;
     //FOnCbxDropDown: TNotifyEvent;
@@ -578,6 +579,7 @@ type
     FOnNeedData: TNeedDataEvent;
     FOnKeyMatch: TNotifyEvent;
     FOnMenuClick: TNotifyEvent;
+    FOnSetKey: TNotifyEvent;
     //FOnMyUtf8KeyPress: TMyUtf8KeyPressEvent;
     FParams: String;
     FPromptFillTable: Boolean;
@@ -667,12 +669,14 @@ type
     property SourceFieldName: String read GetSourceFieldName;
     property DroppedDown: Boolean read GetDroppedDown;
     property DropDownList: TDropDownList read GetGrid;
+    property Changing: Boolean read FChanging write FChanging;
     //property Grid: TDropDownList read FGrid;
 
     //property ItemIndex: Integer read FItemIndex write FItemIndex;
     //property Style: TComboBoxStyle read FStyle write FStyle;
     property OnNeedData: TNeedDataEvent read FOnNeedData write FOnNeedData;
     property OnKeyMatch: TNotifyEvent read FOnKeyMatch write FOnKeyMatch;
+    property OnSetKey: TNotifyEvent read FOnSetKey write FOnSetKey;
 
     property OnButtonClick: TNotifyEvent read FOnButtonClick write FOnButtonClick;
     property OnMenuClick: TNotifyEvent read FOnMenuClick write FOnMenuClick;
@@ -713,6 +717,7 @@ type
     property ListSource: Integer read FListSource write FListSource;
     property ListKeyField: String read FListKeyField write FListKeyField;
 
+    property ShowAsTreeList: Boolean read FShowAsTreeList write FShowAsTreeList default False;
     //property AutoComplete: Boolean read FAutoComplete write FAutoComplete stored False;
     //property ItemHeight: Integer read FItemHeight write FItemHeight stored False;
 
@@ -725,8 +730,29 @@ type
     property Params: String read FParams write FParams stored False;
   end;
 
+  { TdxLookupCellEditor }
+  THackGrid = class(TCustomGrid);
+
+  TdxLookupCellEditor = class(TdxLookupComboBox)
+  private
+    FLayout: TTextLayout;
+    FIsKeyDown: Boolean;
+  protected
+    FOwnerGrid: TCustomGrid;
+    procedure KeyUp(var Key: Word; Shift: TShiftState); override;
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
+    procedure WndProc(var TheMessage : TLMessage); override;
+    procedure SetColor(Value: TColor); override;
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
+    procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
+    procedure msg_SelectAll(var Msg: TGridMessage); message GM_SELECTALL;
+    procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
+  public
+    constructor Create(AOwner: TComponent); override;
+    property Layout: TTextLayout read FLayout write FLayout;
+  end;
+
   TdxGridCanSortEvent = procedure (Sender: TObject; var Cancel: Boolean) of object;
-  TdxGridValidateEvent = procedure (Sender: TObject; var Ok: Boolean) of object;
 
   { TdxGrid }
 
@@ -734,39 +760,25 @@ type
   private
     FForm: TdxForm;
     FId: Integer;
-    FMemo: TMemoCellEditor;
-    FOnValidate: TdxGridValidateEvent;
+    FMemo: TdxMemoCellEditor;
     FShowRowDeleteButton: Boolean;
     FSortAZ: Boolean;
     FSortColumn: Integer;
-    FMaskEdit: TMaskCellEditor;
-    function DoValidate: Boolean;
     function GetTitleFontStyle: TFontStyles;
     procedure SetTitleFontStyle(AValue: TFontStyles);
     function IsTitleFontStyleStored: Boolean;
   protected
-    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
-    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-      override;
-    procedure WMVScroll(var Message: TLMVScroll); message LM_VScroll;
-    procedure WMHScroll(var message: TLMHScroll); message LM_HSCROLL;
-    procedure WMMouseWheel(var Message: TLMMouseEvent); message LM_MOUSEWHEEL;
     procedure SelectEditor; override;
     procedure UpdateData; override;
-    function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure ForceSelectEditor;
-    property OnVaidate: TdxGridValidateEvent read FOnValidate
-      write FOnValidate;
   public
     function GetFieldNameByColumn(aColumn: TColumn): String;
     function FindColumnByFieldName(const FieldName: String): TColumn;
     property Form: TdxForm read FForm write FForm;
-    property MaskEdit: TMaskCellEditor read FMaskEdit;
-    property Memo: TMemoCellEditor read FMemo;
+    property Memo: TdxMemoCellEditor read FMemo;
   published
     property Id: Integer read FId write FId;
     property TitleFontStyle: TFontStyles read GetTitleFontStyle write SetTitleFontStyle stored IsTitleFontStyleStored;
@@ -843,7 +855,7 @@ type
 
   { TdxShape }
 
-  TdxShape = class(TShape)
+  TdxShape = class(TShapeEx)
   private
     FHidden: Boolean;
   public
@@ -934,6 +946,7 @@ type
     FCustomFilterForm: TdxForm;
     FDSRi: Integer;
     FFormChanged: Boolean;
+    FImageName: String;
     FLastModified: TDateTime;
     FRecordCaption: String;
     FRecordsCaption: String;
@@ -945,6 +958,7 @@ type
     FOnStateChange: TNotifyEvent;
     FOnPrint: TPrintEvent;
     FParams: TParamList;
+    FShowImageInTab: Boolean;
     FShowScrollBars: Boolean;
     FSoftCheck: Boolean;
     FTree: TdxFormTree;
@@ -1147,6 +1161,8 @@ type
 
     property ActionOnCreate: String read FActionOnCreate write FActionOnCreate;
     property AllowResizeWindow: Boolean read FAllowResizeWindow write FAllowResizeWindow default False;
+    property ImageName: String read FImageName write FImageName;
+    property ShowImageInTab: Boolean read FShowImageInTab write FShowImageInTab default False;
   end;
 
   { TdxObjectField }
@@ -1508,6 +1524,9 @@ function GetStopTab(C: TComponent): Boolean;
 procedure SetStopTab(C: TComponent; Value: Boolean);
 function GetHidden(C: TComponent): Boolean;
 procedure SetHidden(C: TComponent; Value: Boolean);
+function GetHintText(C: TComponent): String;
+procedure SetHintText(C: TComponent; const S: String);
+procedure SetTextHint(C: TComponent; const S: String);
 
 implementation
 
@@ -1517,8 +1536,7 @@ uses
   FPImage, BGRAReadPNG, {dximages, dxfiles, }apputils, reportmanager,
   DXReports, DateUtils, pivotgrid, sqlgen, datasetprocessor,
   Variants, expressions, LazFileUtils, scriptfuncs, MaskEdit,
-  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, crossapi,
-  debugscriptform;
+  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, wsgrids;
 
 // Utils
 
@@ -2148,6 +2166,21 @@ begin
   SetInt(C, 'Hidden', Integer(Value));
 end;
 
+function GetHintText(C: TComponent): String;
+begin
+  Result := GetStr(C, 'HintText');
+end;
+
+procedure SetHintText(C: TComponent; const S: String);
+begin
+  SetStr(C, 'HintText', S);
+end;
+
+procedure SetTextHint(C: TComponent; const S: String);
+begin
+  SetStr(C, 'TextHint', S);
+end;
+
 function _GetSourceFieldName(Obj: TComponent): String;
 var
   Fm: TdxForm;
@@ -2431,7 +2464,10 @@ begin
 	  if (RowCount > 0) and (ColCount > 0) then
     begin
       id := RecId[Row];
-      txt := Cells[0, Row];
+      if not FControl.ShowAsTreeList then
+        txt := Cells[0, Row]
+      else
+        txt := StringReplace(Cells[ColCount - 1, Row], #9, '\', [rfReplaceAll]);
     end
     else
       id := 0;
@@ -3544,16 +3580,6 @@ end;
 
 { TdxGrid }
 
-function TdxGrid.DoValidate: Boolean;
-var
-  Ok: Boolean;
-begin
-  Ok := True;
-  if (FOnValidate <> nil) and (DataSource.DataSet.State in [dsInsert, dsEdit]) then
-    FOnValidate(Self, Ok);
-  Result := Ok;
-end;
-
 function TdxGrid.GetTitleFontStyle: TFontStyles;
 begin
   Result := TitleFont.Style;
@@ -3569,58 +3595,6 @@ begin
   Result := (TitleFont.Style = []) and (Font.Style <> []);
 end;
 
-procedure TdxGrid.KeyDown(var Key: Word; Shift: TShiftState);
-begin
-  if (Key in [VK_UP, VK_DOWN, VK_NEXT, VK_PRIOR]) and (not DoValidate) then
-  begin
-    Key := 0;
-    Exit;
-  end
-  else if Key = VK_ESCAPE then
-  begin
-    if OnKeyDown <> nil then OnKeyDown(Self, Key, Shift);
-    Key := 0;
-  end;
-  inherited KeyDown(Key, Shift);
-end;
-
-procedure TdxGrid.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
-  Y: Integer);
-var
-  C, R: Longint;
-begin
-  if DataSource = nil then Exit;
-
-  if DataSource.DataSet.State in [dsInsert, dsEdit] then
-  begin
-    MouseToCell(X, Y, C, R);
-    if (R <> Row) and (not DoValidate) then Exit;
-  end;
-  inherited MouseDown(Button, Shift, X, Y);
-end;
-
-procedure TdxGrid.WMVScroll(var Message: TLMVScroll);
-begin
-  if DataSource = nil then Exit;
-
-  if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
-  inherited WMVScroll(Message);
-end;
-
-procedure TdxGrid.WMHScroll(var message: TLMHScroll);
-begin
-  if EditorMode then EditorMode := False;
-  inherited WMHScroll(message);
-end;
-
-procedure TdxGrid.WMMouseWheel(var Message: TLMMouseEvent);
-begin
-  if DataSource = nil then Exit;
-
-  if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
-  inherited WMMouseWheel(Message);
-end;
-
 procedure TdxGrid.SelectEditor;
 begin
   inherited SelectEditor;
@@ -3634,16 +3608,6 @@ begin
     // в гриде бывает, что текст в поле исчезает, хотя id остается на месте.
   else
 	  inherited UpdateData;
-end;
-
-function TdxGrid.EditorCanAcceptKey(const ch: TUTF8Char): boolean;
-begin
-  Result:=inherited EditorCanAcceptKey(ch);
-	// Первый нажатый символ при неактивном редакторе объекта не вызывает KeyDown
-  // компонента, следовательно, не срабатывает фильтрация и
-  // потеря фокуса не восстанавливает значение.
-  if Result and (Editor <> nil) and (Editor is TdxLookupComboBox) then
-  	TdxLookupComboBox(Editor).FChanging:=True;
 end;
 
 procedure TdxGrid.Paint;
@@ -3669,28 +3633,15 @@ end;
 constructor TdxGrid.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  //Options := Options + [dgAlwaysShowEditor];
   VisibleButtons := [gbnAppend, gbnEdit, gbnDelete, gbnDuplicate, gbnShopping,
     gbnMoveUp, gbnMoveDown];
-
-  FMaskEdit := TMaskCellEditor.Create(nil);
-  FMaskEdit.BorderStyle := bsNone;
-  FMaskEdit.Grid := Self;
-
-  FMemo := TMemoCellEditor.Create(nil);
-  FMemo.BorderStyle := bsNone;
 end;
 
 destructor TdxGrid.Destroy;
 begin
-  FMemo.Free;
-  FMaskEdit.Free;
+  {FMemo.Free;
+  FMaskEdit.Free;}
   inherited Destroy;
-end;
-
-procedure TdxGrid.ForceSelectEditor;
-begin
-  SelectEditor;
 end;
 
 function TdxGrid.GetFieldNameByColumn(aColumn: TColumn): String;
@@ -4601,6 +4552,7 @@ begin
   if Field.DataSet.State in [dsInsert, dsEdit] then
   begin
     Field.DataSet.FieldByName(FKeyField).Value := AValue;
+    if FOnSetKey <> nil then FOnSetKey(Self);
   end;
 end;
 
@@ -5011,7 +4963,7 @@ begin
   inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
 
   if (Button = nil) or (DropDownButton = nil) then Exit;
-  Button.Width := Height;
+  //Button.Width := Height;
   Button.Height := Height;
   if AHeight > 52 then
   begin
@@ -5106,7 +5058,7 @@ begin
   FDropDownButton.OnMouseDown:=@DropDownButtonMouseDown;
 
   FButton := TSpeedButton.Create(Self);
-  FButton.Width := 23;//Self.Height;
+  FButton.Width := ScaleToScreen(23);//Self.Height;
   FButton.Height := 23;//Self.Height;
   FButton.OnClick:=@DoButtonClick;
   FButton.Cursor := crArrow;
@@ -5216,6 +5168,81 @@ begin
     FButton.Enabled := AValue;
     FDropDownButton.Enabled := AValue;
   end;
+end;
+
+{ TdxLookupCellEditor }
+
+procedure TdxLookupCellEditor.KeyUp(var Key: Word; Shift: TShiftState);
+var
+  OldKey: Word;
+begin
+  OldKey := Key;
+  inherited KeyUp(Key, Shift);
+
+  if FIsKeyDown and ((OldKey = VK_RETURN) and (Shift * [ssShift] = [])) then
+  begin
+    FIsKeyDown := False;
+    THackGrid(FOwnerGrid).EditorMode := False;
+  end;
+end;
+
+procedure TdxLookupCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+begin
+  if ((Key = VK_RETURN) and (Shift * [ssShift] = [])) then
+  begin
+    Key := 0;
+    FIsKeyDown := True;
+  end;
+  inherited KeyDown(Key, Shift);
+end;
+
+procedure TdxLookupCellEditor.WndProc(var TheMessage: TLMessage);
+var
+  Ch: TUtf8Char;
+begin
+  with TheMessage do
+    if msg=LM_CHAR then
+    begin
+      Ch := UnicodeToUtf8(WParam);
+      TWSCustomGridClass(FOwnerGrid.WidgetSetClass).SendCharToEditor(Self, Ch);
+      Exit;
+    end;
+  inherited WndProc(TheMessage);
+end;
+
+procedure TdxLookupCellEditor.SetColor(Value: TColor);
+begin
+  inherited SetColor(Value);
+  FDropDownButton.Color := Value;
+  FButton.Color := Value;
+end;
+
+procedure TdxLookupCellEditor.msg_SetBounds(var Msg: TGridMessage);
+begin
+  PositionCellEditor(FGrid, Self, Msg.CellRect, FLayout, True);
+end;
+
+procedure TdxLookupCellEditor.msg_SetGrid(var Msg: TGridMessage);
+begin
+  FOwnerGrid := Msg.Grid;
+  Msg.Options := EO_HOOKKEYDOWN + EO_HOOKKEYPRESS + EO_HOOKKEYUP;
+end;
+
+procedure TdxLookupCellEditor.msg_SelectAll(var Msg: TGridMessage);
+begin
+  SelectAll;
+end;
+
+procedure TdxLookupCellEditor.msg_GetGrid(var Msg: TGridMessage);
+begin
+  Msg.Grid := FOwnerGrid;
+  Msg.Options:= EO_IMPLEMENTED;
+end;
+
+constructor TdxLookupCellEditor.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  //BorderStyle := bsNone;
 end;
 
 { TdxEdit }
@@ -6008,7 +6035,8 @@ procedure TdxForm.RequeryIfNeed;
 begin
   if FDSRi > 0 then
     with PDataSetRec(FDSR)^ do
-      if NeedRefresh then TDataSetProcessor(FDSP).RequeryDetail(FDSRi);
+      if NeedRefresh then
+        TDataSetProcessor(FDSP).RequeryDetail(FDSRi);
 end;
 
 procedure TdxForm.SetTabStops;

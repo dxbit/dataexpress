@@ -580,7 +580,7 @@ begin
         end;
       cpColoring:
         begin
-          Column := RD.Grid.FindColumnByTitle(QGrid.Cells[4, r]);
+          Column := RD.Grid.FindColumnByName(QGrid.Cells[4, r]);
           if Column <> nil then Tmp := Column.FieldNameDS
           else Tmp := '';
           i := RD.Coloring.FindColoringIndex(TColor(PtrInt(QGrid.Objects[4, r])), Tmp,
@@ -674,7 +674,7 @@ begin
         end;
       cpColoring:
         begin
-          Column := RD.Grid.FindColumnByTitle(RpGrid.Cells[3, r]);
+          Column := RD.Grid.FindColumnByName(RpGrid.Cells[3, r]);
           if Column <> nil then Tmp := Column.FieldNameDS
           else Tmp := '';
           i := RD.Coloring.FindColoringIndex(TColor(PtrInt(RpGrid.Objects[3, r])), Tmp,
@@ -885,9 +885,9 @@ var
         Cells[4, r] := CF.Name
       else if cp = cpColoring then
       begin
-        Column := RD.Grid.FindColumnByFieldName(CD.FieldNameDS);
+        Column := RD.Grid.FindColumnByFieldNameDS(CD.FieldNameDS);
         if Column <> nil then
-          Cells[4, r] := Column.Caption;
+          Cells[4, r] := Column.FieldName;
         Objects[4, r] := TObject(PtrInt(CD.Color));
       end;
       Cells[5, r] := Expr;
@@ -991,9 +991,9 @@ var
         Cells[3, r] := CF.Name
       else if cp = cpColoring then
       begin
-        Column := RD.Grid.FindColumnByFieldName(CD.FieldNameDS);
+        Column := RD.Grid.FindColumnByFieldNameDS(CD.FieldNameDS);
         if Column <> nil then
-          Cells[3, r] := Column.Caption;
+          Cells[3, r] := Column.FieldName;
         Objects[3, r] := TObject(PtrInt(CD.Color));
       end
       else if cp = cpWhenPrinting then

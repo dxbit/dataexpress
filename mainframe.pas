@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Types, FileUtil, Forms, Controls, ComCtrls, Menus, dxctrls,
   formview, sqldb, strconsts, DXReports, DatasetProcessor, Dialogs, ExtCtrls,
-  dbgrids;
+  dbgrids, myctrls;
 
 type
 
@@ -80,6 +80,7 @@ type
     { private declarations }
     FCurView: TFormView;
     FOldMousePos: TPoint;
+    FTabImages: TMyImageList;
     procedure OpenOrFindTab(FmId: Integer);
     procedure OpenTab(FmId: Integer);
     procedure OpenTabs;
@@ -390,6 +391,8 @@ begin
     DataSetProc.OnStateChange:=@StateChange;
     BindForm(FmId, False, vtDefault);
     Tb.Caption := Form.GetRecordsCaption;
+    if Form.ShowImageInTab and (Form.ImageName <> '') then
+      Tb.ImageIndex := FTabImages.AddImage(Form.ImageName);
   end;
   Tb.PopupMenu := EmptyMnu;    // Чтобы меню "Закрыть" открывалось только на вкладках
 
@@ -568,6 +571,7 @@ var
   i, j: Integer;
 begin
   S := '';
+  Fm := nil;
   case dxMI.Kind of
     miDiv: S := '-';
     miMenu: S := dxMI.Caption;
@@ -600,7 +604,12 @@ begin
     PMI.Add(MI);
   MI.Tag:=PtrInt(dxMI);
   if dxMI.Kind = miForm then
-    MI.ImageIndex := 0
+  begin
+    if Fm.ImageName <> '' then
+      MI.ImageIndex := MainFm.MenuImages.AddImage(Fm.ImageName)
+    else
+      MI.ImageIndex := 0
+  end
   else if dxMI.Kind = miReport then
     MI.ImageIndex := 1;
   MI.OnClick:=Handler;
@@ -679,22 +688,27 @@ var
 begin
   Result := True;
   if CurView = nil then Exit;
-  if CurView.Form.ViewType = vtSimpleForm then Exit;
 
-  CurView.DataSetProc.ForceChangeFields(0);
-  DS := CurView.DataSetProc.MasterSet;
-  if CurView.Form.ConfirmAutoSaveRecord and CurView.DataSetProc.AnyDataSetModified(0) then
+  if CurView.Form.ViewType <> vtSimpleForm then
   begin
-    case MessageDlg(rsWarning, rsConfirmAutoSaveMsg,	mtConfirmation,
-    	[mbYes, mbNo, mbCancel], 0) of
-      mrYes: ;
-      mrNo: begin
-          		DS.Cancel;
-          		Exit;
-		        end;
-      else Exit(False);
+
+    CurView.DataSetProc.ForceChangeFields(0);
+    DS := CurView.DataSetProc.MasterSet;
+    if CurView.Form.ConfirmAutoSaveRecord and CurView.DataSetProc.AnyDataSetModified(0) then
+    begin
+      case MessageDlg(rsWarning, rsConfirmAutoSaveMsg,	mtConfirmation,
+    	  [mbYes, mbNo, mbCancel], 0) of
+        mrYes: ;
+        mrNo: begin
+          		  DS.Cancel;
+          		  Exit;
+		          end;
+        else Exit(False);
+      end;
     end;
+
   end;
+
   Result := CurView.DataSetProc.Validate(0, False);
   if Result then SaveCurrentDataSet;
 end;
@@ -817,8 +831,12 @@ end;
 
 procedure TMainFr.SaveCurrentDataSet;
 begin
-  if FCurView <> nil then
+  if FCurView = nil then Exit;
+
+  if FCurView.Form.ViewType <> vtSimpleForm then
     FCurView.DataSetProc.Post;
+
+  FCurView.DataSetProc.SaveQueries(0);
 end;
 
 function TMainFr.GotoRec(FormId, RecId: Integer): Boolean;
@@ -886,6 +904,9 @@ begin
     'movelast24', 'add24', 'edit24', 'undo24', 'save24', 'delete24', 'refresh24',
     'print24', 'filter24', 'find24', 'help24', 'eyes24']);
   SetupImageList(SmallImages, ['filter16', 'delete16']);
+  FTabImages := TMyImageList.Create(Self);
+  SetupImageList(FTabImages, []);
+  PageControl1.Images := FTabImages;
 
   VarList := TVarList.Create;
   MainFr := Self;

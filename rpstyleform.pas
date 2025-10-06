@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -136,6 +136,7 @@ begin
   RD2.Grid.GridLineStyle:=RD1.Grid.GridLineStyle;
   RD2.Grid.Flat:=RD1.Grid.Flat;
   RD2.Grid.DefaultRowHeight:=RD1.Grid.DefaultRowHeight;
+  RD2.Grid.TitleHeight := RD1.Grid.TitleHeight;
   RD2.Grid.VertLines:=RD1.Grid.VertLines;
   RD2.Grid.HorzLines:=RD1.Grid.HorzLines;
   RD2.Grid.WordWrap:=RD1.Grid.WordWrap;

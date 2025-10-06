@@ -1,14 +1,14 @@
 object LCbxListSourceFm: TLCbxListSourceFm
   Left = 412
-  Height = 441
+  Height = 445
   Top = 311
   Width = 461
   BorderIcons = [biSystemMenu]
   Caption = 'Источник списка'
-  ClientHeight = 441
+  ClientHeight = 445
   ClientWidth = 461
   Position = poOwnerFormCenter
-  LCLVersion = '4.0.0.2'
+  LCLVersion = '4.3.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
@@ -122,7 +122,7 @@ object LCbxListSourceFm: TLCbxListSourceFm
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
-    Top = 401
+    Top = 405
     Width = 449
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -133,7 +133,7 @@ object LCbxListSourceFm: TLCbxListSourceFm
     CloseButton.DefaultCaption = True
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
-    TabOrder = 9
+    TabOrder = 10
     DefaultButton = pbClose
     ShowButtons = [pbOK, pbCancel, pbHelp]
   end
@@ -164,7 +164,7 @@ object LCbxListSourceFm: TLCbxListSourceFm
         Title.Caption = 'Ширина столбца'
         Width = 120
         ColumnType = gctInteger
-        MinValue = 0
+        MinValue = -1
         MaxValue = 2000
         Increment = 10
       end    
@@ -180,6 +180,7 @@ object LCbxListSourceFm: TLCbxListSourceFm
       end>
     FixedCols = 0
     Flat = True
+    FocusRectVisible = False
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
     ParentShowHint = False
     RowCount = 2
@@ -258,7 +259,7 @@ object LCbxListSourceFm: TLCbxListSourceFm
       'Обновлять дерево каждый раз при открытии окна'
     )
     Style = csDropDownList
-    TabOrder = 8
+    TabOrder = 9
     Text = 'Обновить дерево только при первом открытии окна'
   end
   object MoreBn: TBitBtn
@@ -291,8 +292,17 @@ object LCbxListSourceFm: TLCbxListSourceFm
     Font.Style = [fsBold]
     ParentFont = False
     ParentColor = False
-    TabOrder = 10
+    TabOrder = 11
     Transparent = False
     OnClick = ListMsgTxtClick
+  end
+  object ShowAsTreeListChk: TCheckBox
+    AnchorSideTop.Control = HideList
+    Left = 248
+    Height = 19
+    Top = 292
+    Width = 136
+    Caption = 'Древовидный список'
+    TabOrder = 8
   end
 end

@@ -7,9 +7,9 @@ object LCbxListSourceMoreFm: TLCbxListSourceMoreFm
   Caption = 'Источник списка'
   ClientHeight = 325
   ClientWidth = 398
-  OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
+  LCLVersion = '4.3.0.0'
+  OnCreate = FormCreate
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -84,7 +84,7 @@ object LCbxListSourceMoreFm: TLCbxListSourceMoreFm
         Title.Caption = 'Ширина столбца'
         Width = 120
         ColumnType = gctInteger
-        MinValue = 0
+        MinValue = -1
         MaxValue = 2000
         Increment = 10
       end    
@@ -100,6 +100,7 @@ object LCbxListSourceMoreFm: TLCbxListSourceMoreFm
       end>
     FixedCols = 0
     Flat = True
+    FocusRectVisible = False
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goTruncCellHints]
     ParentShowHint = False
     RowCount = 2

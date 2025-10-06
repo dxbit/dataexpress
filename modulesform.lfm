@@ -9,10 +9,10 @@ object ModulesFm: TModulesFm
   ClientHeight = 432
   ClientWidth = 566
   KeyPreview = True
+  Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ToolBar1: TToolBar
     Left = 0
     Height = 22

@@ -89,7 +89,8 @@ Constants
 		fmShareDenyRead = $30
 		fmShareDenyNone = $40
 	Misc
-		LineEnding = #13#10
+		LineEnding = #13#10 - Windows or #10 - Linux
+		PathDelim = \ - Windows or / - Linux
 	Stream offset
 		soFromBeginning = 0
 		soFromCurrent = 1
@@ -178,7 +179,8 @@ Types
 	TPrintAction = (paBeginPrint, paEndPrint, paPrintField, paBeginData, paNextData, paBeforeOpenFile, paAfterOpenFile, paPrintError)
 	TReplaceFlag = (rfReplaceAll, rfIgnoreCase)
 	TReplaceFlags = set of TReplaceFlag
-	TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle)
+	TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare, stEllipse, stCircle, stSquaredDiamond, stDiamond, stTriangle, stTriangleLeft, stTriangleRight, stTriangleDown, stStar, stStarDown, stPolygon)
+	TShapeTypeEx = (steNone, steVertLine, steHorzLine, steBDiagonal, steFDiagonal, steCross, steDiagCross)
 	TUseGeneratorOption = (ugNotUse, ugAppend, ugApplyUpdates)
 	TVarType = Word	
 	TVariantArray2d = array of array of Variant
@@ -235,7 +237,7 @@ Procedures & Functions
 		function BeginYear(D: TDateTime): TDateTime
 		function CalcPeriod(D1, D2: TDateTime; Detail: Integer; IsAge: Boolean): String
 		function Date: TDateTime
-		function DateTimeToFileDate(DateTime : TDateTime) : Longint
+		function DateTimeToFileDate(DateTime: TDateTime): Int64
 		function DayOf(const AValue: TDateTime): Word
 		function DayOfTheWeek(const DateTime: TDateTime): Word
 		function DaysBetween(const ANow, AThen: TDateTime): Integer
@@ -247,7 +249,7 @@ Procedures & Functions
 		function EndQuarter(D: TDateTime): TDateTime
 		function EndWeek(D: TDateTime): TDateTime
 		function EndYear(D: TDateTime): TDateTime
-		function FileDateToDateTime (Filedate : Longint) :TDateTime
+		function FileDateToDateTime(Filedate: Int64): TDateTime
 		function FmtDate(D: TDateTime): String
 		function FormatDateTime(const fmt: string; D: TDateTime): string
 		function GetMonthName(D: TDateTime; Brief: Boolean): String
@@ -302,11 +304,11 @@ Procedures & Functions
 		function ExtractFileName(const FileName: string): string
 		function ExtractFileNameOnly(const AFilename: string): string
 		function ExtractFilePath(const FileName: string): string
-		function FileAge(const FileName: string): Longint
+		function FileAge(const FileName: string): Int64
 		function FileExists(const Filename: string): boolean
 		function FileGetAttr(const FileName: String): Longint
 		function FileSetAttr(const Filename: String; Attr: longint): Longint
-		function FileSetDate(const FileName: String; Age: Longint): Longint
+		function FileSetDate(const FileName: String; Age: Int64): Longint
 		function FileSize(const FileName: String): Int64
 		procedure FindAllDirectories(AList: TStrings; const SearchPath: String; SearchSubDirs: Boolean)
 		procedure FindAllFiles(AList: TStrings; const SearchPath: String; SearchMask: String; SearchSubDirs: Boolean; DirAttr: Word)
@@ -343,6 +345,7 @@ Procedures & Functions
 		function CreateGUIDString: String
 		procedure Dec(Var: Ordinal)
 		procedure Exclude(var S: Set; X: Ordinal)
+		procedure FreeAndNil(var Obj: TObject)
 		function GetBuildDate: TDateTime
 		function GetComponentFieldName(C: TComponent): String
 		function GetFormatSettings: TFormatSettings
@@ -1221,6 +1224,7 @@ TdxShape = class(TControl)
 	property Brush: TBrush [rw]
 	property Pen: TPen [rw]
 	property Shape: TShapeType [rw]
+	property ShapeEx: TShapeTypeEx [rw]
 TdxTabSheet = class(TWinControl)
 	property PageIndex: Integer [r]
 	property TabVisible: Boolean [rw]

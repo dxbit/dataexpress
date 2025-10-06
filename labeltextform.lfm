@@ -7,10 +7,11 @@ object LabelTextFm: TLabelTextFm
   Caption = 'Текст'
   ClientHeight = 297
   ClientWidth = 416
+  Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
   object ToolBar1: TToolBar
     Left = 0
     Height = 24
@@ -23,40 +24,113 @@ object LabelTextFm: TLabelTextFm
     EdgeBorders = []
     Images = ImageList1
     TabOrder = 0
-    object Bn1: TToolButton
+    object LeftBn: TToolButton
       Left = 1
       Top = 0
-      Caption = 'Bn1'
+      Caption = 'LeftBn'
       Grouped = True
       ImageIndex = 0
-      OnClick = Bn1Click
+      ParentShowHint = False
+      ShowCaption = False
+      ShowHint = True
       Style = tbsCheck
+      OnClick = LeftBnClick
     end
-    object Bn2: TToolButton
+    object CenterBn: TToolButton
       Left = 25
       Top = 0
-      Caption = 'Bn2'
+      Caption = 'CenterBn'
       Grouped = True
       ImageIndex = 1
-      OnClick = Bn2Click
+      ParentShowHint = False
+      ShowCaption = False
+      ShowHint = True
       Style = tbsCheck
+      OnClick = CenterBnClick
     end
-    object Bn3: TToolButton
+    object RightBn: TToolButton
       Left = 49
       Top = 0
-      Caption = 'Bn3'
+      Caption = 'RightBn'
       Grouped = True
       ImageIndex = 2
-      OnClick = Bn3Click
+      ParentShowHint = False
+      ShowCaption = False
+      ShowHint = True
+      Style = tbsCheck
+      OnClick = RightBnClick
+    end
+    object ToolButton1: TToolButton
+      Left = 73
+      Height = 24
+      Top = 0
+      Caption = 'ToolButton1'
+      Style = tbsDivider
+    end
+    object TopBn: TToolButton
+      Left = 78
+      Top = 0
+      Caption = 'TopBn'
+      Grouped = True
+      ImageIndex = 3
+      ParentShowHint = False
+      ShowHint = True
+      Style = tbsCheck
+    end
+    object MiddleBn: TToolButton
+      Left = 102
+      Top = 0
+      Caption = 'MiddleBn'
+      Grouped = True
+      ImageIndex = 4
+      ParentShowHint = False
+      ShowHint = True
+      Style = tbsCheck
+    end
+    object BottomBn: TToolButton
+      Left = 126
+      Top = 0
+      Caption = 'BottomBn'
+      Grouped = True
+      ImageIndex = 5
+      ParentShowHint = False
+      ShowHint = True
+      Style = tbsCheck
+    end
+    object ToolButton5: TToolButton
+      Left = 150
+      Height = 24
+      Top = 0
+      Caption = 'ToolButton5'
+      Style = tbsDivider
+    end
+    object AutoSizeBn: TToolButton
+      Left = 155
+      Top = 0
+      Caption = 'AutoSizeBn'
+      ImageIndex = 6
+      ParentShowHint = False
+      ShowHint = True
+      Style = tbsCheck
+    end
+    object WordWrapBn: TToolButton
+      Left = 179
+      Top = 0
+      Caption = 'WordWrapBn'
+      ImageIndex = 7
+      ParentShowHint = False
+      ShowHint = True
       Style = tbsCheck
     end
   end
-  object Memo1: TMemo
-    Left = 0
-    Height = 233
+  object Memo: TMemo
+    Left = 4
+    Height = 235
     Top = 24
-    Width = 416
+    Width = 408
     Align = alClient
+    BorderSpacing.Left = 4
+    BorderSpacing.Right = 4
     Lines.Strings = (
       'Memo1'
     )
@@ -66,8 +140,8 @@ object LabelTextFm: TLabelTextFm
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 28
-    Top = 263
+    Height = 26
+    Top = 265
     Width = 404
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True

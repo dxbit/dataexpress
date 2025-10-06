@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ type
 	TSAXBaseReader = class(TSaxXmlReader)
   public
     function GetBool(Atts: TSAXAttributes; const aName: String; DefaultValue: Boolean = False): Boolean;
-    function GetInt(Atts: TSAXAttributes; const aName: String): Integer;
+    function GetInt(Atts: TSAXAttributes; const aName: String; DefaultValue: Integer = 0): Integer;
     function GetStr(Atts: TSAXAttributes; const aName: String): String;
     function AttrExists(Atts: TSAXAttributes; const aName: String): Boolean;
   end;
@@ -54,12 +54,12 @@ begin
   else if S = '0' then Result := False;
 end;
 
-function TSAXBaseReader.GetInt(Atts: TSAXAttributes; const aName: String
-  ): Integer;
+function TSAXBaseReader.GetInt(Atts: TSAXAttributes; const aName: String;
+  DefaultValue: Integer): Integer;
 var
   S: String;
 begin
-  Result := 0;
+  Result := DefaultValue;
   S := GetStr(Atts, aName);
   if S <> '' then TryStrToInt(S, Result);
 end;

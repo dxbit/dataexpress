@@ -120,7 +120,7 @@ object MainFr: TMainFr
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 347
+    Height = 344
     Top = 34
     Width = 984
     Align = alClient
@@ -133,8 +133,8 @@ object MainFr: TMainFr
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 381
+    Height = 23
+    Top = 378
     Width = 984
     Panels = <    
       item

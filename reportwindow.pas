@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -316,7 +316,7 @@ begin
   for i := 0 to FQGrid.SortCols.Count - 1 do
   begin
     CD := FQGrid.SortCols[i];
-    Col := FRD.Grid.FindColumnByFieldName(TColumn(CD.Col).FieldName);
+    Col := FRD.Grid.FindColumnByFieldNameDS(TColumn(CD.Col).FieldName);
     FRD.Grid.SortCols.AddCol(Col, CD.Desc);
   end;}
   RefreshReport;
@@ -423,7 +423,7 @@ begin
   FDataSet.MaxIndexesCount:=100;}
   FDataSet.IndexFieldNames := '';
   FDataSet.Open;
-  SetQueryDisplayFormat(FRD, FDataSet);
+  SetQueryDisplayFormat(FRD, FDataSet, FQGrid);
   CalcQuery(FRD, FDataSet, nil, nil, nil, FErrs);
   try
     FilterQuery(FRD, FDataSet, nil, nil, nil);
@@ -699,7 +699,7 @@ begin
   CreateDSP;
   try
     FDSP.OpenRecord(0);
-    NewId := FDSP.AppendRecord(nil, nil, nil, FRD.Id);
+    NewId := FDSP.AppendRecord(nil, nil, nil, FRD);
     if NewId <> Null then
     begin
 	    RefreshReport;
@@ -765,7 +765,7 @@ begin
   FExportBn.Enabled := da;
   //FQGrid.Enabled := da;
 
-  if QGrid.OnStateChange <> nil then QGrid.OnStateChange(QGrid);
+  QGrid.DoStateChange;
 end;
 
 procedure TReportWindow.UpdateButtons;
@@ -1025,7 +1025,7 @@ function TReportWindow.ShowReport(const aName: String): Integer;
 var
   Rp: TReportData;
 begin
-  Rp := ReportMan.FindByName(aName);
+  Rp := ReportMan.FindReportByName(aName);
   if Rp = nil then raise Exception.CreateFmt(rsReportNotFound, [aName]);
   FQGrid.Id:=Rp.Id;
   Result := ShowForm(Rp.Id);

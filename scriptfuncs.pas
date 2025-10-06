@@ -131,6 +131,9 @@ function MyRandom(l:longint):longint;
 function MyFormat (Const Fmt : String; const Args : Array of const) : String;
 function MyClipboard: TClipboard;
 
+function MyFileAge(const FileName: String): Int64;
+function MyFileSetDate(const FileName: String; Age: Int64): LongInt;
+
 implementation
 
 uses
@@ -205,7 +208,6 @@ var
   C: TComponent;
   RD: TReportData;
   Col: TRpGridColumn;
-  //pF: PRpField;
 begin
   Result := nil;
   if DataSet is TdxForm then
@@ -217,16 +219,14 @@ begin
   else if C is TdxQueryGrid then
   begin
     RD := ReportMan.FindReport(TdxQueryGrid(DataSet).Id);
-    Col := RD.Grid.FindColumnByTitle(FieldName);
+    Col := RD.Grid.FindColumnByName(FieldName);
     if Col = nil then raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
     Result := DS.FieldByName(Col.FieldNameDS);
   end
-  {else if DataSet is TdxQuery then
+  else if DataSet is TdxSQLQuery then
   begin
-    pF := TdxQuery(DataSet).RD.FindFieldByName(FieldName);
-    if pF = nil then raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
-    Result := DS.FieldByName('f' + IntToStr(pF^.Id));
-  end;}
+    Result := TdxSQLQuery(DataSet).DataSet.FieldByName(FieldName);
+  end;
 end;
 
 procedure DisableDataSetScroll(DS: TDataSet; var BeforeScroll, AfterScroll: TDataSetNotifyEvent;
@@ -1006,6 +1006,16 @@ end;
 function MyClipboard: TClipboard;
 begin
   Result := Clipboard;
+end;
+
+function MyFileAge(const FileName: String): Int64;
+begin
+  Result := FileAge(FileName);
+end;
+
+function MyFileSetDate(const FileName: String; Age: Int64): LongInt;
+begin
+  Result := FileSetDate(FileName, Age);
 end;
 
 end.

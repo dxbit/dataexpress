@@ -233,7 +233,7 @@ begin
   begin
     SqlF := FRD.SqlFields[i];
     r := FindRpFieldByName(SqlF.Name);
-    if (r < 0) and CheckExistsInActions(FRD, renRpField, SqlF.Name, '') then Exit(False);
+    if (r < 0) and CheckExistsInActions(FFm, FRD, renRpField, SqlF.Name, '') then Exit(False);
     {if (FRD.Totals.FindTotal(SqlF.FieldNameDS) <> nil) and (FindRpFieldByFieldNameDS(SqlF.FieldNameDS) < 0) then
     begin
       ErrMsgFmt(rsCannotDeleteTotalField, [SqlF.Name]);
@@ -259,7 +259,7 @@ begin
         begin
           Grid.Col := Grid.ColCount - 2;
           Grid.Row := i;
-          if CheckExistsInActions(FRD, renRpField, FOldFieldNames[idx],
+          if CheckExistsInActions(FFm, FRD, renRpField, FOldFieldNames[idx],
             LineEnding + rsCantHideRpFieldMsg) then Exit(False);
         end;
       end;
@@ -271,12 +271,12 @@ begin
     if (idx >= 0) and (FOldFieldNames[idx] <> FieldName) then
     begin
       if FInDesigner then
-        RenameInActions(FRD, renRpField, FOldFieldNames[idx], FieldName)
+        RenameInActions(FFm, FRD, renRpField, FOldFieldNames[idx], FieldName)
       else
       begin
         Grid.Col := Grid.ColCount - 4;
         Grid.Row := i;
-        if CheckExistsInActions(FRD, renRpField, FOldFieldNames[idx], LineEnding +
+        if CheckExistsInActions(FFm, FRD, renRpField, FOldFieldNames[idx], LineEnding +
           rsCantRenameRpFieldMsg) then Exit(False);
       end;
     end;
@@ -440,7 +440,7 @@ begin
       Msg := LineEnding + rsShowOldFieldNameBeforeRename
     else
       Msg := '';
-    if CheckExistsInActions(FRD, renRpField, FOldFieldNames[i], Msg) then Exit;
+    if CheckExistsInActions(FFm, FRD, renRpField, FOldFieldNames[i], Msg) then Exit;
     {FieldNameDS := 'f' + IntToStr(PtrInt(Grid.Objects[0, Grid.Row]));
     if FRD.Totals.FindTotal(FieldNameDS) <> nil then
     begin
@@ -661,6 +661,7 @@ begin
   FOldFieldNames := TStringList.Create;
   ShowFirstRecords.Caption := rsShowOnlyFirstRecords;
   Label3.Caption := rsRecords;
+  AddFormWidth(Self);
 end;
 
 procedure TReportFm.FormDestroy(Sender: TObject);

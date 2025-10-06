@@ -79,6 +79,7 @@ type
     FAppXmlFile: String;
     //FCacheLoaded: Boolean;
     FCaching: Boolean;
+    FCheckShortcuts: Boolean;
     FCheckUpdates: Boolean;
     FConfirmExit: Boolean;
     FConnectName: String;
@@ -196,6 +197,7 @@ type
     property Pwd: String read GetPwd write SetPwd;
     property SupportDXDB: Boolean read FSupportDXDB write FSupportDXDB;
     property LogErrors: Boolean read FLogErrors write FLogErrors;
+    property CheckShortcuts: Boolean read FCheckShortcuts write FCheckShortcuts;
     property WasError: Boolean read FWasError write FWasError;
     property Recents[Index: Integer]: TRecentData read GetRecents;
     property RecentCount: Integer read GetRecentCount;
@@ -547,6 +549,9 @@ begin
       WriteBool('UI', 'CacheMetadata', FCaching);
       WriteBool('UI', 'SupportDXDB', FSupportDXDB);
       WriteBool('UI', 'LogErrors', FLogErrors);
+      {$ifdef linux}
+      WriteBool('UI', 'CheckShortcuts', FCheckShortcuts);
+      {$endif}
       WriteInteger('UI', 'StartupAction', Ord(FStartupAction));
       WriteBool('UI', 'WasError', FWasError);
       WriteBool('UI', 'ExpertMode', FExpertMode);
@@ -674,6 +679,9 @@ begin
       FCaching := ReadBool('UI', 'CacheMetadata', False);
       FSupportDXDB := ReadBool('UI', 'SupportDXDB', True);
       FLogErrors := ReadBool('UI', 'LogErrors', False);
+      {$ifdef linux}
+      FCheckShortcuts := ReadBool('UI', 'CheckShortcuts', True);
+      {$endif}
       FStartupAction := TStartupAction(ReadInteger('UI', 'StartupAction', 0));
       FWasError := ReadBool('UI', 'WasError', False);
       FExpertMode := ReadBool('UI', 'ExpertMode', False);

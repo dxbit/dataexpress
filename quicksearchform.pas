@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -118,7 +118,12 @@ end;
 procedure ShowQuickSearchForm(const Key: String; Grid: TDBGrid);
 begin
   if QuickSearchFrm = nil then
+  begin
   	QuickSearchFrm := TQuickSearchFrm.Create(Application);
+    {$IFDEF LINUX}
+    QuickSearchFrm.FormStyle := fsStayOnTop;
+    {$ENDIF}
+  end;
   QuickSearchFrm.ShowForm(Key, Grid);
 end;
 

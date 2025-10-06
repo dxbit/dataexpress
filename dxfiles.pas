@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, dbctrlsex, Menus, strconsts, Db,
-  BufDataSet, LclType, LMessages, LclIntf;
+  BufDataSet, LclType, LMessages, LclIntf, Buttons, Grids;
 
 type
 
@@ -39,6 +39,7 @@ type
     FId: Integer;
     FIsQuery: Boolean;
     FOldSize: Integer;
+    FOnFileChange: TNotifyEvent;
     FRequired: Boolean;
     FStopTab: Boolean;
     FStorageFolder: String;
@@ -72,10 +73,14 @@ type
     procedure SaveToFile(const FileName: String);
     procedure SaveToStream(St: TStream);
     function WasChanged: Boolean;
+    procedure DoCommand(CmdId: Integer);
+    function CanCommand(CmdId: Integer): Boolean;
+    procedure DoFileChange;
     property SourceFileName: String read GetSourceFileName;
     property StoredFileName: String read GetStoredFileName;
     property Description: String read GetDescription write SetDescription;
     property IsQuery: Boolean read FIsQuery write FIsQuery;
+    property OnFileChange: TNotifyEvent read FOnFileChange write FOnFileChange;
   published
     property Id: Integer read FId write FId;
     property FieldName: String read FFieldName write FFieldName;
@@ -93,6 +98,32 @@ type
     property PopupMenu stored False;
   end;
 
+  { TdxFileCellEditor }
+
+  TdxFileCellEditor = class(TBitBtn)
+  private
+    FGrid: TCustomGrid;
+    FCol,FRow: Integer;
+    FPop: TPopupMenu;
+    FFile: TdxFile;
+    FFieldIdx: Integer;
+    procedure FileChange(Sender: TObject);
+    procedure PopupHandler(Sender: TObject);
+    procedure PopupPopup(Sender: TObject);
+  protected
+    procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
+    procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
+    procedure msg_SetPos(var Msg: TGridMessage); message GM_SETPOS;
+    procedure msg_Ready(var Msg: TGridMessage); message GM_READY;
+    procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
+  public
+    constructor Create(TheOwner: TComponent); override;
+    procedure Click; override;
+    procedure SetFile(AFile: TdxFile; IsQuery: Boolean);
+    procedure SetQueryField(AFieldIdx: Integer);
+    property FileControl: TdxFile read FFile;
+  end;
+
 function LoadFileFromFile(const FileName: String; aFile: TdxFile; DS: TDataSet): String;
 function SaveFileToFile(const FileName: String; aFile: TdxFile; DS: TDataSet): String;
 function GetFileStream(aFile: TdxFile; DS: TDataSet): TStream;
@@ -101,7 +132,8 @@ function GetFileFileName(aFile: TdxFile; DS: TDataSet): String;
 implementation
 
 uses
-  apputils, sqlgen, LazUtf8, FileUtil, Dialogs, appimagelists;
+  apputils, sqlgen, LazUtf8, FileUtil, Dialogs, appimagelists, dxreports,
+  datasetprocessor;
 
 const
   StorageTypeDB = 0;
@@ -147,6 +179,8 @@ begin
     DS.FieldByName(FNm).SetData(nil);
   // Просто меняем значение поля для определения, что blob был изменен.
   DS.FieldByName(FNm + 'c').AsInteger:=DS.FieldByName(FNm + 'c').AsInteger+1;
+
+  aFile.DoFileChange;
 
   except
     on E: Exception do
@@ -241,21 +275,13 @@ end;
 { TdxFile }
 
 procedure TdxFile.PopupPopup(Sender: TObject);
-var
-  F: TField;
-  b: Boolean;
 begin
   if CanFocus then SetFocus;
-  F := DS.FieldByName(FieldStr(FId) + 'src');
-  b := (not F.IsNull){ and (
-    ((F.OldValue = F.Value) and (FStorageType = StorageTypeDB)) or
-    (FStorageType <> StorageTypeDB))};
-  FPopup.Items[0].Enabled:=b;
-  FPopup.Items[1].Enabled := (DS.State in [dsInsert, dsEdit]) and CanEdit;
-  FPopup.Items[2].Enabled := b;
-  FPopup.Items[3].Enabled := (DS.State in [dsInsert, dsEdit]) and
-    (not F.IsNull) and CanEdit;
-  FPopup.Items[5].Enabled := SelText <> '';
+  FPopup.Items[0].Enabled := CanCommand(0);
+  FPopup.Items[1].Enabled := CanCommand(1);
+  FPopup.Items[2].Enabled := CanCommand(2);
+  FPopup.Items[3].Enabled := CanCommand(3);
+  FPopup.Items[5].Enabled := CanCommand(4);
 end;
 
 function TdxFile.GetSourceFileName: String;
@@ -279,44 +305,8 @@ begin
 end;
 
 procedure TdxFile.PopupHandler(Sender: TObject);
-var
-  FNm, FlName, ErrStr: String;
 begin
-  FNm := FieldStr(FId);
-  case TMenuItem(Sender).Tag of
-    0:
-      begin
-        FlName := GetFileFileName(Self, DS);
-        if FStorageType = StorageTypeDB then
-        begin
-          FlName := GetOutputDir + ExtractFileName(FlName);
-          ErrStr := SaveFileToFile(FlName, Self, DS);
-          if ErrStr <> '' then ErrMsg(ErrStr, True, 'OpenFile');
-        end;
-        if FileExists(FlName) then
-          OpenFile(FlName);
-      end;
-    1:
-      begin
-        FlName := OpenFileDialog;
-        if (FlName <> '') and CheckFileName(FlName) then
-        begin
-          ErrStr := LoadFileFromFile(FlName, Self, DS);
-          if ErrStr <> '' then
-          	ErrMsg(ErrStr, True, 'LoadFile')
-        end;
-      end;
-    2:
-      begin
-        FlName := ExtractFileName(DS.FieldByName(FNm + 'src').AsString);
-        FlName := SaveFileDialog(rsSaveFile, FlName);
-        if FlName = '' then Exit;
-        ErrStr := SaveFileToFile(FlName, Self, DS);
-        if ErrStr <> '' then ErrMsg(ErrStr, True, 'SaveFile');
-      end;
-    3: Clear;
-    5: CopyToClipboard;
-  end;
+  DoCommand(TComponent(Sender).Tag);
 end;
 
 function TdxFile.DS: TDataSet;
@@ -437,8 +427,8 @@ begin
   FPopup.Items.Add( CreateMenuItem(FPopup, rsLoadFile, 1, 0, @PopupHandler, IMG16_DB) );
   FPopup.Items.Add( CreateMenuItem(FPopup, rsSaveFile, 2, 0, @PopupHandler, IMG16_SAVE) );
   FPopup.Items.Add( CreateMenuItem(FPopup, rsClear, 3, 0, @PopupHandler, IMG16_DELETE) );
-  FPopup.Items.Add( CreateMenuItem(FPopup, '-', 4, 0, nil) );
-  FPopup.Items.Add( CreateMenuItem(FPopup, rsCopy, 5, ShortCut(VK_C, [ssCtrl]), @PopupHandler, IMG16_COPY) );
+  FPopup.Items.Add( CreateMenuItem(FPopup, '-', 0, 0, nil) );
+  FPopup.Items.Add( CreateMenuItem(FPopup, rsCopy, 4, ShortCut(VK_C, [ssCtrl]), @PopupHandler, IMG16_COPY) );
   FFieldSize := 50; FOldSize := 50;
   Button.Images := Images16;
   Button.ImageIndex := IMG16_FILE;
@@ -464,6 +454,8 @@ begin
   DS.FieldByName(FNm + 'd').SetData(nil);
   DS.FieldByName(FNm + 'src').SetData(nil);
   DS.FieldByName(FNm + 'c').SetData(nil);
+
+  DoFileChange;
 end;
 
 procedure TdxFile.LoadFromFile(const FileName: String);
@@ -501,6 +493,228 @@ var
 begin
   F := DS.FieldByName(FieldStr(FId) + 'c');
   Result := F.Value <> F.OldValue;
+end;
+
+procedure TdxFile.DoCommand(CmdId: Integer);
+var
+  FNm, FlName, ErrStr: String;
+begin
+  FNm := FieldStr(FId);
+  case CmdId of
+    0:
+      begin
+        FlName := GetFileFileName(Self, DS);
+        if FStorageType = StorageTypeDB then
+        begin
+          FlName := GetOutputDir + ExtractFileName(FlName);
+          ErrStr := SaveFileToFile(FlName, Self, DS);
+          if ErrStr <> '' then ErrMsg(ErrStr, True, 'OpenFile');
+        end;
+        if FileExists(FlName) then
+          OpenFile(FlName);
+      end;
+    1:
+      begin
+        FlName := OpenFileDialog;
+        if (FlName <> '') and CheckFileName(FlName) then
+        begin
+          ErrStr := LoadFileFromFile(FlName, Self, DS);
+          if ErrStr <> '' then
+            ErrMsg(ErrStr, True, 'LoadFile')
+        end;
+      end;
+    2:
+      begin
+        FlName := ExtractFileName(DS.FieldByName(FNm + 'src').AsString);
+        FlName := SaveFileDialog(rsSaveFile, FlName);
+        if FlName = '' then Exit;
+        ErrStr := SaveFileToFile(FlName, Self, DS);
+        if ErrStr <> '' then ErrMsg(ErrStr, True, 'SaveFile');
+      end;
+    3: Clear;
+    5: CopyToClipboard;
+  end;
+end;
+
+function TdxFile.CanCommand(CmdId: Integer): Boolean;
+var
+  F: TField;
+begin
+  F := DS.FieldByName(FieldStr(FId) + 'src');
+  case CmdId of
+    0: Result := not F.IsNull;
+    1: Result := (DS.State in [dsInsert, dsEdit]) and CanEdit;
+    2: Result := not F.IsNull;
+    3: Result := (DS.State in [dsInsert, dsEdit]) and not F.IsNull and CanEdit;
+    4: Result := SelText <> '';
+  end;
+end;
+
+procedure TdxFile.DoFileChange;
+begin
+  if FOnFileChange <> nil then FOnFileChange(Self);
+end;
+
+{ TdxFileCellEditor }
+
+procedure TdxFileCellEditor.PopupHandler(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
+  Q: TQueryRec;
+  pF: PRpField;
+  TmpFile, C: TdxFile;
+  n: Integer;
+begin
+  n := TComponent(Sender).Tag;
+  if FFile <> nil then
+    FFile.DoCommand(n)
+  else
+  begin
+    QGrid := TdxQueryGrid(FGrid);
+    DSP := TDataSetProcessor(QGrid.DSP);
+    Q := DSP.Queries[QGrid.QRi]^;
+    pF := Q.RD.TryGetRpField(FFieldIdx);
+
+    C := TdxFile(GetRpFieldComponent(pF^, True));
+    TestNil(C, 'TdxFileCellEditor.PopupHandler: C = nil');
+
+    TmpFile := TdxFile.Create(nil);
+    with TmpFile do
+    try
+      Id := pF^.Id;
+      StorageType := C.StorageType;
+      StorageFolder := C.StorageFolder;
+      IsQuery := True;
+      DataSource := QGrid.DataSource;
+      DoCommand(n);
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TdxFileCellEditor.FileChange(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  DSProc: TDataSetProcessor;
+  Q: TQueryRec;
+  i: Integer;
+begin
+  QGrid := TdxQueryGrid(FGrid);
+  DSProc := TDataSetProcessor(QGrid.DSP);
+  i := QGrid.QRi;
+  Q := DSProc.Queries[i]^;
+  DSProc.DisableQueryFieldsChange(i);
+  Q.DSProc.WriteFormFieldsToQueryFields;
+  DSProc.EnableQueryFieldsChange(i);
+end;
+
+procedure TdxFileCellEditor.PopupPopup(Sender: TObject);
+var
+  QGrid: TdxQueryGrid;
+  DSP: TDataSetProcessor;
+  Q: TQueryRec;
+  FlNm: String;
+begin
+  if FFile <> nil then
+  begin
+    FPop.Items[0].Enabled := FFile.CanCommand(0);
+    FPop.Items[1].Enabled := FFile.CanCommand(1);
+    FPop.Items[1].Visible := True;
+    FPop.Items[2].Enabled := FFile.CanCommand(2);
+    FPop.Items[3].Enabled := FFile.CanCommand(3);
+    FPop.Items[3].Visible := True;
+  end
+  else
+  begin
+    QGrid := TdxQueryGrid(FGrid);
+    DSP := TDataSetProcessor(QGrid.DSP);
+    Q := DSP.Queries[QGrid.QRi]^;
+    FlNm := Q.RD.GetFieldNameDS(FFieldIdx);
+    FPop.Items[0].Enabled := not Q.DataSet.FieldByName(FlNm).IsNull;
+    FPop.Items[1].Enabled := False;
+    FPop.Items[1].Visible := False;
+    FPop.Items[2].Enabled := FPop.Items[0].Enabled;
+    FPop.Items[3].Enabled := False;
+    FPop.Items[3].Visible := False;
+  end;
+end;
+
+procedure TdxFileCellEditor.msg_SetGrid(var Msg: TGridMessage);
+begin
+  FGrid:=Msg.Grid;
+  Msg.Options:=EO_HOOKKEYDOWN or EO_HOOKKEYPRESS or EO_HOOKKEYUP;
+end;
+
+procedure TdxFileCellEditor.msg_SetBounds(var Msg: TGridMessage);
+var
+  r: TRect;
+  W: Integer;
+begin
+  r := Msg.CellRect;
+  FGrid.AdjustInnerCellRect(r);
+  W := ScaleToScreen(DEFBUTTONWIDTH);
+  if r.Right-r.Left>W then
+    r.Left:=r.Right-W;
+  SetBounds(r.Left, r.Top, r.Right-r.Left, r.Bottom-r.Top);
+end;
+
+procedure TdxFileCellEditor.msg_SetPos(var Msg: TGridMessage);
+begin
+  FCol := Msg.Col;
+  FRow := Msg.Row;
+end;
+
+procedure TdxFileCellEditor.msg_Ready(var Msg: TGridMessage);
+begin
+  Width := ScaleToScreen(DEFBUTTONWIDTH);
+end;
+
+procedure TdxFileCellEditor.msg_GetGrid(var Msg: TGridMessage);
+begin
+  Msg.Grid := FGrid;
+  Msg.Options:= EO_IMPLEMENTED;
+end;
+
+constructor TdxFileCellEditor.Create(TheOwner: TComponent);
+begin
+  inherited Create(TheOwner);
+  Images := Images16;
+  ImageIndex := IMG16_FILE;
+  Spacing:=0;
+
+  FPop := TPopupMenu.Create(Self);
+  FPop.Images := Images16;
+  FPop.Items.Add( CreateMenuItem(FPop, rsOpenFile, 0, 0, @PopupHandler, IMG16_EYES) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsLoadFile, 1, 0, @PopupHandler, IMG16_DB) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsSaveFile, 2, 0, @PopupHandler, IMG16_SAVE) );
+  FPop.Items.Add( CreateMenuItem(FPop, rsClear, 3, 0, @PopupHandler, IMG16_DELETE) );
+  FPop.OnPopup := @PopupPopup;
+  PopupMenu := FPop;
+end;
+
+procedure TdxFileCellEditor.Click;
+var
+  P: TPoint;
+begin
+  inherited Click;
+  P := ClientToScreen(Point(0, Height));
+  FPop.Popup(P.X, P.Y);
+end;
+
+procedure TdxFileCellEditor.SetFile(AFile: TdxFile; IsQuery: Boolean);
+begin
+  FFile := AFile;
+  if IsQuery then
+    FFile.OnFileChange := @FileChange;
+  FFieldIdx := -1;
+end;
+
+procedure TdxFileCellEditor.SetQueryField(AFieldIdx: Integer);
+begin
+  FFieldIdx := AFieldIdx;
+  FFile := nil;
 end;
 
 end.

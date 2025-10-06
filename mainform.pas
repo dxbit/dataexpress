@@ -26,7 +26,7 @@ interface
 uses
   Classes, {$IFDEF WINDOWS}windows,{$ENDIF} SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   Menus, strconsts, LclType, LclProc, ExtCtrls, IBConnection, dxctrls,
-  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils, LMessages;
+  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils, LMessages, myctrls;
 
 type
 
@@ -36,7 +36,6 @@ type
   { TMainFm }
 
   TMainFm = class(TForm)
-    MenuImages: TImageList;
     MainMenu1: TMainMenu;
     FileMnu: TMenuItem;
     FindActionsDivMnu: TMenuItem;
@@ -158,6 +157,7 @@ type
     FSelectedFormId: Integer;
     FOldFormatSettings: TFormatSettings;
     FRealBounds: TRect;
+    FMenuImages: TMyImageList;
     function GetFormViews(Index: Integer): TFormView;
     function GetPages: TPageControl;
     function GetStatusBar: TStatusBar;
@@ -196,6 +196,7 @@ type
     property ToolBar: TToolbar read GetToolBar;
     property StatusBar: TStatusBar read GetStatusBar;
     property Params: TParamList read FParams;
+    property MenuImages: TMyImageList read FMenuImages;
     property OnCreateForm: TCreateFormEvent read FOnCreateForm write FOnCreateForm;
     property OnDestroyForm: TCreateFormEvent read FOnDestroyForm write FOnDestroyForm;
     property OnCreateListWindow: TCreateListWindowEvent read FOnCreateListWindow
@@ -403,7 +404,10 @@ begin
   HelpMan := THelpMan.Create;
 
   CreateImageLists;
-  SetupImageList(MenuImages, ['form16', 'grid16']);
+  FMenuImages := TMyImageList.Create(Self);
+  FMenuImages.UserImagesIndex := 2;
+  SetupImageList(FMenuImages, ['form16', 'grid16']);
+  Menu.Images := FMenuImages;
 
   Left := AppConfig.FormLeft;
   Top := AppConfig.FormTop;
@@ -877,6 +881,17 @@ begin
     WindowState := AppConfig.FormState;
     AppConfig.MainFormPosCorrected := True;
   end;
+
+  {$ifdef linux}
+  if AppConfig.CheckShortcuts and (not ShortcutFileExists(25) or not ShortcutFileExists(5)) then
+  begin
+    if Confirm(rsWarning, rsNoDesktopShortcutMsg) = mrYes then
+    begin
+      if not ShortcutFileExists(25) then CreateShortcutFile(25);
+      if not ShortcutFileExists(5) then CreateShortcutFile(5);
+    end;
+  end;
+  {$endif}
 
   // Проверка обновлений...
   DXUpdateFile := AppPath + DXUpdateExe;

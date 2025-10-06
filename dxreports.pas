@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, DBGrids, dxctrls, Db, strconsts, myctrls, Lists,
-  SqlDb, Dialogs, Grids, erroricon, myfpsqltree;
+  SqlDb, Dialogs, Grids, erroricon, myfpsqltree, Controls, LclType;
 
 type
 
@@ -84,6 +84,7 @@ type
     procedure Clear; override;
     function FindField(Id: Integer): PRpField;
     function FindFieldByName(const S: String): PRpField;
+    function FindFieldByFieldId(FId: Integer): PRpField;
     property Fields[Index: Integer]: PRpField read GetFields; default;
   end;
 
@@ -162,6 +163,7 @@ type
     FAutoAlignment: Boolean;
     FAutoLayout: Boolean;
     FCaption: String;
+    FFieldName: String;
     FColor: TColor;
     FFieldNameDS: String;
     FFixedColor: TColor;
@@ -182,8 +184,9 @@ type
     property Color: TColor read FColor write FColor;
     property TitleFont: TFont read FTitleFont write FTitleFont;
     property FixedColor: TColor read FFixedColor write FFixedColor;
-    property Caption: String read FCaption write FCaption;
+    property FieldName: String read FFieldName write FFieldName;
     property FieldNameDS: String read FFieldNameDS write FFieldNameDS;
+    property Caption: String read FCaption write FCaption;
     //property FieldId: Integer read GetFieldId;
     property Width: Integer read FWidth write FWidth;
     property Index: Integer read FIndex write FIndex;
@@ -227,6 +230,7 @@ type
     FColMove: Boolean;
     FColor: TColor;
     FDefaultRowHeight: Integer;
+    FEditable: Boolean;
     FFixedColor: TColor;
     //FFixedHotColor: TColor;
     FFlat: Boolean;
@@ -246,6 +250,8 @@ type
     FSortCols: TRpGridSortList;
     FThumbTracking: Boolean;
     FTitleFont: TFont;
+    FTitleHeight: Integer;
+    FTitleWordWrap: Boolean;
     FVertLines: Boolean;
     FColumns: TList;
     FWordWrap: Boolean;
@@ -256,8 +262,8 @@ type
     function ColumnCount: Integer;
     function AddColumn: TRpGridColumn;
     function AddDefaultColumn: TRpGridColumn;
-    function FindColumnByFieldName(const FieldName: String): TRpGridColumn;
-    function FindColumnByTitle(const S: String): TRpGridColumn;
+    function FindColumnByFieldNameDS(const AFieldNameDS: String): TRpGridColumn;
+    function FindColumnByName(const S: String): TRpGridColumn;
     function FindColumnIndex(Col: TRpGridColumn): Integer;
     procedure DeleteColumn(Col: TRpGridColumn);
     procedure SortColumns(L: TList);
@@ -294,6 +300,9 @@ type
     property RowHighlight: Boolean read FRowHighlight write FRowHighlight;
     property Indicator: Boolean read FIndicator write FIndicator;
     property ShowRowDeleteButton: Boolean read FShowRowDeleteButton write FShowRowDeleteButton;
+    property TitleHeight: Integer read FTitleHeight write FTitleHeight;
+    property TitleWordWrap: Boolean read FTitleWordWrap write FTitleWordWrap;
+    property Editable: Boolean read FEditable write FEditable;
   end;
 
 
@@ -408,6 +417,7 @@ type
     function GetSourceFilter: String;
     function IsSimple: Boolean;
     function HasParentIdField: Boolean;
+    function IsTableField(pF: PRpField): Boolean;
 
     procedure SetReportChanged;
     procedure ResetReportChanged;
@@ -454,6 +464,7 @@ type
     FOnBeforeClose: TNotifyEvent;
     FOnBeforeOpen: TNotifyEvent;
     FOnBeforeScroll: TNotifyEvent;
+    FOnCheckBoxClick: TNotifyEvent;
     FOnStateChange: TNotifyEvent;
     FOnCreateForm: TCreateFormEvent;
     //FOnPrintFieldEvent: TPrintFieldEvent;
@@ -469,8 +480,11 @@ type
     function GetAsI(Index: String): Integer;
     function GetAsS(Index: String): String;
     function GetQueryName: String;
+    function GetState: TDataSetState;
   protected
     procedure Paint; override;
+    procedure CellClick(const aCol, aRow: Integer; const Button: TMouseButton); override;
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure MoveBy(Distance: Integer);
@@ -503,6 +517,13 @@ type
     procedure SaveBlobToStream(const aName: String; St: TStream);
     procedure SaveBlobToFile(const aName, AFileName: String);
     procedure SaveThumbnailToStream(const aName: String; St: TStream);
+    function FindColumnByFieldName(const FieldName: String): TColumn;
+    procedure Append;
+    procedure Edit;
+    procedure Post;
+    procedure Cancel;
+    function Validate: Boolean;
+    procedure DoStateChange;
     property DSP: TObject read FDSP write FDSP;
     property QRi: Integer read FQRi write FQRi;
     property RpWnd: TObject read FRpWnd write FRpWnd;
@@ -512,7 +533,9 @@ type
     property AsF[Index: String]: Extended read GetAsF;
     property AsDT[Index: String]: TDateTime read GetAsDT;
     property AsS[Index: String]: String read GetAsS;
+    property State: TDataSetState read GetState;
     property OnCreateForm: TCreateFormEvent read FOnCreateForm write FOnCreateForm;
+    property OnCheckboxClick: TNotifyEvent read FOnCheckBoxClick write FOnCheckBoxClick;
   published
     property Id: Integer read FId write FId;
 
@@ -612,7 +635,7 @@ function RpFieldTypeToStr(Tp: TRpFieldType): String;
 procedure SetupRpField(C: TComponent; FlNm: String; pFld: PRpField);
 function GetRpFieldComponent(F: TRpField; aLow: Boolean): TComponent;
 function GetFullFieldName(F: TRpField): String;
-procedure SetQueryDisplayFormat(RD: TReportData; DS: TDataSet);
+procedure SetQueryDisplayFormat(RD: TReportData; DS: TDataSet; QGrid: TdxQueryGrid);
 function SourceKindToStr(sk: TRpSourceKind): String;
 function TotalFuncToStr(tf: TRpTotalFunc): String;
 //function IsSimpleReport(RD: TReportData): Boolean;
@@ -620,7 +643,7 @@ function CalcFieldExistsInSort(RD: TReportData): Boolean;
 //function SortFieldsToStr(RD: TReportData): String;
 function SqlReportSelect(RD: TReportData; Fm, PFm: TdxForm; DS: TDataSet): String;
 //procedure AddCalcFields(RD: TReportData; DS: TDataSet);
-procedure CalcQuery(aRD: TReportData; DS: TDataSet; aForm, aParForm: TdxForm; FormDS: TDataSet; Errs: TCalcError);
+procedure CalcQuery(aRD: TReportData; DS: TDataSet; aForm, aParForm: TdxForm; FormDS: TDataSet; Errs: TCalcError; RecalcCurrentField: Boolean = False);
 procedure FilterQuery(aRD: TReportData; DS: TDataSet; aForm, aParForm: TdxForm; FormDS: TDataSet);
 procedure BuildSortIndexes(RD: TReportData; DataSet: TSQLQuery);
 //function GetRealRpFieldType(RD: TReportData; Fl: PRpField): TRpFieldType;
@@ -628,6 +651,8 @@ function CreateReportForm(RD: TReportData; out SQL: String): TdxForm;
 function RpFieldIsCheckBox(RD: TReportData; const FieldNameDS: String): Boolean;
 procedure RemoveLostFieldsFromReportData(RD: TReportData);
 procedure CreateOrUpdateReportGridColumns(RD: TReportData);
+function ExtractObjectFromReport(RD: TReportData; pObjF: PRpField): TReportData;
+function SqlObjectReportSelect(ObjRD: TReportData; const RecId: String): String;
 
 implementation
 
@@ -791,6 +816,7 @@ begin
   if G.ColMove then Grid.Options := Grid.Options + [dgColumnMove];
   Grid.AllowChangeSort := G.AllowChangeSort;
   if G.Indicator then Grid.Options := Grid.Options + [dgIndicator];
+  if G.Editable then Grid.Options := Grid.Options + [dgEditing];
 
   L1 := G.SortCols;
   L2 := Grid.SortCols;
@@ -801,7 +827,9 @@ begin
     if (n >= 0) and (n < Grid.Columns.Count) then
       L2.AddCol(Grid.Columns[n], L1[i].Desc);
   end;
-  Grid.ReadOnly:=True;
+  Grid.ReadOnly:=not G.Editable;
+  Grid.TitleHeight := G.TitleHeight;
+  Grid.TitleWordWrap := G.TitleWordWrap;
 end;
 
 function GetTypeByComponent(C: TComponent): TRpFieldType;
@@ -984,61 +1012,27 @@ begin
   end;
 end;   }
 
-procedure SetQueryDisplayFormat(RD: TReportData; DS: TDataSet);
+procedure SetQueryDisplayFormat(RD: TReportData; DS: TDataSet;
+  QGrid: TdxQueryGrid);
 var
-  //L: TRpFieldList;
   i: Integer;
-  {F, LowF: TRpField;
-  Fm: TdxForm;
-  C: TComponent; }
   Fl: TField;
-  //pF: PRpField;
-  //CF: TRpCalcField;
-  //S: String;
 begin
   for i := 0 to RD.GetFieldCount - 1 do
   begin
     if not RD.GetFieldVisible(i) then Continue;
     Fl := DS.FieldByName( RD.GetFieldNameDS(i) );
     if Fl is TNumericField then
-      TNumericField(Fl).DisplayFormat := RD.GetDisplayFormat(i)
-    else if Fl is TDateTimeField then
-      TDateTimeField(Fl).DisplayFormat := RD.GetDisplayFormat(i);
-  end;
-
-  {L := RD.Sources[0]^.Fields;
-  for i := 0 to L.Count - 1 do
-  begin
-    F := PRpField(L[i])^;
-    if (F.Visible = False) or (F.Tp = flNone) then Continue;
-    if F.Zero then
     begin
-      pF := FindSrcField(RD, i);  // Почти то же самое, что и RD.FindField
-      // Так может быть, если ни одного поля не выбрано, а итоговая ф-ция Count
-      if pF = nil then Continue;
-      F := pF^;
-    end;
-    LowF := GetLowField(@F)^;
-    Fm := FormMan.FindForm(LowF.TId);
-    C := FindById(Fm, LowF.FId);
-    Fl := DS.FieldByName('f' + IntToStr(F.Id));
-    if (C is TdxCalcEdit) and (not (F.Func in [tfMerge, tfMergeAll, tfCount, tfDistCount])) then
-      TNumericField(Fl).DisplayFormat := GetPrecStr(C)
-    else if (C is TdxTimeEdit) and (F.Func = tfNone) then
-      TTimeField(Fl).DisplayFormat:=TdxTimeEdit(C).TimeFormatStr;
-  end;
-  for i := 0 to RD.CalcFields.Count - 1 do
-  begin
-    CF := RD.CalcFields[i]^;
-    if CF.Tp = flNumber then
-    begin
-      S := ',0';
-      if CF.Size > 0 then S := ',0.' + DupeString('0', CF.Size);
-      TNumericField(DS.FieldByName('cf' + IntToStr(CF.Id))).DisplayFormat:=S;
+      TNumericField(Fl).DisplayFormat := RD.GetDisplayFormat(i);
+      //QGrid.FindColumnByFieldNameDS(Fl.FieldName).DisplayFormat := TNumericField(Fl).DisplayFormat;
     end
-    else if CF.Tp = flTime then
-    	TTimeField(DS.FieldByName('cf' + IntToStr(CF.Id))).DisplayFormat:='hh:mm:ss';
-  end;   }
+    else if Fl is TDateTimeField then
+    begin
+      TDateTimeField(Fl).DisplayFormat := RD.GetDisplayFormat(i);
+      //QGrid.FindColumnByFieldNameDS(Fl.FieldName).DisplayFormat := TDateTimeField(Fl).DisplayFormat;
+    end;
+  end;
 end;
 
 function CheckNumber(const S: String): String;
@@ -1962,7 +1956,7 @@ begin
 end; }
 
 procedure CalcQuery(aRD: TReportData; DS: TDataSet; aForm, aParForm: TdxForm;
-  FormDS: TDataSet; Errs: TCalcError);
+  FormDS: TDataSet; Errs: TCalcError; RecalcCurrentField: Boolean);
 var
   EB: TExpressionBuilder;
   EL, FL: TList;
@@ -2018,15 +2012,20 @@ begin
   //  DS.Fields[i].Required:=False;
   //
 
-  AftScr := DS.AfterScroll;
-  BefScr := DS.BeforeScroll;
-  DS.AfterScroll := nil;
-  DS.BeforeScroll:=nil;
-  DS.DisableControls;
-  DS.First;
+  if not RecalcCurrentField then
+  begin
+    AftScr := DS.AfterScroll;
+    BefScr := DS.BeforeScroll;
+    DS.AfterScroll := nil;
+    DS.BeforeScroll:=nil;
+    DS.DisableControls;
+    DS.First;
+  end;
+
   while not DS.Eof do
   begin
-    DS.Edit;
+    if not RecalcCurrentField then DS.Edit;
+
     for i := 0 to EL.Count - 1 do
     begin
       CF := aRD.CalcFields[i]^;
@@ -2052,13 +2051,20 @@ begin
           end;
         end;
     end;
+
+    if RecalcCurrentField then Break;
+
     DS.Post;
     DS.Next;
   end;
-  DS.First;
-  DS.EnableControls;
-  DS.AfterScroll:=AftScr;
-  DS.BeforeScroll:=BefScr;
+
+  if not RecalcCurrentField then
+  begin
+    DS.First;
+    DS.EnableControls;
+    DS.AfterScroll:=AftScr;
+    DS.BeforeScroll:=BefScr;
+  end;
 
   ClearList(EL);
   EL.Free;
@@ -2568,16 +2574,77 @@ begin
   for i := 0 to RD.GetFieldCount - 1 do
   begin
     if not RD.GetFieldVisible(i) then Continue;
-    Col := RD.Grid.FindColumnByFieldName( RD.GetFieldNameDS(i) );
+    Col := RD.Grid.FindColumnByFieldNameDS( RD.GetFieldNameDS(i) );
     if Col = nil then
     begin
       Col := RD.Grid.AddDefaultColumn;
       Col.FieldNameDS := RD.GetFieldNameDS(i);
-      Col.Caption := RD.GetFieldName(i);
+      Col.FieldName := RD.GetFieldName(i);
+      Col.Caption := Col.FieldName;
     end
     else
-      Col.Caption := RD.GetFieldName(i);
+    begin
+      Col.FieldName := RD.GetFieldName(i);
+      //Col.Caption := Col.FieldName;
+    end;
   end;
+  if not RD.IsSimple then RD.Grid.Editable := False;
+end;
+
+function ExtractObjectFromReport(RD: TReportData; pObjF: PRpField): TReportData;
+
+  procedure CopyRpField(Src, Dest: PRpField);
+  begin
+    Dest^.Tp := Src^.Tp;
+    Dest^.TId := Src^.TId;
+    Dest^.FId := Src^.FId;
+    if Src^.Src <> nil then
+    begin
+      Dest^.Src := NewRpField;
+      CopyRpField(Src^.Src, Dest^.Src);
+      Dest^.Src^.Parent := Dest;
+    end;
+  end;
+
+var
+  Rp: TReportData;
+  pSr: PRpSource;
+  i: Integer;
+  pSrcF, pF: PRpField;
+begin
+  Rp := TReportData.Create;
+  Rp.Sources.AddSource(pSr);
+  pSr^.Id:=pObjF^.Src^.TId;
+
+  for i := 0 to RD.Sources[0]^.Fields.Count - 1 do
+  begin
+    pSrcF := RD.Sources[0]^.Fields[i];
+    if (pSrcF^.Tp = flObject) and pSrcF^.Visible  and (pSrcF^.Src <> nil) and
+      (pSrcF^.Src^.TId = pObjF^.Src^.TId) then
+    begin
+      pSr^.Fields.AddField(pF);
+      CopyRpField(pSrcF^.Src, pF);
+      pF^.Visible := True;
+      pF^.Id := pSrcF^.Id;
+    end;
+  end;
+
+  Result := Rp;
+end;
+
+function SqlObjectReportSelect(ObjRD: TReportData; const RecId: String): String;
+var
+  SQL: String;
+  p: SizeInt;
+begin
+  SQL := SQLReportSelect(ObjRD, nil, nil, nil);
+  // Убираем select верхнего уровня
+  p := Pos('(', SQL);
+  Delete(SQL, 1, p);
+  p := RPos(')', SQL);
+  SetLength(SQL, p - 1);
+
+  Result := SQL + ' where ' + TableStr(ObjRD.Sources[0]^.Id) + '.id=' + RecId;
 end;
 
 { ESourceFilterError }
@@ -3072,7 +3139,7 @@ var
   RD: TReportData;
 begin
   RD := ReportMan.FindReport(FId);
-  C := RD.Grid.FindColumnByTitle(aName);
+  C := RD.Grid.FindColumnByName(aName);
   if C = nil then raise Exception.CreateFmt(rsFieldNotFound, [aName]);
   RequeryIfNeed;
   Result := DataSource.DataSet.FieldByName(C.FieldNameDS).Value;
@@ -3188,7 +3255,7 @@ begin
     SplitStr(FieldNames, ';', SL);
     for i := 0 to SL.Count - 1 do
     begin
-      C := RD.Grid.FindColumnByTitle(SL[i]);
+      C := RD.Grid.FindColumnByName(SL[i]);
       if C = nil then raise Exception.CreateFmt(rsFieldNotFound, [SL[i]]);
       S := S + C.FieldNameDS;
       if i < SL.Count - 1 then S := S + ';';
@@ -3274,6 +3341,11 @@ begin
   Result := ReportMan.FindReport(FId).Name;
 end;
 
+function TdxQueryGrid.GetState: TDataSetState;
+begin
+  Result := DataSource.DataSet.State;
+end;
+
 procedure TdxQueryGrid.Paint;
 var
   TS: TTextStyle;
@@ -3291,6 +3363,31 @@ begin
     Canvas.Font := RD.Grid.Font;
     Canvas.Font.Color := clWindowText;
     Canvas.TextRect(ClientRect, 0, 0, RD.Name, TS);
+  end;
+end;
+
+procedure TdxQueryGrid.CellClick(const aCol, aRow: Integer;
+  const Button: TMouseButton);
+begin
+  inherited CellClick(aCol, aRow, Button);
+  if (SelectedField <> nil) and (ColumnEditorStyle(ACol, SelectedField) = cbsCheckboxColumn) then
+  begin
+    if FOnCheckBoxClick <> nil then FOnCheckBoxClick(Self);
+  end;
+end;
+
+procedure TdxQueryGrid.KeyDown(var Key: Word; Shift: TShiftState);
+var
+  OldKey: Word;
+begin
+  OldKey := Key;
+  inherited KeyDown(Key, Shift);
+  if OldKey = VK_SPACE then
+  begin
+    if (SelectedField <> nil) and (ColumnEditorStyle(Col, SelectedField) = cbsCheckboxColumn) then
+    begin
+      if FOnCheckBoxClick <> nil then FOnCheckBoxClick(Self);
+    end;
   end;
 end;
 
@@ -3334,7 +3431,7 @@ begin
   for i := 0 to SortCols.Count - 1 do
   begin
     CD := SortCols[i];
-    C := RD.Grid.FindColumnByFieldName(TColumn(CD.Col).FieldName);
+    C := RD.Grid.FindColumnByFieldNameDS(TColumn(CD.Col).FieldName);
     RD.Grid.SortCols.AddCol(C, CD.Desc);
   end;
 end;
@@ -3491,6 +3588,54 @@ begin
 
   with DataSource.DataSet do
     TBlobField(FieldByName(FlNm)).SaveToStream(St);
+end;
+
+function TdxQueryGrid.FindColumnByFieldName(const FieldName: String): TColumn;
+var
+  i: Integer;
+  RD: TReportData;
+begin
+  Result := nil;
+  RD := TDataSetProcessor(FDSP).Queries[FQRi]^.RD;
+  i := RD.IndexOfName(FieldName);
+  if i < 0 then
+    raise Exception.CreateFmt(rsFieldNotFound, [FieldName]);
+  Result := FindColumnByFieldNameDS( RD.GetFieldNameDS(i) );
+end;
+
+procedure TdxQueryGrid.Append;
+begin
+  if not (DataSource.DataSet.State in [dsInsert, dsEdit]) then
+    DataSource.DataSet.Append;
+end;
+
+procedure TdxQueryGrid.Edit;
+begin
+  if not (DataSource.DataSet.State in [dsInsert, dsEdit]) then
+    DataSource.DataSet.Edit;
+end;
+
+procedure TdxQueryGrid.Post;
+begin
+  if DataSource.DataSet.State in [dsInsert, dsEdit] then
+    DataSource.DataSet.Post;
+end;
+
+procedure TdxQueryGrid.Cancel;
+begin
+  if DataSource.DataSet.State in [dsInsert, dsEdit] then
+    DataSource.DataSet.Cancel;
+end;
+
+function TdxQueryGrid.Validate: Boolean;
+begin
+  if FDSP = nil then Result := True
+  else Result := TDataSetProcessor(FDSP).QueryValidate(FQRi);
+end;
+
+procedure TdxQueryGrid.DoStateChange;
+begin
+  if FOnStateChange <> nil then FOnStateChange(Self);
 end;
 
 { TRpTotalList }
@@ -3664,6 +3809,7 @@ begin
   FThumbTracking:=True;
   FAllowChangeSort:=True;
   FIndicator := True;
+  FTitleHeight := -1;
 end;
 
 destructor TRpGrid.Destroy;
@@ -3700,7 +3846,7 @@ begin
   Result.TitleFont.Assign(TitleFont);
 end;
 
-function TRpGrid.FindColumnByFieldName(const FieldName: String): TRpGridColumn;
+function TRpGrid.FindColumnByFieldNameDS(const AFieldNameDS: String): TRpGridColumn;
 var
   i: Integer;
   C: TRpGridColumn;
@@ -3709,11 +3855,11 @@ begin
   for i := 0 to ColumnCount - 1 do
   begin
     C := Columns[i];
-    if CompareText(C.FieldNameDS, FieldName) = 0 then Exit(C);
+    if CompareText(C.FieldNameDS, AFieldNameDS) = 0 then Exit(C);
   end;
 end;
 
-function TRpGrid.FindColumnByTitle(const S: String): TRpGridColumn;
+function TRpGrid.FindColumnByName(const S: String): TRpGridColumn;
 var
   i: Integer;
   C: TRpGridColumn;
@@ -3722,7 +3868,7 @@ begin
   for i := 0 to ColumnCount - 1 do
   begin
     C := Columns[i];
-    if MyUtf8CompareText(C.Caption, S) = 0 then Exit(C);
+    if MyUtf8CompareText(C.FieldName, S) = 0 then Exit(C);
   end;
 end;
 
@@ -3821,9 +3967,9 @@ begin
       Delete(S, 1, 1);
     end;
     if S[1] in ['0'..'9'] then S := 'f' + S;
-    Col := RD.Grid.FindColumnByFieldName(S);
+    Col := RD.Grid.FindColumnByFieldNameDS(S);
     //n := StrToInt(S);
-    //Col := RD.Grid.FindColumnByFieldName('f' + IntToStr(n));
+    //Col := RD.Grid.FindColumnByFieldNameDS('f' + IntToStr(n));
     if Col <> nil then
       RD.Grid.SortCols.AddCol(Col, Desc);
   end;
@@ -3902,6 +4048,7 @@ begin
     RD.HelpText:=XmlToHtml(Atts.GetValue('', 'helptext'));
     RD.SQL := XmlToStr(GetStr(Atts, 'sql'));
     RD.SqlMode := GetBool(Atts, 'sqlmode');
+    //RD.FormId := GetInt(Atts, 'formid');
     RD.Version := GetInt(Atts, 'version');
   end
   else if LocalName = 'grid' then
@@ -3931,6 +4078,9 @@ begin
     G.AllowChangeSort:=GetBool(Atts, 'allowchangesort');
     G.Indicator:=GetBool(Atts, 'indicator', True);
     G.ShowRowDeleteButton:=GetBool(Atts, 'rowdelbn', False);
+    G.TitleHeight:=GetInt(Atts, 'titleheight', -1);
+    G.TitleWordWrap:=GetBool(Atts, 'titlewordwrap', False);
+    G.Editable:=GetBool(Atts, 'editable');
   end
   else if LocalName = 'column' then
   begin
@@ -3939,7 +4089,9 @@ begin
     C.FixedColor:=GetColor(Atts, 'fixedcolor', clBtnFace);
     C.Width:=GetInt(Atts, 'width');
     C.FieldNameDS:=Atts.GetValue('', 'fieldname');
+    C.FieldName := Atts.GetValue('', 'name');
     C.Caption := Atts.GetValue('', 'caption');
+    if C.FieldName = '' then C.FieldName := C.Caption;      // В первый раз будет именно так.
     C.Index := GetInt(Atts, 'index');
     if Atts.GetValue('', 'visible') <> '' then
       C.Visible:=GetBool(Atts, 'visible');
@@ -4120,6 +4272,19 @@ begin
   end;
 end;
 
+function TRpFieldList.FindFieldByFieldId(FId: Integer): PRpField;
+var
+  i: Integer;
+  pF: PRpField;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    pF := Fields[i];
+    if pF^.FId = FId then Exit(pF);
+  end;
+end;
+
 { TReportData }
 
 constructor TReportData.Create;
@@ -4213,6 +4378,7 @@ procedure TReportData.SaveToStream(St: TStream);
   begin
     WrStr('<column color="' + ColorToString(C.Color) + '" fixedcolor="' +
       ColorToString(C.FixedColor) + '" caption="' + C.Caption +
+      '" name="' + C.FieldName +
       '" width="' + IntToStr(C.Width) + '" fieldname="' + C.FieldNameDS +
       '" index="' + IntToStr(C.Index) + '" visible="' + Bool2Str(C.Visible));
     if not C.AutoAlignment then
@@ -4256,6 +4422,9 @@ procedure TReportData.SaveToStream(St: TStream);
       '" allowchangesort="' + Bool2Str(G.AllowChangeSort) +
       '" indicator="' + Bool2Str(G.Indicator) +
       '" rowdelbn="' + Bool2Str(G.ShowRowDeleteButton) +
+      '" titleheight="' + IntToStr(G.TitleHeight) +
+      '" titlewordwrap="' + Bool2Str(G.TitleWordWrap) +
+      '" editable="' + Bool2Str(G.Editable) +
       '">');
     WrFont(G.Font, 'font');
     WrFont(G.TitleFont, 'titlefont');
@@ -4377,6 +4546,7 @@ begin
     '" first="' + IntToStr(FFirstRecordCount) +
     '" filter="' + StrToXml(FFilter) + '" helptext="' + HtmlToXml(FHelpText) +
     '" sql="' + StrToXml(FSQL) + '" sqlmode="' + Bool2Str(FSqlMode) +
+    //'" formid="' + IntToStr(FFormId) +
     '" version="' + IntToStr(FVersion) + '">');
   WrStr('<sources>');
   for i := 0 to Sources.Count - 1 do
@@ -4782,6 +4952,11 @@ end;
 function TReportData.HasParentIdField: Boolean;
 begin
   Result := (FSources.Count = 1) and (FSources[0]^.TId > 0);
+end;
+
+function TReportData.IsTableField(pF: PRpField): Boolean;
+begin
+  Result := FSources[0]^.Id <> pF^.TId;
 end;
 
 procedure TReportData.SetReportChanged;
