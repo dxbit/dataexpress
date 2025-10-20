@@ -174,7 +174,7 @@ begin
       RegisterProperty('Parent', 'TWinControl', iptRW);
     end;
 
-    RegisterProperty('Handle', 'LongInt', iptR);
+    RegisterProperty('Handle', 'HWND', iptR);
     RegisterProperty('Showing', 'Boolean', iptR);
     RegisterProperty('TabOrder', 'Integer', iptRW);
     RegisterProperty('TabStop', 'Boolean', iptRW);

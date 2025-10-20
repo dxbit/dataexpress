@@ -224,7 +224,7 @@ uses
   appimagelists, reportmanager, mydialogs, crypt, mylogger, warningform{$ifdef DXFull},
   reportsform, usersform, modulesform, debugscriptform, scriptform,
   templatefieldsform, imagesform, designerframe, findactionsform,
-  findexprform, findscriptform, updatemanform, updatemanager{$endif};
+  findexprform, findscriptform, updatemanform, updatemanager, padeg{$endif};
 
 const
   WIKI_URL = 'https://wiki.mydataexpress.ru/';
@@ -425,6 +425,7 @@ begin
   if not (DefaultFormatSettings.ThousandSeparator in [' ', ',', '.', '-', '''']) then
     DefaultFormatSettings.ThousandSeparator := ' ';
   //
+  InitDictionary;
   {$endif}
   FOldFormatSettings := DefaultFormatSettings;
 end;
@@ -756,7 +757,7 @@ begin
         fPwd: Pwd := Pwd + Ch;
         fDBPwd: DBPwd := DBPwd + Ch;
         fParam:
-          if Ch <> ':' then Param := Param + Ch
+          if Ch <> '=' then Param := Param + Ch
           else
           begin
             if Param = 'u' then Flag := fUser
@@ -814,8 +815,8 @@ begin
   Dir := GetDesktopDir;
   if Dir = '' then Exit;
 
-  if FbVer = 25 then FileName := 'dataexpress fb25.desktop'
-  else FileName := 'dataexpress fb5.desktop';
+  if FbVer = 25 then FileName := 'dataexpress-fb25.desktop'
+  else FileName := 'dataexpress-fb5.desktop';
   Result := FileExists(Dir + FileName);
 end;
 
@@ -840,8 +841,8 @@ begin
     ErrMsg(rsDesktopDirNotFound, True, rsStart);
     Exit;
   end;
-  if FbVer = 25 then FileName := 'dataexpress fb25.desktop'
-  else FileName := 'dataexpress fb5.desktop';
+  if FbVer = 25 then FileName := 'dataexpress-fb25.desktop'
+  else FileName := 'dataexpress-fb5.desktop';
   FileName := Dir + FileName;
   if not FileExists(FileName) then
     try
@@ -1506,7 +1507,7 @@ begin
   begin
     DBase.Database := DBName;
     DBase.Pwd := DBPwd;
-    Title := Utf8UpperCase(ChangeFileExt(ExtractFileName(DBase.Database), ''));
+    Title := Utf8UpperCase(ExtractDBName(DBase.Database));
     if ExtractFilePath(DBName) = AppPath then
       AppConfig.Database := ExtractFileName(DBase.Database)
     else

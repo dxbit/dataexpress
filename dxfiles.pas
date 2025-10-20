@@ -111,6 +111,7 @@ type
     procedure PopupHandler(Sender: TObject);
     procedure PopupPopup(Sender: TObject);
   protected
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
     procedure msg_SetPos(var Msg: TGridMessage); message GM_SETPOS;
@@ -139,6 +140,9 @@ const
   StorageTypeDB = 0;
   StorageTypeFolder = 1;
   StorageTypeLink = 2;
+
+type
+  THackGrid = class(TCustomGrid);
 
 function LoadFileFromFile(const FileName: String; aFile: TdxFile; DS: TDataSet
   ): String;
@@ -639,6 +643,15 @@ begin
     FPop.Items[3].Enabled := False;
     FPop.Items[3].Visible := False;
   end;
+end;
+
+procedure TdxFileCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+begin
+  inherited KeyDown(Key, Shift);
+  {$ifdef linux}
+  if Key = VK_SPACE then Click;
+  THackGrid(FGrid).KeyDown(Key, Shift);
+  {$endif}
 end;
 
 procedure TdxFileCellEditor.msg_SetGrid(var Msg: TGridMessage);

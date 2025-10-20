@@ -215,7 +215,7 @@ end;
 procedure TConnectInfoFm.SetDefaultConnectName(const Value: String);
 begin
   if ConnectName.Text = '' then
-    ConnectName.Text := Utf8UpperCase(ExtractFileNameOnly(Value));
+    ConnectName.Text := Utf8UpperCase(ExtractDBName(Value));
 end;
 
 {procedure TConnectInfoFm.SetReadOnlyState(RO: Boolean);

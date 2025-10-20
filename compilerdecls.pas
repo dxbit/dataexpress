@@ -1424,7 +1424,7 @@ begin
     //RegisterProperty('EditorBorderStyle', 'TBorderStyle', iptrw);
     RegisterProperty('EditorMode', 'Boolean', iptrw);
     RegisterProperty('ExtendedColSizing', 'Boolean', iptrw);
-    //RegisterProperty('FastEditing', 'Boolean', iptrw);
+    RegisterProperty('FastEditing', 'Boolean', iptrw);
     RegisterProperty('FocusColor', 'TColor', iptrw);
     RegisterProperty('FocusRectVisible', 'Boolean', iptrw);
     RegisterProperty('GridLineColor', 'TColor', iptrw);

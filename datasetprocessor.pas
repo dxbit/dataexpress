@@ -1997,7 +1997,7 @@ begin
     begin
       if Shift = [ssCtrl] then
       begin
-        if Validate(i) then Post;
+        if Validate(i) then DSR.DataSet.Post;
       end
       else
         // Если таблица редактируемая, то после перехода в редактирование и ,
@@ -2707,11 +2707,11 @@ begin
   end
   else if (C is TdxEdit) or (C is TdxMemo) then
   begin
-    {if NeedMemo(Grid, column) then
+    if NeedMemo(Grid, column) then
     begin
       Grid.GetMemoEditor.Alignment := Column.Alignment;
       Editor := Grid.GetMemoEditor;
-    end;  }
+    end;
   end
   else if C is TdxCalcEdit then
   begin

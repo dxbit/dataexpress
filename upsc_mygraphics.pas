@@ -111,6 +111,7 @@ end;
 
 procedure SIRegisterTCanvas(cl: TPSPascalCompiler); // requires TPersistent
 begin
+  Cl.AddTypeS('HDC', 'TLCLHandle');
   with Cl.AddClassN(cl.FindClass('TPersistent'), 'TCanvas') do
   begin
     RegisterMethod('procedure Arc(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer);');
@@ -129,7 +130,7 @@ begin
     RegisterMethod('procedure TextOut(X, Y: Integer; Text: string);');
     RegisterMethod('function TextWidth(Text: string): Integer;');
     RegisterMethod('procedure TextRect(ARect: TRect; X, Y: integer; const Text: string; TextStyle: TTextStyleRec)');
-    RegisterProperty('Handle', 'Integer', iptRw);
+    RegisterProperty('Handle', 'HDC', iptRW);
     RegisterProperty('Pixels', 'TColor Integer Integer', iptRW);
     RegisterProperty('Brush', 'TBrush', iptR);
     //RegisterProperty('CopyMode', 'Byte', iptRw);
@@ -235,8 +236,8 @@ begin
   //Cl.AddTypeS('TTextStyle', 'record Alignment: TAlignment; Layout: TTextLayout; SingleLine: Boolean; Clipping: Boolean; ExpandTabs: Boolean; ShowPrefix: Boolean; WordBreak: Boolean; Opaque: Boolean; SystemFont: Boolean; RightToLeft: Boolean; EndEllipsis: Boolean; end;');
   Cl.AddTypeS('TTextStyleRec', 'record Alignment: Byte; Layout: Byte; SingleLine: Boolean; Clipping: Boolean; ExpandTabs: Boolean; ShowPrefix: Boolean; WordBreak: Boolean; Opaque: Boolean; SystemFont: Boolean; RightToLeft: Boolean; EndEllipsis: Boolean; end;');
 
-  cl.addTypeS('HBITMAP', 'Integer');
-  cl.addTypeS('HPALETTE', 'Integer');
+  cl.addTypeS('HBITMAP', 'TLCLHandle');
+  cl.addTypeS('HPALETTE', 'TLCLHandle');
 end;
 
 procedure SIRegisterTGraphic(CL: TPSPascalCompiler);

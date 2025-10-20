@@ -125,7 +125,7 @@ end;
 procedure TCalcErrsFm.FillGrid;
 var
   EM: TErrMsg;
-  r, i: Integer;
+  r, i, p: Integer;
 begin
   r := 1;
   Grid.RowCount := r;
@@ -139,7 +139,9 @@ begin
     Grid.Cells[2, r] := EM.Prop;
     Grid.Cells[3, r] := EM.Msg;
     Memo.Text := EM.Expr;
-    Memo.SelStart := EM.Position;
+    p := EM.Position;
+    if p = 0 then p := 1;
+    Memo.SelStart := p;
     Grid.Cells[4, r] := Format('%d: %d', [Memo.CaretY, Memo.CaretX]);
     Inc(r);
   end;

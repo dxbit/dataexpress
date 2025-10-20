@@ -174,6 +174,7 @@ type
     procedure PopupHandler(Sender: TObject);
     procedure PopupPopup(Sender: TObject);
   protected
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
     procedure msg_Ready(var Msg: TGridMessage); message GM_READY;
@@ -223,6 +224,8 @@ type
     property Bitmap: TBGRABitmap read FBitmap;
     property Stream: TStream read FStream write FStream;
   end;
+
+  THackGrid = class(TDBGrid);
 
 procedure LoadImageFromStream(aBitmap: TBGRABitmap; aQuality: Integer; St: TStream);
 var
@@ -962,6 +965,15 @@ begin
     FPop.Items[3].Enabled := False;
     FPop.Items[3].Visible := False;
   end;
+end;
+
+procedure TdxDBImageCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+begin
+  inherited KeyDown(Key, Shift);
+  {$ifdef linux}
+  if Key = VK_SPACE then Click;
+  THackGrid(FGrid).KeyDown(Key, Shift);
+  {$endif}
 end;
 
 procedure TdxDBImageCellEditor.msg_SetGrid(var Msg: TGridMessage);

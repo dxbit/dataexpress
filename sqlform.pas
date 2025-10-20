@@ -106,6 +106,7 @@ type
     procedure FillProps;
     function IsSqlMode: Boolean;
     function GetSelectedSqlField: TSQLField;
+    procedure StructDblClick(Sender: TObject);
     procedure StructTreeMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure UpdateSqlFieldNode(N: TTreeNode);
@@ -182,6 +183,7 @@ begin
     Parent := StructTab;
     Align := alClient;
     Tree.OnMouseDown := @StructTreeMouseDown;
+    Tree.OnDblClick := @StructDblClick;
   end;
   FSqlFields := TSQLFieldList.Create;
   Caption := rsSQLEditor;
@@ -571,6 +573,22 @@ begin
     Result := TSQLField(FieldsTree.Selected.Data)
   else
     Result := nil;
+end;
+
+procedure TSqlFm.StructDblClick(Sender: TObject);
+var
+  Tree: TTreeView;
+  N: TTreeNode;
+  S: String;
+begin
+  Tree := TTreeView(Sender);
+  N := Tree.Selected;
+  if N <> nil then
+  begin
+    S := N.Text;
+    S := '[' + LeftStr(S, RPos(' (', S) - 1) + ']';
+    Edit.SelText := S;
+  end;
 end;
 
 procedure TSqlFm.StructTreeMouseDown(Sender: TObject; Button: TMouseButton;

@@ -38,7 +38,7 @@ procedure RIRegister_Controls(Cl: TPSRuntimeClassImporter);
 implementation
 
 uses
-  Classes, Controls, Graphics, myctrls;
+  Classes, Controls, Graphics, myctrls, LclType;
 
 
 procedure RIRegisterTSizeConstraints(Cl: TPSRuntimeClassImporter);
@@ -175,7 +175,7 @@ begin
     RegisterMethod(@TCONTROL.GetTopParent, 'GetTopParent');
   end;
 end;
-procedure TWinControlHandleR(Self: TWinControl; var T: Longint); begin T := Self.Handle; end;
+procedure TWinControlHandleR(Self: TWinControl; var T: HWND); begin T := Self.Handle; end;
 procedure TWinControlShowingR(Self: TWinControl; var T: Boolean); begin T := Self.Showing; end;
 
 

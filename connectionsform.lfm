@@ -7,10 +7,10 @@ object ConnectsFm: TConnectsFm
   Caption = 'Подключиться к БД'
   ClientHeight = 421
   ClientWidth = 496
+  Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 4
     Height = 390
@@ -51,6 +51,7 @@ object ConnectsFm: TConnectsFm
       ReadOnly = True
       RightClickSelect = True
       TabOrder = 1
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       OnCompare = TreeCompare
       OnCustomDrawItem = TreeCustomDrawItem
       OnDblClick = TreeDblClick
@@ -60,7 +61,6 @@ object ConnectsFm: TConnectsFm
       OnMouseDown = TreeMouseDown
       OnSelectionChanged = TreeSelectionChanged
       OnUTF8KeyPress = TreeUTF8KeyPress
-      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     end
   end
   object Panel2: TPanel
@@ -80,9 +80,9 @@ object ConnectsFm: TConnectsFm
       Width = 155
       Caption = 'Подключиться'
       Font.Style = [fsBold]
-      OnClick = ConnectBnClick
       ParentFont = False
       TabOrder = 0
+      OnClick = ConnectBnClick
     end
     object DesignBn: TBitBtn
       Left = 8
@@ -90,8 +90,8 @@ object ConnectsFm: TConnectsFm
       Top = 48
       Width = 155
       Caption = 'Дизайнер'
-      OnClick = DesignBnClick
       TabOrder = 1
+      OnClick = DesignBnClick
     end
     object AddBn: TBitBtn
       Left = 8
@@ -99,10 +99,10 @@ object ConnectsFm: TConnectsFm
       Top = 107
       Width = 155
       Caption = 'Добавить'
-      OnClick = AddBnClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
+      OnClick = AddBnClick
     end
     object EditBn: TBitBtn
       Left = 8
@@ -110,10 +110,10 @@ object ConnectsFm: TConnectsFm
       Top = 139
       Width = 155
       Caption = 'Изменить'
-      OnClick = EditBnClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
+      OnClick = EditBnClick
     end
     object DelBn: TBitBtn
       Left = 8
@@ -121,10 +121,10 @@ object ConnectsFm: TConnectsFm
       Top = 171
       Width = 155
       Caption = 'Удалить'
-      OnClick = DelBnClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
+      OnClick = DelBnClick
     end
     object HelpBn: TBitBtn
       Left = 8
@@ -132,8 +132,8 @@ object ConnectsFm: TConnectsFm
       Top = 232
       Width = 155
       Caption = 'Помощь'
-      OnClick = HelpBnClick
       TabOrder = 5
+      OnClick = HelpBnClick
     end
     object CloseBn: TBitBtn
       Left = 8

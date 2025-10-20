@@ -115,9 +115,9 @@ end;
 
 procedure SIRegister_Menus(Cl: TPSPascalCompiler);
 begin
-  Cl.AddTypeS('HMENU', 'Cardinal');
-  Cl.AddTypeS('HACCEL', 'Cardinal');
-  cl.AddTypeS('HWND', 'LongInt');
+  Cl.AddTypeS('HMENU', 'TLCLHandle');
+  Cl.AddTypeS('HACCEL', 'TLCLHandle');
+  cl.AddTypeS('HWND', 'TLCLHandle');
 
 
   Cl.AddTypeS('TShiftStateEnum', '(ssShift, ssAlt, ssCtrl, ssLeft, ssRight, ssMiddle, ssDouble, ssMeta, ssSuper, ssHyper, ssAltGr, ssCaps, ssNum, ssScroll, ssTriple, ssQuad, ssExtra1, ssExtra2)');

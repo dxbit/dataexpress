@@ -8,9 +8,9 @@ object PrecFm: TPrecFm
   Caption = 'PrecFm'
   ClientHeight = 153
   ClientWidth = 324
-  OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '4.3.0.0'
+  OnCreate = FormCreate
   object Label1: TLabel
     AnchorSideTop.Control = Prec
     AnchorSideTop.Side = asrCenter
@@ -29,7 +29,7 @@ object PrecFm: TPrecFm
     Top = 12
     Width = 72
     BorderSpacing.Left = 8
-    MaxValue = 10
+    MaxValue = 15
     TabOrder = 0
   end
   object GroupDigits: TCheckBox
@@ -38,7 +38,7 @@ object PrecFm: TPrecFm
     Left = 8
     Height = 19
     Top = 43
-    Width = 170
+    Width = 168
     BorderSpacing.Top = 8
     Caption = 'Разделять число на триады'
     TabOrder = 1
@@ -66,7 +66,7 @@ object PrecFm: TPrecFm
     Left = 8
     Height = 19
     Top = 70
-    Width = 161
+    Width = 159
     BorderSpacing.Top = 8
     Caption = 'Дополнять дробь нулями'
     TabOrder = 3

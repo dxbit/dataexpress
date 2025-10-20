@@ -273,6 +273,7 @@ function IsRpFieldNameDSEditable(RD: TReportData; FieldNameDS: String): Boolean;
 function NeedMemo(Grid: TDBGrid; Column: TColumn): Boolean;
 procedure PositionCellEditor(Grid: TCustomGrid; Editor: TWinControl; R: TRect; Layout: TTextLayout; HasBorder: Boolean);
 function Abrakadabra(const Path: String; Delim: Char): String;
+function ExtractDBName(DBPath: String): String;
 
 implementation
 
@@ -4887,6 +4888,20 @@ begin
   if SL.Count > 0 then
     Result := DupeString('  ', SL.Count - 1) + SL[SL.Count - 1];
   SL.Free;
+end;
+
+function ExtractDBName(DBPath: String): String;
+var
+  p: SizeInt;
+begin
+  {$ifdef windows}
+  Result := ExtractFileNameOnly(DBPath);
+  {$else}
+  p := Pos(':', DBPath);
+  if p > 0 then Delete(DBPath, 1, p);
+  DBPath := StringReplace(DBPath, '\', '/', [rfReplaceAll]);
+  Result := ExtractFileNameOnly(DBPath);
+  {$endif}
 end;
 
 end.

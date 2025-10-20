@@ -124,7 +124,7 @@ implementation
 
 uses
   apputils, ConnectInfoForm, mydialogs, LazUtf8, dxusers, helpmanager, mainform,
-  dbengine, crypt, Clipbrd;
+  dbengine, crypt, Clipbrd, fphttpclient;
 
 function ShowConnectsForm: Integer;
 begin
@@ -235,10 +235,10 @@ var
   S: String;
 begin
   CI := TConnectInfo(Tree.Selected.Data);
-  S := 'dxdb://' + CI.DBPath;
-  if CI.User <> '' then S := S + '&u:' + CI.User;
-  if CI.Pwd <> '' then S := S + '&p:' + Encrypt(CI.Pwd, StartKey, MultKey, AddKey);
-  if CI.DBPwd <> '' then S := S + '&dbpwd:' + Encrypt(CI.DBPwd, StartKey, MultKey, AddKey);
+  S := 'dxdb://' + EncodeURLElement(CI.DBPath);
+  if CI.User <> '' then S := S + '&u=' + EncodeURLElement(CI.User);
+  if CI.Pwd <> '' then S := S + '&p=' + Encrypt(CI.Pwd, StartKey, MultKey, AddKey);
+  if CI.DBPwd <> '' then S := S + '&dbpwd=' + Encrypt(CI.DBPwd, StartKey, MultKey, AddKey);
   Clipboard.AsText:=S;
   Info(Format(rsURLSuccessCopied, [LineEnding + S]));
 end;

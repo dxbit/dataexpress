@@ -83,6 +83,11 @@ begin
   //Cl.AddTypeS('TComponentStateE', '(csLoading, csReading, csWriting, csDestroying, csDesigning, csAncestor, csUpdating, csFixups, csFreeNotification, csInline, csDesignInstance)');
   //cl.AddTypeS('TComponentState', 'set of TComponentStateE');
   Cl.AddTypeS('TRect', 'record Left, Top, Right, Bottom: Integer; end;');
+  {$ifdef windows}
+  Cl.AddTypeS('TLCLHandle', 'LongInt');
+  {$else}
+  Cl.AddTypeS('TLCLHandle', 'Int64');
+  {$endif}
 end;
 
 procedure SIRegister_Std(Cl: TPSPascalCompiler);

@@ -782,7 +782,7 @@ msgstr "Не могу удалить форму [%s], потому что она
 #: strconsts.rscantdelformmsgfields
 #, object-pascal-format
 msgid "fields:%s"
-msgstr "поля:%s"
+msgstr "полях:%s"
 
 #: strconsts.rscantdelformmsgqry
 #, object-pascal-format

@@ -7,14 +7,14 @@ object SqlFm: TSqlFm
   Caption = 'SqlFm'
   ClientHeight = 555
   ClientWidth = 967
+  Position = poOwnerFormCenter
+  LCLVersion = '4.3.0.0'
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object SidePages: TPageControl
     Left = 723
     Height = 509
@@ -39,8 +39,8 @@ object SqlFm: TSqlFm
         RightClickSelect = True
         ShowRoot = False
         TabOrder = 0
-        OnSelectionChanged = FieldsTreeSelectionChanged
         Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoToolTips, tvoThemedDraw]
+        OnSelectionChanged = FieldsTreeSelectionChanged
       end
       object PropsPan: TPanel
         Left = 0

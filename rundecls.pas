@@ -1396,6 +1396,10 @@ begin
 end;
 
 procedure TCustomImageListCount_R(Self: TCustomImageList; var T: Integer); begin T := Self.Count; end;
+procedure TCustomImageListGetBitmap(Self: TCustomImageList; Index: Integer; Image: TCustomBitmap);
+begin
+  Self.GetBitmap(Index, Image);
+end;
 
 procedure RIRegister_ImageList(Cl: TPSRuntimeClassImporter);
 begin
@@ -1410,7 +1414,7 @@ begin
     RegisterMethod(@TCustomImageListAddImage, 'AddImage');
     RegisterMethod(@TCustomImageList.Clear, 'Clear');
     RegisterMethod(@TCustomImageList.Delete, 'Delete');
-    RegisterMethod(@TCustomImageList.GetBitmap, 'GetBitmap');
+    RegisterMethod(@TCustomImageListGetBitmap, 'GetBitmap');
     RegisterPropertyHelper(@TCustomImageListCount_R, nil, 'Count');
   end;
 
@@ -1463,8 +1467,8 @@ procedure TDBGridEditorMode_R(Self: TDBGrid; var T: Boolean); begin T := Self.Ed
 procedure TDBGridEditorMode_W(Self: TDBGrid; T: Boolean); begin Self.EditorMode := T; end;
 procedure TDBGridExtendedColSizing_R(Self: TDBGrid; var T: Boolean); begin T := Self.ExtendedColSizing; end;
 procedure TDBGridExtendedColSizing_W(Self: TDBGrid; T: Boolean); begin Self.ExtendedColSizing := T; end;
-//procedure TDBGridFastEditing_R(Self: TDBGrid; var T: Boolean); begin T := Self.FastEditing; end;
-//procedure TDBGridFastEditing_W(Self: TDBGrid; T: Boolean); begin Self.FastEditing := T; end;
+procedure TDBGridFastEditing_R(Self: TDBGrid; var T: Boolean); begin T := Self.FastEditing; end;
+procedure TDBGridFastEditing_W(Self: TDBGrid; T: Boolean); begin Self.FastEditing := T; end;
 procedure TDBGridFocusColor_R(Self: TDBGrid; var T: TColor); begin T := Self.FocusColor; end;
 procedure TDBGridFocusColor_W(Self: TDBGrid; T: TColor); begin Self.FocusColor := T; end;
 procedure TDBGridFocusRectVisible_R(Self: TDBGrid; var T: Boolean); begin T := Self.FocusRectVisible; end;
@@ -1663,7 +1667,7 @@ begin
     //RegisterPropertyHelper(@TDBGridEditorBorderStyle_R, @TDBGridEditorBorderStyle_W, 'EditorBorderStyle');
     RegisterPropertyHelper(@TDBGridEditorMode_R, @TDBGridEditorMode_W, 'EditorMode');
     RegisterPropertyHelper(@TDBGridExtendedColSizing_R, @TDBGridExtendedColSizing_W, 'ExtendedColSizing');
-    //RegisterPropertyHelper(@TDBGridFastEditing_R, @TDBGridFastEditing_W, 'FastEditing');
+    RegisterPropertyHelper(@TDBGridFastEditing_R, @TDBGridFastEditing_W, 'FastEditing');
     RegisterPropertyHelper(@TDBGridFocusColor_R, @TDBGridFocusColor_W, 'FocusColor');
     RegisterPropertyHelper(@TDBGridFocusRectVisible_R, @TDBGridFocusRectVisible_W, 'FocusRectVisible');
     RegisterPropertyHelper(@TDBGridGridLineColor_R, @TDBGridGridLineColor_W, 'GridLineColor');

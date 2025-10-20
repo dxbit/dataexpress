@@ -507,6 +507,19 @@ type
     FRealDropDownCount: Integer;
     FFrags: TStringList;
     FOldChangeBounds: TNotifyEvent;
+    {$ifdef linux}
+    FSearchEdit: TEdit;
+    FSearchMenu: TPopupMenu;
+    FChangeTimer: TTimer;
+    FLastKey: Word;
+    procedure DoNeedData;
+    procedure ChangeTimerTimer(Sender: TObject);
+    procedure SearchEditChange(Sender: TObject);
+    procedure SearchEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SearchMenuClick(Sender: TObject);
+    procedure SearchMenuPopup(Sender: TObject);
+    {$endif}
     procedure FormChangeBounds(Sender: TObject);
     function GetListHeight: Integer;
     procedure GridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect;
@@ -541,6 +554,7 @@ type
 
   TdxLookupComboBox = class(TDBEditEx)
   private
+    FAsCellEditor: Boolean;
     //FAutoComplete: Boolean;
     FCheckExpression: String;
     FClearTableBeforeFill: Boolean;
@@ -593,7 +607,10 @@ type
     FFiltering: Boolean;				// Когда пользователь что-то вводит в поле, флаг устанавливается и позволяет фильтровать данные в списке
     FKeyDown: Boolean;
     FKeepList: Boolean;
-    FSkipKillFocus: Boolean;		// Для linux
+    {$ifdef linux}
+    FUtf8Key: TUtf8Char;        // Передается в поле поиска окна списка (для линукс)
+    FSkipKillFocus, FSkipUtf8Key: Boolean;		// Для linux
+    {$endif}
     FGrid: TDropDownList;
     FStopTab: Boolean;
     FUpdateTree: Boolean;
@@ -635,7 +652,6 @@ type
     procedure SetVisible(Value: Boolean); override;
     procedure SetEnabled(Value: Boolean); override;
     procedure SetReadOnly(Value: Boolean); override;
-    //procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyUp(var Key: Word; Shift: TShiftState); override;
     procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
@@ -660,6 +676,7 @@ type
     function GetButtonWidths: Integer;
     procedure ApplyChanges;
     procedure ResetListSource;
+    procedure ShowList(FirstChar: TUtf8Char);
     property KeyValue: Variant read GetKeyValue write SetKeyValue;
     property OnCtrlClick: TNotifyEvent read FOnCtrlClick write FOnCtrlClick;
     property Button: TSpeedButton read FButton;
@@ -670,6 +687,7 @@ type
     property DroppedDown: Boolean read GetDroppedDown;
     property DropDownList: TDropDownList read GetGrid;
     property Changing: Boolean read FChanging write FChanging;
+    property AsCellEditor: Boolean read FAsCellEditor write FAsCellEditor;
     //property Grid: TDropDownList read FGrid;
 
     //property ItemIndex: Integer read FItemIndex write FItemIndex;
@@ -2319,13 +2337,14 @@ function TdxLCbxListForm.GetListHeight: Integer;
 var
   n: Integer;
 begin
-  //FGrid.DefaultRowHeight := FGrid.Canvas.TextHeight('Yy') + 2;
-
   n := FControl.DropDownCount + FGrid.FixedRows;
   if FGrid.RowCount < n then n := FGrid.RowCount;
   if n = FGrid.FixedRows then Inc(n);
 
   Result := n * FGrid.DefaultRowHeight + 2;
+  {$ifdef linux}
+  Result := Result + FSearchEdit.Height;
+  {$endif}
 end;
 
 procedure TdxLCbxListForm.FormChangeBounds(Sender: TObject);
@@ -2338,6 +2357,74 @@ begin
     FControl.CloseListForm;
   end;
 end;
+
+{$ifdef linux}
+
+procedure TdxLCbxListForm.DoNeedData;
+var
+  S: String;
+begin
+  with FControl do
+    if OnNeedData <> nil then
+    begin
+      if FFiltering then S := FSearchEdit.Text
+      else S := '';
+      SplitStr(S, ' ', FFrags);
+      FGrid.LoadingState := False;
+      FControl.OnNeedData(FControl, S);
+      Self.Height := GetListHeight;
+      if S = '' then FindItem;
+    end;
+end;
+
+procedure TdxLCbxListForm.ChangeTimerTimer(Sender: TObject);
+begin
+  FChangeTimer.Enabled := False;
+  DoNeedData;
+end;
+
+procedure TdxLCbxListForm.SearchEditChange(Sender: TObject);
+begin
+  FControl.FFiltering := True;
+  if FLastKey <> VK_SPACE then
+    DoNeedData;
+end;
+
+procedure TdxLCbxListForm.SearchEditKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  FLastKey := Key;
+  if Key = VK_DOWN then
+  begin
+    if FGrid.Row < FGrid.RowCount - 1 then FGrid.Row := FGrid.Row + 1;
+  end
+  else if Key = VK_UP then
+  begin
+    if FGrid.Row > FGrid.FixedRows then FGrid.Row := FGrid.Row - 1;
+  end
+  else if Key = VK_NEXT then
+  begin
+    if FGrid.Row + FGrid.VisibleRowCount - 1 <= FGrid.RowCount - 1 then
+      FGrid.Row := FGrid.Row + FGrid.VisibleRowCount - 1
+    else
+      FGrid.Row := FGrid.RowCount - 1;
+  end
+  else if Key = VK_PRIOR then
+  begin
+    if FGrid.Row - FGrid.VisibleRowCount + 1 > FGrid.FixedRows then
+      FGrid.Row := FGrid.Row - FGrid.VisibleRowCount + 1
+    else
+      FGrid.Row := FGrid.FixedRows;
+  end
+  else if Key = VK_RETURN then
+    AcceptSelected
+  else if Key = VK_ESCAPE then
+  begin
+    SetFocusControl('');
+    FControl.CloseListForm;
+  end;
+end;
+{$endif}
 
 procedure TdxLCbxListForm.GridDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
@@ -2392,6 +2479,26 @@ begin
   if Utf8Key >= ' ' then
 	  SetFocusControl(UTF8Key);
 end;
+
+{$ifdef linux}
+procedure TdxLCbxListForm.SearchMenuClick(Sender: TObject);
+begin
+  case TComponent(Sender).Tag of
+    0: FSearchEdit.CutToClipboard;
+    1: FSearchEdit.CopyToClipboard;
+    2: FSearchEdit.PasteFromClipboard;
+  end;
+end;
+
+procedure TdxLCbxListForm.SearchMenuPopup(Sender: TObject);
+begin
+  with TPopupMenu(Sender) do
+  begin
+    Items[0].Enabled := FSearchEdit.SelText <> '';
+    Items[1].Enabled := Items[0].Enabled;
+  end;
+end;
+{$endif}
 
 procedure TdxLCbxListForm.SetControl(AValue: TdxLookupComboBox);
 begin
@@ -2529,9 +2636,9 @@ begin
 
   if FControl.FKeepList then Exit;
 
-  if FControl.DropDownButton.MouseEntered then
+  if FControl.DropDownButton.MouseInClient then
     FControl.FDropDownBnClick:=True
-  else if not FControl.MouseEntered then
+  else if not FControl.MouseInClient then
   begin
     FControl.CloseListForm;
   end;
@@ -2543,11 +2650,35 @@ begin
   FControlForm := GetParentForm(FControl);
   if FControlForm <> nil then
     FControlForm.AddHandlerOnChangeBounds(@FormChangeBounds);
+  {$ifdef linux}
+  with FSearchEdit do
+  begin
+    Font := FGrid.Font;
+    Font.Color := clWindowText;
+    SetFocus;
+    {Text := FControl.Text;
+    SelStart := FControl.SelStart;
+    SelLength := FControl.SelLength;}
+    if FControl.FUTF8Key <> '' then
+    begin
+      Text := FControl.FUTF8Key;
+      FControl.FUTF8Key := '';
+    end;
+    OnChange := @SearchEditChange;
+  end;
+  FGrid.TabStop := False;
+  {$endif}
 end;
 
 procedure TdxLCbxListForm.DoClose(var CloseAction: TCloseAction);
 begin
   inherited DoClose(CloseAction);
+  {$ifdef linux}
+  FSearchEdit.OnChange := nil;
+  FChangeTimer.Enabled := False;
+  FSearchEdit.Text := '';
+  FControl.FFiltering := False;
+  {$endif}
   if FControlForm <> nil then
     FControlForm.RemoveHandlerOnChangeBounds(@FormChangeBounds);
 end;
@@ -2603,6 +2734,28 @@ begin
   BorderStyle:=bsNone;
   ShowInTaskBar := stNever;
   FFrags := TStringList.Create;
+  {$ifdef linux}
+  FSearchMenu := TPopupMenu.Create(Self);
+  FSearchMenu.Items.Add( CreateMenuItem(FSearchMenu, rsCut, 0, ShortCut(VK_X, [ssCtrl]), @SearchMenuClick, IMG16_CUT) );
+  FSearchMenu.Items.Add( CreateMenuItem(FSearchMenu, rsCopy, 1, ShortCut(VK_C, [ssCtrl]), @SearchMenuClick, IMG16_COPY) );
+  FSearchMenu.Items.Add( CreateMenuItem(FSearchMenu, rsPaste, 2, ShortCut(VK_V, [ssCtrl]), @SearchMenuClick, IMG16_PASTE) );
+  FSearchMenu.Images := Images16;
+  FSearchMenu.OnPopup := @SearchMenuPopup;
+  FSearchEdit := TEdit.Create(Self);
+  with FSearchEdit do
+  begin
+    Parent := Self;
+    Align := alTop;
+    AutoSelect := False;
+    TextHint := rsSearch;
+    PopupMenu := FSearchMenu;
+    OnKeyDown := @SearchEditKeyDown;
+  end;
+  FChangeTimer := TTimer.Create(Self);
+  FChangeTimer.Enabled := False;
+  FChangeTimer.Interval := 200;
+  FChangeTimer.OnTimer := @ChangeTimerTimer;
+  {$endif}
 end;
 
 destructor TdxLCbxListForm.Destroy;
@@ -4403,7 +4556,9 @@ end;
 
 procedure TdxLookupComboBox.DoDropDownButtonClick(Sender: TObject);
 begin
+  {$ifdef windows}
   if FChanging then Exit;
+  {$endif}
 
   if CanFocus then
   	SetFocus;
@@ -4461,8 +4616,12 @@ end;
 procedure TdxLookupComboBox.KeyTimerTimer(Sender: TObject);
 begin
   FKeyTimer.Enabled := False;
+  {$ifdef windows}
   if CanFocus then SetFocus;
   FKeepList := False;
+  {$else}
+  Utf8KeyPress(FUtf8Key);
+  {$endif}
 end;
 
 procedure TdxLookupComboBox.MenuClick(Sender: TObject);
@@ -4475,7 +4634,11 @@ begin
   case i of
   	0: CutToClipboard;
     1: CopyToClipboard;
-    2: PasteFromClipboard;
+    2:
+      begin
+        PasteFromClipboard;
+        {$ifdef linux}FChanging := True;{$endif}
+      end;
     4: ClearData;
   end;
 
@@ -4600,8 +4763,17 @@ begin
 	CreateListForm;
   FForm.PopupParent := TCustomForm(Self.GetTopParent);
 
+  {$ifdef windows}
   if FOnNeedData <> nil then FOnNeedData(Self, S);
   //if FGrid.RowCount = FGrid.FixedRows then Exit;
+  {$else}
+  //if Text <> '' then Text := Field.AsString;
+  FGrid.Columns.Clear;
+  FGrid.Options := FGrid.Options - [loTitles];
+  FGrid.RowCount := 0;
+  FGrid.LoadingState := True;
+  FForm.FChangeTimer.Enabled := True;
+  {$endif}
 
   FForm.Enabled := True;
   FForm.ShowForm;
@@ -4629,6 +4801,14 @@ begin
   FListSource := 0;
   FListKeyField := '';
   FListFields.Clear;
+end;
+
+procedure TdxLookupComboBox.ShowList(FirstChar: TUtf8Char);
+begin
+  {$ifdef linux}
+  FUtf8Key := FirstChar;
+  FKeyTimer.Enabled := True;
+  {$endif}
 end;
 
 procedure TdxLookupComboBox.SetButtonState;
@@ -4664,6 +4844,8 @@ begin
   {$else}
   if FSkipKillFocus then
   begin
+    if Text <> '' then
+      Text := Field.AsString;
     FSkipKillFocus := False;
     Exit;
   end;
@@ -4791,9 +4973,8 @@ procedure TdxLookupComboBox.KeyDown(var Key: Word; Shift: TShiftState);
 var
   res: Boolean;
 begin
-  {$ifdef windows}
   res := (SourceTId > 0) and (SourceFId > 0) and CheckCutPasteKeys(Self, Field, Key, Shift);
-
+  {$ifdef windows}
   if res then
   begin
     if FChanging then Exit;
@@ -4838,19 +5019,36 @@ begin
   end;
   if IsListVisible {FForm <> nil} then FForm.Enabled := not FKeyDown;
   {$else}
-  if (Key = VK_RETURN) and (Shift = [ssShift]) and not FHideButton then
+  if res then
   begin
-    Key := 0;
-    FSkipKillFocus := True;
-    FButton.Click;
-  end
-  else if Key = VK_DOWN then
-  begin
-    Key := 0;
-		FSkipKillFocus := True;
-    ShowListForm;
-  end
-  else FKeyDown := True;
+    if FHideList and (not (Key in [VK_LEFT, VK_RIGHT, VK_TAB, VK_INSERT, VK_RETURN, VK_ESCAPE])) then
+    begin
+      if (Key in [VK_C, VK_SPACE]) and (Shift = [ssCtrl]) then
+      else Key := 0
+    end
+    else if (Key = VK_RETURN) and (Shift = [ssShift]) and not FHideButton then
+    begin
+      Key := 0;
+      FSkipKillFocus := True;
+      FButton.Click;
+    end
+    else if Key = VK_DOWN then
+    begin
+      Key := 0;
+		  FSkipKillFocus := True;
+      ShowListForm;
+    end
+    else if Key = VK_RETURN then
+    begin
+      FSkipUtf8Key := True;
+      FChanging := True;        // Чтобы сработал OnKeyMath в ProcessKillFocus
+    end
+    else if (Key = VK_SPACE) and (Shift <> [ssCtrl]) then
+      Key := 0
+    else if (Key in [VK_BACK]) or (Key in [VK_A, VK_Z]) and (ssCtrl in Shift) then
+      FSkipUtf8Key := True
+    else FKeyDown := True;
+  end;
   {$endif}
   inherited KeyDown(Key, Shift);
 end;
@@ -4911,7 +5109,8 @@ begin
   if (IsListVisible{FForm <> nil}) and (FGrid.RowCount = FGrid.FixedRows) then CloseListForm;
   if {FForm <> nil} IsListVisible then FForm.Enabled := True;
   {$else}
-  if Key = VK_RETURN then ProcessKillFocus
+  if Key = VK_RETURN then
+    ProcessKillFocus
   else if FChanging then
   begin
 
@@ -4932,7 +5131,16 @@ procedure TdxLookupComboBox.UTF8KeyPress(var UTF8Key: TUTF8Char);
 begin
   inherited UTF8KeyPress(UTF8Key);
   {$ifdef linux}
-  //FFiltering := True;
+  if FSkipUtf8Key then
+  begin
+    FSkipUtf8Key := False;
+    Exit;
+  end;
+
+  FUTF8Key := UTF8Key;
+  FFiltering := True;
+  FSkipKillFocus := True;
+  ShowListForm;
   {$endif}
 end;
 
@@ -4963,30 +5171,34 @@ begin
   inherited ChangeBounds(ALeft, ATop, AWidth, AHeight, KeepBase);
 
   if (Button = nil) or (DropDownButton = nil) then Exit;
-  //Button.Width := Height;
-  Button.Height := Height;
-  if AHeight > 52 then
+
+  if not AsCellEditor then
   begin
-    Button.Images := Images48;
-    Button.ImageIndex := IMG48_FORM;
-  end
-  else if AHeight > 36 then
-  begin
-    Button.Images := Images32;
-    Button.ImageIndex := IMG32_FORM;
-  end
-  else if AHeight > 28 then
-  begin
-    Button.Images := Images24;
-    Button.ImageIndex := IMG24_FORM;
-  end
-  else
-  begin
-    Button.Images := Images16;
-    Button.ImageIndex := IMG16_FORM;
+    if AHeight > 52 then
+    begin
+      Button.Images := Images48;
+      Button.ImageIndex := IMG48_FORM;
+    end
+    else if AHeight > 36 then
+    begin
+      Button.Images := Images32;
+      Button.ImageIndex := IMG32_FORM;
+    end
+    else if AHeight > 28 then
+    begin
+      Button.Images := Images24;
+      Button.ImageIndex := IMG24_FORM;
+    end
+    else
+    begin
+      Button.Images := Images16;
+      Button.ImageIndex := IMG16_FORM;
+    end;
+    Button.Width := AHeight;
   end;
 
-	DropDownButton.Height := Height;
+  Button.Height := AHeight;
+	DropDownButton.Height := AHeight;
 end;
 
 procedure TdxLookupComboBox.DoEnter;
@@ -5106,7 +5318,9 @@ begin
   Button.PopupMenu := Pop;
   DropDownButton.PopupMenu := Pop;
   FPopup := Pop;
+  {$ifdef windows}
   if AppConfig.IsWine then
+  {$endif}
   begin
     FKeyTimer := TTimer.Create(Self);
     FKeyTimer.Enabled := False;
@@ -5182,16 +5396,53 @@ begin
   if FIsKeyDown and ((OldKey = VK_RETURN) and (Shift * [ssShift] = [])) then
   begin
     FIsKeyDown := False;
-    THackGrid(FOwnerGrid).EditorMode := False;
+    if (FOwnerGrid is TDBGrid) and (dgAlwaysShowEditor in TDBGrid(FOwnerGrid).Options) then
+    else THackGrid(FOwnerGrid).EditorMode := False;
   end;
 end;
 
 procedure TdxLookupCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+
+  function AllSelected: boolean;
+  begin
+    result := (SelLength>0) and (SelLength=UTF8Length(Text));
+  end;
+  function AtStart: Boolean;
+  begin
+    Result:= (SelStart=0);
+  end;
+  function AtEnd: Boolean;
+  begin
+    result := ((SelStart+1)>UTF8Length(Text)) or AllSelected;
+  end;
+
+var
+  Gr: THackGrid;
 begin
+  Gr := THackGrid(FOwnerGrid);
   if ((Key = VK_RETURN) and (Shift * [ssShift] = [])) then
   begin
     Key := 0;
     FIsKeyDown := True;
+  end
+  else if Key = VK_LEFT then
+  begin
+    if Gr.FastEditing and AtStart then
+      Gr.KeyDown(Key, Shift);
+  end
+  else if Key = VK_RIGHT then
+  begin
+    if Gr.FastEditing and AtEnd then
+      Gr.KeyDown(Key, Shift);
+  end
+  else if Key = VK_F2 then
+  begin
+    if AllSelected then begin
+      SelLength := 0;
+      SelStart := Utf8Length(Text);
+    end
+    else if Gr.FastEditing then
+      SelectAll;
   end;
   inherited KeyDown(Key, Shift);
 end;
@@ -5242,7 +5493,7 @@ end;
 constructor TdxLookupCellEditor.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  //BorderStyle := bsNone;
+  AsCellEditor := True;
 end;
 
 { TdxEdit }
@@ -5630,10 +5881,10 @@ begin
   Result:=inherited GetClientRect;
   // Без этих строчек при загрузке формы из базы компоненты с якорями могут
   // иметь неправильный размер.
-  {$ifdef windows}
+  //{$ifdef windows}
   Result.Height := PageControl.Height;
   Result.Width := PageControl.Width;
-  {$endif}
+  //{$endif}
 end;
 
 constructor TdxTabSheet.Create(AOwner: TComponent);
@@ -5757,10 +6008,10 @@ begin
   Result:=inherited GetClientRect;
   // Без этих строчек при загрузке формы из базы компоненты с якорями могут
   // иметь неправильный размер.
-  {$ifdef windows}
+  //{$ifdef windows}
   Result.Height :=Height;
   Result.Width := Width;
-  {$endif}
+  //{$endif}
 end;
 
 // В LCL есть недоработка. Когда устанавливаешь цвет фона формы, в группах

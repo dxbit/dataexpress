@@ -58,8 +58,8 @@ begin
     RegisterPropertyHelper(@TFontStyleR, @TFontStyleW, 'Style');
   end;
 end;
-procedure TCanvasHandleR(Self: TCanvas; var T: Longint); begin T := Self.Handle; end;
-procedure TCanvasHandleW(Self: TCanvas; T: Longint); begin Self.Handle:= T; end;
+procedure TCanvasHandleR(Self: TCanvas; var T: HDC); begin T := Self.Handle; end;
+procedure TCanvasHandleW(Self: TCanvas; T: HDC); begin Self.Handle:= T; end;
 procedure TCanvasTextStyleR(Self: TCanvas; var T: TTextStyle); begin T := Self.TextStyle; end;
 procedure TCanvasTextStyleW(Self: TCanvas; const T: TTextStyle); begin Self.TextStyle := T; end;
 

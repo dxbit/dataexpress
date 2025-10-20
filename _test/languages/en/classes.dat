@@ -379,12 +379,13 @@ Events
 	TUtf8KeyPressEvent = procedure (Sender: TObject; var UTF8Key: TUTF8Char)
 	TValidateEvent = procedure (Sender: TObject; var Ok: Boolean)
 Types
-	HACCEL = Cardianl
-	HBITMAP = Integer
-	HMENU = Cardinal
-	HPALETTE = Integer
+	HACCEL = TLCLHandle
+	HBITMAP = TLCLHandle
+	HDC = TLCLHandle
+	HMENU = TLCLHandle
+	HPALETTE = TLCLHandle
 	HResult = LongInt
-	HWND = LongInt
+	HWND = TLCLHandle
 	TAccessStatus = (asOk, asCantAppend, asCantEdit, asCantDelete, asModified, asDeleted, asLocked, asHasRef)
 	TAlign = (alNone, alTop, alBottom, alLeft, alRight, alClient)
 	TAlignment = (taLeftJustify, taRightJustify, taCenter)
@@ -462,6 +463,7 @@ Types
 	TKGridRangeSelectStyle = (rsDefault, rsMS_Excel)
 	TKGridScrollMode = (smSmooth, smCell)
 	TKGridSizingStyle = (ssLine, ssUpdate, ssXORLine)
+	TLCLHandle = Longint or Int64
 	TListBoxStyle = (lbStandard, lbOwnerDrawFixed, lbOwnerDrawVariable)
 	TImageLoadStatus = (lsLoading, lsComplete, lsFail)
 	TLocateOption = (loCaseInsensitive, loPartialKey)
@@ -931,7 +933,7 @@ TCanvas = class(TPersistent)
 	function TextWidth(Text: string): Integer
 	property Brush: TBrush [r]
 	property Font: TFont [r]
-	property Handle: Integer [rw]
+	property Handle: HDC [rw]
 	property Pen: TPen [r]  
 	property Pixels[X, Y: Integer]: TColor [rw]
 TCheckBox = class(TCustomCheckBox)
@@ -1192,6 +1194,7 @@ TCsvData = class(TObject)
 	property DefaultRowHeight: Integer [rw]
 	proeprty EditorMode: Boolean [rw]
 	property ExtendedColSizing: Boolean [rw]
+	property FastEditing: Boolean [rw]
 	property FixedColor: TColor [rw]
 	property FixedCols: Integer [rw]
 	property FixedHotColor: TColor [rw]
@@ -2264,7 +2267,7 @@ TUploadedFiles = class(TCollection)
 	property Brush: TBrush [r]
 	property Controls[Index: Integer]: TControl [r]
 	property ControlCount: Integer [r]
-	property Handle: Integer [r]
+	property Handle: HWND [r]
 	property OnEnter: TNotifyEvent [rw]
 	property OnExit: TNotifyEvent [rw]
 	property OnKeyDown: TKeyEvent [rw]

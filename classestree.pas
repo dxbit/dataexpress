@@ -928,6 +928,16 @@ begin
             end;
             Result := Result + '<li>';
           end
+          else if (S[P] = '<') and (Copy(S, P + 1, 7) = 'codedoc') then
+          begin
+            OldP := PosEx('>', S, P) + 1;
+            P := PosEx('</codedoc>', S, OldP);
+            if P = 0 then Exit;
+            Result := Result + '<code>' +
+              StringReplace(Copy(S, OldP, P - OldP), #10, '<br>', [rfReplaceAll]) +
+              '</code>';
+            Inc(P, 10);
+          end
           else if (S[P] = '<') and (Copy(S, P + 1, 4) = 'code') then
           begin
             OldP := PosEx('>', S, P) + 1;

@@ -2122,6 +2122,17 @@ var
   Grid: TDropDownList;
 begin
   Grid := DropdownList;
+  with Grid do
+  begin
+    Options := Options - [loTitles];
+    Columns.Clear;
+    with Columns.Add do
+    begin
+      SizePriority := 1;
+      Searchable := True;
+    end;
+  end;
+
   if OnlyClear then
   begin
     Grid.RowCount := 0;
@@ -2270,11 +2281,21 @@ begin
 end;  *)
 
 procedure TFilterLookupComboBox.LCbxKeyMatch(Sender: TObject);
+var
+  Fm: TdxForm;
+  ShowTree: Boolean;
+  S: String;
 begin
   if KeyValue = Null then
     Field.SetData(nil)
   else
-	  Field.Value := GetObjFieldValue(Self, KeyValue, True);
+  begin
+    Fm := FormMan.FindForm(SourceTId);
+    ShowTree := (Fm.ParentField > 0) and (GetFormParentFieldFieldId(Fm) = SourceFId);
+    S := GetObjFieldValue(Self, KeyValue, True);
+    if ShowTree then S := Abrakadabra(S, '\');
+	  Field.Value := S;
+  end;
 end;
 
 procedure TFilterLookupComboBox.LCbxSetDisplayFormat(DS: TDataSet);
@@ -2318,7 +2339,7 @@ begin
   with TStringGrid(FOwnerGrid) do
   begin
     Cells[Col, Row] := Field.AsString;
-    Objects[Col, Row] := TObject(DataSource.DataSet.Fields[0].AsInteger);
+    Objects[Col, Row] := TObject(PtrUInt(DataSource.DataSet.Fields[0].AsInteger));
   end;
 end;
 
@@ -2351,15 +2372,6 @@ begin
   DataField := 'f5l';
   HideButton := True;
   DropDownButton.Transparent:=False;
-  with DropDownList do
-  begin
-    Options := Options - [loTitles];
-    with Columns.Add do
-    begin
-      SizePriority := 1;
-      Searchable := True;
-    end;
-  end;
   OnNeedData := @LCbxNeedData;
   OnKeyMatch := @LCbxKeyMatch;
   OnSetKey := @LCbxSetKey;

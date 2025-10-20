@@ -166,6 +166,7 @@ type
   private
     FHighlightColor: TColor;
     FHighlightSearchedText: Boolean;
+    FLoadingState: Boolean;
     FSelectedHighlightColor: TColor;
     FInactiveSelectedColor: TColor;
     FOptions: TDropDownListOptions;
@@ -179,6 +180,9 @@ type
     function GetDefaultRowHeight: integer; override;
     procedure WMVScroll(var message: TLMVScroll); message LM_VSCROLL;
     function CreateColumns: TGridColumns; override;
+    {$ifdef linux}
+    procedure DrawAllRows; override;
+    {$endif}
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String); override;
     function GetTruncCellHintText(ACol, ARow: Integer): string; override;
@@ -189,6 +193,7 @@ type
     //procedure Assign(Source: TPersistent); override;
     property RecId[Index: Integer]: Integer read GetRecId write SetRecId;
     property SelColor: TColor read FSelColor write FSelColor; // Это SelectedColor
+    property LoadingState: Boolean read FLoadingState write FLoadingState;
   published
     property Columns: TDropDownListColumns read GetColumns write SetColumns;
     property Options: TDropDownListOptions read FOptions write SetOptions;
@@ -267,6 +272,7 @@ type
     procedure MenuHandler(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
   protected
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure msg_SetMask(var Msg: TGridMessage); message GM_SETMASK;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetBounds(var Msg: TGridMessage); message GM_SETBOUNDS;
@@ -513,7 +519,7 @@ type
     property TitleHeight: Integer read FTitleHeight write SetTitleHeight default -1;
     property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight;
     property Options: TDbGridOptions read GetOptions write SetOptions;
-    property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap;
+    property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap default False;
   end;
 
   { TTreeSearchForm }
@@ -932,6 +938,33 @@ begin
   Result := TDropDownListColumns.Create(Self, TDropDownListColumn);
 end;
 
+{$ifdef linux}
+procedure TDropDownList.DrawAllRows;
+var
+  TS: TTextStyle;
+  S: String;
+  R: TRect;
+begin
+  inherited DrawAllRows;
+  if RowCount <= FixedRows then
+  begin
+    TS := Default(TTextStyle);
+    //TS.Clipping := True;
+    TS.Layout := tlCenter;
+    TS.Alignment := taCenter;
+    Canvas.Font := Font;
+    Canvas.Font.Color := clSilver;
+    if FLoadingState then
+      S := rsLoading
+    else
+      S := rsNothingFound;
+    R := ClientRect;
+    R.Top := R.Bottom - DefaultRowHeight - constCellPadding;
+    Canvas.TextRect(R, 0, 0, S, TS);
+  end;
+end;
+{$endif}
+
 procedure TDropDownList.DrawCellText(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState; aText: String);
 var
@@ -1020,6 +1053,42 @@ begin
     Items[1].Enabled := SelText <> '';
     Items[2].Enabled := not ReadOnly;
   end;
+end;
+
+procedure TMaskCellEditor.KeyDown(var Key: Word; Shift: TShiftState);
+var
+  OldAllSelected: Boolean;
+  OldKey: Word;
+
+  function AllSelected: boolean;
+  begin
+    result := (SelLength>0) and (SelLength=UTF8Length(Text));
+  end;
+  function AtStart: Boolean;
+  begin
+    Result:= (SelStart=0);
+  end;
+  function AtEnd: Boolean;
+  begin
+    result := ((SelStart+1)>UTF8Length(Text)) or OldAllSelected;
+  end;
+  procedure doGridKeyDown;
+  begin
+    if FGrid<>nil then
+      FGrid.KeyDown(OldKey, shift);
+  end;
+
+begin
+  if FGrid.FastEditing then
+  begin
+    OldKey := Key;
+    OldAllSelected := AllSelected;
+    inherited KeyDown(Key, Shift);
+    if (OldKey = VK_LEFT) and AtStart then doGridKeyDown
+    else if (OldKey = VK_RIGHT) and AtEnd then doGridKeyDown
+  end
+  else
+    inherited KeyDown(Key, Shift)
 end;
 
 procedure TMaskCellEditor.msg_SetMask(var Msg: TGridMessage);
@@ -1164,8 +1233,10 @@ begin
     VK_F2:
       if AllSelected then begin
         SelLength := 0;
-        SelStart := Length(Text);
-      end;
+        SelStart := Utf8Length(Text);
+      end
+      else if GetFastEntry then
+        SelectAll;
     VK_DELETE, VK_BACK:
       CheckEditingKey;
     VK_UP, VK_DOWN:
@@ -2280,8 +2351,14 @@ begin
   // Первый нажатый символ при неактивном редакторе объекта не вызывает KeyDown
   // компонента, следовательно, не срабатывает фильтрация и
   // потеря фокуса не восстанавливает значение.
-  if Result and (Editor <> nil) and (Editor is TdxLookupCellEditor) then
+  if Result and (Editor <> nil) and (Editor is TdxLookupCellEditor) and
+    not Editor.Visible then
+    {$ifdef windows}
   	TdxLookupCellEditor(Editor).Changing:=True;
+    {$else}
+    if (Length(ch) > 1) or not (ch[1] in [#8, ' ']) then
+      TdxLookupCellEditor(Editor).ShowList(ch);
+    {$endif}
 end;
 
 procedure TMyDBGrid.DoEditorHide;
