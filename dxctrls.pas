@@ -6473,7 +6473,6 @@ end;
 
 destructor TdxForm.Destroy;
 begin
-  //FreeAndNil(FGridBmp);
   FParams.Free;
   FreeAndNil(FExpr);
   FTreeFont.Free;

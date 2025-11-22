@@ -486,7 +486,7 @@ procedure TSelectFieldForm.BuildTree;
         else Continue;
       end
       else if (C is TdxDBImage) and (not FShowImages) then Continue
-      else if (C is TdxObjectField) and (not FShowObjectFields) then Continue
+      else if (C is TdxObjectField) and (not FShowObjectFields or (Depth > 0)) then Continue
       else S := GetFieldName(C);
       if FShowParFormPrefix and (ParentNode = FParFormNode) then S := '!' + S
       else if FShowCurFormPrefix and (ParentNode = FCurFormNode) then

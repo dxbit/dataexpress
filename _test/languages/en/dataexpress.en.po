@@ -4410,6 +4410,10 @@ msgstr ""
 msgid "Select <Shift-Enter>"
 msgstr ""
 
+#: strconsts.rsobjectfieldcantusedasobjectfield
+msgid "The \"Object field\" component cannot be used as an object field."
+msgstr ""
+
 #: strconsts.rsobjectfieldnotfound
 #, object-pascal-format
 msgid "Object field not found: %s"

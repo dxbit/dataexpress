@@ -610,11 +610,11 @@ end;
 {$ifdef linux}
 procedure InitDictionary;
 var
-  LibPath, AppPath: String;
+  AppPath: String;
 begin
   AppPath := ExtractFilePath(ParamStr(0));
-  if not FileExists(AppPath + 'libPadeg.so') then Exit;
-  SetDictionary(AppPath + 'except.dic');
+  if FileExists(AppPath + 'libPadeg.so') and FileExists(AppPath + 'except.dic') then
+    SetDictionary(AppPath + 'except.dic');
 end;
 {$endif}
 

@@ -737,6 +737,8 @@ procedure TExprFm.LoadFormFields(Fm: TdxForm; IsSourceForm: Boolean);
         Continue;
       end;
       if not HasFId(C) then Continue;
+      if (C is TdxObjectField) and ((Depth > 0) or IsSourceForm) then Continue;
+
       FNm := ObjectFieldName + GetFieldName(C);
       if (Fm.PId = 0) and (ObjectFieldName = '') then FNm := '!' + FNm;
       if IsSourceForm then FHigh.AddSourceField(FNm)

@@ -2584,8 +2584,9 @@ begin
     end
     else
     begin
+      if Col.Caption = Col.FieldName then
+        Col.Caption := RD.GetFieldName(i);
       Col.FieldName := RD.GetFieldName(i);
-      //Col.Caption := Col.FieldName;
     end;
   end;
   if not RD.IsSimple then RD.Grid.Editable := False;

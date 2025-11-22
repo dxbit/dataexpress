@@ -1376,9 +1376,11 @@ begin
 
   if C is TdxObjectField then
   begin
+    if i > 0 then
+      raise ECalcError.Create(rsObjectFieldCantUsedAsObjectField, [FieldName], P);
     C := LookupObjectField(TdxObjectField(C), True);
-    if C = nil then raise ECalcError.Create(rsObjectFieldNotFound, [
-      FieldName], P);
+    if C = nil then
+      raise ECalcError.Create(rsObjectFieldNotFound, [FieldName], P);
   end;
 
   if (C = nil) and (SL.Count = 1) and (not FSkipLabels) then

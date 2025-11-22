@@ -1865,6 +1865,7 @@ resourcestring
   rsTextHint = 'Text hint';
   rsEnterTextHint = 'Enter text hint';
   rsAutoSize = 'Auto size';
+  rsObjectFieldCantUsedAsObjectField = 'The "Object field" component cannot be used as an object field.';
 
 implementation
 
