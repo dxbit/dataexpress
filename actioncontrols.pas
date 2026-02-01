@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -517,7 +517,7 @@ end;
 
 procedure TActionColor.ColorChanged(Sender: TObject);
 begin
-  if FGrid <> nil then
+  if (FGrid <> nil) and Visible then
     FGrid.EditorTextChanged(FCol, FRow, Caption);
 end;
 

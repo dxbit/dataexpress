@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -476,6 +476,7 @@ function TdxSQLParser.ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm;
 var
   i: Integer;
   Dummy: Boolean;
+  WhenItem: TSQLCaseWhenExpression;
 begin
   Result := Expr;
   DetectNull := False;
@@ -568,6 +569,18 @@ begin
   else if Expr is TSQLExtractExpression then
     with TSQLExtractExpression(Expr) do
       ProcessElement(Value, Fm, AliasName, Dummy)
+  else if Expr is TSQLCaseExpression then
+    with TSQLCaseExpression(Expr) do
+    begin
+      if Expression <> nil then ProcessSQLExpression(Expression, Fm, AliasName, Dummy);
+      for i := 0 to WhenList.Count - 1 do
+      begin
+        WhenItem := TSQLCaseWhenExpression(WhenList[i]);
+        ProcessSQLExpression(WhenItem.WhenExpression, Fm, AliasName, Dummy);
+        ProcessSQLExpression(WhenItem.ThenExpression, Fm, AliasName, Dummy);
+      end;
+      if ElseExpression <> nil then ProcessSQLExpression(ElseExpression, Fm, AliasName, Dummy);
+    end
   else if Expr is TSQLLiteralExpression then
     DetectNull := TSQLLiteralExpression(Expr).Literal is TSQLNullLiteral;
 end;

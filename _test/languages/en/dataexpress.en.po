@@ -1342,7 +1342,7 @@ msgid "Copy style"
 msgstr ""
 
 #: strconsts.rscopyrighttext
-msgid "Copyright © 2015-2025 Pavel Duborkin"
+msgid "Copyright © 2015-2026 Pavel Duborkin"
 msgstr ""
 
 #: strconsts.rscopystyle
@@ -6038,6 +6038,11 @@ msgstr ""
 msgid "Template file %s not found."
 msgstr ""
 
+#: strconsts.rstemplatenotspecified
+#, object-pascal-format
+msgid "There is no template specified in line %d."
+msgstr ""
+
 #: strconsts.rstemplates
 msgid "Templates"
 msgstr ""
@@ -6397,6 +6402,11 @@ msgstr ""
 
 #: strconsts.rsusers
 msgid "Users"
+msgstr ""
+
+#: strconsts.rsusetagsinsidegrouperror
+#, object-pascal-format
+msgid "It is not allowed to use the %s tag inside the group tag."
 msgstr ""
 
 #: strconsts.rsvalidateactionerror

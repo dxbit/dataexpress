@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -220,6 +220,7 @@ type
     function CheckDeleteComponents: Boolean;
     //procedure SaveIdObjList;
     procedure AdjustIdObjList;
+    procedure CheckLinksPastedComponents;
   protected
     procedure SurfaceSelectionChange(Sender: TObject);
     procedure SurfaceGetComponentName(Sender: TObject; aComponent: TComponent);
@@ -302,6 +303,7 @@ type
   public
     Id: Integer;
     Obj: TComponent;
+    IsQuery: Boolean;
   end;
 
   { TIdObjList }
@@ -312,6 +314,7 @@ type
   public
     procedure AddObj(Obj: TComponent);
     function FindById(Id: Integer): TIdObjItem;
+    function FindQueryById(Id: Integer): TIdObjItem;
     procedure Clear; override;
     property Objects[Index: Integer]: TIdObjItem read GetObjects; default;
   end;
@@ -330,7 +333,8 @@ uses
   designerframe, dbengine, sqlgen, formmanager, propsform,
   comctrls, LCLType, dximages, dxfiles, dbctrlsex, apputils, DXReports,
   reportmanager, dialogs, myctrls, scriptform, scriptmanager, JvDesignClip,
-  templatefieldsform, appsettings, findactionsform, findexprform;
+  templatefieldsform, appsettings, findactionsform, findexprform, pivotgrid,
+  dxcharts;
 
 { TFormDesigner }
 
@@ -718,6 +722,7 @@ begin
   Item := TIdObjItem.Create;
   Item.Id := GetId(Obj);
   Item.Obj := Obj;
+  Item.IsQuery := Obj is TdxQueryGrid;
   Add(Item);
 end;
 
@@ -730,7 +735,20 @@ begin
   for i := 0 to Count - 1 do
   begin
     Item := Objects[i];
-    if Item.Id = Id then Exit(Item);
+    if (Item.Id = Id) and not Item.IsQuery then Exit(Item);
+  end;
+end;
+
+function TIdObjList.FindQueryById(Id: Integer): TIdObjItem;
+var
+  i: Integer;
+  Item: TIdObjItem;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    Item := Objects[i];
+    if (Item.Id = Id) and Item.IsQuery then Exit(Item);
   end;
 end;
 
@@ -1389,9 +1407,14 @@ procedure TFormDesigner.SurfaceAddComponent(Sender: TObject;
         MS.Free;
         RD.Name := MakeUniqueQueryName(Form, RD.Name); //ReportMan.MakeUniqueName(RD.Name);
         RD.Id := OldId;
+
+        FIdObjList.AddObj(QG);
       end
       else
+      begin
+        QG.Id := 0;
         RD.Name := MakeUniqueQueryName(Form, rsQuery) //ReportMan.MakeUniqueName(rsQuery)
+      end;
     end;
     QG.Id:=RD.Id;
   end;
@@ -1998,6 +2021,7 @@ begin
     inherited PasteComponents;
     // Добавление в список происходит в SurfaceAddComponent
     AdjustIdObjList;
+    CheckLinksPastedComponents;
   end;
   AdjustPastedComponents;
 
@@ -2287,8 +2311,16 @@ procedure TFormDesigner.AdjustIdObjList;
     for i := IV.Count - 1 downto 0 do
     begin
       Item := FIdObjList.FindById(IV[i].DestField);
-      if Item = nil then IV.Delete(i)
-      else IV[i].DestField := GetId(Item.Obj);
+      if Item <> nil then IV[i].DestField := GetId(Item.Obj)
+      else IV.Delete(i)
+    end;
+    if C.ListSource > 0 then
+    begin
+      Item := FIdObjList.FindQueryById(C.ListSource);
+      if Item <> nil then
+        C.ListSource := GetId(Item.Obj)
+      else if FindQueryGrid(Form, C.ListSource) = nil then
+        C.ResetListSource;
     end;
   end;
 
@@ -2306,6 +2338,27 @@ procedure TFormDesigner.AdjustIdObjList;
       C.ObjId := GetId(Item.Obj);
   end;
 
+  procedure AdjustPivotGridOrChart(Item: TIdObjItem);
+  var
+    Ctrl: TControl;
+    i: Integer;
+  begin
+    for i := 0 to Length(Selected) - 1 do
+    begin
+      Ctrl := Selection[i];
+      if Ctrl is TdxPivotGrid then
+        with TdxPivotGrid(Ctrl) do
+        begin
+          if Id = Item.Id then Id := GetId(Item.Obj);
+        end
+      else if Ctrl is TdxChart then
+        with TdxChart(Ctrl) do
+        begin
+          if Query = Item.Id then Query := GetId(Item.Obj);
+        end;
+    end;
+  end;
+
 var
   i: Integer;
   Item: TIdObjItem;
@@ -2316,7 +2369,115 @@ begin
     Item := FIdObjList[i];
     C := Item.Obj;
     if C is TdxLookupComboBox then AdjustObject(TdxLookupComboBox(C))
-    else if C is TdxObjectField then AdjustObjectField(TdxObjectField(C));
+    else if C is TdxObjectField then AdjustObjectField(TdxObjectField(C))
+    else if C is TdxQueryGrid then AdjustPivotGridOrChart(Item)
+  end;
+end;
+
+// Удаляем битые ссылки в компонентах. Такое может быть, если вставлять
+// компоненты из буфера обмена после удаления каких-либо форм и полей.
+procedure TFormDesigner.CheckLinksPastedComponents;
+var
+  i, j: Integer;
+  Ctrl: TControl;
+  SrcFm: TdxForm;
+  C: TComponent;
+  RD: TReportData;
+begin
+  for i := 0 to Length(Selected) - 1 do
+  begin
+    Ctrl := Selection[i];
+    // Объект
+    if Ctrl is TdxLookupComboBox then
+      with TdxLookupComboBox(Ctrl) do
+      begin
+        // форма-источник
+        SrcFm := FormMan.FindForm(SourceTId);
+        if SrcFm <> nil then
+        begin
+          // поле списка
+          C := FindById(SrcFm, SourceFId);
+          if C <> nil then
+          begin
+            // источник - форма
+            if ListSource = 0 then
+            begin
+              for j := ListFields.Count - 1 downto 0 do
+              begin
+                C := FindById(SrcFm, ListFields[j].FieldId);
+                if C = nil then ListFields.Delete(j);
+              end;
+            end
+            // источник - запрос
+            else
+            begin
+              RD := ReportMan.FindReport(ListSource);
+              if (RD <> nil) and not RD.IsEmpty then
+              begin
+                if RD.IndexofNameDS(ListKeyField) < 0 then
+                  ListKeyField := '';
+                for j := ListFields.Count - 1 downto 0 do
+                begin
+                  if RD.IndexOfNameDS(ListFields[j].FieldName) < 0 then
+                    ListFields.Delete(j);
+                end;
+              end
+              else
+                ResetListSource
+            end;
+          end
+          else
+            SourceFId := 0;
+          // Вставить значения
+          for j := InsertedValues.Count - 1 downto 0 do
+          begin
+            C := FindById(SrcFm, InsertedValues[j].SrcField);
+            if C = nil then InsertedValues.DeleteValue(j);
+          end;
+        end
+        else
+          ResetLookupComponent(Ctrl);
+      end
+    else if Ctrl is TdxComboBox then
+      with TdxComboBox(Ctrl) do
+      begin
+        if SourceTId > 0 then
+        begin
+          SrcFm := FormMan.FindForm(SourceTId);
+          if SrcFm <> nil then
+          begin
+            C := FindById(SrcFm, SourceFId);
+            if C = nil then SourceFId := 0;
+          end
+          else
+            ResetLookupComponent(Ctrl);
+        end;
+      end
+    else if Ctrl is TdxPivotGrid then
+      with TdxPivotGrid(Ctrl) do
+      begin
+        C := FindQueryGrid(Form, Id);
+        if C = nil then Clear;
+      end
+    else if Ctrl is TdxChart then
+      with TdxChart(Ctrl) do
+      begin
+        C := FindQueryGrid(Form, Query);
+        if C = nil then Query := 0;
+      end;
+  end;
+
+  for i := 0 to Length(Selected) - 1 do
+  begin
+    Ctrl := Selection[i];
+    if Ctrl is TdxObjectField then
+      with TdxObjectField(Ctrl) do
+      begin
+        if ObjId = 0 then Continue;
+
+        if GetObjectFieldField(TdxObjectField(Ctrl)) = nil then
+          FieldId := 0;
+      end
   end;
 end;
 

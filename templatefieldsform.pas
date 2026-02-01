@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1050,7 +1050,7 @@ begin
   MenuItem3.Enabled := MenuItem2.Enabled;
   MenuItem5.Enabled := (N <> nil) and (N.Parent <> nil) and (Integer(N.Data) <> 2) and
     ((N.Count = 0) or (N.Data <> nil));
-  MenuItem5.Visible := Pg.ActivePageIndex = 0
+  //MenuItem5.Visible := Pg.ActivePageIndex = 0
 end;
 
 function TTemplateFieldsFm.GetCurrentForm: TdxForm;

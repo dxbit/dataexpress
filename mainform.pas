@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1590,9 +1590,10 @@ begin
     if Ver < 33 then DXMain.UpdateMain;
     if Ver < 34 then ImageMan.CreateTable;
     if Ver < 35 then DXMain.UpdateMain2;
+    if Ver < 36 then DBase.UpdateDatabase;
     if Ver < DX_VERSION then
     begin
-      DBase.UpdateDatabase;
+      DBase.UpdateDatabase2;
   	  DBase.UpdateVersion(DX_VERSION);
     end;
     if Ver > DX_VERSION then

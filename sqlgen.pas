@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -109,8 +109,8 @@ function SqlLCbxSelect(LCbx: TdxLookupComboBox; Fm: TdxForm; const Fragments: St
 function SqlSelectIDs(SourceTId: Integer; SId: String): String;
 
 function SQLSetFieldSize(Id, FmId, FieldSize: Integer; ClsName: String): String;
-function CreateTempTable: String;
-function DeleteTempTable: String;
+//function CreateTempTable: String;
+//function DeleteTempTable: String;
 function SQLSetCounter(Id, StartWith: Integer): String;
 //function SqlUpdateField(Fm: TdxForm; C: TComponent): String;
 function SqlInitField(Id, FmId: Integer; ClsName: String): String;
@@ -1512,30 +1512,30 @@ begin
   FNm := FieldStr(Id);
   if ClsName = 'tdxfile' then FNm := FNm + 'd';
   if FieldSize > 0 then
-    Result := Format('delete from tmp;' +
+    Result := Format('delete from dx_tmp;' +
       'commit;' +
-      'insert into tmp (id, text) select id, LEFT(%1:s, 2000) from %0:s;' +
+      'insert into dx_tmp (id, text) select id, LEFT(%1:s, 2000) from %0:s;' +
       'commit;' +
       'alter table %0:s drop %1:s;' +
       'commit;' +
       'alter table %0:s add %1:s varchar(%2:d);' +
       'commit;' +
-      'update %0:s set %1:s=(select LEFT(text, %2:d) from tmp where id=%0:s.id);' +
+      'update %0:s set %1:s=(select LEFT(text, %2:d) from dx_tmp where id=%0:s.id);' +
       'commit;', [TNm, FNm, FieldSize])
   else
-    Result := Format('delete from tmp;' +
+    Result := Format('delete from dx_tmp;' +
       'commit;' +
-      'insert into tmp (id, text) select id, %1:s from %0:s;' +
+      'insert into dx_tmp (id, text) select id, %1:s from %0:s;' +
       'commit;' +
       'alter table %0:s drop %1:s;' +
       'commit;' +
       'alter table %0:s add %1:s BLOB SUB_TYPE 1 SEGMENT SIZE 512;' +
       'commit;' +
-      'update %0:s set %1:s=(select text from tmp where id=%0:s.id);' +
+      'update %0:s set %1:s=(select text from dx_tmp where id=%0:s.id);' +
       'commit;', [TNm, FNm])
 end;
 
-function CreateTempTable: String;
+{function CreateTempTable: String;
 begin
   Result := 'create table tmp (id integer primary key not null, text varchar(2000));'
 end;
@@ -1543,7 +1543,7 @@ end;
 function DeleteTempTable: String;
 begin
   Result := 'drop table tmp;';
-end;
+end;   }
 
 function SQLSetCounter(Id, StartWith: Integer): String;
 begin

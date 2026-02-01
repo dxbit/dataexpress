@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -984,7 +984,7 @@ resourcestring
   rsAbortOperation = 'Abort operation?';
   rsDonate = 'Donate';
   //rsDXVersion = 'Version: %s';
-  rsCopyrightText = 'Copyright © 2015-2025 Pavel Duborkin';
+  rsCopyrightText = 'Copyright © 2015-2026 Pavel Duborkin';
   rsFloatFieldOutRange = 'The value [%s] of field [%s] out of range.';
   rsFloatOutRange = 'The value [%s] out of range.';
   rsTextTooLong = 'Text too long (%d > %d).';
@@ -1866,6 +1866,8 @@ resourcestring
   rsEnterTextHint = 'Enter text hint';
   rsAutoSize = 'Auto size';
   rsObjectFieldCantUsedAsObjectField = 'The "Object field" component cannot be used as an object field.';
+  rsUseTagsInsideGroupError = 'It is not allowed to use the %s tag inside the group tag.';
+  rsTemplateNotSpecified = 'There is no template specified in line %d.';
 
 implementation
 

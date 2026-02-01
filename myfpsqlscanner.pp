@@ -70,7 +70,7 @@ type
    tSQLTABLE, tsqlText, tsqlTrigger, tsqlTime, tsqlTimeStamp, tsqlType, tsqlTo, tsqlTransaction, tsqlThen,
    tsqlUNION, tsqlUPDATE, tsqlUPPER,  tsqlUNIQUE, tsqlUSER,
    tsqlValue, tsqlVALUES, tsqlVARIABLE,  tsqlVIEW, tsqlVARCHAR,TSQLVARYING,
-   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlRecursive, tsqlWhen, tsqlFIRST
+   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlRecursive, tsqlWhen, tsqlCase, tsqlFIRST
  );
    TSQLTokens = set of TSQLToken;
 
@@ -115,7 +115,7 @@ const
        'TABLE', 'TEXT', 'TRIGGER', 'TIME', 'TIMESTAMP', 'TYPE', 'TO', 'TRANSACTION', 'THEN',
        'UNION', 'UPDATE', 'UPPER', 'UNIQUE', 'USER',
        'VALUE','VALUES','VARIABLE', 'VIEW','VARCHAR','VARYING',
-       'WHERE', 'WITH', 'WHILE','WORK','RECURSIVE','WHEN','FIRST'
+       'WHERE', 'WITH', 'WHILE','WORK','RECURSIVE','WHEN','CASE','FIRST'
   );
 
 Type

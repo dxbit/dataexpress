@@ -8,7 +8,7 @@ object SqlFm: TSqlFm
   ClientHeight = 555
   ClientWidth = 967
   Position = poOwnerFormCenter
-  LCLVersion = '4.3.0.0'
+  LCLVersion = '4.5.0.0'
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
@@ -693,7 +693,7 @@ object SqlFm: TSqlFm
     Enabled = False
     CommentAttri.Foreground = 7368816
     StringAttri.Foreground = clBlue
-    SQLDialect = sqlInterbase6
+    SQLDialect = sqlFirebird40
     Left = 369
     Top = 135
   end

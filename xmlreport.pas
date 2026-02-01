@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1260,6 +1260,10 @@ var
   pD: PDataRec;
 begin
   Result := nil;
+
+  if (PParentD = FData[0]) and (MyUtf8CompareText(PParentD^.BandName, S) = 0) then
+    Exit(PParentD);
+
   if (PParentD <> nil) and (PParentD^.RD <> nil) then
     PParentD := PParentD^.Parent;
 
@@ -2206,6 +2210,8 @@ begin
           else
             AddError(rsEndWthBegin);
         end
+        else if IsGroup then
+          AddError(Format(rsUseTagsInsideGroupError, [BnKd]))
         else if BnKd = 'group' then
         begin
           if pD <> nil then
@@ -2225,7 +2231,9 @@ begin
               pG^.Value := ProcessField(pD, BnNm);
               pG^.GroupPos := n;
               pD^.Groups.Add(pG);
-            end;
+            end
+            else
+              pG^.Value := ProcessField(pD, BnNm);        // Обновляем значение, иначе могут дублироваться первая группа
             IsGroup := True;
           end;
         end

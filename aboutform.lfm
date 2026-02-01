@@ -3,22 +3,23 @@ object AboutFm: TAboutFm
   Height = 255
   Top = 332
   Width = 433
-  BorderStyle = bsDialog
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'О программе'
   ClientHeight = 255
   ClientWidth = 433
   KeyPreview = True
-  OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
+  LCLVersion = '4.5.0.0'
+  OnCreate = FormCreate
   object LicenseBn: TBitBtn
     Left = 8
     Height = 30
     Top = 216
     Width = 123
     Caption = 'Лицензия'
-    OnClick = LicenseBnClick
     TabOrder = 0
+    OnClick = LicenseBnClick
   end
   object DonateBn: TBitBtn
     Left = 136
@@ -26,8 +27,8 @@ object AboutFm: TAboutFm
     Top = 216
     Width = 177
     Caption = 'Поддержать проект'
-    OnClick = DonateBnClick
     TabOrder = 1
+    OnClick = DonateBnClick
   end
   object GroupBox1: TGroupBox
     Left = 8
@@ -185,7 +186,7 @@ object AboutFm: TAboutFm
     Width = 106
     Cancel = True
     Caption = 'Закрыть'
-    OnClick = CloseBnClick
     TabOrder = 3
+    OnClick = CloseBnClick
   end
 end

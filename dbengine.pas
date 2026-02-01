@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ uses
   Controls, LazFileUtils, dxctrls, strconsts, dxreports;
 
 const
-  DX_VERSION = 36;
+  DX_VERSION = 37;
 
 type
 
@@ -109,6 +109,7 @@ type
     //function OpenSysTable(const SQL, Table: String): TSQLQuery;
     procedure CreateDatabase;
     procedure UpdateDatabase;
+    procedure UpdateDatabase2;
     procedure Execute(const aSQL: String);
     procedure ExecuteWithoutCommit(const aSQL: String);
     function CreateQuery(const ASQL: String): TSQLQuery;
@@ -613,6 +614,7 @@ begin
       'IMG_150 BLOB SUB_TYPE 0 SEGMENT SIZE 512, ' +
       'IMG_200 BLOB SUB_TYPE 0 SEGMENT SIZE 512, LASTMODIFIED TIMESTAMP);' +
     'CREATE TABLE DX_VERSION (VERSION INTEGER);' +
+    'CREATE TABLE DX_TMP (ID INTEGER PRIMARY KEY NOT NULL, TEXT VARCHAR(2000));' +
     'COMMIT;' +
     'INSERT INTO DX_VERSION (VERSION) VALUES (' + IntToStr(DX_VERSION) + ');');
 end;
@@ -625,6 +627,11 @@ begin
     'ALTER TABLE DX_SCRIPTS ADD LASTMODIFIED TIMESTAMP;' +
     'ALTER TABLE DX_IMAGES ADD LASTMODIFIED TIMESTAMP;' +
     'ALTER TABLE DX_MAIN ADD KEY VARCHAR(100);');
+end;
+
+procedure TDBEngine.UpdateDatabase2;
+begin
+  Execute('CREATE TABLE DX_TMP (ID INTEGER PRIMARY KEY NOT NULL, TEXT VARCHAR(2000));');
 end;
 
 procedure TDBEngine.Execute(const aSQL: String);

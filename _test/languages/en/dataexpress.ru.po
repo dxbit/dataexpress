@@ -1376,8 +1376,8 @@ msgid "Copy style"
 msgstr "Копировать стиль"
 
 #: strconsts.rscopyrighttext
-msgid "Copyright © 2015-2025 Pavel Duborkin"
-msgstr "Copyright © 2015-2025 Павел Дуборкин"
+msgid "Copyright © 2015-2026 Pavel Duborkin"
+msgstr "Copyright © 2015-2026 Павел Дуборкин"
 
 #: strconsts.rscopystyle
 msgctxt "strconsts.rscopystyle"
@@ -6112,6 +6112,11 @@ msgstr "Файл шаблона"
 msgid "Template file %s not found."
 msgstr "Файл шаблона %s не найден."
 
+#: strconsts.rstemplatenotspecified
+#, object-pascal-format
+msgid "There is no template specified in line %d."
+msgstr "В строке %d не указан шаблон."
+
 #: strconsts.rstemplates
 msgid "Templates"
 msgstr "Шаблоны"
@@ -6477,6 +6482,11 @@ msgstr "Имя пользователя"
 #: strconsts.rsusers
 msgid "Users"
 msgstr "Пользователи"
+
+#: strconsts.rsusetagsinsidegrouperror
+#, object-pascal-format
+msgid "It is not allowed to use the %s tag inside the group tag."
+msgstr "Недопустимо использование тега %s внутри тега group."
 
 #: strconsts.rsvalidateactionerror
 #, object-pascal-format

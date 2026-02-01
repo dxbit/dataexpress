@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1261,7 +1261,7 @@ var
   Fm: TdxForm;
   Cmp: TComponent;
 begin
-  if (SourceName = '') and (CurFm <> nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
+  if (SourceName = '') and (CurFm <> nil) and (RD = nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
     Exit(True);
 
   Result := False;
@@ -1353,7 +1353,7 @@ var
     idx: Integer;
     EACSrc: TEAControl;
   begin
-    if (EAC.Source = '') and (CurFm <> nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
+    if (EAC.Source = '') and (CurFm <> nil) and (RD = nil) and (MyUtf8CompareText(CurFm.FormCaption, FormName) = 0) then
       Exit(True);
 
     Result := False;
@@ -2015,7 +2015,7 @@ var
   S: String;
 begin
   Result := False;
-  if (CurFm = nil) or (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) <> 0) then Exit;
+  if (CurFm = nil) or (RD <> nil) or (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) <> 0) then Exit;
   for i := 0 to FFields.Count - 1 do
   begin
     S := FFields[i];
@@ -2030,7 +2030,7 @@ end;
 function TClearFieldsAction.FieldExists(CurFm, RD: TObject; const FormName,
   FieldName: String): Boolean;
 begin
-  Result := (CurFm <> nil) and (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) = 0) and
+  Result := (RD = nil) and (CurFm <> nil) and (MyUtf8CompareText(TdxForm(CurFm).FormCaption, FormName) = 0) and
     (FFields.IndexOf(FieldName) >= 0);
 end;
 
@@ -2154,7 +2154,7 @@ end;
 function TMassCalcAction.RenameField(CurFm, RD: TObject; const aFormName,
   OldName, NewName: String): Boolean;
 begin
-  if ((MyUtf8CompareText(aFormName, FFormName) = 0) or
+  if (RD = nil) and ((MyUtf8CompareText(aFormName, FFormName) = 0) or
     (MyUtf8CompareText(aFormName, FTableName) = 0)) and
     (MyUtf8CompareText(OldName, FFieldName) = 0) then
   begin
@@ -2174,7 +2174,7 @@ end;
 function TMassCalcAction.FieldExists(CurFm, RD: TObject; const aFormName,
   aFieldName: String): Boolean;
 begin
-  Result := ((MyUtf8CompareText(aFormName, FFormName) = 0) or
+  Result := (RD = nil) and ((MyUtf8CompareText(aFormName, FFormName) = 0) or
     (MyUtf8CompareText(aFormName, FTableName) = 0)) and
     (MyUtf8CompareText(aFieldName, FFieldName) = 0);
 end;

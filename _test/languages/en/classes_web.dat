@@ -348,6 +348,7 @@ Procedures & Functions
 		procedure FreeAndNil(var Obj: TObject)
 		function GetBuildDate: TDateTime
 		function GetComponentFieldName(C: TComponent): String
+		function GetComponentId(C: TComponent): Integer
 		function GetFormatSettings: TFormatSettings
 		function High(Var: Ordinal): Int64
 		procedure Inc(Var: Ordinal)

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -2176,8 +2176,8 @@ begin
 end;
 
 procedure TDesignFr.ChangeFieldsSize;
-var
-  FieldSizeExists: Boolean;
+{var
+  FieldSizeExists: Boolean;}
 
   procedure _Change(ReduceFirst: Boolean);
   var
@@ -2192,11 +2192,11 @@ var
       if (DCI.Status = dstFieldSize) and ( (ReduceFirst and (DCI.FieldSize < DCI.OldSize))
         or (not ReduceFirst and (DCI.FieldSize > DCI.OldSize)) ) then
       begin
-        if not FieldSizeExists then
+        {if not FieldSizeExists then
         begin
           DBase.Execute(CreateTempTable);
           FieldSizeExists := True;
-        end;
+        end; }
         FCI := FormChanges.FindForm(DCI.FmId);
         DBase.Execute(SQLSetFieldSize(DCI.Id, DCI.FmId, DCI.FieldSize, DCI.ClsName));
         Inc(FCI.Cnt, 2);
@@ -2210,12 +2210,13 @@ var
   end;
 
 begin
-  FieldSizeExists := False;
+  //FieldSizeExists := False;
   try
     _Change(True);
     _Change(False);
   finally
-    if FieldSizeExists then DBase.Execute(DeleteTempTable);
+    DBase.Execute('delete from dx_tmp;');
+    //if FieldSizeExists then DBase.Execute(DeleteTempTable);
   end;
 end;
 

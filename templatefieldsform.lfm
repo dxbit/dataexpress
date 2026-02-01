@@ -8,12 +8,12 @@ object TemplateFieldsFm: TTemplateFieldsFm
   ClientHeight = 520
   ClientWidth = 312
   FormStyle = fsSystemStayOnTop
+  ShowInTaskBar = stAlways
+  LCLVersion = '4.5.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ShowInTaskBar = stAlways
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
@@ -73,10 +73,10 @@ object TemplateFieldsFm: TTemplateFieldsFm
     Width = 312
     ActivePage = TabSheet1
     Align = alClient
+    Options = [nboDoChangeOnSetIndex]
     TabIndex = 0
     TabOrder = 2
     OnChange = PgChange
-    Options = [nboDoChangeOnSetIndex]
     object TabSheet1: TTabSheet
       Caption = 'Формы'
       ClientHeight = 432
@@ -134,9 +134,9 @@ object TemplateFieldsFm: TTemplateFieldsFm
           Images = SrcImages
           ReadOnly = True
           TabOrder = 1
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
           OnCompare = SourcesCompare
           OnSelectionChanged = SourcesSelectionChanged
-          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
       object Splitter1: TSplitter
@@ -194,13 +194,13 @@ object TemplateFieldsFm: TTemplateFieldsFm
           ReadOnly = True
           RightClickSelect = True
           TabOrder = 1
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
           OnCompare = FieldsCompare
           OnDblClick = FieldsDblClick
           OnMouseDown = FieldsMouseDown
           OnMouseMove = FieldsMouseMove
           OnSelectionChanged = FieldsSelectionChanged
           OnUTF8KeyPress = FieldsUTF8KeyPress
-          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
         end
       end
     end
@@ -261,9 +261,9 @@ object TemplateFieldsFm: TTemplateFieldsFm
           Images = SrcImages
           ReadOnly = True
           TabOrder = 1
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
           OnCompare = SourcesCompare
           OnSelectionChanged = RpSourcesSelectionChanged
-          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
       object Splitter2: TSplitter
@@ -321,13 +321,13 @@ object TemplateFieldsFm: TTemplateFieldsFm
           ReadOnly = True
           RightClickSelect = True
           TabOrder = 1
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
           OnCompare = FieldsCompare
           OnDblClick = FieldsDblClick
           OnMouseDown = FieldsMouseDown
           OnMouseMove = FieldsMouseMove
           OnSelectionChanged = FieldsSelectionChanged
           OnUTF8KeyPress = RpFieldsUTF8KeyPress
-          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoNoDoubleClickExpand, tvoThemedDraw]
         end
       end
     end

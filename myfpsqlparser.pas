@@ -151,6 +151,7 @@ Type
     // 7bit
     function ParseWithSelectElement(AParent: TSQLElement): TSQLWithSelectElement;
     function ParseWithSelectStatement(AParent: TSQLElement): TSQLWithSelectStatement;
+    function ParseCaseWhenExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLCaseExpression;
     //
   Public
     Constructor Create(AInput: TStream);
@@ -1505,6 +1506,40 @@ begin
   until False;
 end;
 
+function TSQLParser.ParseCaseWhenExpression(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLCaseExpression;
+var
+  WhenExpr: TSQLCaseWhenExpression;
+begin
+  Result := TSQLCaseExpression(CreateElement(TSQLCaseExpression, AParent));
+  GetNextToken;
+  if CurrentToken <> tsqlWhen then
+    Result.Expression := ParseExprLevel1(Result, EO);
+  while True do
+  begin
+    Consume([tsqlWhen, tsqlElse, tsqlEnd]);
+    if PreviousToken = tsqlEnd then
+    begin
+      if Result.WhenList.Count = 0 then UnexpectedToken([tsqlEnd]);
+      Break;
+    end
+    else if PreviousToken = tsqlElse then
+    begin
+      if Result.WhenList.Count = 0 then UnexpectedToken([tsqlElse]);
+      Result.ElseExpression := ParseExprLevel1(Result, EO);
+    end
+    else
+    begin
+      if Result.ElseExpression <> nil then UnexpectedToken([PreviousToken]);
+      WhenExpr := TSQLCaseWhenExpression(CreateElement(TSQLCaseWhenExpression, AParent));
+      WhenExpr.WhenExpression := ParseExprLevel1(Result, EO);
+      Consume(tsqlThen);
+      WhenExpr.ThenExpression := ParseExprLevel1(Result, EO);
+      Result.WhenList.Add(WhenExpr);
+    end;
+  end;
+end;
+
 function TSQLParser.ParseWhenStatement(AParent: TSQLElement): TSQLWhenStatement;
 
 Var
@@ -2847,6 +2882,8 @@ begin
           TSQLFunctionCallExpression(Result).Arguments:=L;
           end;
         end;
+      tsqlCase:
+        Result := ParseCaseWhenExpression(AParent, EO);
       else
         UnexpectedToken;
       end;

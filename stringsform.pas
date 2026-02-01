@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -39,9 +39,11 @@ type
   private
     { private declarations }
     FUrl: String;
+    function Validate: Boolean;
   public
     { public declarations }
     function ShowForm(const Title, Url: String; SL: TStrings): Integer;
+    function CloseQuery: Boolean; override;
   end;
 
 var
@@ -52,7 +54,7 @@ function ShowStringsForm(const Title, Url: String; SL: TStrings): Integer;
 implementation
 
 uses
-  helpmanager;
+  apputils, helpmanager;
 
 function ShowStringsForm(const Title, Url: String; SL: TStrings): Integer;
 begin
@@ -75,6 +77,20 @@ begin
   OpenHelp(FUrl);
 end;
 
+function TStringsFm.Validate: Boolean;
+var
+  i: Integer;
+begin
+  Result := True;
+  for i := 0 to Memo1.Lines.Count - 1 do
+    if Trim(Memo1.Lines[i]) = '' then
+    begin
+      ErrMsgFmt(rsTemplateNotSpecified, [i+1]);
+      Memo1.SetFocus;
+      Exit(False);
+    end;
+end;
+
 procedure TStringsFm.FormCreate(Sender: TObject);
 begin
   ButtonPanel1.OKButton.Caption := rsOk;
@@ -95,6 +111,13 @@ begin
     SL.AddStrings(Memo1.Lines);
   end;
   Result := ModalResult;
+end;
+
+function TStringsFm.CloseQuery: Boolean;
+begin
+  Result := inherited CloseQuery;
+  if ModalResult = mrOk then
+    Result := Result and Validate;
 end;
 
 end.

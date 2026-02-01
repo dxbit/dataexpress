@@ -1893,6 +1893,41 @@ Type
     Function GetAsSQL(Options : TSQLFormatOptions; AIndent : Integer = 0): TSQLStringType; override;
   end;
 
+  // 7bit
+
+  { TSQLCaseWhenExpression }
+
+  TSQLCaseWhenExpression = class(TSQLExpression)
+  private
+    FThenExpression: TSQLExpression;
+    FWhenExpression: TSQLExpression;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property WhenExpression: TSQLExpression read FWhenExpression write FWhenExpression;
+    property ThenExpression: TSQLExpression read FThenExpression write FThenExpression;
+  end;
+
+  { TSQLCaseExpression }
+
+  TSQLCaseExpression = class(TSQLExpression)
+  private
+    FElseExpression: TSQLExpression;
+    FExpression: TSQLExpression;
+    FWhenList: TSQLElementList;
+  public
+    constructor Create(AParent : TSQLElement); override;
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property Expression: TSQLExpression read FExpression write FExpression;
+    property WhenList: TSQLElementList read FWhenList;
+    property ElseExpression: TSQLExpression read FElseExpression write FElseExpression;
+  end;
+
+  //
+
 Const
   CharTypes = [sdtChar,sdtVarChar,sdtNChar,sdtNVarChar,sdtCString];
   ExtractElementNames : Array[TSQLExtractElement] of String
@@ -5070,6 +5105,54 @@ begin
     end;
   Result:=SQLKeyWord('REVOKE ',Options)+Result;
   Result:=Result+GranteesAsSQL(Options,AIndent,True);
+end;
+
+{ TSQLCaseWhenExpression }
+
+destructor TSQLCaseWhenExpression.Destroy;
+begin
+  FreeAndNil(FWhenExpression);
+  FreeAndNil(FThenExpression);
+  inherited Destroy;
+end;
+
+function TSQLCaseWhenExpression.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyword(' WHEN ', Options) + FWhenExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyword(' THEN ', Options) + FThenExpression.GetAsSQL(Options, AIndent);
+end;
+
+{ TSQLCaseExpression }
+
+constructor TSQLCaseExpression.Create(AParent: TSQLElement);
+begin
+  inherited Create(AParent);
+  FWhenList := TSQLElementList.Create(True);
+end;
+
+destructor TSQLCaseExpression.Destroy;
+begin
+  FreeAndNil(FExpression);
+  FreeAndNil(FWhenList);
+  FreeAndNil(FElseExpression);
+  inherited Destroy;
+end;
+
+function TSQLCaseExpression.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  i: Integer;
+begin
+  Result := SQLKeyword('CASE ', Options);
+  if FExpression <> nil then
+    Result := Result + FExpression.GetAsSQL(Options, AIndent);
+  for i := 0 to FWhenList.Count - 1 do
+    Result := Result + FWhenList[i].GetAsSQL(Options, AIndent);
+  if FElseExpression <> nil then
+    Result := Result + SQLKeyword(' ELSE ', Options) +
+      FElseExpression.GetAsSQL(Options, AIndent);
+  Result := Result + SQLKeyword(' END ', Options);
 end;
 
 end.

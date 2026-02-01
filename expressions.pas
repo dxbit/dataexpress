@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -665,7 +665,7 @@ begin
     FUNC_NULL: V := Null;
     FUNC_IIF: V := IIF(Vals[0], Vals[1], Vals[2]);
     FUNC_DAYOFWEEK: V := DayOfTheWeek(Vals[0]);
-    FUNC_RECNO: V := GetRecNo(FParForm, Vals[0]);
+    FUNC_RECNO: V := GetRecNo(FForm, Vals[0]);
     FUNC_SUMIF: V := CalcAggFunc(FForm, FParForm, FDS, Vals[0], Vals[1], Vals[2], tfSum);
     FUNC_COUNTIF: V := CalcAggFunc(FForm, FParForm, FDS, Vals[0], '', Vals[1], tfCount);
     FUNC_ROUNDTO: V := MyRoundToStr(Vals[0], Vals[1]);
