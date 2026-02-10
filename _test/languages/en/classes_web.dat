@@ -485,6 +485,8 @@ TBrush = class(TPersistent)
 	property Font: TFont [rw]
 	property Height: Integer [rw]
 	property Left: Integer [rw]
+	property OnChangeBounds: TNotifyEvent [rw]
+	property OnResize: TNotifyEvent [rw]
 	property Parent: TWinControl [rw]
 	property ParentFont: Boolean [rw]
 	property TabOrder: Integer [rw]

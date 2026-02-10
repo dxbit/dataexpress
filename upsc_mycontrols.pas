@@ -151,6 +151,9 @@ begin
 
     RegisterProperty('TabOrder', 'Integer', iptRW);
     RegisterProperty('TabStop', 'Boolean', iptRW);
+
+    RegisterProperty('OnChangeBounds', 'TNotifyEvent', iptRW);
+    RegisterProperty('OnResize', 'TNotifyEvent', iptRW);
   end;
 
   with Cl.AddClassN(cl.FindClass('TControl'), 'TWinControl') do
