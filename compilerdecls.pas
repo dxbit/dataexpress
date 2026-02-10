@@ -3059,6 +3059,9 @@ begin
   Cl.AddDelphiFunction('function IIF(Cond, V1, V2: Variant): Variant');
   Cl.AddDelphiFunction('function CreateGUIDString: String');
 
+  Cl.AddDelphiFunction('function CommandExecute(const FileName, Params, WorkDir: String; out OutputString: String; out ExitStatus: Integer): Integer');
+  Cl.AddDelphiFunction('function FileExecute(const FileName, Params, WorkDir: String): Integer');
+
   with Cl.AddFunction('procedure FreeAndNil;').Decl do
     with AddParam do
     begin

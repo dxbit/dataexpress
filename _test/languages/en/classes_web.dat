@@ -292,6 +292,7 @@ Procedures & Functions
 		procedure RaiseLastException
 	File system
 		function ChangeFileExt(const FileName, Extension: string): string
+		function CommandExecute(const FileName, Params, WorkDir: String; out OutputString: String; out ExitStatus: Integer): Integer
 		function CopyFile(const SrcFilename, DestFilename: string; Flags: TCopyFileFlags): boolean
 		function CreateDir(const NewDir: String): Boolean
 		function DeleteFile(const FileName: String): Boolean
@@ -305,6 +306,7 @@ Procedures & Functions
 		function ExtractFileNameOnly(const AFilename: string): string
 		function ExtractFilePath(const FileName: string): string
 		function FileAge(const FileName: string): Int64
+		function FileExecute(const FileName, Params, WorkDir: String): Integer
 		function FileExists(const Filename: string): boolean
 		function FileGetAttr(const FileName: String): Longint
 		function FileSetAttr(const Filename: String; Attr: longint): Longint

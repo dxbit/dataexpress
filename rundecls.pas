@@ -2977,6 +2977,9 @@ begin
   Exec.RegisterDelphiFunction(@SetVar, 'SetExprVar', cdRegister);
   Exec.RegisterDelphiFunction(@GetVar, 'GetExprVar', cdRegister);
 
+  Exec.RegisterDelphiFunction(@CommandExecute, 'CommandExecute', cdRegister);
+  Exec.RegisterDelphiFunction(@FileExecute, 'FileExecute', cdRegister);
+
   // Функции с результатом Extended (для совместимости с линукс x86_64.
   Exec.RegisterFunctionName('FRAC', @RegFunctions86_64, Pointer(1), nil);
   Exec.RegisterFunctionName('POWER', @RegFunctions86_64, Pointer(2), nil);
@@ -2984,6 +2987,7 @@ begin
   Exec.RegisterFunctionName('DAVG', @RegFunctions86_64, Pointer(4), nil);
   Exec.RegisterFunctionName('DSUM', @RegFunctions86_64, Pointer(5), nil);
   Exec.RegisterFunctionName('RECT', @RegFunctions86_64, Pointer(6), nil);
+
   Exec.RegisterFunctionName('FREEANDNIL', @RegFunctions86_64, Pointer(7), nil);
 end;
 
