@@ -3061,6 +3061,7 @@ begin
 
   Cl.AddDelphiFunction('function CommandExecute(const FileName, Params, WorkDir: String; out OutputString: String; out ExitStatus: Integer): Integer');
   Cl.AddDelphiFunction('function FileExecute(const FileName, Params, WorkDir: String): Integer');
+  Cl.AddDelphiFunction('procedure Delay(Milliseconds: Cardinal)');
 
   with Cl.AddFunction('procedure FreeAndNil;').Decl do
     with AddParam do

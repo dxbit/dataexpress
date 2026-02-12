@@ -2979,6 +2979,7 @@ begin
 
   Exec.RegisterDelphiFunction(@CommandExecute, 'CommandExecute', cdRegister);
   Exec.RegisterDelphiFunction(@FileExecute, 'FileExecute', cdRegister);
+  Exec.RegisterDelphiFunction(@Sleep, 'Delay', cdRegister);
 
   // Функции с результатом Extended (для совместимости с линукс x86_64.
   Exec.RegisterFunctionName('FRAC', @RegFunctions86_64, Pointer(1), nil);

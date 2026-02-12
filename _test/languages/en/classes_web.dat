@@ -347,6 +347,7 @@ Procedures & Functions
 		function CreateGUIDString: String
 		procedure Dec(Var: Ordinal)
 		procedure Exclude(var S: Set; X: Ordinal)
+		procedure Delay(Milliseconds: Cardinal)
 		procedure FreeAndNil(var Obj: TObject)
 		function GetBuildDate: TDateTime
 		function GetComponentFieldName(C: TComponent): String
