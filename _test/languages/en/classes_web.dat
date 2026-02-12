@@ -894,6 +894,10 @@ TTemplate = class(TPersistent)
 	property TagByIndex[Index: Integer]: Variant [rw]
 	property TagCount: Integer [r]
 	property Template: String [rw]
+TTimer = class(TComponent)
+	property Enabled: Boolean [rw]
+	property Interval: Cardianl [rw]
+	property OnTimer: TNotifyEvent [rw]
 TUploadFile = class(TCollectionItem)
 	property ContentType: String [rw]
 	property Description: String [rw]

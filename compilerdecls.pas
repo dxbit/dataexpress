@@ -3277,6 +3277,12 @@ begin
     RegisterProperty('Id', 'Integer', iptR);
     RegisterProperty('FieldName', 'String', iptR);
   end;
+  with Cl.AddClassN(cl.FindClass('TComponent'), 'TTimer') do
+  begin
+    RegisterProperty('Enabled', 'Boolean', iptRW);
+    RegisterProperty('Interval', 'Integer', iptRW);
+    RegisterProperty('OnTimer', 'TNotifyEvent', iptRW);
+  end;
 end;
 
 procedure SIRegister_Session(Cl: TPSPascalCompiler);
