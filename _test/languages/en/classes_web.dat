@@ -149,6 +149,8 @@ Events
 	TWebServerRequestHandler = function (Sender: TObject; var ARequest: TFPHTTPConnectionRequest; var AResponse : TFPHTTPConnectionResponse): Boolean
 Types
 	TAccessStatus = (asOk, asCantAppend, asCantEdit, asCantDelete, asModified, asDeleted, asLocked, asHasRef)
+	TAnchorKind = (akTop, akLeft, akRight, akBottom)
+	TAnchors = set of TAnchorKind
 	TBrushStyle = (bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross)
 	TColor = Integer
 	TCopyFileFlag = (cffOverwriteFile, cffCreateDestDirectory, cffPreserveTime)

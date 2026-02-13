@@ -152,6 +152,7 @@ begin
     RegisterProperty('TabOrder', 'Integer', iptRW);
     RegisterProperty('TabStop', 'Boolean', iptRW);
 
+    RegisterProperty('Anchors', 'TAnchors', iptRW);
     RegisterProperty('OnChangeBounds', 'TNotifyEvent', iptRW);
     RegisterProperty('OnResize', 'TNotifyEvent', iptRW);
   end;
@@ -285,6 +286,8 @@ end;
 procedure SIRegister_Controls_TypesAndConstsWeb(Cl: TPSPascalCompiler);
 begin
   cl.AddTypeS('TPoint', 'record X,Y: LongInt; end;');
+  cl.addTypeS('TAnchorKind', '(akTop, akLeft, akRight, akBottom)');
+  cl.addTypeS('TAnchors','set of TAnchorKind');
 end;
 
 procedure SIRegister_Controls(Cl: TPSPascalCompiler);
