@@ -1646,12 +1646,14 @@ begin
   FBegin.OnKeyDown:=@BeginKeyDown;
   FBegin.OnKeyPress:=@EditorKeyPress;
   FBegin.OnChange:=@EditorChange;
+  FBegin.Button.PopupMenu := FPopup;
   FEnd := TFilterDate.Create(Self);
   FEnd.Parent := Self;
   FEnd.OnEditingDone:=@EditorEditingDone;
   FEnd.OnKeyDown:=@EndKeyDown;
   FEnd.OnKeyPress:=@EditorKeyPress;
   FEnd.OnChange:=@EditorChange;
+  FEnd.Button.PopupMenu := FPopup;
   ClientHeight := FEnd.Height;
 end;
 

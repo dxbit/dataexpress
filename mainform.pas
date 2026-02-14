@@ -1102,7 +1102,7 @@ begin
     Filter:=rsImportExportPrjFilter;
     DefaultExt:='dxp';
     Options:=Options + [ofPathMustExist, ofOverwritePrompt];
-    FileName := ExtractFileNameOnly(DBase.Database);
+    FileName := ExtractDBName(DBase.Database);
     if not Execute then Exit;
     FlNm := FileName;
   finally

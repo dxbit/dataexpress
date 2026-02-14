@@ -1066,6 +1066,7 @@ var
   B: TBevel;
 begin
   inherited Create(AOwner);
+  AutoSize := True;
   T := TStaticText.Create(Self);
   T.AutoSize := True;
   T.Transparent := False;
