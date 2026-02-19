@@ -1868,6 +1868,10 @@ resourcestring
   rsObjectFieldCantUsedAsObjectField = 'The "Object field" component cannot be used as an object field.';
   rsUseTagsInsideGroupError = 'It is not allowed to use the %s tag inside the group tag.';
   rsTemplateNotSpecified = 'There is no template specified in line %d.';
+  rsPanel = 'Panel';
+  rsBevelStyle = 'Bevel style';
+  rsRadius = 'Radius';
+  rsBevelColor = 'Bevel color';
 
 implementation
 

@@ -1158,6 +1158,10 @@ TdxPageControl = class(TControl)
 	property ActivePageIndex: Integer [rw]
 	property PageCount: Integer [r]
 	property Pages[Index: Integer]: TdxTabSheet [r]
+TdxPanel = class(TWinControl)
+	property BevelColor: TColor [rw]
+	property BevelRadius: Integer [rw]
+	property BevelStyle: TdxPanelBevelStyle [rw]
 TdxPivotGrid = class(TControl)
 TdxQueryGrid = class(TControl)
 	function BOF: Boolean

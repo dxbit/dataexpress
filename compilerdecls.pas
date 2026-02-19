@@ -88,6 +88,7 @@ procedure SIRegister_TreeView(Cl: TPSPascalCompiler);
 procedure SIRegister_TrayIcon(Cl: TPSPascalCompiler);
 procedure SIRegister_CSVData(Cl: TPSPascalCompiler);
 procedure SIRegister_dxRecordId(Cl: TPSPascalCompiler);
+procedure SIRegister_dxPanel(Cl: TPSPascalCompiler);
 procedure SIRegister_CellEditors(Cl: TPSPascalCompiler);
 procedure SIRegister_Consts(Cl: TPSPascalCompiler);
 procedure SIRegister_Functions(Cl: TPSPascalCompiler; Web: Boolean);
@@ -2776,6 +2777,18 @@ begin
   end;
 end;
 
+procedure SIRegister_dxPanel(Cl: TPSPascalCompiler);
+begin
+  Cl.AddTypeS('TdxPanelBevelStyle', '(pbsNone, pbsDefault, pbsSolid, pbsDashed, pbsDotted)');
+  with Cl.AddClassN(Cl.FindClass('TCustomPanel'), 'TdxPanel') do
+  begin
+    RegisterProperty('BevelStyle', 'TdxPanelBevelStyle', iptRW);
+    RegisterProperty('BevelRadius', 'Integer', iptRW);
+    RegisterProperty('BevelWidth', 'Integer', iptrw);
+    RegisterProperty('BevelColor', 'TColor', iptRW);
+  end;
+end;
+
 procedure SIRegister_CellEditors(Cl: TPSPascalCompiler);
 begin
   with Cl.AddClassN(Cl.FindClass('TCustomEdit'), 'TStringCellEditor') do
@@ -3284,6 +3297,14 @@ begin
     RegisterProperty('Interval', 'Integer', iptRW);
     RegisterProperty('OnTimer', 'TNotifyEvent', iptRW);
   end;
+  Cl.AddTypeS('TdxPanelBevelStyle', '(pbsNone, pbsDefault, pbsSolid, pbsDashed, pbsDotted)');
+  with Cl.AddClassN(Cl.FindClass('TWinControl'), 'TdxPanel') do
+  begin
+    RegisterProperty('BevelStyle', 'TdxPanelBevelStyle', iptRW);
+    RegisterProperty('BevelRadius', 'Integer', iptRW);
+    RegisterProperty('BevelWidth', 'Integer', iptrw);
+    RegisterProperty('BevelColor', 'TColor', iptRW);
+  end;
 end;
 
 procedure SIRegister_Session(Cl: TPSPascalCompiler);
@@ -3385,6 +3406,7 @@ begin
   SIRegister_CSVData(Cl);
 
   SIRegister_dxRecordId(Cl);
+  SIRegister_dxPanel(Cl);
   SIRegister_CellEditors(Cl);
 end;
 

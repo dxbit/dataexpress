@@ -132,11 +132,11 @@ end;   }
 
 function GetImageIdx(C: TComponent): Integer;
 const
-  Cls: array [2..25] of TClass = (TdxEdit, TdxCalcEdit, TdxDateEdit, TdxTimeEdit,
+  Cls: array [2..26] of TClass = (TdxEdit, TdxCalcEdit, TdxDateEdit, TdxTimeEdit,
     TdxMemo, TdxCheckBox, TdxComboBox, TdxLookupComboBox, TdxLabel, TdxCounter,
     TdxObjectField, TdxShape, TdxButton, TdxQueryGrid, TdxGrid, TdxDBImage,
     TdxImage, TdxTabSheet, TdxPageControl, TdxPivotGrid, TdxGroupBox, TdxFile,
-    TdxChart, TdxRecordId);
+    TdxChart, TdxRecordId, TdxPanel);
 var
   i: Integer;
 begin
@@ -253,7 +253,7 @@ begin
     'clock16', 'memo16', 'checkbox16', 'combobox16', 'object16', 'label16',
     'counter16', 'objectfield16', 'shape16', 'button16', 'query16', 'grid16',
     'dbimage16', 'image16', 'tab16', 'tabs16', 'pivottable16', 'groupbox16',
-    'file16', 'chart16', 'key16']);
+    'file16', 'chart16', 'key16', 'panel16']);
 
   with TSplitter.Create(Self) do
   begin

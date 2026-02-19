@@ -1,0 +1,155 @@
+object PanelFm: TPanelFm
+  Left = 416
+  Height = 314
+  Top = 364
+  Width = 530
+  BorderIcons = [biSystemMenu]
+  Caption = 'Панель'
+  ClientHeight = 314
+  ClientWidth = 530
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
+  OnCreate = FormCreate
+  object SampleGrp: TGroupBox
+    Left = 256
+    Height = 257
+    Top = 8
+    Width = 265
+    Caption = 'Образец'
+    TabOrder = 4
+  end
+  object Label1: TLabel
+    AnchorSideTop.Control = StyleCbx
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 20
+    Width = 71
+    Caption = 'Стиль рамки'
+  end
+  object StyleCbx: TComboBox
+    Left = 104
+    Height = 23
+    Top = 16
+    Width = 136
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 0
+    OnChange = StyleCbxChange
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = BevelWidthSpn
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 51
+    Width = 52
+    Caption = 'Толщина'
+  end
+  object BevelWidthSpn: TSpinEdit
+    AnchorSideTop.Control = StyleCbx
+    AnchorSideTop.Side = asrBottom
+    Left = 104
+    Height = 23
+    Top = 47
+    Width = 136
+    BorderSpacing.Top = 8
+    MaxValue = 1000
+    MinValue = 1
+    TabOrder = 1
+    Value = 1
+    OnChange = BevelWidthSpnChange
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = BevelClr
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 113
+    Width = 64
+    Caption = 'Цвет рамки'
+  end
+  object BevelClr: TColorSampler
+    AnchorSideTop.Control = RadiusSpn
+    AnchorSideTop.Side = asrBottom
+    Left = 104
+    Height = 23
+    Top = 109
+    Width = 88
+    BorderSpacing.Top = 8
+    ParentShowHint = False
+    ShowHint = True
+    OnChange = BevelClrChange
+  end
+  object Label5: TLabel
+    AnchorSideTop.Control = BackClr
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 144
+    Width = 58
+    Caption = 'Цвет фона'
+  end
+  object BackClr: TColorSampler
+    AnchorSideTop.Control = BevelClr
+    AnchorSideTop.Side = asrBottom
+    Left = 104
+    Height = 23
+    Top = 140
+    Width = 88
+    BorderSpacing.Top = 8
+    ParentShowHint = False
+    ShowHint = True
+    OnChange = BackClrChange
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = RadiusSpn
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 82
+    Width = 38
+    Caption = 'Радиус'
+  end
+  object RadiusSpn: TSpinEdit
+    AnchorSideTop.Control = BevelWidthSpn
+    AnchorSideTop.Side = asrBottom
+    Left = 104
+    Height = 23
+    Top = 78
+    Width = 136
+    BorderSpacing.Top = 8
+    MaxValue = 1000
+    TabOrder = 2
+    OnChange = RadiusSpnChange
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 274
+    Width = 518
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 5
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object ResetBn: TBitBtn
+    AnchorSideTop.Control = BackClr
+    AnchorSideTop.Side = asrBottom
+    Left = 104
+    Height = 30
+    Top = 187
+    Width = 88
+    BorderSpacing.Top = 24
+    Caption = 'Сброс'
+    TabOrder = 3
+    OnClick = ResetBnClick
+  end
+end

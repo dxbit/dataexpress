@@ -1470,6 +1470,38 @@ type
     property TabStop stored False;
   end;
 
+  { TdxPanel }
+
+  TdxPanelBevelStyle = (pbsNone, pbsDefault, pbsSolid, pbsDashed, pbsDotted);
+
+  TdxPanel = class(TCustomPanel)
+  private
+    FBevelRadius: Integer;
+    FBevelStyle: TdxPanelBevelStyle;
+    FHidden: Boolean;
+    FStopTab: Boolean;
+    procedure SetBevelRadius(AValue: Integer);
+    procedure SetBevelStyle(AValue: TdxPanelBevelStyle);
+  protected
+    procedure SetColor(Value: TColor); override;
+    function GetClientRect: TRect; override;
+    procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+  published
+    property StopTab: Boolean read FStopTab write FStopTab default True;
+    property Hidden: Boolean read FHidden write FHidden default False;
+    property BevelStyle: TdxPanelBevelStyle read FBevelStyle write SetBevelStyle default pbsDefault;
+    property BevelRadius: Integer read FBevelRadius write SetBevelRadius;
+    property Anchors;
+    property BevelColor;
+    property BevelWidth;
+    property Color;
+    property Font;
+    property TabOrder;
+  end;
+
 function HasFId(C: TComponent): Boolean;
 function HasProp(C: TComponent; const PropName: String): Boolean;
 function IsField(C: TComponent): Boolean;
@@ -1817,15 +1849,15 @@ end;
 
 function GetComponentType(C: TComponent): String;
 const
-  Cls: array [1..25] of String = ('TdxLabel', 'TdxEdit', 'TdxCalcEdit',
+  Cls: array [1..26] of String = ('TdxLabel', 'TdxEdit', 'TdxCalcEdit',
     'TdxDateEdit', 'TdxMemo', 'TdxCheckBox', 'TdxComboBox', 'TdxLookupComboBox',
     'TdxGrid', 'TdxGroupBox', 'TdxPageControl', 'TdxForm', 'TdxTabSheet', 'TdxShape',
     'TdxDBImage', 'TdxImage', 'TdxFile', 'TdxQueryGrid', 'TdxObjectField',
     'TdxTimeEdit', 'TdxCounter', 'TdxButton', 'TdxPivotGrid', 'TdxChart',
-    'TdxRecordId');
+    'TdxRecordId', 'TdxPanel');
 var
   i: Integer;
-  Tps: array [1..25] of String;
+  Tps: array [1..26] of String;
 begin
   Result := '';
   Tps[1] := rsLabel; Tps[2] := rsText; Tps[3] := rsNumber;
@@ -1836,7 +1868,7 @@ begin
   Tps[16] := rsDsgnBackImage; Tps[17] := rsDsgnFile; Tps[18] := rsQuery;
   Tps[19] := rsObjField; Tps[20] := rsTime; Tps[21] := rsCounter;
   Tps[22] := rsButton; Tps[23] := rsPivotTable; Tps[24] := rsChart;
-  Tps[25] := rsRecordId;
+  Tps[25] := rsRecordId; Tps[26] := rsPanel;
   for i := Low(Cls) to High(Cls) do
     if CompareText(C.ClassName, Cls[i]) = 0 then
       Exit(Tps[i]);
@@ -1864,6 +1896,8 @@ begin
     Result := TdxButton(C).Caption
   else if C is TdxLabel then
   	Result := TdxLabel(C).Caption
+  else if C is TdxPanel then
+    Result := rsPanel
   else
     Result := '';
 
@@ -2292,6 +2326,116 @@ end;
 procedure TdxRecordId.Init;
 begin
   StopTab := False;
+end;
+
+{ TdxPanel }
+
+procedure TdxPanel.SetBevelRadius(AValue: Integer);
+begin
+  if FBevelRadius=AValue then Exit;
+  FBevelRadius:=AValue;
+  Invalidate;
+end;
+
+procedure TdxPanel.SetBevelStyle(AValue: TdxPanelBevelStyle);
+begin
+  if FBevelStyle=AValue then Exit;
+  FBevelStyle:=AValue;
+  Invalidate;
+end;
+
+procedure TdxPanel.SetColor(Value: TColor);
+begin
+  inherited SetColor(Value);
+  if Assigned(Parent) and (Value = Parent.Color) then
+  begin
+    ControlStyle := ControlStyle + [csParentBackground] - [csOpaque];
+    ParentColor := True;
+  end;
+end;
+
+function TdxPanel.GetClientRect: TRect;
+begin
+  Result:=inherited GetClientRect;
+  // Без этих строчек при загрузке формы из базы компоненты с якорями могут
+  // иметь неправильный размер.
+  Result.Height := Height;
+  Result.Width := Width;
+end;
+
+procedure TdxPanel.GetChildren(Proc: TGetChildProc; Root: TComponent);
+var
+  I: Integer;
+begin
+  if Root is TdxForm  then
+    inherited GetChildren(Proc, Root)
+  else
+    for I := 0 to ControlCount-1 do
+      if not ((Controls[i] is TSpeedButton) or (Controls[i] is TGridButtons)) then
+        Proc(Controls[i]);
+end;
+
+constructor TdxPanel.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  BevelInner := bvNone;
+  BevelOuter := bvNone;
+  ControlStyle := ControlStyle - [csSetCaption];
+  Caption := '';
+  BevelStyle := pbsDefault;
+  BevelColor := clSilver;
+  Width := ScaleToScreen(200);
+  Height := ScaleToScreen(200);
+end;
+
+procedure TdxPanel.Paint;
+var
+  R: TRect;
+  C: TCanvas;
+begin
+  if BevelStyle = pbsNone then
+  begin
+    if csDesigning in ComponentState then
+    begin
+      C := Canvas;
+      C.Pen.Color := clBlack;
+      C.Pen.Style := psDash;
+      C.Pen.Width := 1;
+      R := ClientRect;
+      C.Frame(R);
+    end;
+  end
+  else if BevelStyle = pbsDefault then
+  begin
+    R := ClientRect;
+    C := Canvas;
+    C.Pen.Color := clSilver;
+    C.Pen.Width := 1;
+    C.Pen.Style := psSolid;
+    C.Frame(R);
+  end
+  else
+  begin
+    R := ClientRect;
+    R.Inflate(-Round(BevelWidth / 2), -Round(BevelWidth / 2));
+    C := Canvas;
+    C.Pen.Color := BevelColor;
+    C.Pen.Width := BevelWidth;
+    C.Pen.Style := TPenStyle(Ord(BevelStyle) - 2);
+    if Color <> clDefault then
+    begin
+      C.Brush.Color := Color;
+      C.Brush.Style := bsSolid;
+    end
+    else
+      C.Brush.Style := bsClear;
+    if BevelRadius = 0 then
+      C.Frame(R)
+    else
+      C.RoundRect(R, BevelRadius, BevelRadius);
+  end;
+  if Assigned(OnPaint) then
+    OnPaint(Self);
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -7105,6 +7249,7 @@ initialization
   RegisterClass(TdxButton);
   RegisterClass(TdxFormTree);
   RegisterClass(TdxRecordId);
+  RegisterClass(TdxPanel);
 
 end.
 

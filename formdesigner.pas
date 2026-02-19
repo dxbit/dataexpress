@@ -1486,7 +1486,7 @@ begin
   end
   else if aComponent is TTabSheet then
     DeleteComponents
-  else if (aComponent is TdxGroupBox) or (aComponent is TdxPageControl) then
+  else if (aComponent is TdxGroupBox) or (aComponent is TdxPageControl) or (aComponent is TdxPanel) then
     ChangeOwner(TWinControl(aComponent))
   else if (aComponent is TdxLabel) and (Trim(TdxLabel(aComponent).Expression) <> '') then
   begin
@@ -1580,7 +1580,7 @@ procedure TFormDesigner.SurfaceDeleteComponent(Sender: TObject;
     for i := 0 to Cont.ControlCount - 1 do
     begin
       C := Cont.Controls[i];
-      if (C is TdxGroupBox) or (C is TdxPageControl) or (C is TTabSheet) then
+      if (C is TdxGroupBox) or (C is TdxPageControl) or (C is TTabSheet) or (C is TdxPanel) then
         DeleteContainer(TWinControl(C))
       else if C is TdxGrid then
         DeleteGrid(C)
@@ -1601,7 +1601,7 @@ begin
   else if HasFId(aComponent) then
     DeleteGridColumn(aComponent)
   else if (aComponent is TdxGroupBox) or (aComponent is TTabSheet) or
-    (aComponent is TdxPageControl) then DeleteContainer(TWinControl(aComponent))
+    (aComponent is TdxPageControl) or (aComponent is TdxPanel) then DeleteContainer(TWinControl(aComponent))
   else
   begin
     if aComponent is TdxButton then
@@ -2112,7 +2112,7 @@ begin
     C := Container
   else
     C := TWinControl(Selection[0]);
-  if (C is TdxForm) or (C is TdxGroupBox) or (C is TdxTabSheet) then
+  if (C is TdxForm) or (C is TdxGroupBox) or (C is TdxTabSheet) or (C is TdxPanel) then
   begin
     ClearSelection;
     for i := 0 to FMoves.Count - 1 do

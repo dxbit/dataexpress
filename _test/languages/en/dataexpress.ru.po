@@ -581,6 +581,14 @@ msgstr "Начало недели"
 msgid "Beginning of year"
 msgstr "Начало года"
 
+#: strconsts.rsbevelcolor
+msgid "Bevel color"
+msgstr "Цвет рамки"
+
+#: strconsts.rsbevelstyle
+msgid "Bevel style"
+msgstr "Стиль рамки"
+
 #: strconsts.rsbold
 msgid "Bold <Ctrl-B>"
 msgstr "Жирный <Ctrl-B>"
@@ -4699,6 +4707,10 @@ msgstr "Закладка"
 msgid "Pages"
 msgstr "Закладки"
 
+#: strconsts.rspanel
+msgid "Panel"
+msgstr "Панель"
+
 #: strconsts.rspangram1
 msgid "Jackdaws love my big sphinx of quartz."
 msgstr "Мюзикл-буфф \"Огнедышащий простужается ночью\" (в 12345 сценах и 67890 эпизодах)."
@@ -4999,6 +5011,10 @@ msgstr "Имя запроса не может быть таким же как и
 #, object-pascal-format
 msgid "Query not found: %s"
 msgstr "Запрос не найден: %s"
+
+#: strconsts.rsradius
+msgid "Radius"
+msgstr "Радиус"
 
 #: strconsts.rsrange
 msgid "Range"

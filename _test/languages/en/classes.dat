@@ -395,7 +395,6 @@ Types
 	TBalloonFlags = (bfNone, bfInfo, bfWarning, bfError)
 	TBevelShape = (bsBox, bsFrame, bsTopLine, bsBottomLine, bsLeftLine, bsRightLine, bsSpacer)
 	TBevelStyle = (bsLowered, bsRaised)
-	TBevelWidth = LongInt
 	TBitBtnKind = (bkCustom, bkOK, bkCancel, bkHelp, bkYes, bkNo, bkClose, bkAbort, bkRetry, bkIgnore, bkAll)
 	TBorderIcon = (biSystemMenu, biMinimize, biMaximize, biHelp)
 	TBorderIcons = set of TBorderIcon
@@ -1789,9 +1788,10 @@ TPaintBox = class(TGraphicControl)
 	property OnPaint: TNotifyEvent [rw]
 TPanel = class(TCustomPanel)
 	property Alignment: TAlignment [rw]
+	property BevelColor: TColor [rw]
 	property BevelInner: TPanelBevel [rw]
 	property BevelOuter: TPanelBevel [rw]
-	property BevelWidth: TBevelWidth [rw]
+	property BevelWidth: Integer [rw]
 TPanelBitBtn = class(TCustomBitBtn)
 	property Glyph: TBitmap [rw]
 TPen = class(TGraphicObject)
@@ -2586,6 +2586,11 @@ TdxObjectField = class(TDBEdit)
 	property Id: Integer [r]
 	property FieldId: Integer [r]  
 	property ObjId: Integer [r]
+TdxPanel = class(TCustomPanel)
+	property BevelColor: TColor [rw]
+	property BevelRadius: Integer [rw]
+	property BevelStyle: TdxPanelBevelStyle [rw]
+	property BevelWidth: Integer [rw]
 TdxPageControl = class(TPageControl)
 TdxPivotGrid = class(TKGrid)
 	property OnBuild: TNotifyEvent [rw]

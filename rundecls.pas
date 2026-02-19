@@ -92,6 +92,7 @@ procedure RIRegister_TreeView(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_TrayIcon(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_CsvData(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_dxRecordId(Cl: TPSRuntimeClassImporter);
+procedure RIRegister_dxPanel(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_CellEditors(Cl: TPSRuntimeClassImporter);
 procedure RIRegister_Functions(Exec: TPSExec);
 
@@ -2362,6 +2363,7 @@ begin
   RIRegister_Json(Cl);
   RIRegister_CsvData(Cl);
   RIRegister_dxRecordId(Cl);
+  RIRegister_dxPanel(Cl);
 
   RIRegister_CellEditors(Cl);
 end;
@@ -2730,6 +2732,17 @@ begin
       end
     else
       Result := False;
+  end;
+end;
+
+procedure TdxPanelBevelStyle_R(Self: TdxPanel; var T: TdxPanelBevelStyle); begin T := Self.BevelStyle; end;
+procedure TdxPanelBevelStyle_W(Self: TdxPanel; T: TdxPanelBevelStyle); begin Self.BevelStyle := T; end;
+
+procedure RIRegister_dxPanel(Cl: TPSRuntimeClassImporter);
+begin
+  with Cl.Add(TdxPanel) do
+  begin
+    RegisterPropertyHelper(@TdxPanelBevelStyle_R, @TdxPanelBevelStyle_W, 'BevelStyle');
   end;
 end;
 

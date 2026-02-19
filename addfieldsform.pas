@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -331,7 +331,7 @@ var
 begin
   aControl := nil; aLabel := nil;
   Parent := FormDesign.SelectedContainer;
-  if not ((Parent is TdxGroupBox) or (Parent is TdxTabSheet)) then
+  if not ((Parent is TdxGroupBox) or (Parent is TdxTabSheet) or (Parent is TdxPanel)) then
     Parent := FormDesign.Container;
   Own := FormDesign.Container;
   if FieldType = rsText then C := TdxEdit.Create(Own)

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -322,7 +322,7 @@ var
       if (C is TdxLabel) or (C is TSpeedButton) or (C is TdxShape) or (C is TJvDesignHandle) or
         (C is TGridButtons) then Continue;
       idx := _AddToList(L, C, Pfx);
-      if (C is TdxPageControl) or (C is TdxTabSheet) or (C is TdxGroupBox) then
+      if (C is TdxPageControl) or (C is TdxTabSheet) or (C is TdxGroupBox) or (C is TdxPanel) then
       begin
         LL.Clear;
         _Fill(TWinControl(C), LL, Lvl + 1);

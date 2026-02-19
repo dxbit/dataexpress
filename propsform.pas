@@ -64,7 +64,7 @@ uses
   appsettings, EditMaskForm, actionseditform, formmanager, lcbxlistsourceform,
   precisionform, scriptmanager, imageprocessprintform, thumbform,
   templatefieldsform, dxcharts, chartform, printchartform, imagesform,
-  memosourceform, imagepropsform;
+  memosourceform, imagepropsform, panelform;
 
 const
   C_FIELDNAME = 1;
@@ -143,6 +143,7 @@ const
   C_IMAGEPROPS = 74;
   C_FORMGLYPH = 75;
   C_HINTTEXT = 76;
+  C_PANEL = 77;
 
 var
   PropsFrm: TPropsForm;
@@ -463,6 +464,7 @@ begin
       ShowImagePropsForm(TdxImage(C));
     C_FORMGLYPH: FormGlyphMnu.PopupMenu(FormDesign.Form);
     C_HINTTEXT: ShowHintTextDlg(C);
+    C_PANEL: ShowPanelForm(TdxPanel(C));
   end;
   DesignFr.UpdateStatusBar;
 
@@ -553,6 +555,8 @@ begin
     SetArray(Props, [C_COMPONENTNAME, C_CHART, C_PRINTCHART])
   else if AValue is TdxRecordId then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT])
+  else if AValue is TdxPanel then
+    SetArray(Props, [C_COMPONENTNAME, C_COLOR, C_FONT, C_PANEL])
   ;
   DeleteControls;
   X := 0; Y := 0;
@@ -569,7 +573,7 @@ end;
 
 function TPropsForm.CreateButton(aKind: Integer): TSpeedButton;
 const
-  Glyphs: array [1..76] of String = ('id24', 'color24', 'font24', 'form24',
+  Glyphs: array [1..77] of String = ('id24', 'color24', 'font24', 'form24',
     'list24', 'listsource24', 'print24', 'id24', 'prec24', 'date24', 'grid24',
     'label24', 'tab_add24', 'tab_remove24', 'left24', 'right24', 'label24',
     'label24', 'shape24', 'box24', 'thumbsize24', 'open24', 'save24', 'delete24',
@@ -581,9 +585,9 @@ const
     'action24', 'image24', 'id24', 'pivottable24', 'query24', 'id24',
     'scrollbars24', 'editmask24', 'more24', 'more24', 'action24', 'more24',
     'object24', 'printimage24', 'chart24', 'print24', 'image24', 'more24',
-    'image24', 'help24');
+    'image24', 'help24', 'panel24');
 var
-  Hints: array [1..76] of String;
+  Hints: array [1..77] of String;
 begin
   Hints[1] := rsFieldName;
   Hints[2] := rsColor;
@@ -661,6 +665,7 @@ begin
   Hints[74] := rsImageProps;
   Hints[75] := rsGlyph;
   Hints[76] := rsTextHint;
+  Hints[77] := rsPanel;
 
   Result := TSpeedButton.Create(Self);
   Result.Width:=ScaleToScreen(32);

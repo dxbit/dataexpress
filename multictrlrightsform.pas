@@ -285,7 +285,7 @@ procedure TMultiCtrlRightsFm.FillGrid;
       if (C is TdxLabel) or (C is TSpeedButton) or (C is TdxShape) or (C is TJvDesignHandle) or
         (C is TGridButtons) then Continue;
       idx := _AddToList(L, C, Pfx);
-      if (C is TdxPageControl) or (C is TdxTabSheet) or (C is TdxGroupBox) then
+      if (C is TdxPageControl) or (C is TdxTabSheet) or (C is TdxGroupBox) or (C is TdxPanel) then
       begin
         LL.Clear;
         _Fill(TWinControl(C), LL, Lvl + 1);

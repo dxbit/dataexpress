@@ -173,10 +173,10 @@ object DesignFr: TDesignFr
     end
     object PagesBn: TToolButton
       Tag = 11
-      Left = 1035
+      Left = 1067
       Top = 2
       Grouped = True
-      ImageIndex = 32
+      ImageIndex = 33
       Style = tbsCheck
       OnClick = ToolButtonClick
     end
@@ -306,6 +306,15 @@ object DesignFr: TDesignFr
       Top = 2
       ImageIndex = 2
       OnClick = MainActBnClick
+    end
+    object PanelBn: TToolButton
+      Tag = 24
+      Left = 1035
+      Top = 2
+      Caption = 'PanelBn'
+      Grouped = True
+      ImageIndex = 32
+      OnClick = ToolButtonClick
     end
   end
   object StatusBar: TStatusBar

@@ -27,10 +27,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="26"/>
-      <MinorVersionNr Value="1"/>
-      <RevisionNr Value="18"/>
+      <MinorVersionNr Value="2"/>
+      <RevisionNr Value="15"/>
       <Language Value="0419"/>
-      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2026 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="26.1.7"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2026 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="26.2.15"/>
     </VersionInfo>
     <BuildModes Count="5">
       <Item1 Name="Win32" Default="True"/>
@@ -224,7 +224,7 @@
         <PackageName Value="LCL"/>
       </Item16>
     </RequiredPackages>
-    <Units Count="204">
+    <Units Count="205">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1567,6 +1567,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="StructTree"/>
       </Unit203>
+      <Unit204>
+        <Filename Value="panelform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PanelFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PanelForm"/>
+      </Unit204>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

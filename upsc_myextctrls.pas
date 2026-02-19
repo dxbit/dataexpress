@@ -140,8 +140,9 @@ begin
     RegisterProperty('Alignment', 'TAlignment', iptrw);
     RegisterProperty('BevelInner', 'TPanelBevel', iptrw);
     RegisterProperty('BevelOuter', 'TPanelBevel', iptrw);
-    RegisterProperty('BevelWidth', 'TBevelWidth', iptrw);
-    RegisterProperty('BorderWidth', 'TBorderWidth', iptrw);
+    RegisterProperty('BevelWidth', 'LongInt', iptrw);
+    //RegisterProperty('BorderWidth', 'TBorderWidth', iptrw);
+    RegisterProperty('BevelColor', 'TColor', iptRW);
     //RegisterProperty('ParentColor', 'Boolean', iptrw);
     //RegisterProperty('ParentFont', 'Boolean', iptrw);
     //RegisterProperty('OnDblClick', 'TNotifyEvent', iptrw);
@@ -252,8 +253,8 @@ begin
   cl.AddTypeS('TBevelStyle', '(bsLowered, bsRaised)');
   cl.AddTypeS('TBevelShape', '(bsBox, bsFrame, bsTopLine, bsBottomLine, bsLeftLine, bsRightLine,bsSpacer)');
   cl.AddTypeS('TPanelBevel', '(bvNone, bvLowered, bvRaised,bvSpace)');
-  cl.AddTypeS('TBevelWidth', 'LongInt');
-  cl.AddTypeS('TBorderWidth', 'LongInt');
+  //cl.AddTypeS('TBevelWidth', 'LongInt');
+  //cl.AddTypeS('TBorderWidth', 'LongInt');
   cl.AddTypeS('TSectionEvent', 'procedure(Sender: TObject; ASection, AWidth: Integer)');
 end;
 

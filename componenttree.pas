@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -87,7 +87,8 @@ begin
   else if C is TdxGroupBox then n := 21
   else if C is TdxFile then n := 22
   else if C is TdxChart then n := 23
-  else if C is TdxRecordId then n := 24;
+  else if C is TdxRecordId then n := 24
+  else if C is TdxPanel then n := 25;
   Result := n;
 end;
 
@@ -241,7 +242,7 @@ begin
   SetupImageList(Tree.Images, ['form16', 'text16', 'calc16', 'date16', 'clock16', 'memo16',
     'checkbox16', 'combobox16', 'object16', 'label16', 'counter16', 'objectfield16',
     'shape16', 'button16', 'query16', 'grid16', 'dbimage16', 'image16', 'tab16',
-    'tabs16', 'pivottable16', 'groupbox16', 'file16', 'chart16', 'key16']);
+    'tabs16', 'pivottable16', 'groupbox16', 'file16', 'chart16', 'key16', 'panel16']);
 end;
 
 procedure TComponentTree.UpdateTree;

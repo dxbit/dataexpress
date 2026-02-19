@@ -553,6 +553,14 @@ msgstr ""
 msgid "Beginning of year"
 msgstr ""
 
+#: strconsts.rsbevelcolor
+msgid "Bevel color"
+msgstr ""
+
+#: strconsts.rsbevelstyle
+msgid "Bevel style"
+msgstr ""
+
 #: strconsts.rsbold
 msgid "Bold <Ctrl-B>"
 msgstr ""
@@ -4636,6 +4644,10 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
+#: strconsts.rspanel
+msgid "Panel"
+msgstr ""
+
 #: strconsts.rspangram1
 msgid "Jackdaws love my big sphinx of quartz."
 msgstr ""
@@ -4933,6 +4945,10 @@ msgstr ""
 #: strconsts.rsquerynotfound
 #, object-pascal-format
 msgid "Query not found: %s"
+msgstr ""
+
+#: strconsts.rsradius
+msgid "Radius"
 msgstr ""
 
 #: strconsts.rsrange

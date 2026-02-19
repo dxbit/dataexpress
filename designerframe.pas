@@ -93,6 +93,7 @@ type
     ShapeBn: TToolButton;
     SaveBn: TToolButton;
     AddFieldsBn: TToolButton;
+    PanelBn: TToolButton;
     ToolButton17: TToolButton;
     AddFmBn: TToolButton;
     DelFmBn: TToolButton;
@@ -336,7 +337,7 @@ end;
 function IsBackColorChangeable(C: TComponent): Boolean;
 const
   Cls = ' tdxcheckbox tdximage tdxdbimage tdxshape tdxgrid tdxquerygrid tdxpivotgrid' +
-        ' tdxpagecontrol tdxtabsheet tdxbutton tdxgroupbox ';
+        ' tdxpagecontrol tdxtabsheet tdxbutton tdxgroupbox tdxpanel ';
 begin
   Result := Pos(' ' + LowerCase(C.ClassName) + ' ', Cls) = 0;
 end;
@@ -869,11 +870,11 @@ end;
 
 procedure TDesignFr.ToolButtonClick(Sender: TObject);
 const
-  Comps: array [0..23] of String = ('', 'TdxLabel', 'TdxEdit', 'TdxCalcEdit',
+  Comps: array [0..24] of String = ('', 'TdxLabel', 'TdxEdit', 'TdxCalcEdit',
     'TdxDateEdit', 'TdxMemo', 'TdxCheckBox', 'TdxComboBox', 'TdxLookupComboBox',
     'TdxGrid', 'TdxGroupBox', 'TdxPageControl', 'TdxShape', 'TdxDBImage',
     'TdxImage', 'TdxFile', 'TdxQueryGrid', 'TdxObjectField', 'TdxTimeEdit',
-    'TdxCounter', 'TdxButton', 'TdxPivotGrid', 'TdxChart', 'TdxRecordId');
+    'TdxCounter', 'TdxButton', 'TdxPivotGrid', 'TdxChart', 'TdxRecordId', 'TdxPanel');
 begin
   FormDesign.ControlClass := Comps[ TComponent(Sender).Tag ];
   HidePropsForm;
@@ -2388,6 +2389,7 @@ begin
   MainActBn.Hint := rsStartupActions;
   ChartBn.Hint := rsChart;
   KeyBn.Hint := rsRecordId;
+  PanelBn.Hint := rsPanel;
 
   MenuItem3.Caption := rsMoveComponents;
   MenuItem4.Caption := rsCopy;
@@ -2469,7 +2471,7 @@ begin
     'text24', 'calc24', 'date24', 'clock24', 'memo24', 'checkbox24', 'combobox24',
     'object24', 'objectfield24', 'dbimage24', 'file24', 'key24', 'counter24',
     'grid24', 'query24', 'pivottable24', 'chart24', 'image24', 'shape24',
-    'button24', 'groupbox24', 'tabs24']);
+    'button24', 'groupbox24', 'panel24', 'tabs24']);
   SetupImageList(MenuImages, ['align_bottom16', 'align_vcenter16', 'align_left16',
     'align_hcenter16', 'align_right16', 'align_top16', 'copy16', 'toback16',
     'tofront16', 'paste16', 'delete16', 'anchors16', 'editbn16']);

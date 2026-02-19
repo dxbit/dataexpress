@@ -110,7 +110,8 @@ begin
   else if C is TdxGroupBox then n := 17
   else if C is TdxFile then n := 18
   else if C is TdxForm then n := 0
-  else if C is TdxRecordId then n := 19;
+  else if C is TdxRecordId then n := 19
+  else if C is TdxPanel then n := 20;
   Result := n;
 end;
 
@@ -143,7 +144,7 @@ begin
   SetupImageList(TreeImages, ['form16', 'text16', 'calc16', 'date16', 'clock16',
     'memo16', 'checkbox16', 'combobox16', 'object16', 'counter16', 'objectfield16',
     'button16', 'query16', 'grid16', 'tab16', 'tabs16', 'pivottable16',
-    'groupbox16', 'file16', 'key16']);
+    'groupbox16', 'file16', 'key16', 'panel16']);
   SetupImageList(BnImages, ['up16', 'down16', 'autotaborder16', 'uncheck16']);
 end;
 
@@ -254,7 +255,7 @@ begin
   N.ImageIndex := GetImageIdx(Ctrl);
   N.SelectedIndex := N.ImageIndex;
 
-  if (Ctrl = FFm) or (Ctrl is TdxGroupBox) or (Ctrl is TdxTabSheet) then N.StateIndex := -1
+  if (Ctrl = FFm) or (Ctrl is TdxGroupBox) or (Ctrl is TdxTabSheet) or (Ctrl is TdxPanel) then N.StateIndex := -1
   else Tree.SetChecked(N, GetStopTab(Ctrl){Ctrl.TabStop});
   for i := 0 to Ctrl.ControlCount - 1 do
   begin
