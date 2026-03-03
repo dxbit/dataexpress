@@ -529,7 +529,7 @@ begin
     	[mbYes, mbNo, mbCancel], 0) of
     	mrYes:
         begin
-          DesignFr.UpdateAnchoredComponents(DesignFr.CurForm);
+          //DesignFr.UpdateAnchoredComponents(DesignFr.CurForm);
           CanClose := DesignFr.Save(True);
         end;
       mrCancel: CanClose := False;
@@ -1591,9 +1591,11 @@ begin
     if Ver < 34 then ImageMan.CreateTable;
     if Ver < 35 then DXMain.UpdateMain2;
     if Ver < 36 then DBase.UpdateDatabase;
+    if Ver < 37 then DBase.UpdateDatabase2;
+	  //DBase.UpdateVersion(DX_VERSION);
     if Ver < DX_VERSION then
     begin
-      DBase.UpdateDatabase2;
+      DBase.UpdateDatabase3;
   	  DBase.UpdateVersion(DX_VERSION);
     end;
     if Ver > DX_VERSION then

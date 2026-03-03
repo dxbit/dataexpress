@@ -465,6 +465,10 @@ msgctxt "strconsts.rsapptype"
 msgid "Type"
 msgstr ""
 
+#: strconsts.rsapptypenotselected
+msgid "You have not selected where the layout will be used."
+msgstr ""
+
 #: strconsts.rsarea
 msgid "Area"
 msgstr ""
@@ -583,6 +587,14 @@ msgstr ""
 
 #: strconsts.rsbottomside
 msgid "Bottom side"
+msgstr ""
+
+#: strconsts.rsbreak
+msgid "Break"
+msgstr ""
+
+#: strconsts.rsbreakingpoint
+msgid "Breaking point"
 msgstr ""
 
 #: strconsts.rsbreakpoints
@@ -1766,6 +1778,10 @@ msgstr ""
 msgid "Designer"
 msgstr ""
 
+#: strconsts.rsdesktop
+msgid "Desktop"
+msgstr ""
+
 #: strconsts.rsdesktopdirnotfound
 msgid "The desktop directory could not be found."
 msgstr ""
@@ -1980,6 +1996,10 @@ msgstr ""
 msgid "%s (Editing)"
 msgstr ""
 
+#: strconsts.rseditlayout
+msgid "Edit layout"
+msgstr ""
+
 #: strconsts.rseditmask
 msgid "Edit mask"
 msgstr ""
@@ -2113,6 +2133,10 @@ msgstr ""
 
 #: strconsts.rsenterimagename
 msgid "Enter image name"
+msgstr ""
+
+#: strconsts.rsenterlayoutname
+msgid "Enter layout name"
 msgstr ""
 
 #: strconsts.rsenterminmax
@@ -2777,6 +2801,14 @@ msgstr ""
 msgid "Find / Replace"
 msgstr ""
 
+#: strconsts.rsfixedh
+msgid "Fixed h"
+msgstr ""
+
+#: strconsts.rsfixedheightform
+msgid "Fixed height of the form"
+msgstr ""
+
 #: strconsts.rsflat
 msgid "Flat"
 msgstr ""
@@ -2872,6 +2904,11 @@ msgstr ""
 msgid "Form field not selected."
 msgstr ""
 
+#: strconsts.rsformlayout
+msgctxt "strconsts.rsformlayout"
+msgid "Form layout"
+msgstr ""
+
 #: strconsts.rsformlinkto
 msgid "Form link to"
 msgstr ""
@@ -2916,6 +2953,10 @@ msgstr ""
 
 #: strconsts.rsforms
 msgid "Forms"
+msgstr ""
+
+#: strconsts.rsformsize
+msgid "Form size"
 msgstr ""
 
 #: strconsts.rsformslinktoselfm
@@ -3754,12 +3795,25 @@ msgid "The last time there was a critical error. Continue database connection?"
 msgstr ""
 
 #: strconsts.rslayout
+msgctxt "strconsts.rslayout"
 msgid "Layout"
 msgstr ""
 
 #: strconsts.rslayoutbottom
 msgctxt "strconsts.rslayoutbottom"
 msgid "Bottom"
+msgstr ""
+
+#: strconsts.rslayoutexists
+msgid "Layout with same name already exists."
+msgstr ""
+
+#: strconsts.rslayoutname
+msgid "Layout name"
+msgstr ""
+
+#: strconsts.rslayoutsmanagement
+msgid "Layouts management"
 msgstr ""
 
 #: strconsts.rslayouttop
@@ -4047,10 +4101,6 @@ msgstr ""
 msgid "Mass calculation"
 msgstr ""
 
-#: strconsts.rsmaxheight
-msgid "Max height"
-msgstr ""
-
 #: strconsts.rsmaximizeeditor
 msgid "Maximize editor <F12>"
 msgstr ""
@@ -4061,10 +4111,6 @@ msgstr ""
 
 #: strconsts.rsmaxlength
 msgid "Max length"
-msgstr ""
-
-#: strconsts.rsmaxwidth
-msgid "Max width"
 msgstr ""
 
 #: strconsts.rsmemo
@@ -4107,20 +4153,12 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: strconsts.rsminheight
-msgid "Min height"
-msgstr ""
-
 #: strconsts.rsminimum
 msgid "Minimum"
 msgstr ""
 
 #: strconsts.rsminlength
 msgid "Min length"
-msgstr ""
-
-#: strconsts.rsminwidth
-msgid "Min width"
 msgstr ""
 
 #: strconsts.rsmodified
@@ -4262,6 +4300,10 @@ msgstr ""
 
 #: strconsts.rsnewlangapply
 msgid "The selected language will be applied after the application is restarted."
+msgstr ""
+
+#: strconsts.rsnewlayout
+msgid "New layout"
 msgstr ""
 
 #: strconsts.rsnewline
@@ -6188,6 +6230,22 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
+#: strconsts.rstomaxheight
+msgid "To max height"
+msgstr ""
+
+#: strconsts.rstomaxwidth
+msgid "To max width"
+msgstr ""
+
+#: strconsts.rstominheight
+msgid "To min height"
+msgstr ""
+
+#: strconsts.rstominwidth
+msgid "To min width"
+msgstr ""
+
 #: strconsts.rstools
 msgid "Tools"
 msgstr ""
@@ -6507,6 +6565,10 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+#: strconsts.rsweb
+msgid "Web"
+msgstr ""
+
 #: strconsts.rswebextensionsmodule
 msgid "Extensions web module"
 msgstr ""
@@ -6542,6 +6604,10 @@ msgstr ""
 
 #: strconsts.rswhenprinting
 msgid "When printing"
+msgstr ""
+
+#: strconsts.rswhereuse
+msgid "Where use"
 msgstr ""
 
 #: strconsts.rswholewords

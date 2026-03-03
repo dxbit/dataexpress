@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -70,10 +70,10 @@ begin
     RegisterProperty('Components', 'TComponent Integer', iptr);
     RegisterProperty('ComponentCount', 'Integer', iptr);
     RegisterProperty('Name', 'string', iptrw);
+    RegisterProperty('Tag', 'LongInt', iptrw);
     if not IsWeb then
     begin
       RegisterProperty('ComponentIndex', 'Integer', iptrw);
-      RegisterProperty('Tag', 'LongInt', iptrw);
     end;
   end;
 end;

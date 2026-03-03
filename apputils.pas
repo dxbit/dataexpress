@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ unit AppUtils;
 interface
 
 uses
-  Classes, {Windows, }SysUtils, strconsts, Menus, DBGrids, dxctrls, DXReports,
-  Lists, Db, Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons,
-  SynEdit, LclType, ImgList, formmanager, reportmanager, process, Utf8Process,
-  TypInfo, Types, IBConnection, crossapi {$ifdef linux}, BaseUnix{$endif},
+  Classes, SysUtils, strconsts, Menus, DBGrids, dxctrls, DXReports, Lists, Db,
+  Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons, SynEdit,
+  LclType, ImgList, formmanager, reportmanager, process, Utf8Process, TypInfo,
+  Types, IBConnection, crossapi, FormLayouts {$ifdef linux}, BaseUnix{$endif},
   uPSRuntime, Grids;
 
 //const
@@ -182,6 +182,7 @@ function CheckSuffixName(S: String): Boolean;
 function MakeNumberFormat(Prec: Integer; Group, PadZeros: Boolean): String;
 function GetVersionFromFile(const aDir: String): Integer;
 procedure ScaleForm(Fm: TdxForm; DesignTimePPI: Integer);
+procedure ScaleFormLayouts(pFmLayouts: PFormLayoutForm; DesignTimePPI: Integer);
 procedure ScaleForms(FMan: TFormManager; DesignTimePPI: Integer);
 procedure ScaleReport(RD: TReportData; FromPPI, ToPPI: Integer);
 procedure ScaleReports(RMan: TReportManager; FromPPI, ToPPI: Integer);
@@ -274,6 +275,8 @@ function NeedMemo(Grid: TDBGrid; Column: TColumn): Boolean;
 procedure PositionCellEditor(Grid: TCustomGrid; Editor: TWinControl; R: TRect; Layout: TTextLayout; HasBorder: Boolean);
 function Abrakadabra(const Path: String; Delim: Char): String;
 function ExtractDBName(DBPath: String): String;
+function IsFormFixedHeight(AForm: TdxForm): Boolean;
+procedure SetFormFixedHeight(AForm: TdxForm; Value: Boolean);
 
 implementation
 
@@ -284,6 +287,9 @@ uses
   BGRABitmap, LConvEncoding, dxfiles, myctrls, dateutils, scriptmanager,
   SQLDb, appimagelists, dxactions, dxmains, LazFileUtils, imagemanager,
   scriptfuncs, msgform, mainframe, designerframe, mylogger;
+
+type
+  THackScrollingWinControl = class(TScrollingWinControl);
 
 procedure TestNil(P: Pointer; const Msg: String);
 begin
@@ -2945,7 +2951,13 @@ begin
   if not C.IsParentFont then
     C.Font.Height:=ScaleV(C.Font.Height);
   if C is TMyDBGrid then ChangeScaleGrid(TMyDBGrid(C))
-  else if C is TdxPivotGrid then ChangeScalePivotGrid(TdxPivotGrid(C));
+  else if C is TdxPivotGrid then ChangeScalePivotGrid(TdxPivotGrid(C))
+  else if C is TdxPanel then
+    with TdxPanel(C) do
+    begin
+      BevelWidth := ScaleV(BevelWidth);
+      BevelRadius := ScaleV(BevelRadius);
+    end;
 end;
 
 procedure ScaleReport(RD: TReportData; FromPPI, ToPPI: Integer);
@@ -3005,12 +3017,44 @@ begin
   Fm.SetFormChanged;
 end;
 
+procedure ScaleFormLayouts(pFmLayouts: PFormLayoutForm; DesignTimePPI: Integer);
+
+  function ScaleV(X: Integer): Integer;
+  begin
+    Result := MulDiv(X, Screen.PixelsPerInch, DesignTimePPI);
+  end;
+
+var
+  i, j: Integer;
+  pLay: PFormLayout;
+  CLI: PControlLayoutItem;
+begin
+  for i := 0 to pFmLayouts^.Layouts.Count - 1 do
+  begin
+    pLay := pFmLayouts^.Layouts[i];
+    pLay^.MinWidth := ScaleV(pLay^.MinWidth);
+    pLay^.Width := ScaleV(pLay^.Width);
+    pLay^.Height := ScaleV(pLay^.Height);
+    for j := 0 to pLay^.Controls.Count - 1 do
+    begin
+      CLI := pLay^.Controls[j];
+      CLI^.Left := ScaleV(CLI^.Left);
+      CLI^.Top := ScaleV(CLI^.Top);
+      CLI^.Width := ScaleV(CLI^.Width);
+      CLI^.Height := ScaleV(CLI^.Height);
+    end;
+  end;
+end;
+
 procedure ScaleForms(FMan: TFormManager; DesignTimePPI: Integer);
 var
   i: Integer;
 begin
   for i := 0 to FMan.FormCount - 1 do
     ScaleForm(FMan.Forms[i], DesignTimePPI);
+
+  for i := 0 to FMan.Layouts.Count -1 do
+    ScaleFormLayouts(FMan.Layouts[i], DesignTimePPI);
 end;
 
 procedure ScaleReports(RMan: TReportManager; FromPPI, ToPPI: Integer);
@@ -4902,6 +4946,47 @@ begin
   DBPath := StringReplace(DBPath, '\', '/', [rfReplaceAll]);
   Result := ExtractFileNameOnly(DBPath);
   {$endif}
+end;
+
+function IsFormFixedHeight(AForm: TdxForm): Boolean;
+var
+  pFm: PFormLayoutForm;
+  pLay: PFormLayout;
+begin
+  Result := False;
+  if AForm.LayoutName <> '' then
+  begin
+    pFm := FormMan.Layouts.FindForm(AForm.Id);
+    if pFm <> nil then
+    begin
+      pLay := pFm^.Layouts.FindLayout(AForm.LayoutName);
+      if pLay <> nil then
+        Exit(pLay^.FixedHeight);
+    end;
+  end;
+end;
+
+procedure SetFormFixedHeight(AForm: TdxForm; Value: Boolean);
+begin
+  if Value then
+  begin
+    AForm.Align := alNone;
+    AForm.Anchors := [akLeft, akTop, akRight];
+    AForm.AnchorSideLeft.Control := AForm.Parent;
+    AForm.AnchorSideRight.Control := AForm.Parent;
+    AForm.AnchorSideRight.Side := asrRight;
+    if AForm.Parent is TScrollingWinControl then
+      THackScrollingWinControl(AForm.Parent).AutoScroll := True;
+  end
+  else
+  begin
+    AForm.Align := alClient;
+    AForm.Anchors := [akLeft, akTop];
+    AForm.AnchorSideLeft.Control := nil;
+    AForm.AnchorSideRight.Control := nil;
+    if AForm.Parent is TScrollingWinControl then
+      THackScrollingWinControl(AForm.Parent).AutoScroll := False;
+  end;
 end;
 
 end.

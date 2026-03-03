@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -582,7 +582,6 @@ type
     property UserImagesIndex: Integer read FUserImagesIndex write FUserImagesIndex;
   end;
 
-procedure MaskingControl(aOwner: TComponent; aControl: TControl);
 function GetBnCaption(Bn: TGridButtonType): String;
 
 implementation
@@ -590,20 +589,6 @@ implementation
 uses
   QuickSearchForm, apputils, dateutils, LazUtf8, Dialogs, imagemanager, base64,
   appimagelists, appsettings, Clipbrd, dxctrls;
-
-procedure MaskingControl(aOwner: TComponent; aControl: TControl);
-begin
-  with TShape.Create(aOwner) do
-  begin
-    Shape:=stRectangle;
-    Brush.Style := bsClear;
-    Pen.Color:=clGray;
-    Parent := aControl.Parent;
-    BoundsRect := aControl.BoundsRect;
-    Anchors := aControl.Anchors;
-  end;
-  aControl.Visible:=False;
-end;
 
 procedure DrawArrowDown(C: TCanvas; X, Y: Integer; AColor: TColor);
 begin

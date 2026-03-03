@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1782,7 +1782,7 @@ begin
 
   with PopupMenu do
 	begin
-    SingleSelect := not ((SelectedRangeCount > 1) or (Selection.Height > 0) or (Selection.Width > 0));
+    SingleSelect := not ((SelectedRangeCount > 1) or (Selection.Height > 0) or (Selection.Width > 0)) or (goRowSelect in Options);
     Items[0].Enabled := (dgcAppend in FShowCommands) and SingleSelect;
     Items[1].Enabled := (dgcEdit in FShowCommands) and (ARow >= FixedRows) and SingleSelect;
     Items[2].Enabled := (dgcDelete in FShowCommands) and (ARow >= FixedRows) and SingleSelect;

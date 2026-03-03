@@ -26,7 +26,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, ComCtrls, ExtCtrls, StdCtrls,
   Menus, Graphics, strconsts, dxctrls, formresizer, LclType,
   summarytree, componenttree, Dialogs, SQLDb, formmanager, db,
-  formstree, LMessages, formdesigner;
+  formstree, LMessages, formdesigner, formlayouts;
 
 type
   { TDesignFr }
@@ -34,6 +34,10 @@ type
   TDesignFr = class(TFrame)
     DummyX: TLabel;
     DummyY: TLabel;
+    LayoutMnu: TMenuItem;
+    LayoutManMnu: TMenuItem;
+    LayoutCreateMnu: TMenuItem;
+    Separator1: TMenuItem;
     ToolbarImages: TImageList;
     MenuImages: TImageList;
     MenuItem1: TMenuItem;
@@ -127,6 +131,8 @@ type
     procedure FormDesignKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure HideMnuClick(Sender: TObject);
+    procedure LayoutCreateMnuClick(Sender: TObject);
+    procedure LayoutManMnuClick(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem27Click(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
@@ -145,18 +151,23 @@ type
   private
     { private declarations }
     FCurForm: TdxForm;
+    FCurFormLayouts: PFormLayoutForm;
     FResizer: TFormResizer;
     FFormsTree: TFormsTree;
     FSummaryTree: TSummaryTree;
     FCompTree: TComponentTree;
     //FFormChanges: TFormChangesList;
     //FCloneFormMan: TFormManager;
+    procedure UpdateCurrentLayout;
+    procedure FillLayoutMenu;
     procedure ComponentTreeSelectComponent(Sender: TObject; Cmp: array of TObject);
     procedure FormResize(Sender: TObject);
     procedure FormsTreeCommand(Sender: TObject; Command: TFormsTreeCommand);
     procedure FormsTreeSelectionChanged(Sender: TObject);
+    procedure LayoutMnuHandler(Sender: TObject);
     procedure SummaryTreeEditComponent(Sender: TObject; Cmp: TComponent;
       EditProp: TEditProp);
+    procedure UpdateLayoutMenuState;
     procedure UpdateDesignMenuState;
     procedure UpdateToolbarState;
     procedure UpdateTreeStates;
@@ -195,6 +206,7 @@ type
     //procedure ReCreateScriptForm;
     property FormsTreeView: TFormsTree read FFormsTree;
     property CurForm: TdxForm read FCurForm;
+    property CurFormLayouts: PFormLayoutForm read FCurFormLayouts;
     property CompTree: TComponentTree read FCompTree;
     property SummaryTree: TSummaryTree read FSummaryTree;
   end;
@@ -215,7 +227,8 @@ uses
   scriptfuncs, exprfuncs, anchorsform, propdialogs, debugscriptform,
   mytypes, LConvEncoding, actionseditform, dxmains, dbctrlsex, dxfiles,
   dximages, templatefieldsform, appimagelists, dxreports, findactionsform,
-  findexprform, findscriptform, zipper, myzipper, LazFileUtils, LazUtf8;
+  findexprform, findscriptform, zipper, myzipper, LazFileUtils, LazUtf8,
+  formlayoutform, formlayoutsform;
 
 {$R *.lfm}
 
@@ -506,9 +519,11 @@ procedure TDesignFr.DeleteForm;
 var
   Fm: TdxForm;
   G: TdxGrid;
-  i: Integer;
 begin
   if (not ConfirmDelete) or (not CheckDeleteForm(FCurForm)) then Exit;
+
+  FormMan.Layouts.DeleteForm(FCurForm);
+  FCurFormLayouts := nil;
 
   if FCurForm.PId > 0 then
   begin
@@ -550,12 +565,14 @@ begin
   if FCurForm <> nil then
   begin
     UpdateAnchoredComponents(FCurForm);
+    UpdateCurrentLayout;
     FCurForm.Parent := nil;
     FCurForm.Visible:=False;
     FCurForm.PopupMenu := nil;
     FResizer.UnBind;
   end;
   FCurForm := nil;
+  FCurFormLayouts := nil;
   FCompTree.ClearAll;
   FSummaryTree.ClearAll;
   UpdateTreeStates;
@@ -665,6 +682,39 @@ begin
     SetHidden(C, V);
   end;
   FSummaryTree.UpdateTree;
+end;
+
+procedure TDesignFr.LayoutCreateMnuClick(Sender: TObject);
+var
+  LayoutName: String;
+  pFm: PFormLayoutForm;
+begin
+  UpdateCurrentLayout;
+  LayoutName := '';
+  pFm := FormMan.Layouts.FindForm(FCurForm.Id);
+  if pFm = nil then
+  begin
+    pFm := FormMan.Layouts.AddForm(FCurForm);
+    FCurFormLayouts := pFm;
+  end;
+  if ShowFormLayoutForm(FCurForm, LayoutName, pFm) = mrOk then
+  begin
+    FCurForm.LayoutName := LayoutName;
+    FillLayoutMenu;
+    UpdateStatusBar;
+  end;
+end;
+
+procedure TDesignFr.LayoutManMnuClick(Sender: TObject);
+begin
+  UpdateCurrentLayout;
+  if ShowFormLayoutsForm(FCurForm) = mrOk then
+  begin
+    if FCurFormLayouts = nil then FCurFormLayouts := FormMan.Layouts.FindForm(FCurForm.Id);
+    FillLayoutMenu;
+    FormDesign.UpdateDesigner;
+    UpdateStatusBar;
+  end;
 end;
 
 procedure TDesignFr.MenuItem1Click(Sender: TObject);
@@ -785,6 +835,7 @@ procedure TDesignFr.PopupMenu1Popup(Sender: TObject);
 begin
   HidePropsForm;
   UpdateDesignMenuState;
+  UpdateLayoutMenuState;
 end;
 
 procedure TDesignFr.ReplaceMnuClick(Sender: TObject);
@@ -823,7 +874,8 @@ begin
   SetCheckExpression(NewC, GetCheckExpression(C));
   SetRequired(NewC, GetRequired(C));
   SetFieldSize(NewC, GetFieldSize(C));
-  TWinControl(NewC).TabStop := TWinControl(C).TabStop;
+  //TWinControl(NewC).TabStop := TWinControl(C).TabStop;
+  SetStopTab(NewC, GetStopTab(C));
 
   C.Free;
   NewC.Name := CName;//DesignUniqueName(Fm, NewC.ClassName);
@@ -885,6 +937,37 @@ begin
   ShowVisibleFormsForm;
 end;
 
+procedure TDesignFr.UpdateCurrentLayout;
+begin
+  if (FCurForm <> nil) and (FCurForm.LayoutName <> '') then
+  begin
+    if FCurFormLayouts <> nil then
+      FCurFormLayouts^.Layouts.UpdateLayout(FCurForm.LayoutName, FCurForm);
+  end;
+end;
+
+procedure TDesignFr.FillLayoutMenu;
+var
+  i: Integer;
+  pLay: PFormLayout;
+begin
+  for i := LayoutMnu.Count - 3 downto 0 do
+    LayoutMnu.Items[i].Free;
+
+  if FCurForm = nil then Exit;
+
+  if FCurFormLayouts <> nil then
+  begin
+    LayoutMnu.Insert(0, CreateMenuItem(PopupMenu1, '-', 0, 0, nil) );
+    for i := FCurFormLayouts^.Layouts.Count - 1 downto 0 do
+    begin
+      pLay := FCurFormLayouts^.Layouts[i];
+      LayoutMnu.Insert(0, CreateMenuItem(PopupMenu1, pLay^.Name, i, 0, @LayoutMnuHandler) );
+    end;
+
+  end;
+end;
+
 procedure TDesignFr.SummaryTreeEditComponent(Sender: TObject; Cmp: TComponent;
   EditProp: TEditProp);
 begin
@@ -893,6 +976,18 @@ begin
     epExpression: ShowExprDlg(Cmp);
     epCheckExpression: ShowCheckExprDlg(Cmp);
     epListFilter: LookupFilterDlg(Cmp);
+  end;
+end;
+
+procedure TDesignFr.UpdateLayoutMenuState;
+var
+  MI: TMenuItem;
+  i: Integer;
+begin
+  for i := 0 to LayoutMnu.Count - 4 do
+  begin
+    MI := LayoutMnu.Items[i];
+    MI.Checked := MI.Caption = FCurForm.LayoutName;
   end;
 end;
 
@@ -942,6 +1037,14 @@ begin
 	  ShowForm(FFormsTree.SelectedForm.Id)
   else
   	ResetDesigner;
+end;
+
+procedure TDesignFr.LayoutMnuHandler(Sender: TObject);
+begin
+  UpdateCurrentLayout;
+  FCurForm.LayoutName := TMenuItem(Sender).Caption;
+  FormDesign.UpdateDesigner;
+  UpdateStatusBar;
 end;
 
 function GetFirstComponentHiddenState: Integer;
@@ -1034,12 +1137,14 @@ begin
     StatusBar.Panels[1].Text:='';
     StatusBar.Panels[2].Text := '';
     StatusBar.Panels[3].Text := '';
+    StatusBar.Panels[4].Text := '';
   end
   else if Length(FormDesign.Selected) > 1 then
   begin
     StatusBar.Panels[1].Text:=Format(rsSelectedComponentCount, [FormDesign.Count]);
     StatusBar.Panels[2].Text := '';
     StatusBar.Panels[3].Text := '';
+    StatusBar.Panels[4].Text := FormDesign.Form.LayoutName;
   end
   else
   begin
@@ -1051,6 +1156,7 @@ begin
     StatusBar.Panels[2].Text := GetComponentName(C);
     StatusBar.Panels[3].Text := Format('X: %d Y: %d W: %d H: %d',
       [C.Left, C.Top, C.Width, C.Height]);
+    StatusBar.Panels[4].Text := FormDesign.Form.LayoutName;
   end;
 end;
 
@@ -1149,6 +1255,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
     i, n: Integer;
     Fm, ImportFm: TdxForm;
     FileName: String;
+    pFmLayouts: PFormLayoutForm;
   begin
     SL := TStringList.Create;
     IL := TIntegerList.Create;
@@ -1168,6 +1275,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       begin
         Cache.DeleteForm(Fm);
         FormChanges.DeleteForm(Fm);
+        FormMan.Layouts.DeleteForm(Fm);
         FormMan.DeleteForm(Fm.Id, False);
       end;
     end;
@@ -1189,6 +1297,7 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       begin
         Cache.DeleteForm(Fm);
         FormChanges.DeleteForm(Fm);
+        FormMan.Layouts.DeleteForm(Fm);
         FormMan.DeleteForm(Fm.Id, False);
         Cache.AddFormWithComponents(ImportFm);
         FormChanges.AddForm(ImportFm.Id, 0);
@@ -1198,6 +1307,14 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       begin
         CompareForms(ImportFm, Fm);
         FormMan.ReplaceForm(Fm, ImportFm);
+      end;
+
+      FormMan.Layouts.DeleteForm(Fm);
+      if FileExists(FileName + '.extra') then
+      begin
+        pFmLayouts := FormMan.Layouts.AddForm(ImportFm);
+        FormMan.Layouts.LoadFromFile(pFmLayouts, FileName + '.extra');
+        ScaleFormLayouts(pFmLayouts, DXMain.DesignTimePPI);
       end;
     end;
 
@@ -1215,6 +1332,13 @@ procedure TDesignFr.ImportProject(const aFileName: String);
       Cache.AddFormWithComponents(ImportFm);
       FormChanges.AddForm(ImportFm.Id, 0);
       FormMan.AddForm(ImportFm);
+
+      if FileExists(FileName + '.extra') then
+      begin
+        pFmLayouts := FormMan.Layouts.AddForm(ImportFm);
+        FormMan.Layouts.LoadFromFile(pFmLayouts, FileName + '.extra');
+        ScaleFormLayouts(pFmLayouts, DXMain.DesignTimePPI);
+      end;
     end;
 
     FormMan.CorrectMaxTId;
@@ -1873,7 +1997,6 @@ procedure TDesignFr.TestForm(const FormName: String);
 var
   Fm: TdxForm;
 begin
-  //if FormDesign.StructChanged then
   if Cache.StructChanged then
   begin
     if Confirm(rsWarning, rsSaveChangesBeforeTestMsg) = mrYes then
@@ -1883,8 +2006,13 @@ begin
     else Exit;
   end;
 
+  if FCurForm <> nil then
+  begin
+    UpdateAnchoredComponents(FCurForm);
+    UpdateCurrentLayout;
+  end;
+
 	Fm := FormMan.FindFormByName(FormName);
-  UpdateAnchoredComponents(Fm);
   if Fm.PId > 0 then
   	Fm := FormMan.FindForm(Fm.PId);
 
@@ -2267,6 +2395,12 @@ begin
 
   if not CheckBeforeChangeStruct then Exit;
 
+  if FCurForm <> nil then
+  begin
+    UpdateAnchoredComponents(FCurForm);
+    UpdateCurrentLayout;
+  end;
+
   FFormsTree.SaveTree;
 
   if ScriptFm <> nil then ScriptFm.SaveAll;
@@ -2403,10 +2537,10 @@ begin
   MenuItem15.Caption := rsHorzCenter;
   MenuItem16.Caption := rsVertCenter;
   MenuItem10.Caption := rsSize;
-  MenuItem17.Caption := rsMaxWidth;
-  MenuItem18.Caption := rsMinWidth;
-  MenuItem19.Caption := rsMaxHeight;
-  MenuItem20.Caption := rsMinHeight;
+  MenuItem17.Caption := rsToMaxWidth;
+  MenuItem18.Caption := rsToMinWidth;
+  MenuItem19.Caption := rsToMaxHeight;
+  MenuItem20.Caption := rsToMinHeight;
   MenuItem22.Caption := rsBringToFront;
   MenuItem23.Caption := rsSendToBack;
   MenuItem25.Caption := rsTabOrder;
@@ -2419,6 +2553,9 @@ begin
   MenuItem34.Caption := rsList;
   MenuItem37.Caption := rsAnchors;
   HideMnu.Caption := rsHideComponent;
+  LayoutMnu.Caption := rsFormLayout;
+  LayoutCreateMnu.Caption := rsCreate;
+  LayoutManMnu.Caption := rsLayoutsManagement;
 
   DateEditMnu := TDateEditMenu.Create(nil);
   //CalcEditMnu := TCalcEditMenu.Create(nil);
@@ -2590,6 +2727,7 @@ begin
   //MainFm.SetDesignerMode(True);
   //DesignBox.SetDesignerMode(True);
   FCurForm := Fm;
+  FCurFormLayouts := FormMan.Layouts.FindForm(Fm.Id);
   HidePropsForm;
   //DummyY.AnchorToCompanion(akTop, 32, FCurForm);
   //DummyX.AnchorToCompanion(akLeft, 32, FCurForm);
@@ -2599,6 +2737,7 @@ begin
   UpdateToolbarState;
   UpdateStatusBar;
   UndoMan.SelectCache(Fm);
+  FillLayoutMenu;
   // Чтобы сильно не погружаться в дебри кода решил ставить флаг изменения формы,
   // когда пользователь выбирает ее в дизайнере. При большом количестве форм
   // вряд ли пользователь просматривает все формы. Даже в таком случае скорость

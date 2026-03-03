@@ -11,7 +11,8 @@ uses
   SysUtils, Forms, MainForm, ProgressForm, ModulesTree, treepanel,
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,
   MyLogger, PascalScriptFCL, LCbxListSourceMoreForm, EmbedImagesForm,
-  lazcontrols, StructTree, PanelForm;
+  lazcontrols, StructTree, PanelForm, FormLayoutForm, FormLayoutsForm, 
+FormLayouts;
 
 {$R *.res}
 

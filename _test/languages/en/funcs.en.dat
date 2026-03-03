@@ -1497,9 +1497,16 @@ The function returns the date from the passed values of the year, month and day.
 
 [ENCODETIME]
 5
-The function returns the time from the passed values of hours, minutes and seconds.
+The function returns the time from the passed values of hours, minutes and seconds.<br><br>
 <center><code>ENCODETIME(hours, minutes, seconds)</code></center><br><br>
 <b>Parameters:</b> hours - number, minutes - number, seconds - number.<br>
 <b>Result:</b> time<br><br>
 <b>Example:</b><br>
 <center><code>ENCODETIME(12, 5, 0)</code></center><br><br>
+
+[LAYOUT]
+4
+The function returns layout name of current form.<br><br>
+<center><code>LAYOUT</code></center><br><br>
+<b>Result:</b> text<br><br>
+The function has no parameters.

@@ -1,0 +1,148 @@
+object FormLayoutFm: TFormLayoutFm
+  Left = 561
+  Height = 293
+  Top = 357
+  Width = 358
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Макет'
+  ClientHeight = 293
+  ClientWidth = 358
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnShow = FormShow
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 52
+    Caption = 'Название'
+  end
+  object NameEdt: TEdit
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 343
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 1
+    TabOrder = 0
+    Text = 'NameEdt'
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 253
+    Width = 346
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 5
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+  end
+  object AppTypeGrp: TCheckGroup
+    AnchorSideTop.Control = NameEdt
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 80
+    Top = 55
+    Width = 343
+    Anchors = [akTop, akLeft, akRight]
+    AutoFill = True
+    BorderSpacing.Top = 8
+    Caption = 'Где используется'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.TopBottomSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 2
+    ClientHeight = 60
+    ClientWidth = 339
+    Columns = 2
+    Items.Strings = (
+      'Веб'
+      'Десктоп'
+    )
+    TabOrder = 1
+    Data = {
+      020000000202
+    }
+  end
+  object FormSizeLbl: TLabel
+    AnchorSideLeft.Control = Label2
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Label2
+    Left = 103
+    Height = 15
+    Top = 201
+    Width = 64
+    BorderSpacing.Left = 8
+    Caption = 'FormSizeLbl'
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = FixedHeightChk
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 15
+    Top = 201
+    Width = 87
+    BorderSpacing.Top = 8
+    Caption = 'Размер формы:'
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = MinWidthSpn
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 147
+    Width = 86
+    Caption = 'Точка перехода'
+  end
+  object MinWidthSpn: TSpinEdit
+    AnchorSideLeft.Control = Label3
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = AppTypeGrp
+    AnchorSideTop.Side = asrBottom
+    Left = 102
+    Height = 23
+    Top = 143
+    Width = 74
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    MaxValue = 10000
+    TabOrder = 2
+  end
+  object FixedHeightChk: TCheckBox
+    AnchorSideTop.Control = MinWidthSpn
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 174
+    Width = 191
+    BorderSpacing.Top = 8
+    Caption = 'Фиксированная высота формы'
+    TabOrder = 3
+  end
+  object DisabledChk: TCheckBox
+    AnchorSideTop.Control = FixedHeightChk
+    Left = 269
+    Height = 19
+    Top = 174
+    Width = 82
+    Anchors = [akTop, akRight]
+    Caption = 'Отключено'
+    TabOrder = 4
+  end
+end

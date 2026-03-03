@@ -27,7 +27,7 @@ uses
   Controls, LazFileUtils, dxctrls, strconsts, dxreports;
 
 const
-  DX_VERSION = 37;
+  DX_VERSION = 38;
 
 type
 
@@ -110,6 +110,7 @@ type
     procedure CreateDatabase;
     procedure UpdateDatabase;
     procedure UpdateDatabase2;
+    procedure UpdateDatabase3;
     procedure Execute(const aSQL: String);
     procedure ExecuteWithoutCommit(const aSQL: String);
     function CreateQuery(const ASQL: String): TSQLQuery;
@@ -594,7 +595,8 @@ begin
   FConn.Password := FPwd;
   FBLoader.LoadFirebirdLibrary(Self);
   FConn.CreateDB;
-  Execute('CREATE TABLE DX_FORMS (ID INTEGER, FORM BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
+  Execute('CREATE TABLE DX_FORMS (ID INTEGER, FORM BLOB SUB_TYPE 1 SEGMENT SIZE 80, ' +
+      'EXTRA BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
     'CREATE SEQUENCE GEN_TID;' +
     'CREATE SEQUENCE GEN_FID;' +
     'CREATE TABLE DX_REPORTS (ID INTEGER, DATA BLOB SUB_TYPE 1 SEGMENT SIZE 80, LASTMODIFIED TIMESTAMP);' +
@@ -632,6 +634,11 @@ end;
 procedure TDBEngine.UpdateDatabase2;
 begin
   Execute('CREATE TABLE DX_TMP (ID INTEGER PRIMARY KEY NOT NULL, TEXT VARCHAR(2000));');
+end;
+
+procedure TDBEngine.UpdateDatabase3;
+begin
+  Execute('ALTER TABLE DX_FORMS ADD EXTRA BLOB SUB_TYPE 1 SEGMENT SIZE 80;');
 end;
 
 procedure TDBEngine.Execute(const aSQL: String);

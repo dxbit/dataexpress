@@ -192,6 +192,7 @@ Types
 	TXMLReaderFlags = set of TXMLReaderFlag
 	TXMLWriterFlag = (xwfSpecialCharsInAttributeValue, xwfPreserveWhiteSpace)
 	TXMLWriterFlags = set of TXMLWriterFlag
+	TdxPanelBevelStyle = (pbsNone, pbsDefault, pbsSolid, pbsDashed, pbsDotted)
 Records
 	TFormatSettings = record
 		CurrencyFormat: Byte
@@ -274,7 +275,7 @@ Procedures & Functions
 		function WeeksBetween(const ANow, AThen: TDateTime): Integer
 		function YearOf(const AValue: TDateTime): Word
 		function YearsBetween(const ANow, AThen: TDateTime): Integer
-	Debuging
+	Debugging
 		procedure DebugFile(const FileName: String; Value: Variant)
 	Dll
 		function DllGetLastError: LongInt
@@ -480,6 +481,7 @@ TBrush = class(TPersistent)
 	property Components[Index: Integer]: TComponent [r]
 	property ComponentCount: Integer [r]
 	property Name: String [rw]
+	property Tag: LongInt [rw]
 #TControl = class(TComponent)
 	procedure Hide
 	procedure Show
@@ -516,7 +518,6 @@ TCookies = class(TCollection)
 	function IndexOfCookie(AName : String) : Integer
 	property Items[Index: Integer]: TCookie [r] default
 TCsvData = class(TObject)
-	constructor Create
 	procedure LoadFromFile(const AFileName: String; FromANSI: Boolean)
 	procedure LoadFromStream(AStream: TStream; FromANSI: Boolean)
 	procedure SaveToFile(const AFileName: String; ToANSI: Boolean)
@@ -1096,6 +1097,7 @@ TdxForm = class(TWinControl)
 	property OnBeforeScroll: TNotifyEvent [rw]
 	property OnDestroy: TNotifyEvent [rw]
 	property OnFieldChange: TFieldChangeEvent [rw]
+	property OnLayoutChange: TNotifyEvent [rw]
 	property OnPrint: TPrintEvent [rw]
 	property OnShowForm: TNotifyEvent [rw]
 	property OnStateChange: TNotifyEvent [rw]

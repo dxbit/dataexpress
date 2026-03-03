@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -273,7 +273,10 @@ begin
   FTree.Visible := FForm.Tree.Fields.Count > 0;
   FTreeSplit.Visible:=FTree.Visible;
   if FForm.ViewType <> vtGridOnly then
+  begin
     FForm.Parent := FScrollBox;
+    if IsFormFixedHeight(FForm) then SetFormFixedHeight(FForm, True);
+  end;
   FForm.Left := 0; FForm.Top:=0;
   ParentFont := False;
   SetViewType;

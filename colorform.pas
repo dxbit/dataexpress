@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -87,7 +87,10 @@ end;
 
 function TColorFm.ShowForm(Control: TControl): Integer;
 begin
-  ColorSampler1.DefaultColor:=clDefault;
+  if Control is TdxPanel then
+    ColorSampler1.DefaultColor := Control.Parent.Color
+  else
+    ColorSampler1.DefaultColor:=clDefault;
   ColorSampler1.SampleColor := Control.Color;
   Result := ShowModal;
   if Result = mrOk then

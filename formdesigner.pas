@@ -1501,8 +1501,10 @@ begin
   begin
     DesignFr.CompTree.UpdateTree;
     UpdateTemplateFieldsForm;
+    FNewControl := False;
+    if DesignFr.CurFormLayouts <> nil then
+      DesignFr.CurFormLayouts^.Layouts.AddControl(TControl(aComponent));
   end;
-  FNewControl := False;
 end;
 
 procedure TFormDesigner.SurfaceGetAddClass(Sender: TObject; var ioClass: string
@@ -2009,8 +2011,12 @@ begin
 end;
 
 procedure TFormDesigner.PasteComponents;
+var
+  i: Integer;
+  IsMove: Boolean;
 begin
-  if FMoves.Count > 0 then
+  IsMove := FMoves.Count > 0;
+  if IsMove then
   begin
     ChangeParent;
     FMoves.Clear;
@@ -2029,6 +2035,9 @@ begin
   DesignFr.CompTree.SelectComponents(Selected);
   DesignFr.SummaryTree.UpdateTree;
   UpdateTemplateFieldsForm;
+  if (DesignFr.CurFormLayouts <> nil) and not IsMove then
+    for i := 0 to High(Selected) do
+      DesignFr.CurFormLayouts^.Layouts.AddControl(Selection[i]);
 end;
 
 function TFormDesigner.CanPasteComponents: Boolean;
@@ -2074,6 +2083,11 @@ begin
   end;
   for i := 0 to Length(Selected) - 1 do
     CheckMoves(Selection[i]);
+
+  if DesignFr.CurFormLayouts <> nil then
+    for i := 0 to High(Selected) do
+      DesignFr.CurFormLayouts^.Layouts.DeleteControl(Selection[i]);
+
   inherited DeleteComponents;
 
   DesignFr.CompTree.UpdateTree;

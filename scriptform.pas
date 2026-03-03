@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1462,6 +1462,9 @@ end;
 
 procedure TScriptFm.MenuItem24Click(Sender: TObject);
 begin
+  //FTree.DebugUrls;
+  //Exit;
+
   SaveAll;
   ScriptMan.CompileAll;
   FillCompilerMessages;

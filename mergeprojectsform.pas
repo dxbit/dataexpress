@@ -25,7 +25,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ButtonPanel, StdCtrls, CheckLst, ExtCtrls, DBGrids, formmanager, DxCtrls,
-  reportmanager, dxreports, strconsts, scriptmanager, dxmains, imagemanager;
+  reportmanager, dxreports, strconsts, scriptmanager, dxmains, imagemanager,
+  formlayouts;
 
 type
   TFormScriptList = class;
@@ -103,6 +104,7 @@ type
     procedure ChangeFieldIdInReports(aReports: TQueryFormList; OldId, NewId: Integer);
     procedure ChangeFieldId(aForm: TdxForm; OldId, NewId: Integer);
     procedure ChangeAllFieldId(aForms: TFormScriptList; OldId, NewId: Integer);
+    procedure ChangeFormIdInLayouts(Layouts: TFormLayoutFormList; OldId, NewId: Integer);
     procedure ChangeFormIdInMain(OldId, NewId: Integer);
     procedure ChangeFormIdInReports(aReports: TQueryFormList; OldId, NewId: Integer);
     procedure ChangeFormId(aForms: TFormScriptList; OldId, NewId: Integer);
@@ -125,6 +127,7 @@ type
   public
     Form: TdxForm;
     SD, WSD: TScriptData;
+    Layouts: PFormLayoutForm;
   end;
 
   { TFormScriptList }
@@ -133,7 +136,7 @@ type
   private
     function GetForms(Index: Integer): TFormScriptItem;
   public
-    function AddForm(Fm: TdxForm; SD, WSD: TScriptData): TFormScriptItem;
+    function AddForm(Fm: TdxForm; SD, WSD: TScriptData; Layouts: PFormLayoutForm): TFormScriptItem;
     function FindForm(FmId: Integer): TFormScriptItem;
     procedure Clear; override;
     property Forms[Index: Integer]: TFormScriptItem read GetForms; default;
@@ -318,13 +321,14 @@ begin
   Result := TFormScriptItem(Items[Index]);
 end;
 
-function TFormScriptList.AddForm(Fm: TdxForm; SD, WSD: TScriptData
-  ): TFormScriptItem;
+function TFormScriptList.AddForm(Fm: TdxForm; SD, WSD: TScriptData;
+  Layouts: PFormLayoutForm): TFormScriptItem;
 begin
   Result := TFormScriptItem.Create;
   Result.Form := Fm;
   Result.SD := SD;
   Result.WSD := WSD;
+  Result.Layouts := Layouts;
   Add(Result);
 end;
 
@@ -1049,6 +1053,15 @@ begin
     ChangeFieldId(aForms[i].Form, OldId, NewId);
 end;
 
+procedure TMergeProjectsFm.ChangeFormIdInLayouts(Layouts: TFormLayoutFormList;
+  OldId, NewId: Integer);
+var
+  pFm: PFormLayoutForm;
+begin
+  pFm := Layouts.FindForm(OldId);
+  if pFm <> nil then pFm^.Id := NewId;
+end;
+
 procedure TMergeProjectsFm.ChangeFormIdInMain(OldId, NewId: Integer);
 var
   i, n: Integer;
@@ -1159,7 +1172,8 @@ begin
       PFm := FFmMan.FindForm(Fm.PId);
     n := FormList.Items.IndexOfObject(PFm);
     if FormList.Checked[n] then
-      L.AddForm(Fm, FScrMan.FindScript(Fm.Id, skForm), FScrMan.FindScript(Fm.Id, skWebForm));
+      L.AddForm(Fm, FScrMan.FindScript(Fm.Id, skForm), FScrMan.FindScript(Fm.Id, skWebForm),
+        FFmMan.Layouts.FindForm(Fm.Id));
   end;
 end;
 
@@ -1243,6 +1257,7 @@ var
     ChangeFormId(FL, Item.Form.Id, NewTId);
     ChangeFormIdInReports(RL, Item.Form.Id, NewTId);
     ChangeFormIdInMain(Item.Form.Id, NewTId);
+    ChangeFormIdInLayouts(FFmMan.Layouts, Item.Form.Id, NewTId);
     Item.Form.Id := NewTId;
     if Item.SD <> nil then Item.SD.FmId := NewTId;
     if Item.WSD <> nil then Item.WSD.FmId := NewTId;
@@ -1382,6 +1397,7 @@ var
   SD, DestSD: TScriptData;
   UsedImages: TStringList;
   GrpSrc, GrpDest: TFormGroup;
+  pFmLayouts: PFormLayoutForm;
 begin
   // Модули расширений
   ParseErrors := '';
@@ -1439,6 +1455,13 @@ begin
     FL[i].Form := FormMan.AddCopyForm(Fm); // Подменяю на созданную копию, чтобы уже в ней переименовывать формы.
     Cache.AddFormWithComponents(Fm);
     FormChanges.AddForm(Fm.Id, 0);
+
+    // Макеты
+    if FL[i].Layouts <> nil then
+    begin
+      pFmLayouts := FormMan.Layouts.AddForm(Fm);
+      FormMan.Layouts.CopyForm(FL[i].Layouts, pFmLayouts);
+    end;
 
     // Закладки и группы
     if FMain.Tabs.FindValue(Fm.Id) >= 0 then

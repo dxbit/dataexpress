@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ function CaseOf(const AValue, AItems: String): String;
 function GetTypedText(AIndex: Integer): Variant;
 procedure SetTypedText(S: String);
 function IsWebServer: Boolean;
+function GetFormLayoutName(AForm: TdxForm): String;
 
 var
   VarList: TVarList;
@@ -1694,6 +1695,12 @@ end;
 function IsWebServer: Boolean;
 begin
   Result := False;
+end;
+
+function GetFormLayoutName(AForm: TdxForm): String;
+begin
+  if (aForm = nil) or (aForm.Id = DummyForm) then raise Exception.Create(rsFormNotAvail);
+  Result := AForm.LayoutName;
 end;
 
 {function Fmt(Args: array of Variant): String;

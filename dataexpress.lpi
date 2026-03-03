@@ -27,10 +27,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="26"/>
-      <MinorVersionNr Value="2"/>
-      <RevisionNr Value="15"/>
+      <MinorVersionNr Value="3"/>
+      <RevisionNr Value="3"/>
       <Language Value="0419"/>
-      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2026 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="26.2.15"/>
+      <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress" LegalCopyright="Copyright © 2015-2026 Pavel Duborkin" OriginalFilename="dataexpress.exe" ProductName="DataExpress" ProductVersion="26.3.3"/>
     </VersionInfo>
     <BuildModes Count="5">
       <Item1 Name="Win32" Default="True"/>
@@ -224,7 +224,7 @@
         <PackageName Value="LCL"/>
       </Item16>
     </RequiredPackages>
-    <Units Count="205">
+    <Units Count="208">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1575,6 +1575,27 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PanelForm"/>
       </Unit204>
+      <Unit205>
+        <Filename Value="formlayoutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormLayoutFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormLayoutForm"/>
+      </Unit205>
+      <Unit206>
+        <Filename Value="formlayoutsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormLayoutsFm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormLayoutsForm"/>
+      </Unit206>
+      <Unit207>
+        <Filename Value="formlayouts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FormLayouts"/>
+      </Unit207>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1286,6 +1286,8 @@ begin
     begin
       RenameComponentInRights(Fm, OldName, NewName);
       RenameInActions(Fm, nil, renComponent, OldName, NewName);
+      if DesignFr.CurFormLayouts <> nil then
+        DesignFr.CurFormLayouts^.Layouts.RenameControl(TControl(FCmp), OldName, NewName);
     end;
   end
   else Result := False;

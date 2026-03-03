@@ -136,10 +136,10 @@ resourcestring
   rsAlignmentBottom = 'Bottom';
   rsHorzCenter = 'Horz center';
   rsVertCenter = 'Vert center';
-  rsMaxWidth = 'Max width';
-  rsMinWidth = 'Min width';
-  rsMaxHeight = 'Max height';
-  rsMinHeight = 'Min height';
+  rsToMaxWidth = 'To max width';
+  rsToMinWidth = 'To min width';
+  rsToMaxHeight = 'To max height';
+  rsToMinHeight = 'To min height';
   rsBringToFront = 'Bring to front';
   rsSendToBack = 'Send to back';
   rsWarning = 'Warning';
@@ -1872,6 +1872,22 @@ resourcestring
   rsBevelStyle = 'Bevel style';
   rsRadius = 'Radius';
   rsBevelColor = 'Bevel color';
+  rsEnterLayoutName = 'Enter layout name';
+  rsLayoutExists = 'Layout with same name already exists.';
+  rsLayoutName = 'Layout name';
+  rsWhereUse = 'Where use';
+  rsWeb = 'Web';
+  rsDesktop = 'Desktop';
+  rsNewLayout = 'New layout';
+  rsEditLayout = 'Edit layout';
+  rsLayoutsManagement = 'Layouts management';
+  rsFormLayout = 'Form layout';
+  rsFormSize = 'Form size';
+  rsBreakingPoint = 'Breaking point';
+  rsBreak = 'Break';
+  rsFixedHeightForm = 'Fixed height of the form';
+  rsFixedH = 'Fixed h';
+  rsAppTypeNotSelected = 'You have not selected where the layout will be used.';
 
 implementation
 

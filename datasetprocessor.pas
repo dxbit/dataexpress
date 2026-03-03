@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,6 +31,24 @@ uses
 
 type
   TDataSetProcessor = class;
+
+  PMaskingControlRec = ^TMaskingControlRec;
+  TMaskingControlRec = record
+    Control: TControl;
+    Shape: TShape;
+  end;
+
+  { TMaskingControlList }
+
+  TMaskingControlList = class(TList)
+  private
+    function GetControls(Index: Integer): PMaskingControlRec;
+  public
+    procedure AddMaskControl(AOwner: TComponent; AControl: TControl);
+    procedure UpdateMasking;
+    procedure Clear; override;
+    property Controls[Index: Integer]: PMaskingControlRec read GetControls;
+  end;
 
   PDataSetRec = ^TDataSetRec;
   TDataSetRec = record
@@ -65,6 +83,7 @@ type
     RowsExchanged: Boolean;     // перемещались ли строки в какой-либо таблице
     DetailsChanged: Boolean;    // Были ли изменения где-либо в подчиненной форме
     Images: TList;
+    MaskingControls: TMaskingControlList;
   end;
 
   PLookupRec = ^TLookupRec;
@@ -380,9 +399,30 @@ uses
   dbengine, formmanager, sqlgen, apputils, mainframe,
   LCLType, StrUtils, dximages, BGRABitmap, BGRABitmapTypes,
   LazUtf8, Dialogs, dxfiles, Variants, reportmanager, dxusers,
-  ButtonPanel, warningform, Clipbrd, errorsform, mainform, xmlreport,
+  ButtonPanel, Clipbrd, errorsform, mainform, xmlreport,
   pivotgrid, formview, designerframe, DateUtils, dxmains, mydialogs, dxcharts,
   appimagelists, appsettings, exprfuncs;
+
+{procedure MaskingControl(aOwner: TComponent; aControl: TControl;
+  MaskingControls: TList);
+var
+  Shape: TShape;
+  pMask: PMaskingControlRec;
+begin
+  Shape := TShape.Create(aOwner);
+  with Shape do
+  begin
+    Shape:=stRectangle;
+    Brush.Style := bsClear;
+    Pen.Color:=clGray;
+    Parent := aControl.Parent;
+    BoundsRect := aControl.BoundsRect;
+    Anchors := aControl.Anchors;
+  end;
+  aControl.Visible:=False;
+
+  New(pMask);
+end;  }
 
 function IsTableInput(pDSR: PDataSetRec): Boolean;
 begin
@@ -3482,6 +3522,7 @@ begin
     FreeAndNil(pDS^.EditingCtrls);
     FreeAndNil(pDS^.Filter);
     pDS^.Images.Free;
+    pDS^.MaskingControls.Free;
     Dispose(pDS);
     FItems.Delete(0);
   end;
@@ -3529,7 +3570,7 @@ begin
             TdxPageControl(PageControl).SetActiveFirstVisiblePage;
         	end
         else
-          MaskingControl(C.Owner, TControl(C));
+          DSR.MaskingControls.AddMaskControl(C.Owner, TControl(C));
         if HasFId(C) then
         begin
           Col := FindGridColumn(DSR.Grid, GetId(C));
@@ -3550,9 +3591,9 @@ begin
           if PageControl.ActivePage = C then
             SelectFirstVisiblePage(PageControl);
         end;
-    end
-    else
-      SetTextHint(C, GetHintText(C));
+    end;
+
+    SetTextHint(C, GetHintText(C));
 
     if C is TdxButton then
     	with TdxButton(C) do
@@ -3875,6 +3916,7 @@ begin
   //pDS^.TblFilterSet := False;
   pDS^.Colors := TColorList.Create;
   pDS^.Images := TList.Create;
+  pDS^.MaskingControls := TMaskingControlList.Create;
 
   Fm.Tag := i;
   DataSet.Tag:=i;
@@ -3891,7 +3933,7 @@ begin
   ClearChartSources(Fm);
 
   // !!! Доступ
-  if UserMan.CheckFmVisible(Fm.Id) = False then MaskingControl(Fm, aGrid);
+  if UserMan.CheckFmVisible(Fm.Id) = False then pDS^.MaskingControls.AddMaskControl(Fm, aGrid);
   pDS^.Adding:=UserMan.CheckFmAdding(Fm.Id);
   pDS^.Editing:=UserMan.CheckFmEditing(Fm.Id);
   pDS^.Deleting:=UserMan.CheckFmDeleting(Fm.Id);
@@ -8049,6 +8091,58 @@ begin
           Text := TWinControl(C).Caption;
     end;
   end;
+end;
+
+{ TMaskingControlList }
+
+function TMaskingControlList.GetControls(Index: Integer): PMaskingControlRec;
+begin
+  Result := PMaskingControlRec(Items[Index]);
+end;
+
+procedure TMaskingControlList.AddMaskControl(AOwner: TComponent;
+  AControl: TControl);
+var
+  Shape: TShape;
+  pMask: PMaskingControlRec;
+begin
+  Shape := TShape.Create(aOwner);
+  with Shape do
+  begin
+    Shape:=stRectangle;
+    Brush.Style := bsClear;
+    Pen.Color:=clGray;
+    Parent := aControl.Parent;
+    BoundsRect := aControl.BoundsRect;
+    Anchors := aControl.Anchors;
+  end;
+  aControl.Visible:=False;
+
+  New(pMask);
+  pMask^.Control := AControl;
+  pMask^.Shape := Shape;
+  Add(pMask);
+end;
+
+procedure TMaskingControlList.UpdateMasking;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+    with Controls[i]^ do
+    begin
+      Shape.BoundsRect := Control.BoundsRect;
+      Shape.Anchors := Control.Anchors;
+    end;
+end;
+
+procedure TMaskingControlList.Clear;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+    Dispose(Controls[i]);
+  inherited Clear;
 end;
 
 end.

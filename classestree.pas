@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2024 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     function FindNodeWithType(const TypeText: String): TTreeNode;
     procedure TreeSelectionChanged(Sender: TObject);
-    function GetHelpUrl: String;
+    function GetHelpUrl(N: TTreeNode): String;
     procedure GetHelp;
     procedure SetHelpPanText(const S: String; Error: Boolean = False);
     function WikiToHtml(S: String): String;
@@ -99,6 +99,7 @@ type
     destructor Destroy; override;
     procedure BuildTree; override;
     procedure SetFilter(const FilterText: String);
+    procedure DebugUrls;
     property FileName: String read FFileName write FFileName;
     property HideAncestors: Boolean read FHideAncestors write FHideAncestors;
     property HideBaseClasses: Boolean read FHideBaseClasses write FHideBaseClasses;
@@ -746,7 +747,7 @@ begin
   UpdateContextHelp;
 end;
 
-function TClassesTree.GetHelpUrl: String;
+function TClassesTree.GetHelpUrl(N: TTreeNode): String;
 
   function ExtractClassName(Node: TTreeNode): String;
   begin
@@ -760,30 +761,27 @@ function TClassesTree.GetHelpUrl: String;
       'expressions', 'fs', 'graphics', 'json', 'math', 'menus', 'metadata',
       'misc', 'sql', 'strings', 'totals', 'utf8strings', 'useraccess',
       'variants', 'web', 'xml', 'dxforms');
-    ProcFoldersWeb: array [0..17] of String = ('arrays', 'cond', 'datetime',
+    ProcFoldersWeb: array [0..16] of String = ('arrays', 'cond', 'datetime',
       'debugging', 'dll', 'encoding', 'exceptions', 'fs', 'json', 'math',
-      'misc', 'strings', 'totals', 'utf8strings', 'useraccess', 'variants',
-      'web', 'xml');
+      'misc', 'strings', 'totals', 'utf8strings', 'variants', 'web', 'xml');
   var
     i: Integer;
   begin
     i := N.Index;
     if not FIsWeb and (i in [0..26]) then
       Result := ProcFolders[i]
-    else if FIsWeb and (i in [0..17]) then
+    else if FIsWeb and (i in [0..16]) then
       Result := ProcFoldersWeb[i]
     else
       Result := '';
   end;
 
 var
-  N: TTreeNode;
   S, ClsName, ProcFolder, TkStr: String;
   Tk: Char;
   P, Len: Integer;
 begin
   Result := '';
-  N := Tree.Selected;
   if N = nil then Exit;
 
   S := N.Text;
@@ -834,7 +832,7 @@ procedure TClassesTree.GetHelp;
 var
   S: String;
 begin
-  S := GetHelpUrl;
+  S := GetHelpUrl(Tree.Selected);
   if S <> '' then OpenUrl(BASE_URL + S);
 end;
 
@@ -1063,7 +1061,7 @@ begin
     Exit;
   end;
   FHttp.Terminate;
-  Url := GetHelpUrl;
+  Url := GetHelpUrl(Tree.Selected);
   if Url <> '' then
   begin
     CacheItem := FCache.FindHelp(Url);
@@ -1301,6 +1299,35 @@ procedure TClassesTree.SetFilter(const FilterText: String);
 begin
   Filter.Text := FilterText;
   Filter.SetFocus;
+end;
+
+procedure TClassesTree.DebugUrls;
+var
+  i: Integer;
+  N: TTreeNode;
+  HC: THttpClient;
+  St: TMemoryStream;
+  Url: String;
+begin
+  HC := THttpClient.Create;
+  St := TMemoryStream.Create;
+  for i := 0 to Tree.Items.Count - 1 do
+  begin
+    N := Tree.Items[i];
+    Url := GetHelpUrl(N);
+    if Url <> '' then
+    begin
+      //HC.HttpMethod('GET', BASE_URL + Url, St, []);
+      HC.Send('GET', BASE_URL_RAW + Url);
+      if WikiToHtml(HC.Content) = '' then
+      begin
+        Debug(BASE_URL + Url);
+      end;
+      //Debug(WikiToHtml(HC.Content));
+    end;
+  end;
+  St.Free;
+  HC.Free;
 end;
 
 end.

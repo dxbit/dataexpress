@@ -379,7 +379,6 @@ Events
 	TUtf8KeyPressEvent = procedure (Sender: TObject; var UTF8Key: TUTF8Char)
 	TValidateEvent = procedure (Sender: TObject; var Ok: Boolean)
 Types
-	HACCEL = TLCLHandle
 	HBITMAP = TLCLHandle
 	HDC = TLCLHandle
 	HMENU = TLCLHandle
@@ -399,10 +398,8 @@ Types
 	TBorderIcon = (biSystemMenu, biMinimize, biMaximize, biHelp)
 	TBorderIcons = set of TBorderIcon
 	TBorderStyle = bsNone..bsSingle
-	TBorderWidth = LongInt
 	TBrushStyle = (bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross)
 	TButtonLayout = (blGlyphLeft, blGlyphRight, blGlyphTop, blGlyphBottom)
-	TCLSID = TGUID
 	TCTabControlOption = (nboShowCloseButtons, nboMultiLine, nboHidePageListPopup, nboKeyboardTabSwitch, nboShowAddTabButton)
 	TCTabControlOptions = set of TCTabControlOption
 	TCellHintPriority = (chpAll, chpAllNoDefault, chpTruncOnly)
@@ -532,6 +529,7 @@ Types
 	TXMLWriterFlag = (xwfSpecialCharsInAttributeValue, xwfPreserveWhiteSpace)
 	TXMLWriterFlags = set of TXMLWriterFlag
 	TdxFormTreeFieldSource = (tfsForm, tfsObject)
+	TdxPanelBevelStyle = (pbsNone, pbsDefault, pbsSolid, pbsDashed, pbsDotted)
 Records
 	TFormatSettings = record
 		CurrencyFormat: Byte
@@ -1067,7 +1065,6 @@ TCookies = class(TCollection)
 	function IndexOfCookie(AName : String) : Integer
 	property Items[Index: Integer]: TCookie [r] default
 TCsvData = class(TObject)
-	constructor Create
 	procedure LoadFromFile(const AFileName: String; FromANSI: Boolean)
 	procedure LoadFromStream(AStream: TStream; FromANSI: Boolean)
 	procedure SaveToFile(const AFileName: String; ToANSI: Boolean)
@@ -2460,6 +2457,7 @@ TdxForm = class(TCustomPanel)
 	property Grid: TdxGrid [r]
 	property Id: Integer [r]
 	property Images[Name: String]: TdxDBImage [r]
+	property LayoutName: String [r]
 	property LockMode: TLockMode [rw]
 	property Modified: Boolean [r]
 	property OldValues[Name: String]: Variant [r]
@@ -2483,6 +2481,7 @@ TdxForm = class(TCustomPanel)
 	property OnBeforeScroll: TNotifyEvent [rw]
 	property OnDestroy: TNotifyEvent [rw]
 	property OnFieldChange: TFieldChangeEvent [rw]
+	property OnLayoutChange: TNotifyEvent [rw]
 	property OnPrint: TPrintEvent [rw]
 	property OnStateChange: TNotifyEvent [rw]
 	property OnValidate: TValidateEvent [rw]

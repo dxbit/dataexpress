@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ unit FormManager;
 interface
 
 uses
-  Classes, SysUtils, dxctrls, strconsts, sqldb, Forms, Controls, LclType, Db;
+  Classes, SysUtils, dxctrls, strconsts, sqldb, Forms, Controls, LclType, Db,
+  formlayouts;
 
 type
 
@@ -34,6 +35,7 @@ type
     FForms: TList;
     FDataSet: TDataSet;
     FReadErrors: String;
+    FLayouts: TFormLayoutFormList;
     function GetForm(Index: Integer): TdxForm;
     function GetFormCount: Integer;
     //procedure ChangeIndexes(DeletedFm: TdxForm);
@@ -77,6 +79,7 @@ type
     procedure AddForm(Fm: TdxForm);
     property Forms[Index: Integer]: TdxForm read GetForm;
     property FormCount: Integer read GetFormCount;
+    property Layouts: TFormLayoutFormList read FLayouts;
   end;
 
 var
@@ -191,10 +194,12 @@ end;         }
 constructor TFormManager.Create;
 begin
   FForms := TList.Create;
+  FLayouts := TFormLayoutFormList.Create;
 end;
 
 destructor TFormManager.Destroy;
 begin
+  FLayouts.Free;
   ClearList(FForms);
   FForms.Free;
   inherited Destroy;
@@ -310,11 +315,13 @@ var
   DS: TDataSet;
   MS: TStream;
   Fm: TdxForm;
+  pLay: PFormLayoutForm;
 begin
   FreeAndNil(FDataSet);
   FReadErrors := '';
   ClearList(FForms);
-  DS := DBase.OpenDataSet('select id, form, lastmodified from dx_forms order by id');
+  Layouts.Clear;
+  DS := DBase.OpenDataSet('select id, form, extra, lastmodified from dx_forms order by id');
   FDataSet := DS;
   try
     while DS.EOF = False do
@@ -326,10 +333,20 @@ begin
       finally
         MS.Free;
       end;
+
+      MS := DS.CreateBlobStream(DS.Fields[2], bmRead);
+      if MS <> nil then
+        try
+          pLay := Layouts.AddForm(Fm);
+          Layouts.LoadFromStream(pLay, MS);
+        finally
+          MS.Free;
+        end;
+
       if DXMain.AllowDynamicForms then StoreOnlyFields(Fm);
 
       FForms.Add(Fm);
-      Fm.LastModified := DS.Fields[2].AsDateTime;
+      Fm.LastModified := DS.Fields[3].AsDateTime;
 
       if DBase.IsRemote then
         Application.ProcessMessages;
@@ -351,6 +368,7 @@ var
   DS: TSQLQuery;
   MS: TMemoryStream;
   Fm: TdxForm;
+  pFmLayouts: PFormLayoutForm;
 begin
   // Удаление форм
   //Debug('Удаление форм');
@@ -379,7 +397,7 @@ begin
   // Добавление новых
   //Debug('Добавление форм');
   MS := TMemoryStream.Create;
-  DS := DBase.CreateQuery('insert into dx_forms (id, form, lastmodified) values (:id, :form, :lastmodified)');
+  DS := DBase.CreateQuery('insert into dx_forms (id, form, extra, lastmodified) values (:id, :form, :extra, :lastmodified)');
   try
     DS.Prepare;
 
@@ -390,10 +408,19 @@ begin
 
       Fm := FindForm(DCI.Id);
       WriteComponent(MS, Fm);
-
       DS.Params[0].AsInteger := Fm.Id;
       DS.Params[1].LoadFromStream(MS, ftMemo);
-      DS.Params[2].AsDateTime := Fm.LastModified;
+
+      pFmLayouts := Layouts.FindForm(Fm.Id);
+      if (pFmLayouts <> nil) and (pFmLayouts^.Layouts.Count > 0) then
+      begin
+        MS.Size := 0;
+        Layouts.SaveToStream(pFmLayouts, MS);
+        DS.Params[2].LoadFromStream(MS, ftMemo);
+      end
+      else
+        DS.Params[2].Value := Null;
+      DS.Params[3].AsDateTime := Fm.LastModified;
 
       DBase.ExecuteQuery(DS);
       Fm.ResetFormChanged;
@@ -410,7 +437,7 @@ begin
   //Debug('Замена форм');
 
   MS := TMemoryStream.Create;
-  DS := DBase.CreateQuery('update dx_forms set form=:form, lastmodified=:lastmodified where id=:id');
+  DS := DBase.CreateQuery('update dx_forms set form=:form, extra=:extra, lastmodified=:lastmodified where id=:id');
   try
     DS.Prepare;
 
@@ -421,10 +448,20 @@ begin
         Continue;
 
       WriteComponent(MS, Fm);
-
       DS.Params[0].LoadFromStream(MS, ftMemo);
-      DS.Params[1].AsDateTime := Fm.LastModified;
-      DS.Params[2].AsInteger := Fm.Id;
+
+      pFmLayouts := Layouts.FindForm(Fm.Id);
+      if (pFmLayouts <> nil) and (pFmLayouts^.Layouts.Count > 0) then
+      begin
+        MS.Size := 0;
+        Layouts.SaveToStream(pFmLayouts, MS);
+        DS.Params[1].LoadFromStream(MS, ftMemo);
+      end
+      else
+        DS.Params[1].Value := Null;
+
+      DS.Params[2].AsDateTime := Fm.LastModified;
+      DS.Params[3].AsInteger := Fm.Id;
 
       DBase.ExecuteQuery(DS);
       Fm.ResetFormChanged;
@@ -478,6 +515,7 @@ var
   FS: TFileStream;
   Fm: TdxForm;
   FlNm: String;
+  pFmLayouts: PFormLayoutForm;
 begin
   for i := 0 to FormCount - 1 do
   begin
@@ -491,6 +529,14 @@ begin
       FS.Free;
     end;
     SetFileDateTime(FlNm, Fm.LastModified);
+
+    pFmLayouts := Layouts.FindForm(Fm.Id);
+    if (pFmLayouts <> nil) and (pFmLayouts^.Layouts.Count > 0) then
+    begin
+      FlNm := FlNm + '.extra';
+      Layouts.SaveToFile(pFmLayouts, FlNm);
+      SetFileDateTime(FlNm, Fm.LastModified);
+    end;
   end;
 end;
 
@@ -529,10 +575,13 @@ var
   i, id: Integer;
   FS: TFileStream;
   Fm: TdxForm;
+  FlNm: String;
+  pFmLayouts: PFormLayoutForm;
 begin
   FreeAndNil(FDataSet);
   FReadErrors := '';
   ClearList(FForms);
+  Layouts.Clear;
   SL := TStringList.Create;
   try
 
@@ -550,6 +599,13 @@ begin
       FS.Free;
     end;
     Fm.LastModified:=GetFileDateTime(SL[i]);
+
+    FlNm := SL[i] + '.extra';
+    if FileExists(FlNm) then
+    begin
+      pFmLayouts := Layouts.AddForm(Fm);
+      Layouts.LoadFromFile(pFmLayouts, FlNm);
+    end;
   end;
   //SetDefaultIndexes;
   if FReadErrors <> '' then
@@ -571,17 +627,19 @@ var
   SL: TStringList;
   i, FmId: Integer;
   LastModified: TDateTime;
+  pFmLayouts: PFormLayoutForm;
 begin
   FreeAndNil(FDataSet);
   FReadErrors := '';
   ClearList(FForms);
-  DS := DBase. OpenDataSet('select id, form, lastmodified from dx_forms');
+  Layouts.Clear;
+  DS := DBase. OpenDataSet('select id, form, extra, lastmodified from dx_forms');
 
   try
     while not DS.Eof do
     begin
       FlNm := aDir + DS.Fields[0].AsString + '.frm';
-      LastModified := DS.Fields[2].AsDateTime;
+      LastModified := DS.Fields[3].AsDateTime;
       if not FileExists(FlNm) or not SameFileDateTime(FlNm, LastModified) then
       begin
         FS := nil;
@@ -591,12 +649,22 @@ begin
 
           FS := TFileStream.Create(FlNm, fmCreate);
           FS.CopyFrom(BS, 0);
-          //SetFileDateTime(FS.Handle, LastModified);
         finally
           BS.Free;
           FreeAndNil(FS);
         end;
         SetFileDateTime(FlNm, LastModified);
+
+        BS := DS.CreateBlobStream(DS.Fields[2], bmRead);
+        if BS <> nil then
+        begin
+          FS := TFileStream.Create(FlNm + '.extra', fmCreate);
+          try
+            FS.CopyFrom(BS, 0);
+          finally
+            FS.Free;
+          end;
+        end;
 
         if DBase.IsRemote then
           Application.ProcessMessages;
@@ -606,6 +674,12 @@ begin
 
       FForms.Add(Fm);
       Fm.LastModified := LastModified;
+
+      if FileExists(FlNm + '.extra') then
+      begin
+        pFmLayouts := Layouts.AddForm(Fm);
+        Layouts.LoadFromFile(pFmLayouts, FlNm + '.extra');
+      end;
 
       DS.Next;
     end;
@@ -622,7 +696,10 @@ begin
       if TryStrToInt( ExtractFileNameOnly(SL[i]), FmId ) then
       begin
         if FindForm(FmId) = nil then
+        begin
           DeleteFile(SL[i]);
+          DeleteFile(SL[i] + '.extra');
+        end;
       end;
     end;
   finally

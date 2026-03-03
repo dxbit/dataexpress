@@ -1,0 +1,140 @@
+object FormLayoutsFm: TFormLayoutsFm
+  Left = 444
+  Height = 326
+  Top = 298
+  Width = 579
+  BorderIcons = [biSystemMenu]
+  Caption = 'Управление макетами'
+  ClientHeight = 326
+  ClientWidth = 579
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
+  OnCreate = FormCreate
+  OnShow = FormShow
+  object GridBns: TDialogGridButtons
+    Left = 2
+    Height = 26
+    Top = 2
+    Width = 575
+    Grid = Grid
+    Align = alTop
+    BorderSpacing.Left = 2
+    BorderSpacing.Top = 2
+    BorderSpacing.Right = 2
+  end
+  object Grid: TDialogGrid
+    Left = 2
+    Height = 260
+    Top = 28
+    Width = 575
+    Align = alClient
+    AlternateColor = 15658734
+    AutoEdit = False
+    AutoFillColumns = True
+    BorderSpacing.Left = 2
+    BorderSpacing.Right = 2
+    ColCount = 6
+    Columns = <    
+      item
+        ReadOnly = True
+        Title.Caption = 'Название'
+        Width = 154
+        ColumnType = gctText
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        ReadOnly = True
+        SizePriority = 0
+        Title.Caption = 'Веб'
+        Width = 80
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        ReadOnly = True
+        SizePriority = 0
+        Title.Caption = 'Десктоп'
+        Width = 80
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Alignment = taCenter
+        SizePriority = 0
+        Title.Caption = 'Мин. ширина'
+        Width = 80
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        Alignment = taCenter
+        ReadOnly = True
+        SizePriority = 0
+        Title.Caption = 'Размер формы'
+        Width = 100
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        SizePriority = 0
+        Title.Caption = 'Фикс. h'
+        Width = 80
+        ColumnType = gctAuto
+        MinValue = 0
+        MaxValue = 0
+        Increment = 1
+      end>
+    FixedCols = 0
+    Flat = True
+    FocusRectVisible = False
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goThumbTracking, goSmoothScroll, goCellHints]
+    ParentShowHint = False
+    RowCount = 2
+    ShowHint = True
+    TabOrder = 1
+    OnDblClick = GridDblClick
+    OnPrepareCanvas = GridPrepareCanvas
+    ShowCommands = [dgcAppend, dgcEdit, dgcDelete, dgcMoveUp, dgcMoveDown]
+    OnCommand = GridCommand
+    ColWidths = (
+      154
+      80
+      80
+      80
+      100
+      80
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 26
+    Top = 294
+    Width = 567
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.OnClick = HelpButtonClick
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 2
+    DefaultButton = pbNone
+    ShowButtons = [pbOK, pbCancel, pbHelp]
+    ShowBevel = False
+  end
+end

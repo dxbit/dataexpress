@@ -471,6 +471,9 @@ begin
   UpdateTemplateFieldsForm;
   LL.Free;
   CL.Free;
+  if DesignFr.CurFormLayouts <> nil then
+    for i := 0 to High(FormDesign.Selected) do
+      DesignFr.CurFormLayouts^.Layouts.AddControl(FormDesign.Selection[i]);
 end;
 
 procedure TAddFieldsFm.InitCol3;

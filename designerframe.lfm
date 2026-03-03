@@ -334,6 +334,9 @@ object DesignFr: TDesignFr
       end    
       item
         Width = 150
+      end    
+      item
+        Width = 150
       end>
     SimplePanel = False
   end
@@ -575,6 +578,20 @@ object DesignFr: TDesignFr
         Tag = 3
         Caption = 'Список'
         OnClick = ReplaceMnuClick
+      end
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object LayoutMnu: TMenuItem
+      Caption = 'Макет'
+      object LayoutCreateMnu: TMenuItem
+        Caption = 'Создать'
+        OnClick = LayoutCreateMnuClick
+      end
+      object LayoutManMnu: TMenuItem
+        Caption = 'Управление макетами'
+        OnClick = LayoutManMnuClick
       end
     end
   end

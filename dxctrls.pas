@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -906,7 +906,7 @@ type
     FFilters: TStrings;
     FGroupField: Integer;
     FHelpText: TStrings;
-    FLayout: TAlign;
+    //FLayout: TAlign;
     FFormCaption: String;
     FGrid: TdxGrid;
     FId: Integer;
@@ -966,6 +966,8 @@ type
     FFormChanged: Boolean;
     FImageName: String;
     FLastModified: TDateTime;
+    FLayoutName: String;
+    FOnLayoutChange: TNotifyEvent;
     FRecordCaption: String;
     FRecordsCaption: String;
     FFormGroup: String;
@@ -1004,10 +1006,12 @@ type
     function GetQueryByIndex(Index: Integer): TObject;
     function GetQueryCount: Integer;
     function GetState: TDataSetState;
+    procedure SetLayoutName(AValue: String);
     procedure SetTree(AValue: TdxFormTree);
   protected
     procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
     procedure DefineProperties(Filer: TFiler); override;
+    procedure DoOnResize; override;
   public
     procedure RemoveGridTree;
     procedure UpdateTree;
@@ -1107,7 +1111,6 @@ type
     property FormChanged: Boolean read FFormChanged;
     property LastModified: TDateTime read FLastModified write FLastModified;
   published
-    property Layout: TAlign read FLayout write FLayout stored False;       // устаревшее
   	property GroupField: Integer read FGroupField write FGroupField stored False;
     property TreeBackColor: TColor read FTreeBackColor write FTreeBackColor stored False;
     property TreeLineColor: TColor read FTreeLineColor write FTreeLineColor stored False;
@@ -1181,6 +1184,9 @@ type
     property AllowResizeWindow: Boolean read FAllowResizeWindow write FAllowResizeWindow default False;
     property ImageName: String read FImageName write FImageName;
     property ShowImageInTab: Boolean read FShowImageInTab write FShowImageInTab default False;
+    property LayoutName: String read FLayoutName write SetLayoutName;
+
+    property OnLayoutChange: TNotifyEvent read FOnLayoutChange write FOnLayoutChange;
   end;
 
   { TdxObjectField }
@@ -1586,7 +1592,8 @@ uses
   FPImage, BGRAReadPNG, {dximages, dxfiles, }apputils, reportmanager,
   DXReports, DateUtils, pivotgrid, sqlgen, datasetprocessor,
   Variants, expressions, LazFileUtils, scriptfuncs, MaskEdit,
-  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, wsgrids;
+  dbengine, clipbrd, outputform, dxusers, imagemanager, appimagelists, wsgrids,
+  formlayouts;
 
 // Utils
 
@@ -2407,11 +2414,12 @@ begin
   end
   else if BevelStyle = pbsDefault then
   begin
-    R := ClientRect;
     C := Canvas;
     C.Pen.Color := clSilver;
-    C.Pen.Width := 1;
+    C.Pen.Width := ScaleToScreen(1);
     C.Pen.Style := psSolid;
+    R := ClientRect;
+    R.Inflate(-Round(C.Pen.Width / 2), -Round(C.Pen.Width / 2));
     C.Frame(R);
   end
   else
@@ -6419,6 +6427,37 @@ begin
   Result := FDataSet.State;
 end;
 
+procedure TdxForm.SetLayoutName(AValue: String);
+var
+  pFmLayouts: PFormLayoutForm;
+begin
+  if FLayoutName=AValue then Exit;
+  FLayoutName:=AValue;
+  if (ComponentState * [csLoading] = []) and (AValue <> '') then
+  begin
+    pFmLayouts := FormMan.Layouts.FindForm(FId);
+    if pFmLayouts <> nil then
+    begin
+      if FDSR <> nil then
+      begin
+        //W := Width;
+        //H := Height;
+        pFmLayouts^.Layouts.ApplyLayout(AValue, Self);
+        if FDSR <> nil then
+          PDataSetRec(FDSR)^.MaskingControls.UpdateMasking;
+        {if IsFormFixedHeight(Self) then
+          SetBounds(Left, Top, W, Height)
+        else
+          SetBounds(Left, Top, W, H);}
+
+        if FOnLayoutChange <> nil then FOnLayoutChange(Self);
+      end
+      else
+        pFmLayouts^.Layouts.ApplyLayout(AValue, Self);
+    end;
+  end;
+end;
+
 procedure TdxForm.SetTree(AValue: TdxFormTree);
 begin
   FreeAndNil(FTree);
@@ -6546,6 +6585,24 @@ procedure TdxForm.DefineProperties(Filer: TFiler);
 begin
   inherited DefineProperties(Filer);
   Filer.DefineProperty('Shopping', @ReadShopData, @WriteShopData, FShopData.ObjId > 0);
+end;
+
+procedure TdxForm.DoOnResize;
+var
+  pLay: PFormLayout;
+  pFm: PFormLayoutForm;
+begin
+  if FDSR <> nil then
+  begin
+    pFm := FormMan.Layouts.FindForm(Id);
+    if pFm <> nil then
+    begin
+      pLay := pFm^.Layouts.FindLayoutWidth(Width);
+      if pLay <> nil then
+        LayoutName := pLay^.Name;
+    end;
+  end;
+  inherited DoOnResize;
 end;
 
 procedure TdxForm.RemoveGridTree;
