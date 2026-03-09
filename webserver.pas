@@ -211,8 +211,12 @@ end;
 procedure THttpServer.ErrorHandler(Sender: TObject; E: Exception);
 begin
   if FOnError = nil then Exit;
-  //FSafeSecErr.Enter;
-  if ScriptLastError.ExObj = E then
+  FErrorMsg := ExceptionToString(E, False, False);
+
+  if (FErrorMsg = 'Error reading data from the socket') or
+    (FErrorMsg = 'Stream write error') then Exit;
+
+{  if ScriptLastError.ExObj = E then
     FErrorMsg := ScriptLastErrorToString
   else
   begin
@@ -220,14 +224,9 @@ begin
     // Игнорим эти ошибки.
     if (FErrorMsg = 'Error reading data from the socket') or
       (FErrorMsg = 'Stream write error') then Exit;
-    //if FErrorMsg = 'Missing HTTP protocol version in request' then Exit;
-  end;
+  end;}
 
-  //try
-    Synchronize(@DoHandleError);
-  {finally
-    FSafeSecErr.Leave;
-  end; }
+  Synchronize(@DoHandleError);
 end;
 
 function THttpServer.GetActive: Boolean;

@@ -7,7 +7,7 @@ object MainFm: TMainFm
   KeyPreview = True
   Menu = MainMenu1
   Position = poScreenCenter
-  LCLVersion = '4.3.0.0'
+  LCLVersion = '4.5.0.0'
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery

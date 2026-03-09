@@ -2423,18 +2423,12 @@ begin
 end;   }
 
 function TBaseAction.Execute: Variant;
-{var
-  S: String;}
 begin
   try
     Result := InnerExecute;
   except
     on E: Exception do
     begin
-      {if ScriptLastError.ExObj = E then S := LineEnding + ScriptLastErrorToString
-      else if E is EPSException then S := LineEnding + EPSExceptionToString(EPSException(E))
-      else S := E.Message;
-      raise Exception.CreateFmt(rsActionExecError, [ActionName, S]); }
       raise Exception.CreateFmt(rsActionExecError, [ActionName, ExceptionToString(E, True, False)]);
     end;
   end;

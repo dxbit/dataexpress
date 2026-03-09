@@ -1295,9 +1295,17 @@ msgstr "Подключение [%s] уже добавлено. "
 msgid "Connection error"
 msgstr "Ошибка соединения"
 
+#: strconsts.rsconnectionrejectedmsg
+msgid "The connection was rejected. Possible reason: The Firebird 5 server cannot connect to the Firebird 2.5 database. To connect to the database, use the Firebird 2.5 server or convert the database to the new DXDB format."
+msgstr "Соединение отклонено. Возможная причина: сервер Firebird 5 не может подключиться к базе данных Firebird 2.5. Для подключения к базе данных используйте сервер Firebird 2.5 или преобразуйте базу данных к новому формату DXDB."
+
 #: strconsts.rsconnectionstreefilter
 msgid "Filter by connection name or database location"
 msgstr "Фильтр по имени подключения или расположению базы данных"
+
+#: strconsts.rsconnectloss
+msgid "Connection loss"
+msgstr "Потеря связи"
 
 #: strconsts.rsconnectname
 msgid "Connection name"
@@ -1373,6 +1381,10 @@ msgstr "Продолжить выполнение <F9>"
 #: strconsts.rscontinuetodelete
 msgid "Continue to delete?"
 msgstr "Продолжить удаление?"
+
+#: strconsts.rscontinuework
+msgid "Continue work"
+msgstr "Продолжить работу"
 
 #: strconsts.rscopy
 msgid "Copy"
@@ -1512,10 +1524,34 @@ msgctxt "strconsts.rsdataarea"
 msgid "Data"
 msgstr "Данные"
 
+#: strconsts.rsdatabaseconnectfail
+msgid "Unable to establish a connection to the database. Make sure that the database server is available and try again."
+msgstr "Не удается установить связь с базой данных. Убедитесь в доступности сервера баз данных и попробуйте снова."
+
 #: strconsts.rsdatabaseconnectlost
 msgctxt "strconsts.rsdatabaseconnectlost"
-msgid "Unable to establish a connection to the database. Make sure that the database server is available and run the application again."
-msgstr "Не удается установить связь с базой данных. Убедитесь в доступности сервера баз данных и запустите приложение снова."
+msgid ""
+"Connection to the database is lost. Possible reasons:\n"
+"1. You are using a Wi-Fi network and your card is turned off to save energy.\n"
+"2. The cable has been disconnected.\n"
+"3. The firewall has blocked the connection.\n"
+"4. The Firebird server has been stopped.\n"
+"5. The Firebird server has disabled you due to a long period of inactivity.\n"
+"\n"
+"Further work with the application is not possible. Terminate the application and try to launch it again."
+msgstr ""
+"Связь с базой данных потеряна. Возможные причины:\n"
+"1. Вы используете сеть Wi-Fi и ваша карта отключается для экономии энергии.\n"
+"2. Кабель был отключен.\n"
+"3. Брандмауэр заблокировал соединение.\n"
+"4. Произошла остановка сервера Firebird.\n"
+"5. Сервер Firebird отключил вас из-за долгого бездействия.\n"
+"\n"
+"Дальнейшая работа с приложением невозможна. Завершите приложение и попробуйте запустить его снова."
+
+#: strconsts.rsdatabaseuseanotherprocessmsg
+msgid "The database file is being used by another process. Possible reason: the database is being used by the Firebird server, or Firebird cannot access the database because it is opened locally by some user. You cannot simultaneously open the database with the File-Open command and connect to it as a Server:DatabasePath."
+msgstr "Файл базы данных используется другим процессом. Возможная причина: база данных используется сервером Firebird или Firebird не может получить доступ к базе данных, т. к. она открыта локально каким-то пользователем. Нельзя одновременно открывать базу командой Файл-Открыть и подключаться к ней как Сервер:ПутьКБазеДанных."
 
 #: strconsts.rsdatacantgroupbyfilesimages
 msgid "Data cannot be grouped by file or image."
@@ -2634,6 +2670,18 @@ msgstr "Поле не найдено: %s"
 #: strconsts.rsfieldnotfounderror
 msgid "Field not found. Unable to determine field type."
 msgstr "Поле не найдено. Невозможно определить тип поля."
+
+#: strconsts.rsfieldnotfoundmsg
+msgid ""
+"The field was not found. Possible reasons:\n"
+"1. Invalid field name.\n"
+"2. The dataset is not open yet.\n"
+"3. Access to the field in the form actions or in the condition. The same as point 2."
+msgstr ""
+"Поле не найдено. Возможные причины:\n"
+"1. Неверное имя поля.\n"
+"2. Набор данных еще не открыт.\n"
+"3. Доступ к полю в действиях формы или в условии. То же, что и пункт 2."
 
 #: strconsts.rsfieldnotimage
 #, object-pascal-format
@@ -5516,8 +5564,16 @@ msgstr "Ошибка в скрипте"
 
 #: strconsts.rsscripterrormsg
 #, object-pascal-format
-msgid "%sException class: %sModule name: %sModule kind: %sProcedure name: %s"
-msgstr "%sКласс исключения: %sМодуль: %sТип модуля: %sПроцедура: %s"
+msgid ""
+"Exception class: %s\n"
+"Module name: %s\n"
+"Module kind: %s\n"
+"Procedure name: %s"
+msgstr ""
+"Класс исключения: %s\n"
+"Модуль: %s\n"
+"Тип модуля: %s\n"
+"Процедура: %s"
 
 #: strconsts.rsscripterroroccurred
 #, object-pascal-format
@@ -5881,6 +5937,10 @@ msgctxt "strconsts.rssolid"
 msgid "Solid"
 msgstr "Сплошная"
 
+#: strconsts.rssomethingwrong
+msgid "Something went wrong"
+msgstr "Что-то пошло не так"
+
 #: strconsts.rssort
 msgctxt "strconsts.rssort"
 msgid "Sort"
@@ -6193,6 +6253,10 @@ msgstr "Шаблон не определен"
 #: strconsts.rstemplatewizard
 msgid "Template wizard"
 msgstr "Мастер шаблонов"
+
+#: strconsts.rsterminateapp
+msgid "Terminate application"
+msgstr "Завершить приложение"
 
 #: strconsts.rstest
 msgid "Test"

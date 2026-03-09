@@ -300,7 +300,15 @@ end;
 
 function TDXMain.CanProjectSave: Boolean;
 begin
-  Result := GetLastModified = FLastModified;
+  try
+    Result := GetLastModified = FLastModified;
+  except
+    on E: Exception do
+    begin
+      ErrMsg(rsSaveProjectError + ExceptionToString(E, True, True) + rsNotLoseChanges);
+      Exit(False);
+    end;
+  end;
   if not Result then ShowWarnInfo(rsSaveProjectProhibited, rsChangeProhibitedDetails);
 end;
 

@@ -4323,7 +4323,12 @@ end;
 
 destructor TDataSetProcessor.Destroy;
 begin
-  UnBind;
+  try
+    UnBind;
+  except
+    on E: Exception do
+      LogString(E.Message, FFm.FormCaption + '.Free');
+  end;
   FCPMenu.Free;
   FNotif.Free;
   FTimer.Free;
@@ -4769,7 +4774,7 @@ var
   S: String;
 begin
   Result := -1;
-  if not IsNeedUserControl or (FFm.LockMode <> lmPessimistic) then Exit;
+  if DBase.Conn.ConnectLost or not IsNeedUserControl or (FFm.LockMode <> lmPessimistic) then Exit;
 
   S := 'select uid from dx_lock where fmid=' + IntToStr(FFm.Id) + ' and recid=' +
     IntToStr(MasterSet.Fields[0].AsInteger);
@@ -4795,7 +4800,7 @@ procedure TDataSetProcessor.UnlockRecord;
 var
   S: String;
 begin
-  if not IsNeedUserControl or (FFm.LockMode <> lmPessimistic) then Exit;
+  if DBase.Conn.ConnectLost or not IsNeedUserControl or (FFm.LockMode <> lmPessimistic) then Exit;
   S := 'delete from dx_lock where uid=' + IntToStr(UserMan.CurrentUserId) +
     ' and fmid=' + IntToStr(FMaster^.Form.Id) + ' and recid=' +
     IntToStr(MasterSet.Fields[0].AsInteger) + ';';
@@ -7990,6 +7995,8 @@ begin
 
   finally
 
+    Screen.Cursor:=crDefault;
+
     for i := 0 to FItems.Count - 1 do
       GetDataSet(i)^.DataSet.EnableControls;
     FReCalculate:=False;
@@ -7997,7 +8004,6 @@ begin
     RepaintAllGrids;
 
     if aExpr <> '' then FreeAndNil(E);
-    Screen.Cursor:=crDefault;
   end;
 end;
 

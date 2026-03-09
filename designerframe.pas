@@ -2064,10 +2064,11 @@ begin
   except
     on E: Exception do
     begin
-      if ScriptLastError.ExObj = E then
+      ErrMsg(ExceptionToString(E, False, False));
+      {if ScriptLastError.ExObj = E then
         ErrMsg(ScriptLastErrorToString)
       else
-      	ErrMsg(E.Message);
+      	ErrMsg(E.Message); }
     end;
   end;
   // Если показывается окно отладки в Form_Create, то при закрытии окна формы

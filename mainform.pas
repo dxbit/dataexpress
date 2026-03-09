@@ -25,8 +25,8 @@ interface
 
 uses
   Classes, {$IFDEF WINDOWS}windows,{$ENDIF} SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  Menus, strconsts, LclType, LclProc, ExtCtrls, IBConnection, dxctrls,
-  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils, LMessages, myctrls;
+  Menus, strconsts, LclType, LclProc, ExtCtrls, IBConnection, dxctrls, DB,
+  ComCtrls, formview, LclIntf, CrossApi, LazStringUtils, myctrls, BGRABitmap;
 
 type
 
@@ -158,6 +158,7 @@ type
     FOldFormatSettings: TFormatSettings;
     FRealBounds: TRect;
     FMenuImages: TMyImageList;
+    procedure DatabaseConnectionLost(Sender: TObject);
     function GetFormViews(Index: Integer): TFormView;
     function GetPages: TPageControl;
     function GetStatusBar: TStatusBar;
@@ -394,6 +395,7 @@ begin
 
   FBLoader := TFBLoader.Create(nil);
   DBase := TDBEngine.Create;
+  DBase.Conn.OnConnectionLost := @DatabaseConnectionLost;
   ImageMan := TImageManager.Create;
   FormMan := TFormManager.Create;
   ReportMan := TReportManager.Create;
@@ -482,11 +484,13 @@ begin
   end;
 
   LogString(Msg, 'FatalError');
-  if MessageDlg(rsFatalError, Msg, mtError, Btns, 0) = mrNo then
+  if (not IsWindowsXP and (ShowFatalErrorDialog(Msg, DesignFr = nil) = 501)) or
+    (IsWindowsXP and (MessageDlg(rsFatalError, Msg, mtError, Btns, 0) = mrNo)) then
   begin
     AppConfig.WasError:=True;
     SaveConfig;
-    Halt;
+    if UserMan <> nil then UserMan.SaveBrokenConnection;
+    Application.Terminate;
   end;
 end;
 
@@ -551,16 +555,17 @@ end;
 procedure TMainFm.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FFr);
-  try
-    if (UserMan <> nil) and (UserMan.CurrentUser <> nil) and (DBase.Connected) then
-      UserMan.UnRegisterUser;
-  except
-    on E: Exception do
-      ErrMsg(rsErrorCloseApp + ExceptionToString(E, True, False), True, 'CloseApp');
-  end;
+  if not DBase.Conn.ConnectLost then
+    try
+      if (UserMan <> nil) and (UserMan.CurrentUser <> nil) and (DBase.Connected) then
+        UserMan.UnRegisterUser;
+    except
+      on E: Exception do
+        ErrMsg(rsErrorCloseApp + ExceptionToString(E, True, False), True, 'CloseApp');
+    end;
+  LogString('', 'CloseApp');
   SaveConfig;
   HelpMan.Free;
-  LogString('', 'CloseApp');
   FreeAndNil(DXMain);
   FreeAndNil(ScriptMan);
   FreeAndNil(UserMan);
@@ -1751,6 +1756,53 @@ begin
   Result := TFormView(MainFr.PageControl1.Pages[Index].Controls[0]);
 end;
 
+procedure TMainFm.DatabaseConnectionLost(Sender: TObject);
+begin
+  UserMan.SaveBrokenConnection;
+end;
+
+(*procedure TMainFm.DatabaseLostConnect(Sender: TObject; ErrorCode: Integer;
+  const Msg: String);
+var
+  Bn: TTaskDialogBaseButtonItem;
+  Bmp: TCustomBitmap;
+begin
+  if not FConnectAlreadyLost then
+  begin
+    with TTaskDialog.Create(nil) do
+    begin
+      Caption := rsFatalError;
+      Title := 'Loss of connection';
+      Text := 'The application cannot work correctly if the connection with the database is lost and will be closed. Try to launch the application again.';
+      ExpandedText := Msg;
+      CommonButtons := [];
+      Bn := Buttons.Add;
+      Bn.Caption := rsOk;
+      Bn.ModalResult := mrOk;
+      Bn.Default := True;
+      Bn := Buttons.Add;
+      Bn.Caption := rsHelp;
+
+      Flags := Flags + [tfUseHiconMain];
+      Bmp := CreateBitmapFromLazarusResource('dberr32');
+      CustomMainIcon.Assign(Bmp);
+      Bmp.Free;
+
+      Execute;
+      Free;
+    end;
+    AppConfig.WasError:=True;
+    SaveConfig;
+    LogString(Msg, 'ConnectionLoss');
+    LogString('', 'HaltApp');
+    FConnectAlreadyLost := True;
+  end;
+
+  FConnectLost := True;
+  Halt;
+  //Application.Terminate;
+end;   *)
+
 function TMainFm.GetPages: TPageControl;
 begin
   if MainFr = nil then raise Exception.Create('The property is not available in designer mode.');
@@ -1990,7 +2042,7 @@ end;
 procedure TMainFm.CloseDatabase(ClearConnectInfo: Boolean);
 begin
   try
-    if UserMan.CurrentUser <> nil then
+    if not DBase.Conn.ConnectLost and (UserMan.CurrentUser <> nil) then
       UserMan.UnRegisterUser;
   except
     on E: Exception do

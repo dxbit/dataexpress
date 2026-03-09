@@ -64,7 +64,9 @@ type
   TIBConnection = class (TSQLConnection)
   private
     FCheckTransactionParams: Boolean;
+    FConnectLost: Boolean;            // 7bit
     FDatabaseHandle        : pointer;
+    FOnConnectionLost: TNotifyEvent;
     FStatus                : array [0..19] of ISC_STATUS;
     FDatabaseInfo          : TDatabaseInfo;
     FDialect               : integer;
@@ -131,6 +133,9 @@ type
     // Segment size is not used in the code; property kept for backward compatibility
     property BlobSegmentSize : word read FBlobSegmentSize write FBlobSegmentSize; deprecated;
     property ODSMajorVersion : integer read GetODSMajorVersion; //ODS major version number; influences database compatibility/feature level.
+    // 7bit
+    property ConnectLost: Boolean read FConnectLost;
+    property OnConnectionLost: TNotifyEvent read FOnConnectionLost write FOnConnectionLost;
   published
     property DatabaseName;
     property Dialect : integer read GetDialect write FDialect stored IsDialectStored default DEFDIALECT;
@@ -188,6 +193,14 @@ begin
     Msg := '';
     while isc_interprete(Buf, @Status) > 0 do
       Msg := Msg + LineEnding + ' -' + StrPas(Buf);
+
+    // 7bit
+    if (ErrorCode = 335544726) or (ErrorCode = 335544727) then
+    begin
+      FConnectLost := True;
+      if FOnConnectionLost <> nil then FOnConnectionLost(Self);
+    end;
+    //
     raise EIBDatabaseError.CreateFmt('%s : %s', [ProcName,Msg], Self, ErrorCode, SQLState);
   end;
 end;
@@ -449,8 +462,12 @@ begin
     Exit;
   end;
 
-  if isc_detach_database(@FStatus[0], @FDatabaseHandle) <> 0 then
-    CheckError('Close', FStatus);
+  // 7bit
+  if not FConnectLost then
+  begin
+    if isc_detach_database(@FStatus[0], @FDatabaseHandle) <> 0 then
+      CheckError('Close', FStatus);
+  end;
 {$IfDef LinkDynamically}
   ReleaseIBase60;
 {$ELSE}
@@ -896,8 +913,12 @@ begin
   with cursor as TIBcursor do
     if assigned(StatementHandle) Then
       begin
-        if isc_dsql_free_statement(@Status[0], @StatementHandle, DSQL_Drop) <> 0 then
-          CheckError('FreeStatement', Status);
+        // 7bit
+        if not FConnectLost then
+        begin
+          if isc_dsql_free_statement(@Status[0], @StatementHandle, DSQL_Drop) <> 0 then
+            CheckError('FreeStatement', Status);
+        end;
         StatementHandle := nil;
         FPrepared := False;
       end;
@@ -1218,7 +1239,8 @@ begin
   {$pop}
 end;
 
-function TIBConnection.LoadField(cursor : TSQLCursor; FieldDef : TFieldDef; buffer : pointer; out CreateBlob : boolean) : boolean;
+function TIBConnection.LoadField(cursor: TSQLCursor; FieldDef: TfieldDef;
+  buffer: pointer; out CreateBlob: boolean): boolean;
 
 var
   VSQLVar    : PXSQLVAR;

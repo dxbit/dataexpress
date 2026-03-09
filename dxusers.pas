@@ -335,6 +335,9 @@ type
     procedure SetUsersChanged;
     procedure SetRolesChanged;
     procedure SetIntfsChanged;
+    procedure SaveBrokenConnection;
+    procedure ResetBrokenConnection;
+    function GetBrokenConnection: Integer;
     property Users: TdxUserList read FUsers;
     property Roles: TdxRoleList read FRoles;
     property Intfs: TdxIntfList read FIntfs;
@@ -361,7 +364,7 @@ implementation
 uses
   LazUtf8, sqldb, dbengine, apputils, SAX, saxbasereader, Db, mytypes,
   formmanager, dxreports, reportmanager, Buttons, myctrls, JvDesignImp,
-  TACustomSeries;
+  TACustomSeries, inifiles;
 
 type
 
@@ -1511,7 +1514,15 @@ begin
   end;
   MonDS.Free;
   ConDS.Free;
+
+  cid := GetBrokenConnection;
+  if cid > 0 then
+    SQL := SQL + 'delete from dx_lock where cid is null or cid=' + IntToStr(cid) + ';' +
+      'delete from dx_conn where id=' + IntToStr(cid) + ';';
+
   DBase.Execute(SQL);
+
+  if cid > 0 then ResetBrokenConnection;
 end;
 
 function UserExists(DS: TDataSet; UId: Integer): Boolean;
@@ -1634,6 +1645,43 @@ procedure TdxUserManager.SetIntfsChanged;
 begin
   FIntfsChanged:=True;
   FLastModified:=Now;
+end;
+
+procedure TdxUserManager.SaveBrokenConnection;
+begin
+  if not DBase.IsRemote then Exit;
+
+  with TIniFile.Create(GetCacheDir + 'db.cfg') do
+  begin
+    WriteBool('Last login', 'WasError', True);
+    WriteInteger('Last login', 'Connection ID', FConnId);
+    Free;
+  end;
+end;
+
+procedure TdxUserManager.ResetBrokenConnection;
+begin
+  if not DBase.IsRemote then Exit;
+
+  with TIniFile.Create(GetCacheDir + 'db.cfg') do
+  begin
+    WriteBool('Last login', 'WasError', False);
+    DeleteKey('Last login', 'Connection ID');
+    Free;
+  end;
+end;
+
+function TdxUserManager.GetBrokenConnection: Integer;
+begin
+  Result := 0;
+  if not DBase.IsRemote then Exit;
+
+  with TIniFile.Create(GetCacheDir + 'db.cfg') do
+  begin
+    if ReadBool('Last login', 'WasError', False) then
+      Result := ReadInteger('Last login', 'Connection ID', 0);
+    Free;
+  end;
 end;
 
 { TdxUserList }

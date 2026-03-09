@@ -131,9 +131,25 @@ type
     function CloseQuery: boolean; override;
   end;
 
+  TErrorDialogButton = (edbTerminateApp, edbContinueWork);
+  TErrorDialogButtons = set of TErrorDialogButton;
+
+  { TErrorDialog }
+
+  TErrorDialog = class(TTaskDialog)
+  private
+    FShowButtons: TErrorDialogButtons;
+    procedure SetShowButtons(AValue: TErrorDialogButtons);
+  protected
+    procedure DoOnButtonClicked(AModalResult: Integer; var ACanClose: Boolean); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    property ShowButtons: TErrorDialogButtons read FShowButtons write SetShowButtons;
+  end;
 
 procedure ShowCompilerErrors(SD: TScriptData = nil);
 function ShowGroupNameDlg(var GrName: String): Integer;
+function ShowFatalErrorDialog(const Msg: String; CanTerminate: Boolean): Integer;
 
 var
   CompilerErrorsDlg: TCompileErrorsDlg;
@@ -141,7 +157,7 @@ var
 implementation
 
 uses
-  formmanager, dximages, apputils, LazUtf8, mytypes, appsettings;
+  formmanager, dximages, apputils, LazUtf8, mytypes, appsettings, dbengine;
 
 function GetImageIndex(ClsName: String): Integer;
 const
@@ -184,6 +200,33 @@ begin
   try
 		Result := ShowForm(GrName);
   finally
+    Free;
+  end;
+end;
+
+function ShowFatalErrorDialog(const Msg: String; CanTerminate: Boolean
+  ): Integer;
+var
+  Bmp: TCustomBitmap;
+begin
+  Result := mrNone;
+  with TErrorDialog.Create(nil) do
+  begin
+    Caption := rsFatalError;
+    if DBase.Conn.ConnectLost then
+    begin
+      Title := rsConnectLoss;
+      Bmp := CreateBitmapFromRes('dberr32');
+      CustomMainIcon.Assign(Bmp);
+      Bmp.Free;
+      Flags := Flags + [tfUseHiconMain];
+    end
+    else
+      Title := rsSomethingWrong;
+    Text := Msg;
+    if CanTerminate then ShowButtons := [edbTerminateApp, edbContinueWork]
+    else ShowButtons := [edbContinueWork];
+    if Execute then Result := ModalResult;
     Free;
   end;
 end;
@@ -251,6 +294,45 @@ begin
     else
       Result := True;
   end;
+end;
+
+{ TErrorDialog }
+
+procedure TErrorDialog.SetShowButtons(AValue: TErrorDialogButtons);
+begin
+  if FShowButtons=AValue then Exit;
+  FShowButtons:=AValue;
+  Buttons.Clear;
+  if edbTerminateApp in AValue then
+  begin
+    with Buttons.Add do
+    begin
+      Caption := rsTerminateApp;
+      ModalResult := 501;
+    end;
+  end;
+  if edbContinueWork in AValue then
+  begin
+    with Buttons.Add do
+    begin
+      Caption := rsContinueWork;
+      ModalResult := 502;
+      Default := True;
+    end;
+  end;
+end;
+
+procedure TErrorDialog.DoOnButtonClicked(AModalResult: Integer;
+  var ACanClose: Boolean);
+begin
+  //
+end;
+
+constructor TErrorDialog.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  CommonButtons := [];
+  MainIcon := tdiError;
 end;
 
 { TCompileErrorsDlg }

@@ -227,6 +227,7 @@ function RemoveNonPrintableChars(const S: String; KeepNewLine: Boolean = False):
 procedure SaveString(const FileName: String; const S: String);
 function LoadString(const FileName: String): String;
 function ReplacePathDelimiters(const Path: String): String;
+function GetCacheDir: String;
 procedure LoadMetaFromCache;
 function CanCache: Boolean;
 function GetTempDirName: String;
@@ -277,6 +278,7 @@ function Abrakadabra(const Path: String; Delim: Char): String;
 function ExtractDBName(DBPath: String): String;
 function IsFormFixedHeight(AForm: TdxForm): Boolean;
 procedure SetFormFixedHeight(AForm: TdxForm; Value: Boolean);
+function IsWindowsXP: Boolean;
 
 implementation
 
@@ -3316,49 +3318,83 @@ begin
   end;
 end;
 
+function ScriptKindToString(K: TScriptKind): String;
+begin
+  case K of
+    skMain: Result := 'Main';
+    skWebMain: Result := 'WebMain';
+    skForm: Result := rsFormModule;
+    skWebForm: Result := rsFormWebModule;
+    skUser: Result := rsUserModule;
+    skExpr: Result := rsExtensionsModule;
+    skWebExpr: Result := rsWebExtensionsModule;
+    else Result := '';
+  end;
+end;
+
 function ExceptionToString(E: Exception; TopSpace, BottomSpace: Boolean
   ): String;
 var
-  S, Msg: String;
+  S, Msg, SysMsg: String;
+  ErrCode: Integer;
 begin
   if ScriptLastError.ExObj = E then
-    Result := ScriptLastErrorToString
-  else if E is EPSException then
-    Result := EPSExceptionToString(EPSException(E))
-  else if E is EDataBaseError then
   begin
-    //if E is EIBDataBaseError then
-   //   Debug(EIBDatabaseError(E).ErrorCode);
+    //Result := ScriptLastErrorToString
+    SysMsg := E.Message + Spaces +
+      Format(rsScriptErrorMsg, [E.ClassName, ScriptLastError.ModuleName,
+      ScriptKindToString(ScriptLastError.Kind), ScriptLastError.ProcName]);
+  end
+  else
+    SysMsg := E.Message + Spaces + Format(rsExceptionClass, [E.ClassName]);
+
+  Result := SysMsg;
+
+  if E is EPSException then
+    Result := EPSExceptionToString(EPSException(E))
+  else //if E is EDataBaseError then
+  begin
+    if E is EIBDatabaseError then ErrCode := EIBDatabaseError(E).ErrorCode
+    else if E is EUpdateError then ErrCode := EUpdateError(E).ErrorCode
+    else ErrCode := 0;
+
     S := WinCPToUtf8(E.Message);
-    if Pos('Unable to complete network', S) > 0 then
+    // Error reading data from the connection, Error writing data to the connection.
+    if (ErrCode = 335544726) or (ErrCode = 335544727) then
       Msg := rsDatabaseConnectLost
-    else if Pos('Error writing data to the connection', S) > 0 then
-      Msg := rsDatabaseConnectLost
-    else if Pos('block size exceeds', S) > 0 then
+    // Unable to complete network, Failed to enstablish a connection.
+    else if (ErrCode = 335544721) or (ErrCode = 335544722) then
+      Msg := rsDatabaseConnectFail
+    else if (ErrCode = 335544388) or (Pos('block size exceeds', S) > 0) then
       Msg := rsRecSizeLimit
-    else if Pos('new record size', S) > 0 then
+    else if (ErrCode = 335544681) or (Pos('new record size', S) > 0) then
       Msg := NewRecordSizeTooBigToMsg(S)
-    else if Pos('too many versions', S) > 0 then
+    else if (ErrCode = 335544677) or (Pos('too many versions', S) > 0) then
       Msg := TooManyVersionsToMsg(S)
-    //else if Pos('Error while trying to open file', S) > 0 then
-    //  Msg := rsDBInRemoteMode
-    else if Pos('index root page is full', S) > 0 then
+    else if (ErrCode = 335544661) or (Pos('index root page is full', S) > 0) then
       Msg := rsTooManyIndex
-    else if Pos('is not a valid database', S) > 0 then
+    else if (ErrCode = 335544323) or (Pos('is not a valid database', S) > 0) then
       Msg := rsFileNotValidDatabase
+    else if (ErrCode = 335544421) or (Pos('Connection rejected', S) > 0) then
+      Msg := rsConnectionRejectedMsg
+    else if (ErrCode = 335544734) or (Pos('Error while trying to open file', S) > 0) then
+      Msg := rsDatabaseUseAnotherProcessMsg
+    else if Pos('Field not found', S) > 0 then
+      Msg := rsFieldNotFoundMsg
     else
       Msg := '';
 
-    Result := Format(rsExceptionClass, [E.ClassName]) + LineEnding +
-      Format(rsErrorMessage, [S]);
+    //Result := Format(rsExceptionClass, [E.ClassName]) + LineEnding +
+    //  Format(rsErrorMessage, [S]);
+    Result := SysMsg;
     if Msg <> '' then
       Result := Msg + Spaces + rsErrorDetails + Spaces + Result;
-  end
-  else
+  end;
+  {else
     Result := Format(rsExceptionClass, [E.ClassName]) + LineEnding +
-      Format(rsErrorMessage, [E.Message]);
-  if TopSpace then Result := LineEnding + LineEnding + Result;
-  if BottomSpace then Result := Result + LineEnding + LineEnding;
+      Format(rsErrorMessage, [E.Message]);  }
+  if TopSpace then Result := Spaces + Result;
+  if BottomSpace then Result := Result + Spaces;
 end;
 
 function AroundSpaces(const S: String): String;
@@ -3926,9 +3962,9 @@ end;
 function GetCacheDir: String;
 begin
   {$ifdef windows}
-  Result := GetTempDir;
+  Result := GetTempDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
   {$else}
-  Result := AppPath + 'cache' + PathDelim;
+  Result := AppPath + 'cache' + PathDelim + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
   {$endif}
 end;
 
@@ -3936,7 +3972,7 @@ procedure LoadMetaFromCache;
 var
   TmpDir: String;
 begin
-  TmpDir := GetCacheDir + ReplacePathDelimiters(DBase.Database) + '.tmp' + PathDelim;
+  TmpDir := GetCacheDir;
   if not ForceDirectories(TmpDir) then
     raise Exception.CreateFmt('Unable to create cache directory %s', [TmpDir]);
 
@@ -4987,6 +5023,11 @@ begin
     if AForm.Parent is TScrollingWinControl then
       THackScrollingWinControl(AForm.Parent).AutoScroll := False;
   end;
+end;
+
+function IsWindowsXP: Boolean;
+begin
+  Result := (Win32MajorVersion = 5) and (Win32MinorVersion = 1);
 end;
 
 end.

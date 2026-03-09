@@ -916,18 +916,22 @@ end;
 
 destructor TMainFr.Destroy;
 begin
-  MainFm.SelectedFormId:=0;
-  if FCurView <> nil then
-  	MainFm.SelectedFormId:=FCurView.Form.Id;
-  try
-    CloseAllTabs;
-    if MainFm.OnDatabaseClose <> nil then
-      MainFm.OnDatabaseClose(MainFm);
-    MainModule.TryRunProc('database_close', []);
-  except
-    on E: Exception do
-      ErrMsg(rsErrorCloseDBMsg + ExceptionToString(E, True, False), True, 'CloseDatabase');
+  if (DBase <> nil) and not DBase.Conn.ConnectLost then
+  begin
+    MainFm.SelectedFormId:=0;
+    if FCurView <> nil then
+  	  MainFm.SelectedFormId:=FCurView.Form.Id;
+    try
+      CloseAllTabs;
+      if MainFm.OnDatabaseClose <> nil then
+        MainFm.OnDatabaseClose(MainFm);
+      MainModule.TryRunProc('database_close', []);
+    except
+      on E: Exception do
+        ErrMsg(rsErrorCloseDBMsg + ExceptionToString(E, True, False), True, 'CloseDatabase');
+    end;
   end;
+
   MainFm.RestoreMainMenu;
   MainFm.ClearEventHandlers;
   MainFm.RestoreFormatSettings;

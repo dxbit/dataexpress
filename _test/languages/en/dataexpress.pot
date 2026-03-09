@@ -1261,8 +1261,16 @@ msgstr ""
 msgid "Connection error"
 msgstr ""
 
+#: strconsts.rsconnectionrejectedmsg
+msgid "The connection was rejected. Possible reason: The Firebird 5 server cannot connect to the Firebird 2.5 database. To connect to the database, use the Firebird 2.5 server or convert the database to the new DXDB format."
+msgstr ""
+
 #: strconsts.rsconnectionstreefilter
 msgid "Filter by connection name or database location"
+msgstr ""
+
+#: strconsts.rsconnectloss
+msgid "Connection loss"
 msgstr ""
 
 #: strconsts.rsconnectname
@@ -1338,6 +1346,10 @@ msgstr ""
 
 #: strconsts.rscontinuetodelete
 msgid "Continue to delete?"
+msgstr ""
+
+#: strconsts.rscontinuework
+msgid "Continue work"
 msgstr ""
 
 #: strconsts.rscopy
@@ -1478,8 +1490,24 @@ msgctxt "strconsts.rsdataarea"
 msgid "Data"
 msgstr ""
 
+#: strconsts.rsdatabaseconnectfail
+msgid "Unable to establish a connection to the database. Make sure that the database server is available and try again."
+msgstr ""
+
 #: strconsts.rsdatabaseconnectlost
-msgid "Unable to establish a connection to the database. Make sure that the database server is available and run the application again."
+msgid ""
+"Connection to the database is lost. Possible reasons:\n"
+"1. You are using a Wi-Fi network and your card is turned off to save energy.\n"
+"2. The cable has been disconnected.\n"
+"3. The firewall has blocked the connection.\n"
+"4. The Firebird server has been stopped.\n"
+"5. The Firebird server has disabled you due to a long period of inactivity.\n"
+"\n"
+"Further work with the application is not possible. Terminate the application and try to launch it again."
+msgstr ""
+
+#: strconsts.rsdatabaseuseanotherprocessmsg
+msgid "The database file is being used by another process. Possible reason: the database is being used by the Firebird server, or Firebird cannot access the database because it is opened locally by some user. You cannot simultaneously open the database with the File-Open command and connect to it as a Server:DatabasePath."
 msgstr ""
 
 #: strconsts.rsdatacantgroupbyfilesimages
@@ -2591,6 +2619,14 @@ msgstr ""
 
 #: strconsts.rsfieldnotfounderror
 msgid "Field not found. Unable to determine field type."
+msgstr ""
+
+#: strconsts.rsfieldnotfoundmsg
+msgid ""
+"The field was not found. Possible reasons:\n"
+"1. Invalid field name.\n"
+"2. The dataset is not open yet.\n"
+"3. Access to the field in the form actions or in the condition. The same as point 2."
 msgstr ""
 
 #: strconsts.rsfieldnotimage
@@ -5449,7 +5485,11 @@ msgstr ""
 
 #: strconsts.rsscripterrormsg
 #, object-pascal-format
-msgid "%sException class: %sModule name: %sModule kind: %sProcedure name: %s"
+msgid ""
+"Exception class: %s\n"
+"Module name: %s\n"
+"Module kind: %s\n"
+"Procedure name: %s"
 msgstr ""
 
 #: strconsts.rsscripterroroccurred
@@ -5809,6 +5849,10 @@ msgstr ""
 msgid "Solid"
 msgstr ""
 
+#: strconsts.rssomethingwrong
+msgid "Something went wrong"
+msgstr ""
+
 #: strconsts.rssort
 msgid "Sort"
 msgstr ""
@@ -6119,6 +6163,10 @@ msgstr ""
 
 #: strconsts.rstemplatewizard
 msgid "Template wizard"
+msgstr ""
+
+#: strconsts.rsterminateapp
+msgid "Terminate application"
 msgstr ""
 
 #: strconsts.rstest

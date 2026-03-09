@@ -1230,10 +1230,10 @@ resourcestring
   rsIIFParamNotLogic = 'The type of the result of evaluating a logical '
     +'expression is not a logical type (true or false).';
   rsErrorLoadLib = 'Error while loading library %s. Error message: %s';
-  //rsScriptErrorMsg = 'Exception class: %sException message: %sModule name: %'
+  //rsScriptErrorMsg = '%sException class: %sModule name: %'
   //  +'sModule kind: %sProcedure name: %s';
-  rsScriptErrorMsg = '%sException class: %sModule name: %'
-    +'sModule kind: %sProcedure name: %s';
+  rsScriptErrorMsg = 'Exception class: %s'#13#10'Module name: %s'#13#10
+    +'Module kind: %s'#13#10'Procedure name: %s';
   rsExtension = 'Extension';
   rsScriptError = 'Script error';
   rsScriptErrorOccurred = 'An error occurred while executing the script.%s';
@@ -1278,8 +1278,8 @@ resourcestring
     +'continue the application?';
   rsDBConnectLostDesign = 'Database connection lost. Make '
     +'sure that the database server is available and run the application again.'; }
-  rsDatabaseConnectLost = 'Unable to establish a connection to the database. Make sure that the '
-    +'database server is available and run the application again.';
+  rsDatabaseConnectFail = 'Unable to establish a connection to the database. Make sure that the '
+    +'database server is available and try again.';
   //rsUsedDefaultFieldNameInHeader = 'You have entered one space. This means '
   //  +'that the original field name in the header will be used.';
   rsReportWindow = 'Report window';
@@ -1888,6 +1888,31 @@ resourcestring
   rsFixedHeightForm = 'Fixed height of the form';
   rsFixedH = 'Fixed h';
   rsAppTypeNotSelected = 'You have not selected where the layout will be used.';
+  rsDatabaseConnectLost = 'Connection to the database is lost. Possible reasons:'#13#10
+    +'1. You are using a Wi-Fi network and your card is turned off to save energy.'#13#10
+    +'2. The cable has been disconnected.'#13#10
+    +'3. The firewall has blocked the connection.'#13#10
+    +'4. The Firebird server has been stopped.'#13#10
+    +'5. The Firebird server has disabled you due to a long period of inactivity.'#13#10#13#10
+    +'Further work with the application is not possible. Terminate the application '
+    +'and try to launch it again.';
+  rsConnectLoss = 'Connection loss';
+  rsTerminateApp = 'Terminate application';
+  rsContinueWork = 'Continue work';
+  rsSomethingWrong = 'Something went wrong';
+  rsConnectionRejectedMsg = 'The connection was rejected. Possible reason: The'
+    +' Firebird 5 server cannot connect to the Firebird 2.5 database. To '
+    +'connect to the database, use the Firebird 2.5 server or convert the '
+    +'database to the new DXDB format.';
+  rsDatabaseUseAnotherProcessMsg = 'The database file is being used by another '
+    +'process. Possible reason: the database is being used by the Firebird '
+    +'server, or Firebird cannot access the database because it is opened '
+    +'locally by some user. You cannot simultaneously open the database with '
+    +'the File-Open command and connect to it as a Server:DatabasePath.';
+  rsFieldNotFoundMsg = 'The field was not found. Possible reasons:'#13#10
+    +'1. Invalid field name.'#13#10
+    +'2. The dataset is not open yet.'#13#10
+    +'3. Access to the field in the form actions or in the condition. The same as point 2.';
 
 implementation
 
