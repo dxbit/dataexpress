@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
 
-    Copyright 2015-2025 Pavel Duborkin ( mydataexpress@mail.ru )
+    Copyright 2015-2026 Pavel Duborkin ( mydataexpress@mail.ru )
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -66,14 +66,16 @@ function DataSetFindText(ADataSet: TDataSet; const TextField, Text: String;
 var
   S1, S2: String;
   B: TBookmark;
-  AftScroll: TDataSetNotifyEvent;
+  AftScroll, BefScroll: TDataSetNotifyEvent;
 begin
   Result := False;
   if (ADataSet = nil) or (ADataSet.Active = False) or (Text = '') then Exit;
   S1 := Utf8LowerCase(Text);
   with ADataSet do
     try
+      BefScroll := BeforeScroll;
       AftScroll := AfterScroll;
+      BeforeScroll := nil;
       AfterScroll := nil;
       DisableControls;
       B := GetBookmark;
@@ -109,7 +111,10 @@ begin
         GotoBookmark(B);
       FreeBookmark(B);
       EnableControls;
+      BeforeScroll := BefScroll;
       AfterScroll := AftScroll;
+      if BeforeScroll <> nil then
+        BeforeScroll(ADataSet);
       if AfterScroll <> nil then
         AfterScroll(ADataSet);
     end;

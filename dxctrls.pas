@@ -982,8 +982,6 @@ type
     FShowScrollBars: Boolean;
     FSoftCheck: Boolean;
     FTree: TdxFormTree;
-    FScrollEventsCounter: Integer;
-    FOldAfterScroll, FOldBeforeScroll: TDataSetNotifyEvent;
     FUseSelCond: Boolean;
     //FGridBmp: TBitmap;
     function GetAsDT(Index: String): TDateTime;
@@ -7050,30 +7048,17 @@ end;
 
 procedure TdxForm.EnableScrollEvents;
 begin
-  if FScrollEventsCounter = 0 then Exit;
-  Dec(FScrollEventsCounter);
-  if FScrollEventsCounter = 0 then
-  begin
-    FDataset.AfterScroll := FOldAfterScroll;
-    FDataSet.BeforeScroll := FOldBeforeScroll;
-  end;
+  FormGrid.EnableScrollEvents;
 end;
 
 procedure TdxForm.DisableScrollEvents;
 begin
-  if FScrollEventsCounter = 0 then
-  begin
-    FOldAfterScroll := FDataset.AfterScroll;
-    FOldBeforeScroll := FDataSet.BeforeScroll;
-    FDataSet.AfterScroll := nil;
-    FDataSet.BeforeScroll := nil;
-  end;
-  Inc(FScrollEventsCounter);
+  FormGrid.DisableScrollEvents;
 end;
 
 function TdxForm.ScrollEventsDisabled: Boolean;
 begin
-  Result := FScrollEventsCounter > 0;
+  Result := FormGrid.ScrollEventsDisabled;
 end;
 
 function TdxForm.WhoEdit(ARecId: Integer): String;

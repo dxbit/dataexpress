@@ -1913,6 +1913,7 @@ resourcestring
     +'1. Invalid field name.'#13#10
     +'2. The dataset is not open yet.'#13#10
     +'3. Access to the field in the form actions or in the condition. The same as point 2.';
+  rsFastScroll = 'Fast scroll';
 
 implementation
 

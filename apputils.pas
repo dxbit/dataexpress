@@ -5027,7 +5027,11 @@ end;
 
 function IsWindowsXP: Boolean;
 begin
+  {$ifdef windows}
   Result := (Win32MajorVersion = 5) and (Win32MinorVersion = 1);
+  {$else}
+  Result := False;
+  {$endif}
 end;
 
 end.

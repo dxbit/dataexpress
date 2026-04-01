@@ -8,7 +8,7 @@ object GrdFm: TGrdFm
   ClientHeight = 375
   ClientWidth = 1271
   Position = poOwnerFormCenter
-  LCLVersion = '4.3.0.0'
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
@@ -199,7 +199,7 @@ object GrdFm: TGrdFm
         Left = 38
         Height = 15
         Top = 65
-        Width = 92
+        Width = 93
         BorderSpacing.Left = 4
         Caption = 'Текст выделения'
         ParentColor = False
@@ -210,7 +210,7 @@ object GrdFm: TGrdFm
         Left = 186
         Height = 15
         Top = 65
-        Width = 141
+        Width = 142
         BorderSpacing.Left = 4
         Caption = 'Текст неактив. выделения'
         ParentColor = False

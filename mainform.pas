@@ -490,7 +490,7 @@ begin
     AppConfig.WasError:=True;
     SaveConfig;
     if UserMan <> nil then UserMan.SaveBrokenConnection;
-    Application.Terminate;
+    Halt;
   end;
 end;
 

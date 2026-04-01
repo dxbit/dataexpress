@@ -195,7 +195,8 @@ begin
       Msg := Msg + LineEnding + ' -' + StrPas(Buf);
 
     // 7bit
-    if (ErrorCode = 335544726) or (ErrorCode = 335544727) then
+    if (ErrorCode = 335544726) or (ErrorCode = 335544727) or
+      (ErrorCode = 335544721) or (ErrorCode = 335544722) then
     begin
       FConnectLost := True;
       if FOnConnectionLost <> nil then FOnConnectionLost(Self);
@@ -443,6 +444,8 @@ end;
 
 procedure TIBConnection.DoInternalConnect;
 begin
+  // 7bit
+  FConnectLost := False;
 {$IfDef LinkDynamically}
   InitialiseIBase60;
 {$EndIf}

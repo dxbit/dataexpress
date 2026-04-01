@@ -2553,6 +2553,10 @@ msgstr ""
 msgid "Failed to write data to the database. You can try again."
 msgstr ""
 
+#: strconsts.rsfastscroll
+msgid "Fast scroll"
+msgstr ""
+
 #: strconsts.rsfatalerror
 msgid "Unexpected exception"
 msgstr ""

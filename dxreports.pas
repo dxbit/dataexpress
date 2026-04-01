@@ -231,6 +231,7 @@ type
     FColor: TColor;
     FDefaultRowHeight: Integer;
     FEditable: Boolean;
+    FFastScroll: Boolean;
     FFixedColor: TColor;
     //FFixedHotColor: TColor;
     FFlat: Boolean;
@@ -303,6 +304,7 @@ type
     property TitleHeight: Integer read FTitleHeight write FTitleHeight;
     property TitleWordWrap: Boolean read FTitleWordWrap write FTitleWordWrap;
     property Editable: Boolean read FEditable write FEditable;
+    property FastScroll: Boolean read FFastScroll write FFastScroll;
   end;
 
 
@@ -471,8 +473,6 @@ type
     //FParams: String;
     FQRi: Integer;
     FRpWnd: TObject;
-    FScrollEventsCounter: Integer;
-    FOldAfterScroll, FOldBeforeScroll: TDataSetNotifyEvent;
     function GetEditable: Boolean;
     function GetFields(aName: String): Variant;
     function GetAsDT(Index: String): TDateTime;
@@ -506,10 +506,7 @@ type
     procedure Refresh;
     procedure Close;
     function Opened: Boolean;
-    procedure DisableScrollEvents;
-    procedure EnableScrollEvents;
     procedure RequeryIfNeed(All: Boolean = False);
-    function ScrollEventsDisabled: Boolean;
     procedure SortColsToRpGridSortCols;
     function GetSourceFileName(const aName: String): String;
     function GetStoredFileName(const aName: String): String;
@@ -659,7 +656,7 @@ implementation
 uses
   apputils, SAX, saxbasereader, LazUtf8, formmanager, sqlgen, expressions, strutils,
   Variants, DateUtils, reportmanager, datasetprocessor, reportwindow,
-  scriptfuncs, dxfiles, dximages, dbengine, dxsqlquery;
+  scriptfuncs, dxfiles, dximages, dxsqlquery;
 
 type
 
@@ -817,6 +814,7 @@ begin
   Grid.AllowChangeSort := G.AllowChangeSort;
   if G.Indicator then Grid.Options := Grid.Options + [dgIndicator];
   if G.Editable then Grid.Options := Grid.Options + [dgEditing];
+  Grid.FastScroll := G.FastScroll;
 
   L1 := G.SortCols;
   L2 := Grid.SortCols;
@@ -3294,29 +3292,6 @@ begin
   Result := TDataSetProcessor(FDSP).Queries[FQRi]^.DataSet.Active;
 end;
 
-procedure TdxQueryGrid.DisableScrollEvents;
-begin
-  if FScrollEventsCounter = 0 then
-  begin
-    FOldAfterScroll := DataSource.DataSet.AfterScroll;
-	  FOldBeforeScroll := DataSource.DataSet.BeforeScroll;
-    DataSource.DataSet.AfterScroll := nil;
-    DataSource.DataSet.BeforeScroll := nil;
-  end;
-  Inc(FScrollEventsCounter);
-end;
-
-procedure TdxQueryGrid.EnableScrollEvents;
-begin
-  if FScrollEventsCounter = 0 then Exit;
-  Dec(FScrollEventsCounter);
-  if FScrollEventsCounter = 0 then
-  begin
-    DataSource.DataSet.AfterScroll := FOldAfterScroll;
-    DataSource.DataSet.BeforeScroll := FOldBeforeScroll;
-  end;
-end;
-
 function TdxQueryGrid.GetAsDT(Index: String): TDateTime;
 begin
   Result := Nz(Fields[Index], 0);
@@ -3410,11 +3385,6 @@ begin
       Queries[FQRi]^.NeedRefresh := False;
     end;
   end;
-end;
-
-function TdxQueryGrid.ScrollEventsDisabled: Boolean;
-begin
-  Result := FScrollEventsCounter > 0;
 end;
 
 procedure TdxQueryGrid.SortColsToRpGridSortCols;
@@ -4082,6 +4052,7 @@ begin
     G.TitleHeight:=GetInt(Atts, 'titleheight', -1);
     G.TitleWordWrap:=GetBool(Atts, 'titlewordwrap', False);
     G.Editable:=GetBool(Atts, 'editable');
+    G.FastScroll:=GetBool(Atts, 'fastscroll');
   end
   else if LocalName = 'column' then
   begin
@@ -4426,6 +4397,7 @@ procedure TReportData.SaveToStream(St: TStream);
       '" titleheight="' + IntToStr(G.TitleHeight) +
       '" titlewordwrap="' + Bool2Str(G.TitleWordWrap) +
       '" editable="' + Bool2Str(G.Editable) +
+      '" fastscroll="' + Bool2Str(G.FastScroll) +
       '">');
     WrFont(G.Font, 'font');
     WrFont(G.TitleFont, 'titlefont');

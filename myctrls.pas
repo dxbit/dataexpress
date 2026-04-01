@@ -393,6 +393,11 @@ type
     FImgEdit: TdxDBImageCellEditor;
     FFileEdit: TdxFileCellEditor;
     FWordWrap: Boolean;
+    FFastScroll, FNeedScrollEvents: Boolean;
+    FRecordBookmark: TBookmark;
+    FRecordColumn: TColumn;
+    FOldBeforeScroll, FOldAfterScroll: TDataSetNotifyEvent;
+    FScrollEventsCounter: Integer;
     function DoValidate: Boolean;
     procedure ButtonClick(Sender: TObject; Bn: TGridButtonType);
     function GetButtonFont: TFont;
@@ -406,6 +411,7 @@ type
     procedure SetButtonFont(AValue: TFont);
     procedure SetColumns(AValue: TMyDBGridColumns);
     procedure SetDefRowHeight(AValue: Integer);
+    procedure SetFastScroll(AValue: Boolean);
     procedure SetOptions(AValue: TDbGridOptions);
     procedure SetTitleHeight(AValue: Integer);
     procedure SetTitleWordWrap(AValue: Boolean);
@@ -424,6 +430,10 @@ type
     procedure WMSetFocus(var Message: TLMSetFocus); message LM_SETFOCUS;
     procedure WMKillFocus(var Message: TLMKillFocus); message LM_KILLFOCUS;
     procedure UpdateTitleHeight;
+    procedure SaveRecordBookmark;
+    procedure ResetRecordBookmark;
+    function IsRecordBookmark(ACol: Integer): Boolean;
+    function HasRecordBookmark: Boolean;
   protected
     function  CreateColumns: TGridColumns; override;
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
@@ -451,6 +461,7 @@ type
     procedure WMMouseWheel(var Message: TLMMouseEvent); message LM_MOUSEWHEEL;
     function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
     procedure DoEditorHide; override;
+    procedure LinkActive(Value: Boolean); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -480,6 +491,10 @@ type
     function CurrentRowSelected: Boolean;
     function FindColumnByTitle(const Title: String): TColumn;
     function FindColumnByFieldNameDS(const FieldNameDS: String): TColumn;
+    procedure DisableScrollEvents;
+    procedure EnableScrollEvents;
+    function ScrollEventsDisabled: Boolean;
+    procedure FireScrollEventsIfNeed;
     property SelectedRowCount: Integer read GetSelectedRowCount;
     property Col;
     property Row;
@@ -520,6 +535,7 @@ type
     property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight;
     property Options: TDbGridOptions read GetOptions write SetOptions;
     property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap default False;
+    property FastScroll: Boolean read FFastScroll write SetFastScroll default False;
   end;
 
   { TTreeSearchForm }
@@ -1731,6 +1747,13 @@ begin
   UpdateTitleHeight;
 end;
 
+procedure TMyDBGrid.SetFastScroll(AValue: Boolean);
+begin
+  if FFastScroll=AValue then Exit;
+  FFastScroll:=AValue;
+  if not AValue then ResetRecordBookmark;
+end;
+
 procedure TMyDBGrid.SetOptions(AValue: TDbGridOptions);
 begin
   inherited Options := AValue;
@@ -2051,6 +2074,42 @@ begin
   Result := Columns.ColumnByFieldname(FieldNameDS);
 end;
 
+procedure TMyDBGrid.DisableScrollEvents;
+begin
+  if FScrollEventsCounter = 0 then
+  begin
+    FOldAfterScroll := DataSource.DataSet.AfterScroll;
+	  FOldBeforeScroll := DataSource.DataSet.BeforeScroll;
+    DataSource.DataSet.AfterScroll := nil;
+    DataSource.DataSet.BeforeScroll := nil;
+  end;
+  Inc(FScrollEventsCounter);
+end;
+
+procedure TMyDBGrid.EnableScrollEvents;
+begin
+  if FScrollEventsCounter = 0 then Exit;
+  Dec(FScrollEventsCounter);
+  if FScrollEventsCounter = 0 then
+  begin
+    DataSource.DataSet.AfterScroll := FOldAfterScroll;
+    DataSource.DataSet.BeforeScroll := FOldBeforeScroll;
+  end;
+end;
+
+function TMyDBGrid.ScrollEventsDisabled: Boolean;
+begin
+  Result := FScrollEventsCounter > 0;
+end;
+
+procedure TMyDBGrid.FireScrollEventsIfNeed;
+begin
+  if not FNeedScrollEvents or IsRecordBookmark(-1) then Exit;
+  if DataSource.DataSet.BeforeScroll <> nil then DataSource.DataSet.BeforeScroll(DataSource.DataSet);
+  if DataSource.DataSet.AfterScroll <> nil then DataSource.DataSet.AfterScroll(DataSource.DataSet);
+  FNeedScrollEvents := False;
+end;
+
 function TMyDBGrid.GetButtonSize: Integer;
 begin
   Result := FButtons.ButtonSize;
@@ -2133,12 +2192,18 @@ end;
 procedure TMyDBGrid.WMSetFocus(var Message: TLMSetFocus);
 begin
   FButtons.Visible:=True;
+  if FFastScroll then SaveRecordBookmark;
   inherited;
 end;
 
 procedure TMyDBGrid.WMKillFocus(var Message: TLMKillFocus);
 begin
   FButtons.Visible:=not FHideButtons;
+  if FFastScroll then
+  begin
+    FireScrollEventsIfNeed;
+    ResetRecordBookmark;
+  end;
   inherited;
 end;
 
@@ -2153,6 +2218,42 @@ begin
   end
   else if RowCount > 0 then
     RowHeights[0] := DefaultRowHeight;
+end;
+
+procedure TMyDBGrid.SaveRecordBookmark;
+begin
+  //if FNeedScrollEvents then Exit;
+  if FRecordBookmark <> nil then Exit;
+  FRecordBookmark := DataSource.DataSet.GetBookmark;
+  FRecordColumn := SelectedColumn;
+end;
+
+procedure TMyDBGrid.ResetRecordBookmark;
+begin
+  if (DataSource = nil) or (DataSource.DataSet = nil) or not DataSource.DataSet.Active then Exit;
+
+  DataSource.DataSet.FreeBookmark(FRecordBookmark);
+  SetLength(FRecordBookmark, 0);
+  FRecordColumn := nil;
+  FNeedScrollEvents := False;
+  Invalidate;
+end;
+
+function TMyDBGrid.IsRecordBookmark(ACol: Integer): Boolean;
+var
+  Bookmark: TBookMark;
+begin
+  if (ACol >= 0) and
+    ((FRecordColumn = nil) or (FRecordColumn <> ColumnFromGridColumn(ACol))) then Exit(False);
+
+  Bookmark := DataSource.Dataset.GetBookmark;
+  Result := DataSource.DataSet.CompareBookmarks(Bookmark, FRecordBookmark) = 0;
+  DataSource.Dataset.FreeBookmark(Bookmark);
+end;
+
+function TMyDBGrid.HasRecordBookmark: Boolean;
+begin
+  Result := FRecordBookmark <> nil;
 end;
 
 function TMyDBGrid.CreateColumns: TGridColumns;
@@ -2249,8 +2350,12 @@ end;
 procedure TMyDBGrid.PrepareCanvas(aCol, aRow: Integer; aState: TGridDrawState);
 var
   Clr: TColor;
+  c: Integer;
 begin
   inherited PrepareCanvas(aCol, aRow, aState);
+
+  if [dgMultiSelect, dgRowSelect] * Options = [] then c := aCol
+  else c := -1;
 
   if gdSelected in aState then
   begin
@@ -2265,30 +2370,86 @@ begin
       	Canvas.Brush.Color := FInactiveSelectedColor;
       Canvas.Font.Color := FInactiveSelectedTextColor;
     end
+    else if FFastScroll then
+    begin
+      if not HasRecordBookmark or IsRecordBookmark(c) then
+        Canvas.Font.Color := FSelectedTextColor
+      else
+      begin
+        if FInactiveSelectedColor <> clNone then
+      	  Canvas.Brush.Color := FInactiveSelectedColor;
+        Canvas.Font.Color := FInactiveSelectedTextColor;
+      end;
+    end
     else
     	Canvas.Font.Color := FSelectedTextColor;
   end
-  else if (gdFixed in aState) and (gdHot in aState) then
+  else if gdFixed in aState then
   begin
-    Clr := GetColumnColor(aCol, True);
-    if not IsSysColor(Clr) then
-	    Canvas.Brush.Color := ColorToRGB(Clr) xor $1F1F1F //ShiftColor(Clr, 10)
-    else
-      Canvas.Brush.Color := cl3DLight;
-  end;
+    if gdHot in aState then
+    begin
+      Clr := GetColumnColor(aCol, True);
+      if not IsSysColor(Clr) then
+	      Canvas.Brush.Color := ColorToRGB(Clr) xor $1F1F1F //ShiftColor(Clr, 10)
+      else
+        Canvas.Brush.Color := cl3DLight;
+    end
+  end
+  else if FFastScroll and IsRecordBookmark(c) then
+  begin
+    Canvas.Brush.Color := SelectedColor;
+    Canvas.Font.Color := FSelectedTextColor;
+  end
 end;
 
 procedure TMyDBGrid.KeyDown(var Key: Word; Shift: TShiftState);
 begin
-  if (Key in [VK_UP, VK_DOWN, VK_NEXT, VK_PRIOR]) and (not DoValidate) then
+  if (Key in [VK_UP, VK_DOWN, VK_NEXT, VK_PRIOR]) or
+    ((Key in [VK_HOME, VK_END]) and (ssCtrl in Shift)) then
   begin
-    Key := 0;
-    Exit;
+    if not DoValidate then
+    begin
+      Key := 0;
+      Exit;
+    end;
+    if FFastScroll then
+    begin
+      if (Key in [VK_UP, VK_PRIOR, VK_HOME]) and (DataSource.DataSet.RecNo = 1) then
+        FireScrollEventsIfNeed
+      else if (Key in [VK_DOWN, VK_NEXT, VK_END]) and (DataSource.DataSet.RecNo = DataSource.DataSet.RecordCount) then
+        FireScrollEventsIfNeed;
+      ResetRecordBookmark;
+    end;
+  end
+  else if Key = VK_RETURN then
+  begin
+    if FFastScroll then
+    begin
+      if FNeedScrollEvents then Key := 0;
+      FireScrollEventsIfNeed;
+      ResetRecordBookmark;
+    end;
   end
   else if Key = VK_ESCAPE then
   begin
-    if OnKeyDown <> nil then OnKeyDown(Self, Key, Shift);
+    if FFastScroll and HasRecordBookmark and not IsRecordBookmark(-1) then
+    begin
+      DisableScrollEvents;
+      DataSource.DataSet.GotoBookmark(FRecordBookmark);
+      EnableScrollEvents;
+      ResetRecordBookmark;
+    end
+    else if OnKeyDown <> nil then OnKeyDown(Self, Key, Shift);
     Key := 0;
+  end
+  else if Key = VK_APPS then
+  begin
+    if FFastScroll then
+    begin
+      FireScrollEventsIfNeed;
+      ResetRecordBookmark;
+      SaveRecordBookmark;
+    end;
   end;
   inherited KeyDown(Key, Shift);
 end;
@@ -2296,24 +2457,57 @@ end;
 procedure TMyDBGrid.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 var
-  C, R: Longint;
+  C, R, R2: Longint;
 begin
   if DataSource = nil then Exit;
 
+  MouseToCell(X, Y, C, R);
   if DataSource.DataSet.State in [dsInsert, dsEdit] then
   begin
-    MouseToCell(X, Y, C, R);
     if (R <> Row) and (not DoValidate) then Exit;
   end;
+
+  if FFastScroll and (dgMultiSelect in Options) and (ssCtrl in Shift) and
+    (Button = mbLeft) then
+  begin
+    SaveRecordBookmark;
+    DisableScrollEvents;
+    FNeedScrollEvents := True;
+  end;
+
   inherited MouseDown(Button, Shift, X, Y);
+
+  if FFastScroll then
+  begin
+    if not ScrollEventsDisabled then
+    begin
+      MouseToCell(X, Y, C, R2);
+      if IsRecordBookmark(-1) then
+      else if R = R2 then FireScrollEventsIfNeed;
+      ResetRecordBookmark;
+      SaveRecordBookmark;
+    end
+    else
+      EnableScrollEvents;
+  end;
 end;
 
 procedure TMyDBGrid.WMVScroll(var Message: TLMVScroll);
 begin
   if DataSource = nil then Exit;
 
+  if not Focused and CanFocus then SetFocus;
+
   if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
+
+  if FFastScroll then
+  begin
+    SaveRecordBookmark;
+    DisableScrollEvents;
+    FNeedScrollEvents := True;
+  end;
   inherited WMVScroll(Message);
+  if FFastScroll then EnableScrollEvents;
 end;
 
 procedure TMyDBGrid.WMHScroll(var message: TLMHScroll);
@@ -2326,8 +2520,18 @@ procedure TMyDBGrid.WMMouseWheel(var Message: TLMMouseEvent);
 begin
   if DataSource = nil then Exit;
 
+  if not Focused and CanFocus then SetFocus;
+
   if DataSource.DataSet.State in [dsInsert, dsEdit] then Exit;
+
+  if FFastScroll then
+  begin
+    SaveRecordBookmark;
+    DisableScrollEvents;
+    FNeedScrollEvents := True;
+  end;
   inherited WMMouseWheel(Message);
+  if FFastScroll then EnableScrollEvents;
 end;
 
 function TMyDBGrid.EditorCanAcceptKey(const ch: TUTF8Char): boolean;
@@ -2350,6 +2554,12 @@ procedure TMyDBGrid.DoEditorHide;
 begin
   if FOnEditorHide <> nil then FOnEditorHide(Self);
   inherited DoEditorHide;
+end;
+
+procedure TMyDBGrid.LinkActive(Value: Boolean);
+begin
+  inherited LinkActive(Value);
+  if FFastScroll and not Value then ResetRecordBookmark;
 end;
 
 { TMyGrid }

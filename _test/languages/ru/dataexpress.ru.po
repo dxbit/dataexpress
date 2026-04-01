@@ -2601,6 +2601,10 @@ msgstr "Не удалось сохранить изображение."
 msgid "Failed to write data to the database. You can try again."
 msgstr "Не удалось записать данные в базу данных. Вы можете повторить попытку."
 
+#: strconsts.rsfastscroll
+msgid "Fast scroll"
+msgstr "Быстрая прокрутка"
+
 #: strconsts.rsfatalerror
 msgid "Unexpected exception"
 msgstr "Неожиданное исключение"

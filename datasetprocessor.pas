@@ -152,7 +152,7 @@ type
     procedure FloatCellKeyPress(Sender: TObject; var Key: char);
     procedure FileImageFieldChange(Sender: TField);
     //procedure CellMaskEditEditingDone(Sender: TObject);
-    procedure GridCellClick(Column: TColumn);
+    //procedure GridCellClick(Column: TColumn);
     procedure GridPrepareCanvas(sender: TObject; DataCol: Integer;
       Column: TColumn; AState: TGridDrawState);
     procedure LCbxFillGrid(LCbx: TdxLookupComboBox; DS: TDataSet; OnlyClear: Boolean);
@@ -1672,7 +1672,7 @@ begin
 
 end;
 
-procedure TDataSetProcessor.GridCellClick(Column: TColumn);
+{procedure TDataSetProcessor.GridCellClick(Column: TColumn);
 var
   DSR: TDataSetRec;
   S: String;
@@ -1698,7 +1698,7 @@ begin
         if (KeyValue <> Null) and (not Testing) then
           MainFr.GotoRec(SourceTId, KeyValue);
   end;
-end;
+end;  }
 
 procedure TDataSetProcessor.GridPrepareCanvas(sender: TObject;
   DataCol: Integer; Column: TColumn; AState: TGridDrawState);
@@ -3867,7 +3867,7 @@ begin
   aGrid.OnSortColumnChange:=@GridSortColumnChange;
   aGrid.OnDrawColumnCell:=@GridDrawColumnCell;
   aGrid.OnPrepareCanvas:=@GridPrepareCanvas;
-  aGrid.OnCellClick:=@GridCellClick;
+  //aGrid.OnCellClick:=@GridCellClick;
   aGrid.OnValidate:=@GridValidate;
   aGrid.OnKeyDown:=@GridKeyDown;
   Pop := CreatePopupMenu(aGrid.Id = 0, True);

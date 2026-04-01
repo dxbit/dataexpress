@@ -147,7 +147,8 @@ type
     FRD: TReportData;
     Grid: TMyGrid;
     FCols: TList;
-    FRowSelect, FReadOnly, FAllowChangeSort, FColMove, FShowRowDeleteButton: Boolean;
+    FRowSelect, FReadOnly, FAllowChangeSort, FColMove, FShowRowDeleteButton,
+      FFastScroll: Boolean;
     FModified: Boolean;
     FPopupColorBn: TColorButtonEx;
     FStopChangeEvents: Boolean;
@@ -185,7 +186,7 @@ uses
   dximages, formmanager;
 
 const
-  EDIT_OPT_IDX = 11;
+  EDIT_OPT_IDX = 12;
   {SM_CXSIZEFRAME = 32;
   SM_CXVSCROLL = 2;}
 
@@ -595,6 +596,7 @@ begin
     FAllowChangeSort := Checked[8];
     Grid.Indicator := Checked[9];
     FShowRowDeleteButton := Checked[10];
+    FFastScroll := Checked[11];
     if CanEditGrid then FReadOnly := not Checked[EDIT_OPT_IDX];
   end;
   Grid.Options := Opt;
@@ -1073,6 +1075,7 @@ begin
   FColMove := False;
   FAllowChangeSort := True;
   FShowRowDeleteButton := False;
+  FFastScroll := False;
   for i := 0 to Grid.Columns.Count - 1 do
   begin
     C := Grid.Columns[i];
@@ -1446,7 +1449,7 @@ begin
     Clear;
     Items.AddStrings([rsRowSelect, rsHighlightCurLine, rsEllipsisInCell, rsShowHints,
       rsWordWrap, rsTitleWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
-      rsIndicator, rsShowRowDeleteButton, rsEditing]);
+      rsIndicator, rsShowRowDeleteButton, rsFastScroll, rsEditing]);
   end;
   //if GridOptions.Count = EDIT_OPT_IDX then GridOptions.Items.AddStrings([rsEditing, rsShowRowDeleteButton]);
 
@@ -1509,6 +1512,7 @@ begin
     Checked[8] := FGrid.AllowChangeSort;
     Checked[9] := dgIndicator in FGrid.Options;
     Checked[10] := FGrid.ShowRowDeleteButton;
+    Checked[11] := FGrid.FastScroll;
     Checked[EDIT_OPT_IDX] := not FGrid.ReadOnly;
   end;
   FStopChangeEvents := False;
@@ -1585,6 +1589,7 @@ begin
   Grid.TitleWordWrap := FGrid.TitleWordWrap;
   FAllowChangeSort:=FGrid.AllowChangeSort;
   FShowRowDeleteButton:=FGrid.ShowRowDeleteButton;
+  FFastScroll := FGrid.FastScroll;
 
   FillTestText;
   FModified := False;
@@ -1666,6 +1671,7 @@ begin
   FGrid.TitleWordWrap := Grid.TitleWordWrap;
   FGrid.AllowChangeSort:=FAllowChangeSort;
   FGrid.ShowRowDeleteButton:=FShowRowDeleteButton;
+  FGrid.FastScroll := FFastScroll;
 end;
 
 procedure CopySortColsToMyGrid(G1: TRpGrid; G2: TMyGrid);
@@ -1740,7 +1746,7 @@ begin
     Clear;
     Items.AddStrings([rsRowSelect, rsHighlightCurLine, rsEllipsisInCell, rsShowHints,
       rsWordWrap, rsTitleWordWrap, rsMoveWhenScroll, rsAllowColumnsMove, rsAllowChangeSort,
-      rsIndicator, rsShowRowDeleteButton]);
+      rsIndicator, rsShowRowDeleteButton, rsFastScroll]);
     if CanEditGrid then
       Items.Add(rsEditing);
   end;
@@ -1804,6 +1810,7 @@ begin
     Checked[8] := G.AllowChangeSort;
     Checked[9] := G.Indicator;
     Checked[10] := G.ShowRowDeleteButton;
+    Checked[11] := G.FastScroll;
     if CanEditGrid then Checked[EDIT_OPT_IDX] := G.Editable;
   end;
   FStopChangeEvents := False;
@@ -1875,6 +1882,7 @@ begin
   FAllowChangeSort:=G.AllowChangeSort;
   Grid.Indicator := G.Indicator;
   FShowRowDeleteButton := G.ShowRowDeleteButton;
+  FFastScroll := G.FastScroll;
   FReadOnly := not G.Editable;
   Grid.PopupMenu := ColumnMnu;
 
@@ -1935,6 +1943,7 @@ begin
   G.AllowChangeSort := FAllowChangeSort;
   G.Indicator := Grid.Indicator;
   G.ShowRowDeleteButton := FShowRowDeleteButton;
+  G.FastScroll := FFastScroll;
   G.Editable := not FReadOnly;
   L.Free;
 end;
