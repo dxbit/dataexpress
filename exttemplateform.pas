@@ -129,6 +129,7 @@ begin
   ArrNameEd.TextHint := 'MyArr';
   ButtonPanel1.OKButton.Caption:=rsOk;
   ButtonPanel1.CancelButton.Caption:=rsCancel;
+  AddFormHeight(Self);
 end;
 
 procedure TExtTemplateFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

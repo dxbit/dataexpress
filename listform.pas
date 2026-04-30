@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Types, Forms, dxctrls, strconsts, sqldb, Db, ExtCtrls,
-  ButtonPanel, ComCtrls, Controls, LclType, LclIntf;
+  ButtonPanel, ComCtrls, Controls, LclType, LclIntf, BGRABitmap;
 
 type
 
@@ -58,6 +58,7 @@ type
     procedure AcceptSelection;
     //procedure TreeDblClick(Sender: TObject);
     procedure PositionPickForm;
+    procedure SetIcon(const ImageName: String);
   protected
     procedure DoShow; override;
   public
@@ -88,7 +89,7 @@ implementation
 
 uses
   formview, datasetprocessor, lists, apputils, sqlgen, inputform, formmanager,
-  dbengine, LazUtf8;
+  dbengine, LazUtf8, imagemanager;
 
 function Vw(aVw: TCustomPanel): TFormView;
 begin
@@ -408,6 +409,19 @@ begin
   Left := N;  }
 end;
 
+procedure TListWindow.SetIcon(const ImageName: String);
+var
+  St: TStream;
+  Bmp: TBGRABitmap;
+begin
+  ImageMan.GetImageStreamPPI(ImageName, St);
+  St.Position := 0;
+  Bmp := TBGRABitmap.Create(St);
+  Icon.Assign(Bmp.Bitmap);
+  Bmp.Free;
+  St.Free;
+end;
+
 {procedure TListWindow.TreeDblClick(Sender: TObject);
 var
   N: TTreeNode;
@@ -515,6 +529,7 @@ begin
   Vw(FVw).DataSetProc.OnStateChange:=@StateChange;
   if FFm.Tree.Visible then
     Width := Width + FFm.Tree.Width;
+  if FFm.ImageName <> '' then SetIcon(FFm.ImageName);
 end;
 
 procedure TListWindow.Load2(TId: Integer; aViewType: TViewType);
@@ -525,6 +540,7 @@ begin
   Vw(FVw).DataSetProc.OnStateChange:=@StateChange;
   if FFm.Tree.Visible then
     Width := Width + FFm.Tree.Width;
+  if FFm.ImageName <> '' then SetIcon(FFm.ImageName);
 end;
 
 procedure TListWindow.Done;

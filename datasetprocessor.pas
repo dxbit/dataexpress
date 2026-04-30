@@ -6741,6 +6741,7 @@ begin
       G.AllowChangeSort:=Fm.Grid.AllowChangeSort;
       G.TitleHeight:=Fm.Grid.TitleHeight;
       G.TitleWordWrap:=Fm.Grid.TitleWordWrap;
+      G.FastScroll:=Fm.Grid.FastScroll;
     end;
   end;
 end;

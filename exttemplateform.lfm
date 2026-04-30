@@ -6,16 +6,16 @@ object ExtTemplateFm: TExtTemplateFm
   Caption = 'ExtTemplateFm'
   ClientHeight = 393
   ClientWidth = 369
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '2.0.12.0'
   object Label1: TLabel
     Left = 8
     Height = 15
     Top = 8
-    Width = 93
+    Width = 94
     Caption = 'Тип расширения'
     ParentColor = False
   end
@@ -29,9 +29,9 @@ object ExtTemplateFm: TExtTemplateFm
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 1
     ItemHeight = 15
-    OnChange = ExtKindCbxChange
     Style = csDropDownList
     TabOrder = 0
+    OnChange = ExtKindCbxChange
   end
   object Label2: TLabel
     AnchorSideTop.Control = ExtKindCbx

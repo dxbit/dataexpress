@@ -7,11 +7,11 @@ object VisibleFormsFm: TVisibleFormsFm
   Caption = 'VisibleFormsFm'
   ClientHeight = 412
   ClientWidth = 356
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 26
@@ -32,7 +32,7 @@ object VisibleFormsFm: TVisibleFormsFm
   end
   object DialogGridButtons1: TDialogGridButtons
     Left = 4
-    Height = 25
+    Height = 26
     Top = 4
     Width = 348
     Grid = Grid
@@ -43,8 +43,8 @@ object VisibleFormsFm: TVisibleFormsFm
   end
   object Grid: TDialogGrid
     Left = 4
-    Height = 345
-    Top = 29
+    Height = 344
+    Top = 30
     Width = 348
     Align = alClient
     AlternateColor = 15658734
@@ -65,6 +65,7 @@ object VisibleFormsFm: TVisibleFormsFm
     FixedCols = 0
     FixedRows = 0
     Flat = True
+    FocusRectVisible = False
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking, goSmoothScroll, goCellHints]
     ParentShowHint = False
     RowCount = 0

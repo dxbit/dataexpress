@@ -735,8 +735,9 @@ begin
     DataSetProc.OnStateChange:=@StateChange;
     BindForm(Fm.Id, False, ViewType);
     Tb.Caption := Form.GetRecordsCaption;
+    if Form.ShowImageInTab and (Form.ImageName <> '') then
+      Tb.ImageIndex := FTabImages.AddImage(Form.ImageName);
   end;
-
   Tb.PopupMenu := EmptyMnu;    // Чтобы меню "Закрыть" открывалось только на вкладках
 end;
 

@@ -2230,7 +2230,7 @@ end;
 
 procedure TMyDBGrid.ResetRecordBookmark;
 begin
-  if (DataSource = nil) or (DataSource.DataSet = nil) or not DataSource.DataSet.Active then Exit;
+  if (DataSource = nil) or (DataSource.DataSet = nil) then Exit;
 
   DataSource.DataSet.FreeBookmark(FRecordBookmark);
   SetLength(FRecordBookmark, 0);

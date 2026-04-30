@@ -420,6 +420,8 @@ var
   i: Integer;
   FlNm: String;
 begin
+  if FForm = nil then Exit;
+
   for i := 0 to FOldFieldNames.Count - 1 do
   begin
     FlNm :='cf' + IntToStr(PtrInt(FOldFieldNames.Objects[i]));

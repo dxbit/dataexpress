@@ -2225,6 +2225,7 @@ begin
   OnKeyDown := @FormKeyDown;
   OnKeyPress := nil;
   OnKeyUp := nil;
+  OnUtf8KeyPress := nil;
 
   OnPaint := nil;
 
