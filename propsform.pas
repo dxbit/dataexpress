@@ -547,7 +547,7 @@ begin
   else if AValue is TdxCounter then
     SetArray(Props, [C_FIELDNAME, C_COLOR, C_FONT, C_COUNTER, C_CHECKVALUE, C_READONLY])
   else if AValue is TdxButton then
-    SetArray(Props, [C_COMPONENTNAME, C_LABELCAPTION, C_FONT, C_BUTTONGLYPH, C_ACTION, C_HINT])
+    SetArray(Props, [C_COMPONENTNAME, C_LABELCAPTION, C_COLOR, C_FONT, C_BUTTONGLYPH, C_ACTION, C_HINT])
   else if AValue is TdxPivotGrid then
     SetArray(Props, [C_COMPONENTNAME, C_SELECTQUERY, C_QUERYSOURCE, C_QCALCFIELDS, C_QUERYFILTER,
       C_PIVOTGRID])

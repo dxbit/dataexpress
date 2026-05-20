@@ -829,6 +829,10 @@ msgstr ""
 msgid "You cannot replace an unlimited memo with another component."
 msgstr ""
 
+#: strconsts.rscantusegetfunc
+msgid "Cannot use function \"Get\" when grouping by date."
+msgstr ""
+
 #: strconsts.rscaption
 msgid "Caption"
 msgstr ""
@@ -2932,6 +2936,10 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
+#: strconsts.rsformatsqlerror
+msgid "SQL expression formatting failure"
+msgstr ""
+
 #: strconsts.rsformcomponentnameexists
 msgid "A form with the same component name already exists."
 msgstr ""
@@ -3123,6 +3131,10 @@ msgstr ""
 
 #: strconsts.rsgeneralview
 msgid "General view"
+msgstr ""
+
+#: strconsts.rsget
+msgid "Get"
 msgstr ""
 
 #: strconsts.rsgetchangescounterror
@@ -4403,12 +4415,20 @@ msgstr ""
 msgid "No desktop shortcuts were found to successfully launch DataExpress. Do you want to create them?"
 msgstr ""
 
+#: strconsts.rsnoedit
+msgid "No edit"
+msgstr ""
+
 #: strconsts.rsnoformsavailable
 msgid "No forms available."
 msgstr ""
 
 #: strconsts.rsnone
 msgid "None"
+msgstr ""
+
+#: strconsts.rsnosuchfiledir
+msgid "There is no such file or directory. Make sure that the file or directory exists and the path is entered correctly (linux is case-sensitive)."
 msgstr ""
 
 #: strconsts.rsnot

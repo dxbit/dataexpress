@@ -135,7 +135,7 @@ function ShowSqlForm: Integer;
 implementation
 
 uses
-  Clipbrd, expressions, apputils, helpmanager, appsettings, StrUtils;
+  Clipbrd, expressions, apputils, helpmanager, appsettings, StrUtils, myfpsqltree;
 
 function ShowSqlForm: Integer;
 begin
@@ -209,6 +209,9 @@ begin
   FRealBounds := BoundsRect;
   ShowGrid;
   Edit.SetFocus;
+  // Чтобы полосы прокрутки в редакторе не пропадали
+  Panel2.Height := Panel2.Height + 1;
+  Panel2.Height := Panel2.Height - 1;
 end;
 
 procedure TSqlFm.GridGetCellHint(Sender: TObject; Column: TColumn;
@@ -842,7 +845,33 @@ begin
   Result := ShowModal;
 end;
 
+function InsertFieldNamesInComments(RD: TReportData; const SQL: String): String;
+var
+  SL: TStringList;
+  S, FlNm: String;
+  p0, p, i, FId: Integer;
+begin
+  SL := TStringList.Create;
+  SL.Text := SQL;
+  for i := 1 to SL.Count - 1 do
+  begin
+    S := SL[i];
+    if S = 'from' then Break;
+    p0 := RPos('F', S) + 1;
+    if p0 = 1 then Continue;
+    p := PosEx(',', S, p0);
+    if p = 0 then p := Length(S) + 1;
+    FId := StrToInt(Copy(S, p0, p - p0));
+    FlNm := RD.FindField(FId)^.Name;
+    SL[i] := S + ' /* ' + FlNm + ' */';
+  end;
+  Result := SL.Text;
+  SL.Free;
+end;
+
 function TSqlFm.ShowSqlModeForm(ARD: TReportData; AQGrid: TdxQueryGrid): Integer;
+var
+  SQL: String;
 begin
   FRD := ARD;
   FQGrid := AQGrid;
@@ -869,7 +898,30 @@ begin
     FProps.TIObject := nil;
   end;
   FSqlFields.CopyFrom(FRD.SQLFields);
-  Edit.Text := FRD.SQL;
+  if Trim(FRD.SQL) <> '' then
+    Edit.Text := FRD.SQL
+  else
+  begin
+    //Debug(InnerSqlReportSelect(FRD, nil, nil, nil, True));
+    SQL := InnerSqlReportSelect(FRD, nil, nil, nil, True);
+    try
+      SQL := FormatSQL(SQL, sfoUseIndentedLines +
+        [sfoLowercaseKeyword, sfoListNoSpaceBeforeComma]);
+      SQL := StringReplace(StringReplace(StringReplace(StringReplace(StringReplace(SQL,
+          ''''#2, '{', [rfReplaceAll]),
+          #3'''', '}', [rfReplaceAll]),
+          ''''#4, '', [rfReplaceAll]),
+          #5'''', '', [rfReplaceAll]),
+          #1, '''', [rfReplaceAll]);
+      Edit.Text := InsertFieldNamesInComments(ARD, SQL);
+    except
+      on E: Exception do
+      begin
+        ErrMsg(rsFormatSQLError + Spaces + E.Message);
+        Edit.Text := SQL;
+      end;
+    end;
+  end;
   FillFields;
 
   FModified := False;

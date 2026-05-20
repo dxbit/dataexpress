@@ -526,10 +526,9 @@ end;
 
 function ScriptLastErrorToString: String;
 begin
-  Result := Format(rsScriptErrorMsg, [
-    Exception(ScriptLastError.ExObj).Message + LineEnding + LineEnding,
-    ScriptLastError.ExObj.ClassName + LineEnding,
-    ScriptLastError.ModuleName + LineEnding, ScriptKindToString(ScriptLastError.Kind) + LineEnding,
+  Result := Exception(ScriptLastError.ExObj).Message + Spaces +
+    Format(rsScriptErrorMsg, [ScriptLastError.ExObj.ClassName,
+    ScriptLastError.ModuleName, ScriptKindToString(ScriptLastError.Kind),
     ScriptLastError.ProcName]);
 end;
 
@@ -544,10 +543,13 @@ begin
   if Proc is TPSInternalProcRec then S := TPSInternalProcRec(Proc).ExportName
   else if Proc is TPSExternalProcRec then S := TPSExternalProcRec(Proc).Name
   else S := '';
-  Result := Format(rsScriptErrorMsg, [E.Message + LineEnding + LineEnding,
+  Result := E.Message + Spaces +
+    Format(rsScriptErrorMsg, [E.ClassName, SD.GetModuleName,
+    ScriptKindToString(SD.Kind), S]);
+  {Result := Format(rsScriptErrorMsg, [E.Message + LineEnding + LineEnding,
     E.ClassName + LineEnding, SD.GetModuleName + LineEnding,
     ScriptKindToString(SD.Kind) + LineEnding,
-    S]);
+    S]);}
 end;
 
 procedure ExecException(Sender: TPSExec; ExError: TPSError;

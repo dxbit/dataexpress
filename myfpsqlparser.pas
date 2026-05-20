@@ -152,6 +152,8 @@ Type
     function ParseWithSelectElement(AParent: TSQLElement): TSQLWithSelectElement;
     function ParseWithSelectStatement(AParent: TSQLElement): TSQLWithSelectStatement;
     function ParseCaseWhenExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLCaseExpression;
+    function ParseSubStringExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLSubStringExpression;
+    function ParseListFuncExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLListFuncExpression;
     //
   Public
     Constructor Create(AInput: TStream);
@@ -343,16 +345,19 @@ begin
      begin
      GetNextToken;
      // 7bit
-     if (CurrentToken=tsqlSELECT) then
+     if (CurrentToken in [tsqlSELECT, tsqlWITH]) then
        begin
        S := TSQLSelectTableReference(CreateElement(TSQLSelectTableReference, AParent));
        Result := S;
        S.Select := ParseSelectStatement(AParent, []);
        Consume(tsqlBraceClose);
-       if CurrentToken = tsqlAs then GetNextToken;
-       Expect(tsqlIdentifier);
-       S.AliasName := CreateIdentifier(S, CurrentTokenString);
-       GetNextToken;
+       if CurrentToken = tsqlAs then GetNextToken
+       else if CurrentToken = tsqlIdentifier then
+         begin
+           //Expect(tsqlIdentifier);
+           S.AliasName := CreateIdentifier(S, CurrentTokenString);
+           GetNextToken;
+         end
        end
      //
      else
@@ -1538,6 +1543,41 @@ begin
       Result.WhenList.Add(WhenExpr);
     end;
   end;
+end;
+
+function TSQLParser.ParseSubStringExpression(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLSubStringExpression;
+begin
+  Result := TSQLSubStringExpression(CreateElement(TSQLSubStringExpression, AParent));
+  GetNextToken;
+  Consume(tsqlBraceOpen);
+  Result.StringExpression := ParseExprLevel1(Result, EO);
+  Consume(tsqlFrom);
+  Result.FromExpression := ParseExprLevel1(Result, EO);
+  Consume(tsqlFor);
+  Result.ForExpression := ParseExprLevel1(Result, EO);
+  Consume(tsqlBraceClose);
+end;
+
+function TSQLParser.ParseListFuncExpression(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLListFuncExpression;
+var
+  N: String;
+  L: TSQLElementList;
+  Distinct: Boolean;
+begin
+  Result:=TSQLListFuncExpression(CreateElement(TSQLListFuncExpression,AParent));
+  GetNextToken;
+  Consume(tsqlBraceOpen);
+  if CurrentToken = tsqlDISTINCT then
+  begin
+    Result.Distinct := True;
+    GetNextToken;
+  end;
+  Result.Arg1 := ParseExprLevel1(Result, EO);
+  Consume(tsqlComma);
+  Result.Arg2 := ParseExprLevel1(Result, EO);
+  Consume(tsqlBraceClose);
 end;
 
 function TSQLParser.ParseWhenStatement(AParent: TSQLElement): TSQLWhenStatement;
@@ -2884,6 +2924,29 @@ begin
         end;
       tsqlCase:
         Result := ParseCaseWhenExpression(AParent, EO);
+      // 7bit
+      tsqlLeft, tsqlRight, tsqlPosition:
+        begin
+          N := CurrentTokenString;
+          GetNextToken;
+          L:=ParseValueList(AParent,EO);
+          If L.Count<>2 then
+            begin
+            FreeAndNil(L);
+            Error('Incorrect number of parameters');
+            end;
+          GetNextToken; // Consume );
+          Result:=TSQLFunctionCallExpression(CreateElement(TSQLFunctionCallExpression,AParent));
+          TSQLFunctionCallExpression(Result).IDentifier:=N;
+          TSQLFunctionCallExpression(Result).Arguments:=L;
+        end;
+      tsqlList:
+        Result := ParseListFuncExpression(AParent, EO);
+      tsqlSubstring:
+        Result := ParseSubStringExpression(AParent, EO);
+      //tsqlPosition:
+      //  Result := ParsePositionExpression(AParent, EO);
+      //
       else
         UnexpectedToken;
       end;

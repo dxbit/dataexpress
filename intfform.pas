@@ -350,7 +350,10 @@ procedure TIntfFm.TabsSelectEditor(Sender: TObject; aCol, aRow: Integer;
 begin
   if Editor is TPickListCellEditor then
     with TPickListCellEditor(Editor) do
+    begin
       Style := csDropDownList;
+      DropDownCount := 20;
+    end;
 end;
 
 procedure TIntfFm.TabsSelection(Sender: TObject; aCol, aRow: Integer);

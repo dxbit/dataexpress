@@ -110,7 +110,7 @@ type
     Popup: TPopupMenu;
     DSProc: TDataSetProcessor;
     DSRi: Integer;
-    Simple: Boolean;
+    CanEdit: Boolean;
     Colors: TQueryColorList;
     RD: TReportData;
     NeedRefresh, Changed, ParentChanged, UserInput: Boolean;
@@ -2985,7 +2985,7 @@ begin
 
   i := G.Tag;
   Q := PQueryRec(FQueries[i])^;
-  if Q.DataSet.Active and Q.Simple then
+  if Q.DataSet.Active and Q.CanEdit then
     if (Q.DataSet.Fields[0].IsNull = False) and Q.Popup.Items[1].Visible then
     begin
       Q.Popup.Items[1].Click;
@@ -3158,7 +3158,7 @@ var
   DSR: TDataSetRec;
 begin
   Pop := Q.Popup;
-  if Q.Simple then
+  if Q.CanEdit then
   begin
     DSR := GetDataSet(Q.DSRi)^;
     bDSEdit := DSR.DataSet.State in [dsInsert, dsEdit];
@@ -5114,6 +5114,8 @@ begin
     pF := RD.Sources[0]^.Fields[i];
     // Таблицу пропускаем
     if pF^.TId <> RD.Sources[0]^.Id then Continue;
+    // Пропускаем функции, кроме "Получить"
+    if not (pF^.Func in [tfNone, tfGet]) then Continue;
 
     Tp := pF^.Tp;
     if Tp = flObject then
@@ -7544,8 +7546,8 @@ begin
   TdxDataSet(pQ^.DataSet).RD := RD;
   pQ^.Grid := QG;
   //QG.ReadOnly := True;
-  pQ^.Simple := RD.IsSimple;
-  if pQ^.Simple then
+  pQ^.CanEdit := RD.CanEdit;
+  if pQ^.CanEdit then
   begin
     QG.OnKeyDown:=@QueryGridKeyDown;
     QG.OnDblClick:=@QueryGridDblClick;
@@ -7563,7 +7565,7 @@ begin
   pQ^.Popup := TPopupMenu.Create(nil);
   pQ^.Popup.Images := Images16;
   pQ^.DSProc := nil;
-  if pQ^.Simple then
+  if pQ^.CanEdit then
   begin
     pQ^.Popup.Items.Add( CreateMenuItem(pQ^.Popup, rsAppend, 0,
       ShortCut(VK_INSERT, []), @QueryMenuHandler, IMG16_ADD) );

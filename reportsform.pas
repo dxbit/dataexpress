@@ -57,6 +57,7 @@ type
     MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
+    MenuItem17: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -85,6 +86,7 @@ type
     procedure MenuItem14Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
+    procedure MenuItem17Click(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -266,6 +268,18 @@ begin
   end
   else
     ErrMsg(rsSourceNotSel);
+end;
+
+procedure TReportsFm.MenuItem17Click(Sender: TObject);
+var
+  RD: TReportData;
+begin
+  RD := TReportData(List.Items.Objects[List.ItemIndex]);
+  RD.NoEdit := not RD.NoEdit;
+  if RD.NoEdit then RD.Grid.Editable := False;
+  RD.SetReportChanged;
+  FModified := True;
+  SetControlState;
 end;
 
 procedure TReportsFm.MenuItem1Click(Sender: TObject);
@@ -474,8 +488,10 @@ end;
 procedure TReportsFm.SetControlState;
 var
   b: Boolean;
+  RD: TReportData;
 begin
   b := List.ItemIndex >= 0;
+  if b then RD := TReportData(List.Items.Objects[List.ItemIndex]);
   MenuItem2.Enabled := b;
   MenuItem4.Enabled := b;
   MenuItem5.Enabled := b;
@@ -489,6 +505,8 @@ begin
   MenuItem14.Enabled := b;
   MenuItem15.Enabled := b;
   MenuItem16.Enabled := b;
+  MenuItem17.Enabled := b and RD.IsSimple;
+  if b then MenuItem17.Checked := RD.NoEdit;
 
   BitBtn2.Enabled := b;
   BitBtn3.Enabled := b;

@@ -3359,6 +3359,7 @@ begin
     else ErrCode := 0;
 
     S := WinCPToUtf8(E.Message);
+    Msg := '';
     // Error reading data from the connection, Error writing data to the connection.
     if (ErrCode = 335544726) or (ErrCode = 335544727) then
       Msg := rsDatabaseConnectLost
@@ -3378,15 +3379,18 @@ begin
     else if (ErrCode = 335544421) or (Pos('Connection rejected', S) > 0) then
       Msg := rsConnectionRejectedMsg
     else if (ErrCode = 335544734) or (Pos('Error while trying to open file', S) > 0) then
-      Msg := rsDatabaseUseAnotherProcessMsg
+    begin
+      if Pos('No such file or directory', S) > 0 then
+        Msg := rsNoSuchFileDir
+      else
+        Msg := rsDatabaseUseAnotherProcessMsg
+    end
     else if Pos('Field not found', S) > 0 then
-      Msg := rsFieldNotFoundMsg
-    else
-      Msg := '';
+      Msg := rsFieldNotFoundMsg;
 
     //Result := Format(rsExceptionClass, [E.ClassName]) + LineEnding +
     //  Format(rsErrorMessage, [S]);
-    Result := SysMsg;
+    //Result := SysMsg;
     if Msg <> '' then
       Result := Msg + Spaces + rsErrorDetails + Spaces + Result;
   end;
@@ -4897,6 +4901,8 @@ begin
 
   ft := RD.GetFieldType(i);
   pF := RD.TryGetRpField(i);
+  if (pF <> nil) and not (pF^.Func in [tfNone, tfGet]) then Exit(False);
+
   IsObjectField := (pF <> nil) and (pF^.Tp = flObject) and (GetLowField(pF) <> pF);
   if IsObjectField and not RD.IsTableField(pF) then
   begin

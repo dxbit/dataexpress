@@ -6438,16 +6438,9 @@ begin
     begin
       if FDSR <> nil then
       begin
-        //W := Width;
-        //H := Height;
         pFmLayouts^.Layouts.ApplyLayout(AValue, Self);
         if FDSR <> nil then
           PDataSetRec(FDSR)^.MaskingControls.UpdateMasking;
-        {if IsFormFixedHeight(Self) then
-          SetBounds(Left, Top, W, Height)
-        else
-          SetBounds(Left, Top, W, H);}
-
         if FOnLayoutChange <> nil then FOnLayoutChange(Self);
       end
       else

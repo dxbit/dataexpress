@@ -1080,6 +1080,8 @@ begin
     RegisterMethod('procedure SaveToStream(const FieldName: String; St: TStream)');
     RegisterMethod('procedure SaveToFile(const FieldName, FileName: String)');
     RegisterMethod('procedure SaveThumbnailToStream(const FieldName: String; St: TStream)');
+
+    RegisterMethod('function GetFieldName(Column: TColumn): String');
   end;
 
   with Cl.FindClass('TdxForm') do
@@ -3093,6 +3095,7 @@ begin
   begin
     RegisterProperty('Expression', 'String', iptR);
     RegisterProperty('FieldName', 'String', iptR);
+    RegisterProperty('OnClick', 'TNotifyEvent', iptRW);
   end;
   with Cl.AddClassN(Cl.FindClass('TControl'), 'TdxEdit') do
   begin
@@ -3218,6 +3221,7 @@ begin
     RegisterProperty('KeepSize', 'Boolean', iptRW);
     RegisterProperty('Proportional', 'Boolean', iptRW);
     RegisterProperty('Stretch', 'Boolean', iptRW);
+    RegisterProperty('OnClick', 'TNotifyEvent', iptRW);
   end;
   with Cl.AddClassN(Cl.FindClass('TControl'), 'TdxDBImage') do
   begin
@@ -3266,6 +3270,7 @@ begin
 	  RegisterProperty('Pen', 'TPen', iptRW);
 	  RegisterProperty('Shape', 'TShapeType', iptRW);
     RegisterProperty('ShapeEx', 'TShapeTypeEx', iptRW);
+    RegisterProperty('OnClick', 'TNotifyEvent', iptRW);
   end;
   Cl.AddClassN(Cl.FindClass('TControl'), 'TdxGrid');
   SIRegister_dxQueryGrid(Cl, True);

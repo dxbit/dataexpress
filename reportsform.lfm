@@ -7,13 +7,13 @@ object ReportsFm: TReportsFm
   Caption = 'ReportsFm'
   ClientHeight = 524
   ClientWidth = 467
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
@@ -72,8 +72,8 @@ object ReportsFm: TReportsFm
         Top = 8
         Width = 144
         Caption = 'Добавить'
-        OnClick = ButtonClick
         TabOrder = 0
+        OnClick = ButtonClick
       end
       object BitBtn2: TBitBtn
         Tag = 2
@@ -82,8 +82,8 @@ object ReportsFm: TReportsFm
         Top = 104
         Width = 144
         Caption = 'Переименовать'
-        OnClick = ButtonClick
         TabOrder = 3
+        OnClick = ButtonClick
       end
       object BitBtn3: TBitBtn
         Tag = 3
@@ -93,9 +93,9 @@ object ReportsFm: TReportsFm
         Width = 144
         Caption = 'Свойства'
         Font.Style = [fsBold]
-        OnClick = ButtonClick
         ParentFont = False
         TabOrder = 4
+        OnClick = ButtonClick
       end
       object BitBtn5: TBitBtn
         Tag = 5
@@ -104,8 +104,8 @@ object ReportsFm: TReportsFm
         Top = 176
         Width = 144
         Caption = 'Таблица'
-        OnClick = ButtonClick
         TabOrder = 5
+        OnClick = ButtonClick
       end
       object BitBtn6: TBitBtn
         Tag = 1
@@ -114,8 +114,8 @@ object ReportsFm: TReportsFm
         Top = 72
         Width = 144
         Caption = 'Удалить'
-        OnClick = ButtonClick
         TabOrder = 2
+        OnClick = ButtonClick
       end
       object BitBtn7: TBitBtn
         Tag = 6
@@ -124,8 +124,8 @@ object ReportsFm: TReportsFm
         Top = 440
         Width = 144
         Caption = 'Копировать стиль'
-        OnClick = ButtonClick
         TabOrder = 13
+        OnClick = ButtonClick
       end
       object BitBtn8: TBitBtn
         Tag = 7
@@ -134,8 +134,8 @@ object ReportsFm: TReportsFm
         Top = 208
         Width = 144
         Caption = 'Вычисления'
-        OnClick = ButtonClick
         TabOrder = 6
+        OnClick = ButtonClick
       end
       object BitBtn9: TBitBtn
         Tag = 8
@@ -144,8 +144,8 @@ object ReportsFm: TReportsFm
         Top = 240
         Width = 144
         Caption = 'Фильтр'
-        OnClick = ButtonClick
         TabOrder = 7
+        OnClick = ButtonClick
       end
       object BitBtn10: TBitBtn
         Tag = 9
@@ -154,8 +154,8 @@ object ReportsFm: TReportsFm
         Top = 304
         Width = 144
         Caption = 'Итоги'
-        OnClick = ButtonClick
         TabOrder = 9
+        OnClick = ButtonClick
       end
       object BitBtn11: TBitBtn
         Tag = 10
@@ -164,8 +164,8 @@ object ReportsFm: TReportsFm
         Top = 336
         Width = 144
         Caption = 'Справка'
-        OnClick = ButtonClick
         TabOrder = 10
+        OnClick = ButtonClick
       end
       object BitBtn4: TBitBtn
         Tag = 11
@@ -174,8 +174,8 @@ object ReportsFm: TReportsFm
         Top = 40
         Width = 144
         Caption = 'Копировать'
-        OnClick = ButtonClick
         TabOrder = 1
+        OnClick = ButtonClick
       end
       object BitBtn12: TBitBtn
         Tag = 12
@@ -184,8 +184,8 @@ object ReportsFm: TReportsFm
         Top = 272
         Width = 144
         Caption = 'Раскраска'
-        OnClick = ButtonClick
         TabOrder = 8
+        OnClick = ButtonClick
       end
       object BitBtn13: TBitBtn
         Tag = 13
@@ -194,8 +194,8 @@ object ReportsFm: TReportsFm
         Top = 368
         Width = 144
         Caption = 'Шаблоны'
-        OnClick = ButtonClick
         TabOrder = 11
+        OnClick = ButtonClick
       end
       object BitBtn14: TBitBtn
         Tag = 14
@@ -204,8 +204,8 @@ object ReportsFm: TReportsFm
         Top = 400
         Width = 144
         Caption = 'При печати'
-        OnClick = ButtonClick
         TabOrder = 12
+        OnClick = ButtonClick
       end
     end
   end
@@ -276,6 +276,10 @@ object ReportsFm: TReportsFm
     object MenuItem16: TMenuItem
       Caption = 'При печати'
       OnClick = MenuItem16Click
+    end
+    object MenuItem17: TMenuItem
+      Caption = 'Без редактирования'
+      OnClick = MenuItem17Click
     end
     object MenuItem8: TMenuItem
       Caption = '-'

@@ -1202,6 +1202,8 @@ begin
     RegisterMethod(@TdxQueryGrid.SaveBlobToStream, 'SaveToStream');
     RegisterMethod(@TdxQueryGrid.SaveBlobToFile, 'SaveToFile');
     RegisterMethod(@TdxQueryGrid.SaveThumbnailToStream, 'SaveThumbnailToStream');
+
+    RegisterMethod(@TdxQueryGrid.GetFieldName, 'GetFieldName');
   end;
 end;
 
@@ -1495,7 +1497,7 @@ begin
     QGrid := TdxQueryGrid(Self);
     if QGrid.DSP <> nil then
       with TDataSetProcessor(QGrid.DSP).Queries[QGrid.QRi]^ do
-        if Simple then
+        if CanEdit then
           RD.Grid.Editable := not T
         else
           Exit;

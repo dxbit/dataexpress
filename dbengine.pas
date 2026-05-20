@@ -204,7 +204,7 @@ var
 begin
   if FRD <> nil then
   begin
-    if FRD.IsSimple then
+    if FRD.CanEdit then
     begin
       if FRD.HasParentIdField then delta := 2
       else delta := 1;
@@ -252,22 +252,37 @@ begin
   {$endif}
 
 
-  if Enabled then
+  {$ifdef linux}
+  if GetCurrentFirebirdDir = '' then
+  {$endif}
   begin
-    if (CompareText(ExtractFileExt(DB.Database), '.FDB') = 0) and
-      not IsFirebird25Lib then ForceUnloadLibrary
-    else if (CompareText(ExtractFileExt(DB.Database), '.FDB') <> 0) and
-      not IsFirebird5Lib then ForceUnloadLibrary
-  end;
+    if Enabled then
+    begin
+      if (CompareText(ExtractFileExt(DB.Database), '.FDB') = 0) and
+        not IsFirebird25Lib then ForceUnloadLibrary
+      else if (CompareText(ExtractFileExt(DB.Database), '.FDB') <> 0) and
+        not IsFirebird5Lib then ForceUnloadLibrary
+    end;
 
-  if not Enabled then
+    if not Enabled then
+    begin
+      if CompareText(ExtractFileExt(DB.Database), '.FDB') = 0 then
+        LibraryName := GetFirebird25Lib
+      else
+        LibraryName := GetFirebird5Lib;
+      Enabled := True;
+    end;
+  end
+  {$ifdef linux}
+  else
   begin
-    if CompareText(ExtractFileExt(DB.Database), '.FDB') = 0 then
+    if GetCurrentFirebirdDir = 'fb25' then
       LibraryName := GetFirebird25Lib
     else
       LibraryName := GetFirebird5Lib;
     Enabled := True;
   end;
+  {$endif}
 end;
 
 function TFBLoader.GetFirebird25Lib: String;

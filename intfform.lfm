@@ -7,23 +7,23 @@ object IntfFm: TIntfFm
   Caption = 'Интерфейс'
   ClientHeight = 551
   ClientWidth = 472
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object PageControl1: TPageControl
     Left = 4
     Height = 421
     Top = 92
     Width = 464
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     BorderSpacing.Left = 4
     BorderSpacing.Top = 4
     BorderSpacing.Right = 4
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = PageControl1Change
     object TabSheet1: TTabSheet
@@ -78,7 +78,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton7Click
         end
         object ToolButton8: TToolButton
-          Left = 332
+          Left = 331
           Top = 0
           AutoSize = True
           Caption = 'Вниз'
@@ -95,8 +95,8 @@ object IntfFm: TIntfFm
         Images = Images
         ReadOnly = True
         TabOrder = 1
-        OnSelectionChanged = MnuSelectionChanged
         Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        OnSelectionChanged = MnuSelectionChanged
       end
     end
     object TabSheet2: TTabSheet
@@ -143,7 +143,7 @@ object IntfFm: TIntfFm
           OnClick = ToolButton9Click
         end
         object ToolButton10: TToolButton
-          Left = 216
+          Left = 215
           Top = 0
           AutoSize = True
           Caption = 'Вниз'
@@ -163,7 +163,7 @@ object IntfFm: TIntfFm
         Columns = <        
           item
             Title.Caption = 'Имя'
-            Width = 438
+            Width = 455
           end>
         FixedCols = 0
         FixedRows = 0
@@ -175,7 +175,7 @@ object IntfFm: TIntfFm
         OnSelectEditor = TabsSelectEditor
         OnSelection = TabsSelection
         ColWidths = (
-          438
+          455
         )
       end
     end

@@ -112,7 +112,7 @@ begin
     //RegisterProperty('OnDblClick', 'TNotifyEvent', iptrw);
     RegisterProperty('OnClose', 'TCloseEvent', iptrw);
     RegisterProperty('OnCloseQuery', 'TCloseQueryEvent', iptrw);
-    RegisterProperty('OnCreate', 'TNotifyEvent', iptrw);
+    //RegisterProperty('OnCreate', 'TNotifyEvent', iptrw);
     RegisterProperty('OnDestroy', 'TNotifyEvent', iptrw);
     RegisterProperty('OnDeactivate', 'TNotifyEvent', iptrw);
     RegisterProperty('OnHide', 'TNotifyEvent', iptrw);

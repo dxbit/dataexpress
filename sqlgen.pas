@@ -56,6 +56,7 @@ type
     FDisableCalcExpr: Boolean;
     FExprBuilder: TExpressionBuilder;
     FPos: Integer;
+    FPutExprInBrackets: Boolean;
   protected
     FOldPos: Integer;
     function FieldNameParse(const FieldName: String): String; virtual;
@@ -67,6 +68,7 @@ type
     function Parse(const Flt: String): String;
     property ExprBuilder: TExpressionBuilder read FExprBuilder write FExprBuilder;
     property DisableCalcExpr: Boolean read FDisableCalcExpr write FDisableCalcExpr;
+    property PutExprInBrackets: Boolean read FPutExprInBrackets write FPutExprInBrackets;
     property Position: Integer read FPos;
   end;
 
@@ -365,9 +367,9 @@ begin
   if LevelChars > 8191 then LevelChars := 8191;
   sLevelChars := IntToStr(LevelChars);
   Result := 'with recursive pathes as ' +
-	  '(select id, CAST(LEFT(' + FNm + ',' +
+	  '(select id, CAST(LEFT(' + TNm + '.' + FNm + ',' +
     sLevelChars + ') as VARCHAR(' + sLevelChars + ')) as ' + FNm + ' from ' + TNm +
-    ' where ' + PFNm + ' is null ' +
+    ' where ' + TNm + '.' + PFNm + ' is null ' +
     'union all ' +
     'select t.id,LEFT(p.' + FNm + ' || ''\'' || t.' + FNm + ',' + sLevelChars + ') from ' + TNm +
     ' t join pathes p on t.' + PFNm + '=p.id) ';
@@ -1795,6 +1797,8 @@ function TSQLSourceFilterParser.CheckValue(var Value: String): Boolean;
 var
   Tmp, AbsValue: String;
 begin
+  if FPutExprInBrackets then Exit(True);
+
   Result := CheckType(FCmp, Value);
   // экранируем апострофы
   if (FCmp is TdxEdit) or (FCmp is TdxMemo) or (FCmp is TdxComboBox) or
@@ -1842,6 +1846,8 @@ var
   Bg, Ed, AbsValue, S, Op: String;
 begin
   Result := '';
+  if PutExprInBrackets then Exit;
+
   if FOp = 'in' then Op := '='
   else if FOp = 'notin' then Op := '<>'
   else Op := FOp;
@@ -2001,6 +2007,12 @@ begin
             end;
             FlNm := FieldNameParse(S);
             if FlNm = '' then DoFilterParserError(Format(rsFPSrcFldNotFound, [S]), FOldPos);
+
+            if FPutExprInBrackets and Optional then
+            begin
+              FlNm := '"?' + FlNm + '"';
+            end;
+
             St := stOp;
           end
           else if Tk = #0 then Break
@@ -2031,9 +2043,14 @@ begin
           begin
             try
               FreeAndNil(E);
-              E := EB.Build(Expr);
-              if E = nil then DoFilterParserError(rsFPExprNotParsed, ExprPos);
-              if not FDisableCalcExpr then V := E.Calc;
+              if not FPutExprInBrackets then
+              begin
+                E := EB.Build(Expr);
+                if E = nil then DoFilterParserError(rsFPExprNotParsed, ExprPos);
+                if not FDisableCalcExpr then V := E.Calc;
+              end
+              else
+                V := '{' + Expr + '}';
             except
               on Err: ECalcError do
                 DoFilterParserError(Err.Message, ExprPos + Err.Position - 1)

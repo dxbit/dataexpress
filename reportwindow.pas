@@ -196,7 +196,7 @@ end;
 
 procedure TReportWindow.GridDblClick(Sender: TObject);
 begin
-  if FRD.IsSimple and FEditBn.Enabled and FEditBn.Visible then
+  if FRD.CanEdit and FEditBn.Enabled and FEditBn.Visible then
   begin
     if FQGrid.MouseToCell(FQGrid.ScreenToClient(Mouse.CursorPos)).y > 0 then
 	    FEditBn.Click;
@@ -560,7 +560,8 @@ begin
   for i := 0 to FRD.Totals.Count - 1 do
   begin
     T := FRD.Totals[i];
-    if FRD.IndexOfNameDS(T.FieldNameDS) < 0 then Continue;
+    if (T.FieldNameDS = '') and (T.Func = tfCount) then
+    else if FRD.IndexOfNameDS(T.FieldNameDS) < 0 then Continue;
 
     S := S + T.Caption + ': ';
     try
@@ -777,14 +778,14 @@ begin
   begin
     BeginUpdate;
     Buttons[1].Visible := FRD.DateField >= 0;
-    Buttons[6].Visible := FRD.IsSimple;
+    Buttons[6].Visible := FRD.CanEdit;
     Buttons[7].Visible := Buttons[6].Visible;
 		Buttons[8].Visible := Buttons[6].Visible;
     Buttons[10].Visible := FRD.Templates.Count > 0;
     Buttons[12].Visible := FRD.HelpText <> '';
 
     // !!! Доступ
-    if FRD.IsSimple then
+    if FRD.CanEdit then
     begin
 	    FmId := FRD.GetEditFormId;
   	  CanV := UserMan.CheckFmVisible(FmId);

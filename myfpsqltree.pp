@@ -1926,6 +1926,36 @@ Type
     property ElseExpression: TSQLExpression read FElseExpression write FElseExpression;
   end;
 
+  { TSQLSubstringExpression }
+
+  TSQLSubstringExpression = class(TSQLExpression)
+  private
+    FForExpression: TSQLExpression;
+    FFromExpression: TSQLExpression;
+    FStringExpression: TSQLExpression;
+  public
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property StringExpression: TSQLExpression read FStringExpression write FStringExpression;
+    property FromExpression: TSQLExpression read FFromExpression write FFromExpression;
+    property ForExpression: TSQLExpression read FForExpression write FForExpression;
+  end;
+
+  { TSQLListFuncExpression }
+
+  TSQLListFuncExpression = class(TSQLExpression)
+  private
+    FArg1: TSQLExpression;
+    FArg2: TSQLExpression;
+    FDistinct: Boolean;
+  public
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property Distinct: Boolean read FDistinct write FDistinct;
+    property Arg1: TSQLExpression read FArg1 write FArg1;
+    property Arg2: TSQLExpression read FArg2 write FArg2;
+  end;
+
   //
 
 Const
@@ -1996,7 +2026,7 @@ end;
 function TSQLSelectSkipElement.GetAsSQL(Options: TSQLFormatOptions;
   AIndent: Integer): TSQLStringType;
 begin
-  Result := Format('SKIP %d', [FValue]);
+  Result := SQLKeyword(Format('SKIP %d', [FValue]), Options);
 end;
 
 { TSQLSelectFirstElement }
@@ -2004,7 +2034,7 @@ end;
 function TSQLSelectFirstElement.GetAsSQL(Options: TSQLFormatOptions;
   AIndent: Integer): TSQLStringType;
 begin
-  Result := Format('FIRST %d', [FValue]);
+  Result := SQLKeyword(Format('FIRST %d', [FValue]), Options);
 end;
 
 { TSQLSelectAsterisk }
@@ -2048,7 +2078,7 @@ begin
     end;
     Result := Result + ')';
   end;
-  Result := Result + ' AS (';
+  Result := Result + ' ' + SQLKeyword('AS', Options) + ' (';
   if FSelect <> nil then
   	Result := Result + FSelect.GetAsSQL(Options, AIndent);
   Result := Result + ')';
@@ -2073,8 +2103,8 @@ function TSQLWithSelectStatement.GetAsSQL(Options: TSQLFormatOptions; AIndent: I
 var
   i: Integer;
 begin
-  Result := 'WITH ';
-  if FRecursive then Result := Result + 'RECURSIVE ';
+  Result := SQLKeyword('WITH ', Options);
+  if FRecursive then Result := Result + SQLKeyword('RECURSIVE ', Options);
   for i := 0 to FSelectList.Count - 1 do
   begin
     Result := Result + FSelectList[i].GetAsSQL(Options, AIndent);
@@ -3255,7 +3285,7 @@ begin
   If Assigned(FExpression) then
     Result:=FExpression.GetAsSQL(Options);
   If Assigned(FAliasName) then
-    Result:=Result+' AS '+FAliasName.GetAsSQL(Options);
+    Result:=Result+SQLKeyword(' AS ', Options)+FAliasName.GetAsSQL(Options);
 end;
 
 { TSQLSimpleTableReference }
@@ -5153,6 +5183,39 @@ begin
     Result := Result + SQLKeyword(' ELSE ', Options) +
       FElseExpression.GetAsSQL(Options, AIndent);
   Result := Result + SQLKeyword(' END ', Options);
+end;
+
+{ TSQLSubstringExpression }
+
+function TSQLSubstringExpression.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyword('SUBSTRING(', Options);
+  if StringExpression <> nil then
+    Result := Result + StringExpression.GetAsSQL(Options, AIndent);
+  Result := Result + SQLKeyword(' FROM ', Options);
+  if FromExpression <> nil then
+    Result := Result + FromExpression.GetAsSQL(Options, AIndent);
+  Result := Result + SQLKeyword(' FOR ', Options);
+  if ForExpression <> nil then
+    Result := Result + ForExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLListFuncExpression }
+
+function TSQLListFuncExpression.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyword('LIST(', Options);
+  if Distinct then
+    Result := Result + SQLKeyword('DISTINCT ', Options);
+  if Arg1 <> nil then
+    Result := Result + Arg1.GetAsSQL(Options, AIndent);
+  Result := Result + SQLListSeparator(Options);
+  if Arg2 <> nil then
+    Result := Result + Arg2.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
 end;
 
 end.

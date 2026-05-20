@@ -858,6 +858,10 @@ msgstr "Было переименовано поле, но программа н
 msgid "You cannot replace an unlimited memo with another component."
 msgstr "Нельзя заменить бесконечную заметку на другой компонент."
 
+#: strconsts.rscantusegetfunc
+msgid "Cannot use function \"Get\" when grouping by date."
+msgstr "Невозможно использовать функцию \"Получить\" при группировке по дате."
+
 #: strconsts.rscaption
 msgctxt "strconsts.rscaption"
 msgid "Caption"
@@ -2992,6 +2996,10 @@ msgstr "Эта форма уже была выбрана."
 msgid "Format"
 msgstr "Формат"
 
+#: strconsts.rsformatsqlerror
+msgid "SQL expression formatting failure"
+msgstr "Сбой форматирования SQL-выражения"
+
 #: strconsts.rsformcomponentnameexists
 msgid "A form with the same component name already exists."
 msgstr "Форма с таким именем компонента уже существует."
@@ -3184,6 +3192,10 @@ msgstr "Галерея"
 #: strconsts.rsgeneralview
 msgid "General view"
 msgstr "Общий вид"
+
+#: strconsts.rsget
+msgid "Get"
+msgstr "Получить"
 
 #: strconsts.rsgetchangescounterror
 msgid "Unable to determine the number of changes to the database tables."
@@ -4474,6 +4486,10 @@ msgstr "Нет данных для импорта. Файл пуст."
 msgid "No desktop shortcuts were found to successfully launch DataExpress. Do you want to create them?"
 msgstr "На рабочем столе не найдены ярлыки для успешного запуска DataExpress. Вы хотите их создать?"
 
+#: strconsts.rsnoedit
+msgid "No edit"
+msgstr "Без редактирования"
+
 #: strconsts.rsnoformsavailable
 msgid "No forms available."
 msgstr "Нет доступных форм."
@@ -4481,6 +4497,10 @@ msgstr "Нет доступных форм."
 #: strconsts.rsnone
 msgid "None"
 msgstr "Нет"
+
+#: strconsts.rsnosuchfiledir
+msgid "There is no such file or directory. Make sure that the file or directory exists and the path is entered correctly (linux is case-sensitive)."
+msgstr "Такого файла или каталога нет. Убедитесь, что файл или каталог существует и путь к нему указан правильно (linux чувствителен к регистру)."
 
 #: strconsts.rsnot
 msgid "Not"

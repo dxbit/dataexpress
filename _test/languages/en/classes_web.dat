@@ -1125,10 +1125,12 @@ TdxImage = class(TControl);
 	property ImageName: String [rw]
 	property KeepSize: Boolean [rw]
 	property Proportional: Boolean [rw]
-	property Stretch: Boolean [rw]	
+	property Stretch: Boolean [rw]
+	property OnClick: TNotifyEvent [rw]
 TdxLabel = class(TControl)
 	property FieldName: String [r]
 	property Expression: String [r]
+	property OnClick: TNotifyEvent [rw]
 TdxLookupComboBox = class(TControl)
 	property CheckExpression: String [r]
 	property DefaultValue: String [r] 
@@ -1243,6 +1245,7 @@ TdxShape = class(TControl)
 	property Pen: TPen [rw]
 	property Shape: TShapeType [rw]
 	property ShapeEx: TShapeTypeEx [rw]
+	property OnClick: TNotifyEvent [rw]
 TdxTabSheet = class(TWinControl)
 	property PageIndex: Integer [r]
 	property TabVisible: Boolean [rw]

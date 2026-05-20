@@ -1914,6 +1914,13 @@ resourcestring
     +'2. The dataset is not open yet.'#13#10
     +'3. Access to the field in the form actions or in the condition. The same as point 2.';
   rsFastScroll = 'Fast scroll';
+  rsGet = 'Get';
+  rsNoSuchFileDir = 'There is no such file or directory. Make sure that the '
+    +'file or directory exists and the path is entered correctly (linux is '
+    +'case-sensitive).';
+  rsCantUseGetFunc = 'Cannot use function "Get" when grouping by date.';
+  rsNoEdit = 'No edit';
+  rsFormatSQLError = 'SQL expression formatting failure';
 
 implementation
 

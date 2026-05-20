@@ -313,15 +313,6 @@ begin
   with AForm do
     SetBounds(Left, Top, pLay^.Width, pLay^.Height);
 
-  if AForm.ComponentState * [csDesigning] = [] then
-    SetFormFixedHeight(AForm, pLay^.FixedHeight)
-  {$ifdef linux}
-  else
-  begin
-    DesignFr.DesignBox.DesignFm.Width := AForm.Width;
-    DesignFr.DesignBox.DesignFm.Height := AForm.Height;
-  end{$endif};
-
   for i := 0 to Ctrls.Count - 1 do
   begin
     CLI := Ctrls[i]^;
@@ -330,6 +321,15 @@ begin
     C.Anchors := CLI.Anchors;
     //Debug(C.Name + ': ' + IntToStr(Cardinal(CLI.Anchors)));
   end;
+
+  if AForm.ComponentState * [csDesigning] = [] then
+    SetFormFixedHeight(AForm, pLay^.FixedHeight)
+  {$ifdef linux}
+  else
+  begin
+    DesignFr.DesignBox.DesignFm.Width := AForm.Width;
+    DesignFr.DesignBox.DesignFm.Height := AForm.Height;
+  end{$endif};
 
   EnableResizing;
 end;

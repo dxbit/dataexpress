@@ -190,6 +190,7 @@ type
   TQueryGridMoreMenu = class(TPopupMenu)
   private
     FCmp: TdxQueryGrid;
+    FRD: TReportData;
     procedure MenuClick(Sender: TObject);
   protected
     procedure DoPopup(Sender: TObject); override;
@@ -256,7 +257,8 @@ implementation
 
 uses
   apputils, insertvaluesform, filltableform, propdialogs, BGRABitmap,
-  LazUtf8, designerframe, hintform, imagesform, imagemanager, appimagelists;
+  LazUtf8, designerframe, hintform, imagesform, imagemanager, appimagelists,
+  reportmanager;
 
 { TCalcEditMoreMenu }
 
@@ -429,25 +431,35 @@ end;  *)
 procedure TQueryGridMoreMenu.MenuClick(Sender: TObject);
 begin
   case TComponent(Sender).Tag of
-    0: FCmp.ManualRefresh:=not FCmp.ManualRefresh;
+    0: FCmp.ManualRefresh := not FCmp.ManualRefresh;
+    1:
+      begin
+        FRD.NoEdit := not FRD.NoEdit;
+        if FRD.NoEdit then FRD.Grid.Editable:=False;
+        FRD.SetReportChanged;
+      end;
   end;
 end;
 
 procedure TQueryGridMoreMenu.DoPopup(Sender: TObject);
 begin
   inherited DoPopup(Sender);
-  Items[0].Checked:=FCmp.ManualRefresh;
+  Items[0].Checked := FCmp.ManualRefresh;
+  Items[1].Checked := FRD.NoEdit;
+  Items[1].Enabled := FRD.IsSimple;
 end;
 
 constructor TQueryGridMoreMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Items.Add( CreateMenuItem(Self, rsManualRefresh, 0, 0, @MenuClick) );
+  Items.Add( CreateMenuItem(Self, rsNoEdit, 1, 0, @MenuClick) );
 end;
 
 procedure TQueryGridMoreMenu.PopupMenu(C: TdxQueryGrid);
 begin
   FCmp := C;
+  FRD := ReportMan.FindReport(C.Id);
   Popup;
 end;
 

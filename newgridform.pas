@@ -539,7 +539,7 @@ end;
 function TGrdFm.CanEditGrid: Boolean;
 begin
   Result := (FForm <> nil) or (FRD <> nil) and (FRD.Kind = rkQuery) and
-    FRD.IsSimple;
+    FRD.CanEdit;
 end;
 
 procedure TGrdFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

@@ -752,7 +752,9 @@ begin
     else Key := 0
   end
   else if (Key = VK_X) and (Shift = [ssShift]) then
-    Key := 0
+  begin
+    if not Grid.EditorMode then Key := 0
+  end
   // Пришлось добавить, т. к. по Ctrl+Del не удалялось поле, а удалялся текст в
   // ячейке.
   else if (Key = VK_DELETE) and (Shift = [ssModifier]) and (Grid.Col = Grid.ColCount - 4) then
@@ -1165,6 +1167,7 @@ begin
   L.AddObject(rsDistinctCount, TObject(tfDistCount));
   L.AddObject(rsMerge, TObject(tfMerge));
   L.AddObject(rsMergeAll, TObject(tfMergeAll));
+  L.AddObject(rsGet, TObject(tfGet));
 end;
 
 procedure TReportFm.FillDateFl;
@@ -1236,7 +1239,7 @@ function TReportFm.Validate: Boolean;
     end;
   end;
 
-  function IsFuncExists: Boolean;
+  {function IsFuncExists: Boolean;
   var
     m: Integer;
   begin
@@ -1266,7 +1269,7 @@ function TReportFm.Validate: Boolean;
           Exit(True);
         end;
       end;
-  end;
+  end;  }
 
   function CheckValidName(idx: Integer): Boolean;
   var
@@ -1374,9 +1377,13 @@ var
   i, j, n, c, si: Integer;
   C1, C2: TComponent;
   Fn: TRpTotalFunc;
+  HasNoGetBlob, HasNoGetFunc, HasGetFn: Boolean;
 
 begin
   Result := False;
+  HasGetFn := False;
+  HasNoGetBlob := False;
+  HasNoGetFunc := False;
   // Выбрана ли форма
   for i := 1 to Grid.ColCount - 5 do
   begin
@@ -1397,12 +1404,13 @@ begin
   for i := 5 to Grid.Rowcount - 1 do
   begin
     n := 0;
+    Fn := TRpTotalFunc(PtrInt(Grid.Objects[c - 3, i]));
     // Выбрано ли поле в строке
     for j := 1 to Grid.ColCount - 5 do
       if Grid.Objects[j, i] <> nil then Inc(n);
     // Не выбирать ни одного поля можно только для функции "Количество".
-    if (n = 0) and (TRpTotalFunc(PtrInt(Grid.Objects[Grid.ColCount - 3, i])) <> tfCount) then
-    	//(TRpTotalFunc(Grid.Objects[Grid.ColCount - 3, i]) <> tfCount)) then
+    //if (n = 0) and (TRpTotalFunc(PtrInt(Grid.Objects[Grid.ColCount - 3, i])) <> tfCount) then
+    if (n = 0) and (Fn <> tfCount) then
     begin
       ErrMsg(rsFieldNotSel);
       Grid.Row := i; Grid.Col := 1;
@@ -1411,9 +1419,11 @@ begin
     else
     begin
       // Если функция выбрана, то смотрим тип полей. Он должен быть числовой для некоторых ф-ций.
-      if Grid.Objects[c - 3, i] <> nil then
+      //if Grid.Objects[c - 3, i] <> nil then
+      if (Fn <> tfNone) and (Fn <> tfGet) then
       begin
-        Fn := TRpTotalFunc(PtrInt(Grid.Objects[c - 3, i]));
+        HasNoGetFunc := True;
+        //Fn := TRpTotalFunc(PtrInt(Grid.Objects[c - 3, i]));
         n := 0;
         for j := 1 to Grid.ColCount - 5 do
         begin
@@ -1422,7 +1432,7 @@ begin
             C1 := _LookupCmp(TdxForm(C1.Owner), Grid.Cells[j, i]);
           if Fn in [tfSum, tfAvg, tfProfit] then
           begin
-            if (C1 = nil) or (C1 is TdxCalcEdit) {or (C1 is TdxCounter) or (C1 is TdxRecordId)} then
+            if (C1 = nil) or (C1 is TdxCalcEdit) then
             else
             begin
               ErrMsg(rsFieldShouldBeNum);
@@ -1436,15 +1446,6 @@ begin
             Grid.Row := i; Grid.Col := j;
             Exit;
           end;
-          {else if (Fn in [tfMerge, tfMergeAll]) and (Grid.Cells[c-1, i] = '1') then
-          begin
-            if (C1 <> nil) and (not ((C1 is TdxEdit) or (C1 is TdxMemo) or (C1 is TdxComboBox))) then
-            begin
-              ErrMsgFmt(rsOnlyTextFieldCanBeParamWithMergeFunc, [Grid.Cells[c-3, i]]);
-              Grid.Row := i; Grid.Col := j;
-              Exit;
-            end;
-          end;}
           if C1 <> nil then Inc(n);
         end;
         // Нельзя использовать это поле как параметр, если ни одного поля не выбрано.
@@ -1454,9 +1455,9 @@ begin
           Grid.Row := i; Grid.Col := c - 4;
           Exit;
         end;
-        // Нельзя использовать это поле как параметр, если выбрана функция
-
-      end;
+      end
+      else if Fn = tfGet then
+        HasGetFn := True;
       // Если поле выбрано, то оно должно быть в результате или в параметрах
       if (Grid.Cells[c - 2, i] = '0') and (Grid.Cells[c - 1, i] = '0') then
       begin
@@ -1488,9 +1489,17 @@ begin
           ErrMsg(rsIncompatibleFields);
           Grid.Row := i; Grid.Col := j;
           Exit;
-        end;
+        end
+        else if ((C1 is TdxDBImage) or (C1 is TdxFile) or (C2 is TdxDBImage)
+          or (C2 is TdxFile)) and (Fn <> tfGet) then HasNoGetBlob := True;
       end;
     end;
+  end;
+
+  if HasNoGetFunc and HasNoGetBlob then
+  begin
+    ErrMsg(rsDataCantGroupByFilesImages);
+    Exit;
   end;
 
   // Хотя бы одно поле должно быть видимым
@@ -1553,14 +1562,20 @@ begin
       Grid.Row := n + 5; Grid.Col := c - 3;
       Exit;
     end;
+    // Нельзя использовать функцию "Получить"
+    if HasGetFn then
+    begin
+      ErrMsg(rsCantUseGetFunc);
+      Exit;
+    end;
   end;
 
   // Нельзя группировать по изображению или файлу
-  if IsFuncExists and IsFileOrImageExists then
+  {if IsFuncExists and IsFileOrImageExists then
   begin
     ErrMsg(rsDataCantGroupByFilesImages);
     Exit;
-  end;
+  end;  }
 
   if not CanOldSqlFieldsDeleted then Exit;
 

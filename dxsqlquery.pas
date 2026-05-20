@@ -106,17 +106,40 @@ type
     property UseExecuteBlock: Boolean read GetUseExecuteBlock write SetUseExecuteBlock;
   end;
 
+  PSQLFieldFormFieldRec = ^TSQLFieldFormFieldRec;
+  TSQLFieldFormFieldRec = record
+    Id: Integer;
+    Name: String;
+    Hierarchy: Boolean;
+  end;
+
+  { TSQLFieldFormFieldList }
+
+  TSQLFieldFormFieldList = class(TList)
+  private
+    function GetFields(Index: Integer): PSQLFieldFormFieldRec;
+  public
+    function AddField(Id: Integer; const Name: String; Hier: Boolean): PSQLFieldFormFieldRec;
+    function FindField(Id: Integer): PSQLFieldFormFieldRec;
+    procedure Clear; override;
+    property Fields[Index: Integer]: PSQLFieldFormFieldRec read GetFields; default;
+  end;
+
   { TdxSQLParser }
 
   TdxSQLParser = class
   private
     FCurrentForm: TdxForm;
+    FDisableBuildExpr: Boolean;
     FDisableCalcs: Boolean;
     FExtractForms: Boolean;
     FTableName: String;
     FFields, FAliases: TStringList;
     FSourceForms: TStrings;
     FLosts: TList;
+    FFormFields: TSQLFieldFormFieldList;
+    FStatList: TList;
+    procedure GetAllFields;
     function PrepareSQLExpr(const S: String): String;
     function ReplaceFieldName(S: String; Fm: TdxForm; const AliasName: String): String;
     procedure ProcessElement(El: TSQLElement; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean);
@@ -131,7 +154,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function Parse(const SQL: String): String;
+    function Parse(const SQL: String; FormatOpts: TSQLFormatOptions): String;
     function GetInsertSQL: String;
     function GetUpdateSQL: String;
     function GetDeleteSQL: String;
@@ -139,18 +162,20 @@ type
     property CurrentForm: TdxForm read FCurrentForm write FCurrentForm;
     property SourceForms: TStrings read FSourceForms;
     property ExtractForms: Boolean read FExtractForms write FExtractForms;
+    property DisableBuildExpr: Boolean read FDisableBuildExpr write FDisableBuildExpr;
     property DisableCalcs: Boolean read FDisableCalcs write FDisableCalcs;
   end;
 
 function SQLSelect(const SQL: String): TdxSQLQuery;
 procedure SQLExecute(const SQL: String);
 function ParseSQL(const SQL: String; Fm: TdxForm): String;
+function FormatSQL(const SQL: String; FormatOpt: TSQLFormatOptions): String;
 
 implementation
 
 uses
   LazUtf8, formmanager, sqlgen, dbengine, apputils, Variants, StrUtils,
-  expressions;
+  expressions, dximages, dxfiles;
 
 { TMySQLQuery }
 
@@ -159,6 +184,96 @@ begin
   // Ничего не делаем, если используется Execute Block
   if not FUseExecuteBlock then
     inherited ApplyRecUpdate(UpdateKind);
+end;
+
+procedure TdxSQLParser.GetAllFields;
+var
+  i, j, ParFId: Integer;
+  Fm: TdxForm;
+  C: TComponent;
+begin
+  FFormFields.Clear;
+  for i := 0 to FormMan.FormCount - 1 do
+  begin
+    Fm := FormMan.Forms[i];
+    ParFId := GetFormParentFieldFieldId(Fm);
+    for j := 0 to Fm.ComponentCount - 1 do
+    begin
+      C := Fm.Components[j];
+
+      if IsField(C) and not (C is TdxFile) and not (C is TdxDBImage) then
+        FFormFields.AddField(GetId(C), GetFieldName(C), ParFId = GetId(C));
+    end
+  end;
+end;
+
+function IsSimplestExpr(var Expr: String): Boolean;
+var
+  Tk: Char;
+  L: SizeInt;
+  S, Ex: String;
+  p: Integer;
+begin
+  Result := False;
+  if Expr = '' then Exit;
+  L := Length(Expr);
+
+  p := 1;
+  S := ReadToken(Expr, p, Tk);
+  if p > L then
+  begin
+    case Tk of
+      '[':
+        begin
+          Result := True;
+          if not (S[2] in [':', '!']) then
+            Insert(':', Expr, 2);
+        end;
+      '''':
+        begin
+          Result := True;
+          if S[1] = '"' then
+            Expr := StringReplace(StringReplace(
+              Expr, '''', '''' + '''', [rfReplaceAll]),
+              '"', '''', [rfReplaceAll]);
+        end;
+      'a':
+        begin
+          Result := CompareText(S, 'null') = 0;
+        end;
+      '0': Result := True;
+    end;
+    Exit;
+  end;
+
+  Ex := '';
+  repeat
+    if Tk = '[' then
+    begin
+      if not (S[2] in [':', '!']) then
+        Insert(':', S, 2);
+    end;
+    Ex := Ex + S;
+    S := ReadToken(Expr, p, Tk);
+  until Tk = #0;
+  Expr := Ex;
+
+  {Result := True;
+  L := Length(Expr);
+  LastCh := Expr[L];
+  if (Pos('[', Expr) = 1) and (RPos('[', Expr) = 1) and (Pos(']', Expr) = L) then
+  begin
+    if (Expr[2] <> ':') and (Expr[2] <> '!') then Insert(':', Expr, 2);
+  end
+  else if (Pos('''', Expr) = 1) and (PosEx('''', Expr, 2) = L) then
+  else if (Pos('"', Expr) = 1) and (PosEx('"', Expr, 2) = L) then
+    Expr := '''' + Copy(Expr, 2, L - 2) + ''''
+  else if CompareText(Expr, 'null') = 0 then
+  else
+  begin
+    ReadToken();
+    Result := False;
+  end; }
 end;
 
 function TdxSQLParser.PrepareSQLExpr(const S: String): String;
@@ -183,6 +298,7 @@ begin
       '''', '"':
         begin
           Ch := S[i];
+          Inc(i);
           while (i <= L) and (S[i] <> Ch) do
             Inc(i);
           Result := Result + Copy(S, p0, i - p0 + 1);
@@ -219,7 +335,7 @@ begin
                 begin
                   Value := VarToStr(V);
                   if not IsNumericComponent(C) then
-                    Value := '''' + Value + '''';
+                    Value := '''' + EscapeSQuotes(Value) + '''';
                 end;
               end
               else
@@ -246,7 +362,16 @@ begin
           if Trim(Expr) = '' then
             raise Exception.Create(rsExprEmpty);
 
-          if not FExtractForms then
+          if FDisableBuildExpr then
+          begin
+            Expr := Trim(Expr);
+
+            if not IsSimplestExpr(Expr) then
+              Result := Result + ''''#2 + StringReplace(Expr, '''', #1, [rfReplaceAll]) + #3''''
+            else
+              Result := Result + ''''#4 + StringReplace(Expr, '''', #1, [rfReplaceAll]) + #5'''';
+          end
+          else if not FExtractForms then
           begin
 
             if EB = nil then
@@ -315,6 +440,20 @@ begin
           end
           else
             Result := Result + S[i];
+        end;
+      '-':
+        begin
+          if Copy(S, i + 1, 1) = '-' then
+          begin
+            while i <= L do
+            begin
+              if S[i] in [#13, #10] then Break;
+              Inc(i);
+            end;
+            Result := Result + Copy(S, p0, i - p0 + 1);
+          end
+          else
+            Result := Result + S[i];
         end
       else
         Result := Result + S[i];
@@ -339,11 +478,18 @@ end;
 function TdxSQLParser.ReplaceFieldName(S: String; Fm: TdxForm; const AliasName: String): String;
 var
   p: SizeInt;
-  FmNm, FlNm: String;
+  FmNm, FlNm, Pfx, TblNm: String;
   C: TComponent;
   IsOptionalField: Boolean;
+  pF: PSQLFieldFormFieldRec;
 begin
+  if Fm = nil then Exit(S);
+
   IsOptionalField := DetectOptionalField(S);
+
+  if not FDisableBuildExpr then
+  begin
+
   Result := S;
   p := Pos('.', S);
   if p > 0 then
@@ -406,8 +552,40 @@ begin
     end;
   end;
 
-  if IsOptionalField then
-    Result := '?' + Result;
+  if IsOptionalField then Result := '?' + Result;
+
+  end
+  else
+  begin
+    Result := S;
+    p := Pos('.', S);
+    if p = 0 then Exit;
+    FmNm := Copy(S, 1, p - 1);
+    FlNm := Copy(S, p + 1, 255);
+    Pfx := Copy(FmNm, 1, 1);
+    if (Pfx = 't') and (FmNm <> 't') then
+    begin
+      Delete(FmNm, 1, 1);
+      Fm := FormMan.FindForm(StrToInt(FmNm));
+      TblNm := '[' + IIF(IsOptionalField, '?', '') + Fm.FormCaption + ']';
+    end
+    else
+    begin
+      TblNm := FmNm;
+      if IsOptionalField then TblNm := '"?' + TblNm + '"';
+    end;
+    if Copy(FlNm, 1, 1) = 'f' then
+    begin
+      pF := FFormFields.FindField(StrToInt(Copy(FlNm, 2, 255)));
+      if pF <> nil then
+      begin
+        if (Pfx <> 't') and pF^.Hierarchy then Result := TblNm + '.' + FlNm // IsOptionalField
+        else Result := TblNm + '.[' + pF^.Name + ']';
+      end
+    end
+    else if (FlNm = 'id') or (FlNm = 'pid') then
+      Result := TblNm + '.' + FlNm;
+  end;
 end;
 
 procedure TdxSQLParser.ProcessElement(El: TSQLElement; Fm: TdxForm;
@@ -521,13 +699,6 @@ begin
             FLosts.Add(Expr);
             Result := nil;
           end
-        {    Left.Free;
-            Right.Free;
-
-            Left := CreateIntLiteral(Expr);
-            Right := CreateIntLiteral(Expr);
-            Operation := boEQ;
-          end     }
           else if Operation in [boEQ, boLT, boGT, boLE, boGE, boLike,
             boContaining, boStarting] then
             Operation := boIS
@@ -591,6 +762,19 @@ var
   Fm: TdxForm;
 begin
   S := T.ObjectName.Name;
+
+  if FDisableBuildExpr then
+  begin
+    if Copy(S, 1, 1) = 't' then
+    begin
+      Delete(S, 1, 1);
+      Fm := FormMan.FindForm(StrToInt(S));
+      T.ObjectName.Name := '[' + Fm.FormCaption + ']';
+    end;
+    ReplaceFieldNames(Stat, Fm, S);
+    Exit;
+  end;
+
   if Copy(S, 1, 3) <> '___' then Exit;
   Delete(S, 1, 3);
   S := StringReplace(S, #1, '.', [rfReplaceAll]);
@@ -603,6 +787,7 @@ begin
   	S := T.AliasName.Name;
   ReplaceFieldNames(Stat, Fm, S);
   T.ObjectName.Name := TableStr(Fm.Id);
+  FStatList.Add(Stat);
 end;
 
 procedure TdxSQLParser.ParseSelectTableRef(T: TSQLSelectTableReference);
@@ -610,7 +795,8 @@ begin
   ParseSelectStatement(T.Select);
 end;
 
-procedure TdxSQLParser.ParseJoinTableRef(Stat: TSQLSelectStatement; T: TSQLJoinTableReference);
+procedure TdxSQLParser.ParseJoinTableRef(Stat: TSQLSelectStatement;
+  T: TSQLJoinTableReference);
 begin
   if T.Left is TSQLJoinTableReference then
 		ParseJoinTableRef(Stat, TSQLJoinTableReference(T.Left))
@@ -630,6 +816,7 @@ procedure TdxSQLParser.ParseSelectStatement(Stat: TSQLSelectStatement);
 var
   i: Integer;
   T: TSQLElement;
+  Dummy: Boolean;
 begin
   if Stat.WithSelect <> nil then
   	for i := 0 to Stat.WithSelect.SelectList.Count - 1 do
@@ -647,6 +834,13 @@ begin
     else if T is TSQLSelectTableReference then
     	ParseSelectTableRef(TSQLSelectTableReference(T));
   end;
+
+  if FStatList.IndexOf(Stat) < 0 then
+  begin
+    Stat.Where := ProcessSQLExpression(Stat.Where, nil, '', Dummy);
+    Stat.Having := ProcessSQLExpression(Stat.Having, nil, '', Dummy);
+  end;
+
   if Stat.Union <> nil then
   	ParseSelectStatement(Stat.Union);
 end;
@@ -717,15 +911,15 @@ begin
   FAliases := TStringList.Create;
   FSourceForms := TStringList.Create;
   FLosts := TList.Create;
+  FFormFields := TSQLFieldFormFieldList.Create;
+  FStatList := TList.Create;
 end;
 
 destructor TdxSQLParser.Destroy;
-//var
-//  i: Integer;
 begin
+  FStatList.Free;
+  FreeAndNil(FFormFields);
   ClearList(FLosts);
-  //for i := 0 to FLosts.Count - 1 do
-  //  Debug(TSQLElement(FLosts[i]).GetAsSQL([], 2));
   FLosts.Free;
   FSourceForms.Free;
   FFields.Free;
@@ -733,7 +927,8 @@ begin
   inherited Destroy;
 end;
 
-function TdxSQLParser.Parse(const SQL: String): String;
+function TdxSQLParser.Parse(const SQL: String; FormatOpts: TSQLFormatOptions
+  ): String;
 var
   El: TSQLElement;
   St: TStringStream;
@@ -742,6 +937,10 @@ begin
   Result := '';
 
   St := TStringStream.Create(PrepareSQLExpr(SQL));
+
+  if FDisableBuildExpr then GetAllFields;
+  FStatList.Clear;
+
   Parser := TSQLParser.Create(St);
   El := nil;
 
@@ -750,7 +949,7 @@ begin
   	if El is TSQLSelectStatement then
     begin
 	  	ParseSelectStatement(TSQLSelectStatement(El));
-      Result := El.GetAsSQL([]);
+      Result := El.GetAsSQL(FormatOpts);
       //Debug(Result);
       FindTableAndFields(TSQLSelectStatement(El));
     end;
@@ -833,7 +1032,18 @@ begin
   with TdxSQLParser.Create do
   try
     CurrentForm := Fm;
-    Result := Parse(SQL);
+    Result := Parse(SQL, []);
+  finally
+    Free;
+  end;
+end;
+
+function FormatSQL(const SQL: String; FormatOpt: TSQLFormatOptions): String;
+begin
+  with TdxSQLParser.Create do
+  try
+    DisableBuildExpr := True;
+    Result := Parse(SQL, FormatOpt);
   finally
     Free;
   end;
@@ -1104,7 +1314,7 @@ begin
   P.CurrentForm := ACurrentForm;
   P.DisableCalcs := ADisableCalcs;
   try
-    FSQL := P.Parse(SQL);
+    FSQL := P.Parse(SQL, []);
     FDataSet := TMySQLQuery.Create(nil);
     FDataSet.UseExecuteBlock := True;
     DBase.AttachDataSet(FDataSet);
@@ -1262,6 +1472,46 @@ end;
 function TdxSQLQuery.RecordCount: Integer;
 begin
 	Result := FDataSet.RecordCount;
+end;
+
+{ TSQLFieldFormFieldList }
+
+function TSQLFieldFormFieldList.GetFields(Index: Integer
+  ): PSQLFieldFormFieldRec;
+begin
+  Result := PSQLFieldFormFieldRec(Items[Index]);
+end;
+
+function TSQLFieldFormFieldList.AddField(Id: Integer; const Name: String;
+  Hier: Boolean): PSQLFieldFormFieldRec;
+begin
+  New(Result);
+  Result^.Id := Id;
+  Result^.Name := Name;
+  Result^.Hierarchy := Hier;
+  Add(Result);
+end;
+
+function TSQLFieldFormFieldList.FindField(Id: Integer): PSQLFieldFormFieldRec;
+var
+  i: Integer;
+  pF: PSQLFieldFormFieldRec;
+begin
+  Result := nil;
+  for i := 0 to Count - 1 do
+  begin
+    pF := Fields[i];
+    if pF^.Id = Id then Exit(pF);
+  end;
+end;
+
+procedure TSQLFieldFormFieldList.Clear;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+    Dispose(Fields[i]);
+  inherited Clear;
 end;
 
 end.

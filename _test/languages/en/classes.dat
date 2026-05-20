@@ -1375,7 +1375,6 @@ TFont = class(TGraphicObject)
 	property OnActivate: TNotifyEvent [rw]
 	property OnClose: TCloseEvent [rw]
 	property OnCloseQuery: TCloseQueryEvent [rw]
-	property OnCreate: TNotifyEvent [rw]
 	property OnDestroy: TNotifyEvent [rw]
 	property OnDeactivate: TNotifyEvent [rw]
 	property OnDropFiles: TDropFilesEvent [rw]
@@ -2516,7 +2515,7 @@ TdxGrid = class(TDBGrid)
 	function CurrentRowSelected: Boolean 
 	function FindColumnByFieldName(const FieldName: String): TColumn
 	function FindColumnByTitle(const Title: String): TColumn
-	function GetFieldName(Column: TColumn)
+	function GetFieldName(Column: TColumn): String
 	procedure MoveToSelectedRow(Index: Integer)
 	property AllowChangeSort: Boolean [rw]
 	property Form: TdxForm [r]
@@ -2607,6 +2606,7 @@ TdxQueryGrid = class(TDBGrid)
 	procedure EnableScrollEvents
 	function FindColumnByFieldName(const FieldName: String): TColumn
 	function FindColumnByTitle(const Title: String): TColumn
+	function GetFieldName(Column: TColumn): String
 	function GetSourceFileName(const FieldName: String): String
 	function GetStoredFileName(const FieldName: String): String
 	function GotoRecord(RecId: Integer): Boolean
