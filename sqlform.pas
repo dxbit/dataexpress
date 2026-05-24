@@ -861,9 +861,11 @@ begin
     if p0 = 1 then Continue;
     p := PosEx(',', S, p0);
     if p = 0 then p := Length(S) + 1;
-    FId := StrToInt(Copy(S, p0, p - p0));
-    FlNm := RD.FindField(FId)^.Name;
-    SL[i] := S + ' /* ' + FlNm + ' */';
+    if TryStrToInt(Copy(S, p0, p - p0), FId) then
+    begin
+      FlNm := RD.FindField(FId)^.Name;
+      SL[i] := S + ' /* ' + FlNm + ' */';
+    end;
   end;
   Result := SL.Text;
   SL.Free;

@@ -307,7 +307,7 @@ var
   end;
 
 begin
-  if Grid.NeedBuild then Grid.Build;
+  if (Grid.Id > 0) and Grid.NeedBuild then Grid.Build;
 
   Spans := TList.Create;
 
@@ -1517,14 +1517,30 @@ var
   end;
 
 begin
+  // На случай, если таблица изменяется в скрипте.
+  if IsPrint and (Id = 0) then
+  begin
+    if (ARow < FixedRows) or (ACol < FixedCols) then
+    begin
+      AColor := Colors.FixedCellBkGnd;
+      AFont := FixedFont;
+    end
+    else
+    begin
+      AColor := Colors.CellBkGnd;
+      AFont := Font;
+    end;
+    AHAlign := halLeft;
+    AVAlign := valCenter;
+    Exit;
+  end;
+  //if ((ARow <> 0) and (ACol <> 0)) or (Objects[RowFN, ARow] = nil) then Exit;
+
   Clr := clNone;
   Fnt := nil;
   ColFN := FColFields.Count;
   RowFN := FRowFields.Count;
   DatFN := FDataFields.Count;
-
-  // На случай, если таблица изменяется в скрипте.
-  //if ((ARow <> 0) and (ACol <> 0)) or (Objects[RowFN, ARow] = nil) then Exit;
 
   // Левый верхний угол
   if (ARow = 0) and (ACol = 0) then

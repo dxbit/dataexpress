@@ -7463,14 +7463,10 @@ var
       if RD.QueryExistsInExpr(QueryName) then
       begin
         FQueries.Insert(i, pQ);
-        //pQ^.Grid.DSP := Self;
-        //pQ^.Grid.QRi:=i;
         Exit;
       end;
     end;
-    {i := }FQueries.Add(pQ);
-    //pQ^.Grid.DSP := Self;
-    //pQ^.Grid.QRi := i;
+    FQueries.Add(pQ);
   end;
 
 begin

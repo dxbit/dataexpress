@@ -411,7 +411,7 @@ begin
               else if VarIsNumeric(V) then
                 Value := VarToStr(V)
               else
-                Value := '''' + VarToStr(V) + '''';
+                Value := '''' + EscapeSQuotes(VarToStr(V)) + '''';
             end
             else
               Value := 'null';
@@ -482,6 +482,7 @@ var
   C: TComponent;
   IsOptionalField: Boolean;
   pF: PSQLFieldFormFieldRec;
+  FId: Longint;
 begin
   if Fm = nil then Exit(S);
 
@@ -576,11 +577,14 @@ begin
     end;
     if Copy(FlNm, 1, 1) = 'f' then
     begin
-      pF := FFormFields.FindField(StrToInt(Copy(FlNm, 2, 255)));
-      if pF <> nil then
+      if TryStrToInt(Copy(FlNm, 2, 255), FId) then
       begin
-        if (Pfx <> 't') and pF^.Hierarchy then Result := TblNm + '.' + FlNm // IsOptionalField
-        else Result := TblNm + '.[' + pF^.Name + ']';
+        pF := FFormFields.FindField(FId);
+        if pF <> nil then
+        begin
+          if (Pfx <> 't') and pF^.Hierarchy then Result := TblNm + '.' + FlNm // IsOptionalField
+          else Result := TblNm + '.[' + pF^.Name + ']';
+        end
       end
     end
     else if (FlNm = 'id') or (FlNm = 'pid') then

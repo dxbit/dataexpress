@@ -407,6 +407,7 @@ type
     function GetFieldNameDS(AIndex: Integer): String;
     function GetFieldName(AIndex: Integer): String;
     function GetFieldType(AIndex: Integer): TRpFieldType;
+    //function GetRpFieldType(pF: PRpField): TRpFieldType;
     function GetFieldFunc(AIndex: Integer): TRpTotalFunc;
     function GetFieldVisible(AIndex: Integer): Boolean;
     function GetFieldParam(AIndex: Integer): Boolean;
@@ -1211,7 +1212,7 @@ var
       end
       else if ReduceSQL and not IsGet and not (TopFl.Func in [tfNone, tfGet]) then
       begin
-        FStr := FStr + GetFuncSql(TopFl, FlNm) + ' as ' + TopFlNm + ',';
+        FStr := FStr + GetFuncSql(TopFl, IIF(Fl.Tp <> flRecId, FlNm, TblNm + '.id')) + ' as ' + TopFlNm + ',';
       end
       else if ReduceSQL and not IsGet and (FieldIndex = RD.DateField) then
         FStr := FStr + GetDateDetailSql(RD, Fl, FlNm) + ' as ' + TopFlNm + ','
@@ -1339,7 +1340,7 @@ begin
   end;
 end;
 
-function GetHavingClause(Fl: TRpField): String;
+function GetHavingClause(RD: TReportData; Fl: TRpField; IsGet: Boolean): String;
 var
   i, p: Integer;
   S, V1, V2, Fn, rS, Tmp, AbsValue1, AbsValue2: String;
@@ -1349,7 +1350,8 @@ var
 begin
   rS := '';
   Result := '';
-  Fn := GetFuncSql(Fl);
+  if not IsGet then Fn := GetFuncSql(Fl)
+  else Fn := FieldStr(Fl.Id);
   if Fl.Func in [tfCount, tfDistCount] then Tp := flNumber
   else if Fl.Func in [tfMerge, tfMergeAll] then Tp := flText
   else Tp := GetLowField(@Fl)^.Tp;
@@ -1404,15 +1406,19 @@ begin
     else if Tp in [flCounter, flRecId] then
     begin
       if V1 <> '' then
-      	Tmp := Tmp + Fn + '>=' + V1 + ' and ';
+      	Tmp := Tmp + Fn + '>=' + CheckNumber(V1) + ' and ';
     	if V2 <> '' then
-        Tmp := Tmp + Fn + '<=' + V2 + ' and ';
+        Tmp := Tmp + Fn + '<=' + CheckNumber(V2) + ' and ';
       Tmp := Copy(Tmp, 1, Length(Tmp) - 5);
       rS := rS + '(' + Tmp + ') or ';
     end
     else if Tp = flText then
     begin
       rS := rS + Fn + ' containing ''' + EscapeSQuotes(V1) + ''' or ';
+    end
+    else if Tp = flBool then
+    begin
+      rS := rS + Fn + '=' + V1 + ' or ';
     end
     else if Tp = flObject then
     begin
@@ -1434,7 +1440,7 @@ begin
   SL.Free;
 end;
 
-function GetWhereClause(aFl: TRpField; IsGet: Boolean): String;
+function GetWhereClause(RD: TReportData; aFl: TRpField): String;
 var
   S, Bg, Ed, FlNm, W, Tmp, AbsValue: String;
   p: Integer;
@@ -1447,7 +1453,7 @@ begin
   SL := TStringList.Create;
   SplitStr(aFl.Value, ';', SL);
   FlNm := 'f' + IntToStr(aFl.Id);
-  if IsGet then FlNm := 'y' + FlNm;
+  if aFl.Func = tfGet then FlNm := 'y' + FlNm;
   Tp := GetLowField(@aFl)^.Tp;
 
   W := '';
@@ -1551,7 +1557,7 @@ end;
 
 function GetTextSearchClause(RD: TreportData; aFl: TRpField; IsGet: Boolean): String;
 var
-  Text, FlNm, W, S, Tmp: String;
+  FlNm, Text, W, S, Tmp: String;
   i: Integer;
   SL: TStringList;
   C: TComponent;
@@ -1566,20 +1572,22 @@ begin
   SL := TStringList.Create;
   SplitStr(Text, ' ', SL);
 
-  if (aFl.Func <> tfNone) and not IsGet then
+  if not (aFl.Func in [tfNone, tfGet]) {and not IsGet} then
   begin
-    FlNm := GetFuncSql(aFl);
+    if not IsGet then FlNm := GetFuncSql(aFl)
+    else FlNm := FieldStr(aFl.Id);
     if aFl.Func in [tfCount, tfDistCount] then Tp := flCounter
     else if aFl.Func in [tfMerge, tfMergeAll] then Tp := flText
     else Tp := GetLowField(@aFl)^.Tp;
   end
   else
   begin
-    FlNm := 'f' + IntToStr(aFl.Id);
+    FlNm := FieldStr(aFl.Id);
     Tp := GetLowField(@aFl)^.Tp;
+    if IsGet then FlNm := 'y' + FlNm;
   end;
 
-  if IsGet then FlNm := 'y' + FlNm;
+  //if IsGet then FlNm := 'y' + FlNm;
 
   W := '';
   for i := 0 to SL.Count - 1 do
@@ -1714,6 +1722,15 @@ begin
     if Sr.Fields[i]^.Func = tfGet then Exit(True);
 end;
 
+function HasTextSearch(Sr: TRpSource): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to Sr.Fields.Count - 1 do
+    if Sr.Fields[i]^.TextSearch then Exit(True);
+end;
+
 function InnerSqlReportSelect(RD: TReportData; Fm, PFm: TdxForm; DS: TDataSet;
   ForSQLMode: Boolean): String;
 var
@@ -1742,7 +1759,7 @@ begin
 
   NeedGroup := False;
   HasGetFn := HasGetFunc(Sr);
-  ReduceSQL := (RD.Sources.Count = 1) and ((RD.Kind = rkQuery) or ForSQLMode);
+  ReduceSQL := (RD.Sources.Count = 1) and ((RD.Kind = rkQuery) and not HasTextSearch(Sr) or ForSQLMode);
 
   for i := 0 to Sr.Fields.Count - 1 do
   begin
@@ -1750,21 +1767,23 @@ begin
     if (Fl.Tp = flNone) or (Fl.Func = tfGet) then Continue;
     Nm := 'f' + IntToStr(Fl.Id);
 
-    if Fl.Param then
+    if Fl.Param and not HasGetFn then
     begin
-      if Fl.Func <> tfNone {and (Fl.Func <> tfGet)} then
+      if Fl.Func <> tfNone then
       begin
-        S := GetHavingClause(Fl);
+        S := GetHavingClause(RD, Fl, False);
         if S <> '' then
           Hav := Hav + S + ' and ';
       end
       else
       begin
-        S := GetWhereClause(Fl, False);
+        S := GetWhereClause(RD, Fl);
         if S <> '' then
           Wh := Wh + S + ' and ';
       end;
     end;
+
+    if not Fl.Visible then Continue;
 
     if Fl.TextSearch and not HasGetFn then
     begin
@@ -1777,8 +1796,6 @@ begin
           HavTS := HavTS + S + ' or ';
       end;
     end;
-
-    if not Fl.Visible then Continue;
 
     if i = RD.DateField then
     begin
@@ -1897,17 +1914,20 @@ begin
 
       if Fl.Param then
       begin
-        S := GetWhereClause(Fl, True);
+        if Fl.Func in [tfNone, tfGet] then
+          S := GetWhereClause(RD, Fl)
+        else
+          S := GetHavingClause(RD, Fl, True);
         if S <> '' then Wh2 := Wh2 + S + ' and ';
       end;
 
+      if not Fl.Visible then Continue;
+
       if Fl.TextSearch then
       begin
-        S := GetTextSearchClause(RD, Fl, Fl.Func = tfGet);
+        S := GetTextSearchClause(RD, Fl, True);
         if S <> '' then WhTS2 := WhTS2 + S + ' or '
       end;
-
-      if not Fl.Visible then Continue;
 
       Nm := 'f' + IntToStr(Fl.Id);
       yNm := 'y' + Nm;
@@ -1985,8 +2005,6 @@ begin
     begin
       Result := 'select ' + FStrAll + ' from (' + Result + ') x inner join (select ' +
         FStr2 + ' from (' + FromStr2 + ')';
-      if Wh2 <> '' then
-        Result := Result + ' where ' + Wh2;
       Result := Result + ') y on ' + InnerStr;
     end
     else
@@ -1995,7 +2013,15 @@ begin
         FromStr2 + ')';
       Result := Result + ' y on ' + InnerStr;
     end;
-    if WhTS2 <> '' then Result := Result + ' where ' + WhTS2;
+    if Wh2 <> '' then
+      Result := Result + ' where ' + Wh2;
+    if WhTS2 <> '' then
+    begin
+      if Wh2 <> '' then Result := Result + ' and '
+      else Result := Result + ' where ';
+      Result := Result + '(' + WhTS2 + ')';
+    end;
+    //if WhTS2 <> '' then Result := Result + ' where ' + WhTS2;
   end;
 
   if RD.FirstRecordCount > 0 then
@@ -4848,11 +4874,11 @@ begin
   if pF <> nil then
   begin
     if pF^.Func in [tfMerge, tfMergeAll] then Exit(flText)
-    else if pF^.Func in [tfCount, tfDistCount] then Exit(flNumber)
+    else if pF^.Func in [tfCount, tfDistCount] then Exit(flCounter)
     else if (pF^.Tp = flDate) and (DateField = AIndex) then
     begin
       if FDateDetail = ddDay then Exit(flDate)
-      else if FDateDetail = ddYear then Exit(flNumber)
+      else if FDateDetail = ddYear then Exit(flCounter)
       else Exit(flText);
     end
     else Exit(GetLowField(pF)^.Tp);
@@ -4864,6 +4890,14 @@ begin
   pCF := TryGetCalcField(AIndex);
   if pCF <> nil then Exit(pCF^.Tp);
 end;
+
+{function TReportData.GetRpFieldType(pF: PRpField): TRpFieldType;
+var
+  i: Integer;
+begin
+  i := IndexOfName(pF^.Name);
+  Result := GetFieldType(i);
+end; }
 
 function TReportData.GetFieldFunc(AIndex: Integer): TRpTotalFunc;
 var
