@@ -1562,9 +1562,7 @@ end;
 function TSQLParser.ParseListFuncExpression(AParent: TSQLElement;
   EO: TExpressionOptions): TSQLListFuncExpression;
 var
-  N: String;
   L: TSQLElementList;
-  Distinct: Boolean;
 begin
   Result:=TSQLListFuncExpression(CreateElement(TSQLListFuncExpression,AParent));
   GetNextToken;
@@ -1573,7 +1571,9 @@ begin
   begin
     Result.Distinct := True;
     GetNextToken;
-  end;
+  end
+  else if CurrentToken = tsqlALL then
+    GetNextToken;
   Result.Arg1 := ParseExprLevel1(Result, EO);
   Consume(tsqlComma);
   Result.Arg2 := ParseExprLevel1(Result, EO);

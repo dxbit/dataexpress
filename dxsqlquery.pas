@@ -756,6 +756,12 @@ begin
       end;
       if ElseExpression <> nil then ProcessSQLExpression(ElseExpression, Fm, AliasName, Dummy);
     end
+  else if Expr is TSQLListFuncExpression then
+    with TSQLListFuncExpression(Expr) do
+    begin
+      ProcessElement(Arg1, Fm, AliasName, Dummy);
+      ProcessElement(Arg2, Fm, AliasName, Dummy);
+    end
   else if Expr is TSQLLiteralExpression then
     DetectNull := TSQLLiteralExpression(Expr).Literal is TSQLNullLiteral;
 end;

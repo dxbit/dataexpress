@@ -613,6 +613,7 @@ procedure TDataSetProcessor.DataSetBeforeDelete(DataSet: TDataSet);
 begin
   with GetDataSet(DataSet.Tag)^ do
   begin
+    if Grid.FastScroll then Grid.ResetRecordBookmark;
     if (dgMultiselect in Grid.Options) and  Grid.HandleAllocated then
       Grid.SelectedRows.CurrentRowSelected := False;
     DeletedRecId:=DataSet.FieldByName('id').AsInteger;

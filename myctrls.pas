@@ -431,7 +431,6 @@ type
     procedure WMKillFocus(var Message: TLMKillFocus); message LM_KILLFOCUS;
     procedure UpdateTitleHeight;
     procedure SaveRecordBookmark;
-    procedure ResetRecordBookmark;
     function IsRecordBookmark(ACol: Integer): Boolean;
     function HasRecordBookmark: Boolean;
   protected
@@ -475,6 +474,7 @@ type
     function GetListEditor: TdxComboBoxCellEditor;
     function GetImgEditor: TdxDBImageCellEditor;
     function GetFileEditor: TdxFileCellEditor;
+    procedure ResetRecordBookmark;
     //procedure RefreshGrid;
     property Buttons: TGridButtons read FButtons;
     property SortCols: TSortColumns read FSortCols;
