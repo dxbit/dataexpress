@@ -298,12 +298,14 @@ Type
 
   TSQLBinaryOperation = (boAnd, boOr, boEQ, boLT, boGT, boLE, boGE, boNE,
                          boConcat,boAdd, boSubtract, boMultiply, boDivide, boIn,
-                         boIs, boIsNot, boLike, boContaining, boStarting);
+                         boIs, boIsNot, boLike, boContaining, boStarting,
+                         boSimilar, boDistinct, boNotDistinct);
 
   { TSQLBinaryExpression }
 
   TSQLBinaryExpression = Class(TSQLExpression)
   private
+    FCollation: TSQLIdentifierName;
     FLeft: TSQLExpression;
     FOperation: TSQLBinaryoperation;
     FRight: TSQLExpression;
@@ -314,6 +316,8 @@ Type
     Property Operation : TSQLBinaryoperation Read FOperation Write FOperation;
     Property Left : TSQLExpression Read FLeft Write FLeft;
     Property Right : TSQLExpression Read FRight Write FRight;
+    // 7bit
+    Property Collation: TSQLIdentifierName read FCollation write FCollation;
   end;
 
   TSQLTernaryOperation = (toLikeEscape,toBetween);
@@ -362,21 +366,33 @@ Type
     Property Arguments : TSQLElementList Read FArguments Write Farguments;
   end;
 
-  TSQLAggregateFunction = (afCount,afSum,afAVG,afMax,afMin);
+  {TSQLAggregateFunction = (afCount,afSum,afAVG,afMax,afMin,afList,afCorr,
+    afCovarPop,afCovarSamp,afStdDevPop,afStdDevSamp,afVarPop,afVarSamp,
+    afRegrAvgX,afRegrAvgY,afRegrCount,afRegrIntercept,afRegrR2,afRegrSlope,
+    afRegrSXX,afRegrSXY,afRegrSYY);}
   TSQLAggregateOption = (aoNone,aoAsterisk,aoAll,aoDistinct);
 
   { TSQLAggregateFunctionExpression }
 
   TSQLAggregateFunctionExpression = Class(TSQLExpression)
   private
-    Fagg: TSQLAggregateFunction;
+    //Fagg: TSQLAggregateFunction;
     FExpression: TSQLExpression;
+    FExpression2: TSQLExpression;
+    FFilterExpression: TSQLExpression;
+    FFuncName: String;
     FOption: TSQLAggregateOption;
   Public
     Destructor Destroy; override;
     Function GetAsSQL(Options : TSQLFormatOptions; AIndent : Integer = 0): TSQLStringType; override;
-    Property Aggregate : TSQLAggregateFunction Read Fagg Write Fagg;
+    //Property Aggregate : TSQLAggregateFunction Read Fagg Write Fagg;
     Property Expression : TSQLExpression Read FExpression Write FExpression;
+    // 7bit
+    property Expression2 : TSQLExpression Read FExpression2 Write FExpression2;
+    Property FuncName : String read FFuncName write FFuncName;
+    property FilterExpression: TSQLExpression read FFilterExpression write
+      FFilterExpression;
+    //
     Property Option :TSQLAggregateOption Read FOption Write FOption;
   end;
 
@@ -566,7 +582,8 @@ Type
   end;
 
   { TSQLExtractExpression }
-  TSQLExtractElement = (eeYear,eeMonth,eeWeek,eeDay,eeWeekDay,eeYearDay,eeHour,eeMinute,eeSecond,eeMilliSecond);
+  TSQLExtractElement = (eeYear,eeQuarter,eeMonth,eeWeek,eeDay,eeWeekDay,eeYearDay,
+    eeHour,eeMinute,eeSecond,eeMilliSecond,eeTimeZoneHour,eeTimeZoneMinute);
   TSQLExtractExpression =Class(TSQLExpression)
   private
     FElement : TSQLExtractElement;
@@ -720,6 +737,7 @@ Type
   end;
 
   TSQLOrderDirection = (obAscending,obDescending);
+  TSQLNullsPlacement = (npNone, npNullsFirst, npNullsLast); // 7bit
 
   { TSQLOrderByElement }
 
@@ -727,6 +745,7 @@ Type
   private
     FCollation: TSQLIdentifierName;
     FField: TSQLElement;
+    FNulls: TSQLNullsPlacement;
     FOrderBy: TSQLOrderDirection;
   Public
     Destructor Destroy; override;
@@ -734,6 +753,7 @@ Type
     Property Field : TSQLElement Read FField Write FField;
     Property Collation : TSQLIdentifierName Read FCollation Write FCollation;
     Property OrderBy : TSQLOrderDirection Read FOrderBy write FOrderBy;
+    property Nulls: TSQLNullsPlacement read FNulls write FNulls;
   end;
 
   { TSQLWithSelectElement }
@@ -790,6 +810,8 @@ Type
     property Value: Integer read FValue write FValue;
   end;
 
+  TSQLSelectWindow = class;
+
   { TSQLSelectStatement }
 
   TSQLSelectStatement = Class(TSQLDMLStatement)
@@ -812,6 +834,7 @@ Type
     FUnion: TSQLSelectStatement;
     FUnionAll: Boolean;
     FWhere: TSQLExpression;
+    FWindow: TSQLSelectWindow;
     FWithSelect: TSQLWithSelectStatement;
   Public
     Constructor Create(AParent : TSQLElement); override;
@@ -837,6 +860,7 @@ Type
     Property WithSelect : TSQLWithSelectStatement Read FWithSelect Write FWithSelect;
     Property First: TSQLSelectFirstElement Read FFirst write FFirst;
     Property Skip: TSQLSelectSkipElement Read FSkip Write FSkip;
+    Property Window: TSQLSelectWindow Read FWindow Write FWindow;
     //
   end;
 
@@ -1926,24 +1950,291 @@ Type
     property ElseExpression: TSQLExpression read FElseExpression write FElseExpression;
   end;
 
-  { TSQLSubstringExpression }
+  { TSQLPositionFunction }
 
-  TSQLSubstringExpression = class(TSQLExpression)
+  TSQLPositionFunction = class(TSQLExpression)
   private
+    FInSyntax: Boolean;
+    FSubStringExpression: TSQLExpression;
+    FStringExpression: TSQLExpression;
+    FStartPosExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property SubStringExpression: TSQLExpression read FSubStringExpression write
+      FSubStringExpression;
+    property StringExpression: TSQLExpression read FStringExpression write
+      FStringExpression;
+    property StartPosExpression: TSQLExpression read FStartPosExpression write
+      FStartPosExpression;
+    property InSyntax: Boolean read FInSyntax write FInSyntax;
+  end;
+
+  { TSQLSubstringFunction }
+
+  TSQLSubstringFunction = class(TSQLExpression)
+  private
+    FEscapeExpression: TSQLExpression;
     FForExpression: TSQLExpression;
     FFromExpression: TSQLExpression;
+    FSimilarExpression: TSQLExpression;
     FStringExpression: TSQLExpression;
   public
+    destructor destroy; override;
     function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
       override;
     property StringExpression: TSQLExpression read FStringExpression write FStringExpression;
     property FromExpression: TSQLExpression read FFromExpression write FFromExpression;
     property ForExpression: TSQLExpression read FForExpression write FForExpression;
+    property SimilarExpression: TSQLExpression read FSimilarExpression write
+      FSimilarExpression;
+    property EscapeExpression: TSQLExpression read FEscapeExpression write
+      FEscapeExpression;
+  end;
+
+  TSQLTrimWhere = (twNone, twBoth, twLeading, twTrailing);
+
+  { TSQLTrimFunction }
+
+  TSQLTrimFunction = class(TSQLExpression)
+  private
+    FStringExpression: TSQLExpression;
+    FTrimWhere: TSQLTrimWhere;
+    FWhatExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property StringExpression: TSQLExpression read FStringExpression write FStringExpression;
+    property WhatExpression: TSQLExpression read FWhatExpression write FWhatExpression;
+    property TrimWhere: TSQLTrimWhere read FTrimWhere write FTrimWhere;
+  end;
+
+  { TSQLHashFunction }
+
+  TSQLHashFunction = class(TSQLExpression)
+  private
+    FStringExpression: TSQLExpression;
+    FUsingCrc32: Boolean;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property StringExpression: TSQLExpression read FStringExpression write FStringExpression;
+    property UsingCrc32: Boolean read FUsingCrc32 write FUsingCrc32;
+  end;
+
+  { TSQLOverlayFunction }
+
+  TSQLOverlayFunction = class(TSQLExpression)
+  private
+    FForExpression: TSQLExpression;
+    FFromExpression: TSQLExpression;
+    FReplacement: TSQLExpression;
+    FStringExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property StringExpression: TSQLExpression read FStringExpression write FStringExpression;
+    property Replacement: TSQLExpression read FReplacement write FReplacement;
+    property FromExpression: TSQLExpression read FFromExpression write
+      FFromExpression;
+    property ForExpression: TSQLExpression read FForExpression write
+      FForExpression;
+  end;
+
+  { TSQLDateAddFunction }
+
+  //TSQLDateUnit = (daYear, daMonth, daWeek, daDay, daWeekDay, daYearDay,
+ //   daHour, daMinute, daSecond, daMillisecond);
+
+  TSQLDateAddFunction = class(TSQLExpression)
+  private
+    FAmountExpression: TSQLExpression;
+    FDateTimeExpression: TSQLExpression;
+    FDateUnit: String;
+    FHumanSyntax: Boolean;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property DateUnit: String read FDateUnit write FDateUnit;
+    property AmountExpression: TSQLExpression read FAmountExpression write
+      FAmountExpression;
+    property DateTimeExpression: TSQLExpression read FDateTimeExpression write
+      FDateTimeExpression;
+    property HumanSyntax: Boolean read FHumanSyntax write FHumanSyntax;
+  end;
+
+  { TSQLDateDiffFunction }
+
+   TSQLDateDiffFunction = class(TSQLExpression)
+  private
+    FDateFromExpression: TSQLExpression;
+    FDateToExpression: TSQLExpression;
+    FDateUnit: String;
+    FHumanSyntax: Boolean;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property DateUnit: String read FDateUnit write FDateUnit;
+    property DateFromExpression: TSQLExpression read FDateFromExpression write
+      FDateFromExpression;
+    property DateToExpression: TSQLExpression read FDateToExpression write
+      FDateToExpression;
+    property HumanSyntax: Boolean read FHumanSyntax write FHumanSyntax;
+  end;
+
+  { TSQLFirstDayFunction }
+
+  TSQLFirstDayFunction = class(TSQLExpression)
+  private
+    FDatePeriod: String;
+    FDateTimeExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property DatePeriod: String read FDatePeriod write FDatePeriod;
+    property DateTimeExpression: TSQLExpression read FDateTimeExpression write
+      FDateTimeExpression;
+  end;
+
+  { TSQLLastDayFunction }
+
+  TSQLLastDayFunction = class(TSQLExpression)
+  private
+    FDatePeriod: String;
+    FDateTimeExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property DatePeriod: String read FDatePeriod write FDatePeriod;
+    property DateTimeExpression: TSQLExpression read FDateTimeExpression write
+      FDateTimeExpression;
+  end;
+
+  { TSQLCryptHashFunction }
+
+  TSQLCryptHashFunction = class(TSQLExpression)
+  private
+    FAlgorithm: String;
+    FValueExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property ValueExpression: TSQLExpression read FValueExpression write
+      FValueExpression;
+    property Algorithm: String read FAlgorithm write FAlgorithm;
+  end;
+
+  { TSQLCryptFunction }
+
+  TSQLCryptFunction = class(TSQLExpression)
+  private
+    FAlgorithm: String;
+    FCounterExpression: TSQLExpression;
+    FCTRLength: TSQLExpression;
+    FCTRType: String;
+    FICExpression: TSQLExpression;
+    FIsEncrypt: Boolean;
+    FIVExpression: TSQLExpression;
+    FKeyExpression: TSQLExpression;
+    FMode: String;
+    FValueExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property ValueExpression: TSQLExpression read FValueExpression write
+      FValueExpression;
+    property Algorithm: String read FAlgorithm write FAlgorithm;
+    property Mode: String read FMode write FMode;
+    property KeyExpression: TSQLExpression read FKeyExpression write FKeyExpression;
+    property IVExpression: TSQLExpression read FICExpression write FIVExpression;
+    property CTRType: String read FCTRType write FCTRType;
+    property CTRLength: TSQLExpression read FCTRLength write FCTRLength;
+    property CounterExpression: TSQLExpression read FCounterExpression write
+      FCounterExpression;
+    property IsEncrypt: Boolean read FIsEncrypt write FIsEncrypt;
+  end;
+
+  { TSQLRSACryptFunction }
+
+  TSQLRSACryptFunction = class(TSQLExpression)
+  private
+    FAlgorithm: String;
+    FIsEncrypt: Boolean;
+    FKeyExpression: TSQLExpression;
+    FValueExpression: TSQLExpression;
+    FLParamExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property ValueExpression: TSQLExpression read FValueExpression write
+      FValueExpression;
+    property KeyExpression: TSQLExpression read FKeyExpression write
+      FKeyExpression;
+    property LParamExpression: TSQLExpression read FLParamExpression write
+      FLParamExpression;
+    property Algorithm: String read FAlgorithm write FAlgorithm;
+    property IsEncrypt: Boolean read FIsEncrypt write FIsEncrypt;
+  end;
+
+  { TSQLRSASignHashFunction }
+
+  TSQLRSASignHashFunction = class(TSQLExpression)
+  private
+    FAlgorithm: String;
+    FKeyExpression: TSQLExpression;
+    FLengthExpression: TSQLExpression;
+    FValueExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property ValueExpression: TSQLExpression read FValueExpression write
+      FValueExpression;
+    property KeyExpression: TSQLExpression read FKeyExpression write
+      FKeyExpression;
+    property LengthExpression: TSQLExpression read FLengthExpression write
+      FLengthExpression;
+    property Algorithm: String read FAlgorithm write FAlgorithm;
+  end;
+
+  { TSQLRSAVerifyHashFunction }
+
+  TSQLRSAVerifyHashFunction = class(TSQLExpression)
+  private
+    FAlgorithm: String;
+    FKeyExpression: TSQLExpression;
+    FLengthExpression: TSQLExpression;
+    FSignatureExpression: TSQLExpression;
+    FValueExpression: TSQLExpression;
+  public
+    destructor destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property ValueExpression: TSQLExpression read FValueExpression write
+      FValueExpression;
+    property SignatureExpression: TSQLExpression read FSignatureExpression write
+      FSignatureExpression;
+    property KeyExpression: TSQLExpression read FKeyExpression write
+      FKeyExpression;
+    property LengthExpression: TSQLExpression read FLengthExpression write
+      FLengthExpression;
+    property Algorithm: String read FAlgorithm write FAlgorithm;
   end;
 
   { TSQLListFuncExpression }
 
-  TSQLListFuncExpression = class(TSQLExpression)
+  {TSQLListFuncExpression = class(TSQLExpression)
   private
     FArg1: TSQLExpression;
     FArg2: TSQLExpression;
@@ -1954,6 +2245,94 @@ Type
     property Distinct: Boolean read FDistinct write FDistinct;
     property Arg1: TSQLExpression read FArg1 write FArg1;
     property Arg2: TSQLExpression read FArg2 write FArg2;
+  end; }
+
+  { TSQLOverOrderElement }
+
+  TSQLOverOrderElement = class(TSQLElement)
+  private
+    FExpr: TSQLExpression;
+    FNullsPlacement: TSQLNullsPlacement;
+    FOrderBy: TSQLOrderDirection;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property Expr: TSQLExpression read FExpr write FExpr;
+    property OrderBy: TSQLOrderDirection read FOrderBy write FOrderBy;
+    property NullsPlacement: TSQLNullsPlacement read FNullsPlacement write FNullsPlacement;
+  end;
+
+  { TSQLOverFrameBoundElement }
+
+  TSQLOverFrameBound = (fbUnboundedPreceding, fbPreceding, fbCurrentRow, fbFollowing, fbUnboundedFollowing);
+
+  TSQLOverFrameBoundElement = class(TSQLElement)
+  private
+    FBound: TSQLOverFrameBound;
+    FExpr: TSQLExpression;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property Bound: TSQLOverFrameBound read FBound write FBound;
+    property Expr: TSQLExpression read FExpr write FExpr;
+  end;
+
+  { TSQLWindowDefination }
+
+  TSQLOverFrameUnit = (fuNone, fuRows, fuRange);
+
+  TSQLWindowDefination = class(TSQLExpression)
+  private
+    FFrameBound1: TSQLOverFrameBoundElement;
+    FFrameBound2: TSQLOverFrameBoundElement;
+    FFrameStart: TSQLOverFrameBoundElement;
+    FFrameUnit: TSQLOverFrameUnit;
+    FOrderListExpr: TSQLElementList;
+    FPartitionListExpr: TSQLElementList;
+    FWindowName: TSQLIdentifierName;
+    FWindowNameOnly: Boolean;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property WindowName: TSQLIdentifierName read FWindowName write FWindowName;
+    property PartitionListExpr: TSQLElementList read FPartitionListExpr write FPartitionListExpr;
+    property OrderListExpr: TSQLElementList read FOrderListExpr write FOrderListExpr;
+    property FrameUnit: TSQLOverFrameUnit read FFrameUnit write FFrameUnit;
+    property FrameStart: TSQLOverFrameBoundElement read FFrameStart write FFrameStart;
+    property FrameBound1: TSQLOverFrameBoundElement read FFrameBound1 write FFrameBound1;
+    property FrameBound2: TSQLOverFrameBoundElement read FFrameBound2 write FFrameBound2;
+    property WindowNameOnly: Boolean read FWindowNameOnly write FWindowNameOnly;
+  end;
+
+  { TSQLWindowFunctionExpression }
+
+  TSQLWindowFunctionExpression = class(TSQLExpression)
+  private
+    FFunc: TSQLExpression;
+    FOverExpr: TSQLWindowDefination;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property Func: TSQLExpression read FFunc write FFunc;
+    property OverExpr: TSQLWindowDefination read FOverExpr write FOverExpr;
+  end;
+
+  { TSQLSelectWindow }
+
+  TSQLSelectWindow = class(TSQLElement)
+  private
+    FWindowDefs: TSQLElementList;
+    FWindowNames: TSQLElementList;
+  public
+    destructor Destroy; override;
+    function GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer=0): TSQLStringType;
+      override;
+    property WindowNames: TSQLElementList read FWindowNames write FWindowNames;
+    property WindowDefs: TSQLElementList read FWindowDefs write FWindowDefs;
   end;
 
   //
@@ -1961,7 +2340,8 @@ Type
 Const
   CharTypes = [sdtChar,sdtVarChar,sdtNChar,sdtNVarChar,sdtCString];
   ExtractElementNames : Array[TSQLExtractElement] of String
-          = ('YEAR','MONTH','WEEK','DAY','WEEKDAY','YEARDAY','HOUR','MINUTE','SECOND','MILLISECOND');
+          = ('YEAR','QUARTER','MONTH','WEEK','DAY','WEEKDAY','YEARDAY','HOUR',
+            'MINUTE','SECOND','MILLISECOND','TIMEZONE_HOUR','TIMEZONE_MINUTE');
 
 // Format a SQL keyword according to OPTIONS
 Function SQLKeyWord(Const AWord : TSQLStringType; Options : TSQLFormatOptions) : TSQLStringType;
@@ -2224,6 +2604,7 @@ begin
   FreeAndNil(FWithSelect);
   FreeAndNil(FFirst);
   FreeAndNil(FSkip);
+  FreeAndNil(FWindow);
   inherited Destroy;
 end;
 
@@ -2307,6 +2688,10 @@ begin
   AddExpression('WHERE',Where,(sfoWhereOnSeparateLine in Options),(sfoIndentWhere in Options));
   AddList('GROUP BY',GroupBy,(sfoOneGroupByFieldPerLine in Options),(sfoIndentGroupByFields in Options));
   AddExpression('HAVING',Having,(sfoHavingOnSeparateLine in Options),(sfoIndentHaving in Options));
+  // 7bit
+  if Assigned(Window) then
+    AddExpression('WINDOW',Window,(sfoWhereOnSeparateLine in Options),(sfoIndentWhere in Options));
+  //
   If Assigned(Union) then
     NewLinePending:=NewLinePending or (sfoUnionOnSeparateLine in Options);
   // 7bit
@@ -2565,6 +2950,7 @@ destructor TSQLBinaryExpression.Destroy;
 begin
   FreeAndNil(FLeft);
   FreeAndNil(FRight);
+  FreeAndNil(FCollation);
   inherited Destroy;
 end;
 
@@ -2580,7 +2966,8 @@ Const
   OpCodes : Array[TSQLBinaryOperation] of string =
           ('AND', 'OR', '=', '<', '>', '<=', '>=', '<>',
            '||','+', '-', '*', '/', 'IN',
-           'IS', 'IS NOT', 'LIKE', 'CONTAINING','STARTING WITH');
+           'IS', 'IS NOT', 'LIKE', 'CONTAINING','STARTING WITH', 'SIMILAR TO',
+           'IS DISTINCT FROM', 'IS NOT DISTINCT FROM');
 
 Var
   L,R,S : TSQLStringType;
@@ -2599,7 +2986,12 @@ begin
       R:='('+R+')';
     end;
   Result:=L;
-  S:=SQLKeyWord(Opcodes[Operation],Options);
+  // 7bit
+  S:='';
+  if Assigned(FCollation) then
+    S:=S+SQLKeyWord(' COLLATE ', Options)+FCollation.GetAsSQL(Options, AIndent);
+  //
+  S:=S+SQLKeyWord(Opcodes[Operation],Options);
   If (Operation in [boOR,boAnd]) and (sfoOneLogicalPerLine in Options) then
     Result:=Result+sLineBreak
   else
@@ -3370,31 +3762,48 @@ end;
 destructor TSQLAggregateFunctionExpression.Destroy;
 begin
   FreeAndNil(FExpression);
+  FreeAndNil(FExpression2);
+  FreeAndNil(FFilterExpression);
   inherited Destroy;
 end;
 
 function TSQLAggregateFunctionExpression.GetAsSQL(Options: TSQLFormatOptions;
   AIndent: Integer): TSQLStringType;
 
-Const
-  OpCodes : Array[TSQLAggregateFunction] of string = ('COUNT','SUM','AVG','MAX','MIN');
+{Const
+  OpCodes : Array[TSQLAggregateFunction] of string = ('COUNT','SUM','AVG','MAX',
+    'MIN','LIST','CORR','COVAR_POP','COVAR_SAMP','STDDEV_POP','STDDEV_SAMP',
+    'VAR_POP','VAR_SAMP','REGR_AVGX','REGR_AVGY','REGR_COUNT','REGR_INTERCEPT',
+    'REGR_R2','REGR_SLOPE','REGR_SXX','REGR_SXY','REGR_SYY');}
 Var
   E : TSQLStringType;
 
 begin
-  Result:=SQLKeyWord(Opcodes[Aggregate],Options);
+  //Result:=SQLKeyWord(Opcodes[Aggregate],Options);
+  Result := SQLKeyWord(FFuncName, Options);
   Case Option of
     aoAsterisk : E:='*';
     aoAll      : E:=SQLKeyword('ALL',Options);
     aoDistinct : E:=SQLKeyWord('DISTINCT',Options);
   end;
-  If Assigned(FExpression) and (Option<>aoAsterisk) then
+  If Option<>aoAsterisk then
+  begin
+    If Assigned(FExpression) then
     begin
-    If E<>'' then
-      E:=E+' ';
-    E:=E+Expression.GetAsSQl(Options,AIndent);
+      If E<>'' then
+        E:=E+' ';
+      E:=E+Expression.GetAsSQl(Options,AIndent);
     end;
+    if Assigned(FExpression2) then
+    begin
+      E:=E+SQLListSeparator(Options)+Expression2.GetAsSQL(Options,AIndent);
+    end;
+  end;
   Result:=Result+'('+E+')';
+  // 7bit
+  if Assigned(FFilterExpression) then
+    Result:=Result+SQLKeyWord(' FILTER(WHERE ', Options)+
+      FFilterExpression.GetAsSQL(Options,AIndent)+')';
 end;
 
 { TSQLGenIDExpression }
@@ -3456,14 +3865,18 @@ function TSQLOrderByElement.GetAsSQL(Options: TSQLFormatOptions;
 Const
   OpCodes : Array[TSQLOrderDirection] of TSQLStringType
           = ('ASC','DESC');
-
 begin
   If Assigned(FField) then
     Result:=FField.GetAsSQL(Options, AIndent);
+  If (Collation<>Nil) then
+    Result:=Result+SQLKeyWord(' COLLATE ', Options)+Collation.GetAsSQL(Options,AIndent);
   If (OrderBy=obDescending) or (sfoForceAscending in Options) then
     Result:=Result+' '+SQLKeyWord(Opcodes[OrderBy],Options);
-  If (Collation<>Nil) then
-    Result:=Result+' '+Collation.GetAsSQL(Options,AIndent);
+  // 7bit
+  if FNulls = npNullsFirst then
+    Result:=Result+SQLKeyWord(' NULLS FIRST', Options)
+  else if FNulls = npNullsLast then
+    Result:=Result+SQLKeyWord(' NULLS LAST', Options);
 end;
 
 { TSQLSelectIndexedPlan }
@@ -5185,26 +5598,364 @@ begin
   Result := Result + SQLKeyword(' END ', Options);
 end;
 
-{ TSQLSubstringExpression }
+{ TSQLPositionFunction }
 
-function TSQLSubstringExpression.GetAsSQL(Options: TSQLFormatOptions;
+destructor TSQLPositionFunction.destroy;
+begin
+  FreeAndNil(FSubStringExpression);
+  FreeAndNil(FStringExpression);
+  FreeAndNil(FStartPosExpression);
+  inherited destroy;
+end;
+
+function TSQLPositionFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('POSITION(', Options);
+  Result := Result + SubStringExpression.GetAsSQL(Options, AIndent);
+  if FInSyntax then
+    Result := Result + SQLKeyword(' IN ', Options)
+  else
+    Result := Result + SQLListSeparator(Options);
+  Result := Result + StringExpression.GetAsSQL(Options, AIndent);
+  if StartPosExpression <> nil then
+    Result := Result + SQLListSeparator(Options) + StartPosExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLSubstringFunction }
+
+destructor TSQLSubstringFunction.destroy;
+begin
+  FreeAndNil(FEscapeExpression);
+  FreeAndNil(FSimilarExpression);
+  FreeAndNil(FForExpression);
+  FreeAndNil(FFromExpression);
+  FreeAndNil(FStringExpression);
+  inherited destroy;
+end;
+
+function TSQLSubstringFunction.GetAsSQL(Options: TSQLFormatOptions;
   AIndent: Integer): TSQLStringType;
 begin
   Result := SQLKeyword('SUBSTRING(', Options);
   if StringExpression <> nil then
     Result := Result + StringExpression.GetAsSQL(Options, AIndent);
-  Result := Result + SQLKeyword(' FROM ', Options);
   if FromExpression <> nil then
-    Result := Result + FromExpression.GetAsSQL(Options, AIndent);
-  Result := Result + SQLKeyword(' FOR ', Options);
-  if ForExpression <> nil then
-    Result := Result + ForExpression.GetAsSQL(Options, AIndent);
+  begin
+    Result := Result + SQLKeyword(' FROM ', Options) +
+      FromExpression.GetAsSQL(Options, AIndent);
+    if ForExpression <> nil then
+    begin
+      Result := Result + SQLKeyword(' FOR ', Options) +
+        ForExpression.GetAsSQL(Options, AIndent);
+    end;
+  end
+  else if SimilarExpression <> nil then
+  begin
+    Result := Result + SQLKeyWord(' SIMILAR ', Options) +
+      FSimilarExpression.GetAsSQL(Options, AIndent) +
+      SQLKeyWord(' ESCAPE ', Options) +
+      FEscapeExpression.GetAsSQL(Options, AIndent);
+  end;
+  Result := Result + ')';
+end;
+
+{ TSQLTrimFunction }
+
+destructor TSQLTrimFunction.destroy;
+begin
+  FreeAndNil(FStringExpression);
+  FreeAndNil(FWhatExpression);
+  inherited destroy;
+end;
+
+function TSQLTrimFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+const
+  OpCodes: array [TSQLTrimWhere] of String = ('', 'BOTH ', 'LEADING ', 'TRAILING ');
+begin
+  Result := SQLKeyword('TRIM(' + OpCodes[FTrimWhere], Options);
+  if FWhatExpression <> nil then
+    Result := Result + FWhatExpression.GetAsSQL(Options, AIndent);
+  if (FWhatExpression <> nil) or (FTrimWhere <> twNone) then
+    Result := Result + SQLKeyword(' FROM ', Options);
+  Result := Result + FStringExpression.GetAsSQL(Options, AIndent) + ')';
+end;
+
+{ TSQLHashFunction }
+
+destructor TSQLHashFunction.destroy;
+begin
+  FreeAndNil(FStringExpression);
+  inherited destroy;
+end;
+
+function TSQLHashFunction.GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer
+  ): TSQLStringType;
+begin
+  Result := SQLKeyWord('HASH(', Options) +
+    FStringExpression.GetAsSQL(Options, AIndent);
+  if UsingCrc32 then
+    Result := Result + SQLKeyWord(' USING CRC32', Options);
+  Result := Result + ')';
+end;
+
+{ TSQLDateAddFunction }
+
+destructor TSQLDateAddFunction.destroy;
+begin
+  FreeAndNil(FAmountExpression);
+  FreeAndNil(FDateTimeExpression);
+  inherited destroy;
+end;
+
+function TSQLDateAddFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  Sep: String;
+begin
+  Sep := SQLListSeparator(Options);
+  Result := SQLKeyWord('DATEADD(', Options);
+  if FHumanSyntax then
+    Result := Result + FAmountExpression.GetAsSQL(Options, AIndent) + ' ' +
+      SQLKeyWord(FDateUnit, Options) +
+      SQLKeyWord(' TO ', Options) + FDateTimeExpression.GetAsSQL(Options, AIndent)
+  else
+    Result := Result + SQLKeyWord(FDateUnit, Options) + Sep +
+      FAmountExpression.GetAsSQL(Options, AIndent) + Sep +
+      FDateTimeExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLDateDiffFunction }
+
+destructor TSQLDateDiffFunction.destroy;
+begin
+  FreeAndNil(FDateFromExpression);
+  FreeAndNil(FDateToExpression);
+  inherited destroy;
+end;
+
+function TSQLDateDiffFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  Sep: String;
+begin
+  Sep := SQLListSeparator(Options);
+  Result := SQLKeyWord('DATEDIFF(', Options);
+  if FHumanSyntax then
+    Result := Result + SQLKeyWord(FDateUnit, Options) +
+      SQLKeyWord(' FROM ', Options) + FDateFromExpression.GetAsSQL(Options, AIndent) +
+      SQLKeyWord(' TO ', Options) + FDateToExpression.GetAsSQL(Options, AIndent)
+  else
+    Result := Result + SQLKeyWord(FDateUnit, Options) +
+      Sep + FDateFromExpression.GetAsSQL(Options, AIndent) +
+      Sep + FDateToExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLFirstDayFunction }
+
+destructor TSQLFirstDayFunction.destroy;
+begin
+  FreeAndNil(FDateTimeExpression);
+  inherited destroy;
+end;
+
+function TSQLFirstDayFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('FIRST_DAY(OF ' + FDatePeriod + ' FROM ', Options) +
+    FDateTimeExpression.GetAsSQL(Options, AIndent) + ')';
+end;
+
+{ TSQLLastDayFunction }
+
+destructor TSQLLastDayFunction.destroy;
+begin
+  FreeAndNil(FDateTimeExpression);
+  inherited destroy;
+end;
+
+function TSQLLastDayFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('LAST_DAY(OF ' + FDatePeriod + ' FROM ', Options) +
+    FDateTimeExpression.GetAsSQL(Options, AIndent) + ')';
+end;
+
+{ TSQLCryptHashFunction }
+
+destructor TSQLCryptHashFunction.destroy;
+begin
+  FreeAndNil(FValueExpression);
+  inherited destroy;
+end;
+
+function TSQLCryptHashFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('CRYPT_HASH(', Options) +
+    FValueExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyword(' USING ' + FAlgorithm, Options) + ')';
+end;
+
+{ TSQLCryptFunction }
+
+destructor TSQLCryptFunction.destroy;
+begin
+  FreeAndNil(FValueExpression);
+  FreeAndNil(FKeyExpression);
+  FreeAndNil(FIVExpression);
+  FreeAndNil(FCTRLength);
+  FreeAndNil(FCounterExpression);
+  inherited destroy;
+end;
+
+function TSQLCryptFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  Tmp: String;
+begin
+  if FIsEncrypt then
+    Result := SQLKeyWord('ENCRYPT(', Options)
+  else
+    Result := SQLKeyWord('DECRYPT(', Options);
+  Result := Result + FValueExpression.GetAsSQL(Options, AIndent);
+  if FAlgorithm <> '' then
+  begin
+    Tmp := FAlgorithm;
+    if Tmp = 'SAFER+' then Tmp := '"' + Tmp + '"';
+    Result := Result + SQLKeyWord(' USING ' + Tmp, Options);
+  end;
+  if FMode <> '' then
+    Result := Result + SQLKeyWord(' MODE ' + FMode, Options);
+  Result := Result + SQLKeyWord(' KEY ', Options) +
+    FKeyExpression.GetAsSQL(Options, AIndent);
+  if FIVExpression <> nil then
+    Result := Result + SQLKeyWord(' IV ', Options) +
+      FIVExpression.GetAsSQL(Options, AIndent);
+  if FCTRType <> '' then
+    Result := Result + ' ' + FCTRType;
+  if FCTRLength <> nil then
+    Result := Result + SQLKeyWord(' CTR_LENGTH ', Options) +
+      FCtrLength.GetAsSQL(Options, AIndent);
+  if FCounterExpression <> nil then
+    Result := Result + SQLKeyWord(' COUNTER ', Options) +
+      FCounterExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLRSACryptFunction }
+
+destructor TSQLRSACryptFunction.destroy;
+begin
+  FreeAndNil(FValueExpression);
+  FreeAndNil(FKeyExpression);
+  FreeAndNil(FLParamExpression);
+  inherited destroy;
+end;
+
+function TSQLRSACryptFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  if IsEncrypt then
+    Result := SQLKeyWord('RSA_ENCRYPT(', Options)
+  else
+    Result := SQLKeyWord('RSA_DECRYPT(', Options);
+  Result := Result + FValueExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' KEY ', Options) + FKeyExpression.GetAsSQL(Options, AIndent);
+  if FLParamExpression <> nil then
+    Result := Result + SQLKeyWord(' LPARAM ', Options) +
+      FLParamExpression.GetAsSQL(Options, AIndent);
+  if FAlgorithm <> '' then
+    Result := Result + SQLKeyWord(' HASH ' + FAlgorithm, Options);
+  Result := Result + ')';
+end;
+
+{ TSQLRSASignHashFunction }
+
+destructor TSQLRSASignHashFunction.destroy;
+begin
+  FreeAndNil(FValueExpression);
+  FreeAndNil(FKeyExpression);
+  FreeAndNil(FLengthExpression);
+  inherited destroy;
+end;
+
+function TSQLRSASignHashFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('RSA_SIGN_HASH(', Options) +
+    FValueExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' KEY ', Options) +
+    FKeyExpression.GetAsSQL(Options, AIndent);
+  if FAlgorithm <> '' then
+    Result := Result + SQLKeyWord(' HASH ' + FAlgorithm, Options);
+  if FLengthExpression <> nil then
+    Result := Result + SQLKeyWord(' SALT_LENGTH ', Options) +
+      FLengthExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLRSAVerifyHashFunction }
+
+destructor TSQLRSAVerifyHashFunction.destroy;
+begin
+  FreeAndNil(FValueExpression);
+  FreeAndNil(FSignatureExpression);
+  FreeAndNil(FKeyExpression);
+  FreeAndNil(FLengthExpression);
+  inherited destroy;
+end;
+
+function TSQLRSAVerifyHashFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('RSA_VERIFY_HASH(', Options) +
+    FValueExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' SIGNATURE ', Options) +
+    FSignatureExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' KEY ', Options) +
+    FKeyExpression.GetAsSQL(Options, AIndent);
+  if FAlgorithm <> '' then
+    Result := Result + SQLKeyWord(' HASH ' + FAlgorithm, Options);
+  if FLengthExpression <> nil then
+    Result := Result + SQLKeyWord(' SALT_LENGTH ', Options) +
+      FLengthExpression.GetAsSQL(Options, AIndent);
+  Result := Result + ')';
+end;
+
+{ TSQLOverlayFunction }
+
+destructor TSQLOverlayFunction.destroy;
+begin
+  FreeAndNil(FStringExpression);
+  FreeAndNil(FReplacement);
+  FreeAndNil(FFromExpression);
+  FreeAndNil(FForExpression);
+  inherited destroy;
+end;
+
+function TSQLOverlayFunction.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := SQLKeyWord('OVERLAY(', Options) +
+    FStringExpression.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' PLACING ', Options) +
+    FReplacement.GetAsSQL(Options, AIndent) +
+    SQLKeyWord(' FROM ', Options) +
+    FFromExpression.GetAsSQL(Options, AIndent);
+  if FForExpression <> nil then
+    Result := Result + SQLKeyWord(' FOR ', Options) +
+      FForExpression.GetAsSQL(Options, AIndent);
   Result := Result + ')';
 end;
 
 { TSQLListFuncExpression }
 
-function TSQLListFuncExpression.GetAsSQL(Options: TSQLFormatOptions;
+(*function TSQLListFuncExpression.GetAsSQL(Options: TSQLFormatOptions;
   AIndent: Integer): TSQLStringType;
 begin
   Result := SQLKeyword('LIST(', Options);
@@ -5216,6 +5967,151 @@ begin
   if Arg2 <> nil then
     Result := Result + Arg2.GetAsSQL(Options, AIndent);
   Result := Result + ')';
+end;   *)
+
+{ TSQLOverOrderElement }
+
+destructor TSQLOverOrderElement.Destroy;
+begin
+  FreeAndNil(FExpr);
+  inherited Destroy;
+end;
+
+function TSQLOverOrderElement.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  Result := FExpr.GetAsSQL(Options, AIndent);
+  if FOrderBy = obDescending then Result := Result + SQLKeyWord(' DESC', Options);
+  if FNullsPlacement <> npNone then
+  begin
+    Result := Result + SQLKeyword(' NULLS ', Options);
+    if FNullsPlacement = npNullsFirst then
+      Result := Result + SQLKeyword('FIRST', Options)
+    else
+      Result := Result + SQLKeyword('LAST', Options)
+  end;
+end;
+
+{ TSQLOverFrameBoundElement }
+
+destructor TSQLOverFrameBoundElement.Destroy;
+begin
+  FreeAndNil(FExpr);
+  inherited Destroy;
+end;
+
+function TSQLOverFrameBoundElement.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+begin
+  case FBound of
+    fbUnboundedPreceding: Result := SQLKeyword('UNBOUNDED PRECEDING', Options);
+    fbPreceding: Result := FExpr.GetAsSQL(Options, AIndent) + SQLKeyword(' PRECEDING', Options);
+    fbCurrentRow: Result := SQLKeyword('CURRENT ROW', Options);
+    fbFollowing: Result := FExpr.GetAsSQL(Options, AIndent) + SQLKeyword(' FOLLOWING', Options);
+    fbUnboundedFollowing: Result := SQLKeyword('UNBOUNDED FOLLOWING', Options);
+  end;
+end;
+
+{ TSQLWindowDefination }
+
+destructor TSQLWindowDefination.Destroy;
+begin
+  FreeAndNil(FWindowName);
+  FreeAndNil(FPartitionListExpr);
+  FreeAndNil(FOrderListExpr);
+  FreeAndNil(FFrameStart);
+  FreeAndNil(FFrameBound1);
+  FreeAndNil(FFrameBound2);
+  inherited Destroy;
+end;
+
+function TSQLWindowDefination.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  Sep: String;
+  i, SepLen: Integer;
+begin
+  Result := '';
+  if FWindowName <> nil then Result := FWindowName.GetAsSQL(Options, AIndent) + ' ';
+  Sep:=SQLListSeparator(Options);
+  SepLen := Length(Sep);
+  if FPartitionListExpr <> nil then
+  begin
+    Result := Result + SQLKeyword('PARTITION BY ', Options);
+    for i := 0 to FPartitionListExpr.Count - 1 do
+      Result := Result + FPartitionListExpr[i].GetAsSQL(Options, AIndent) + Sep;
+    SetLength(Result, Length(Result) - SepLen);
+    Result := Result + ' ';
+  end;
+  if FOrderListExpr <> nil then
+  begin
+    Result := Result + SQLKeyword('ORDER BY ', Options);
+    for i := 0 to FOrderListExpr.Count - 1 do
+      Result := Result + FOrderListExpr[i].GetAsSQL(Options, AIndent) + Sep;
+    SetLength(Result, Length(Result) - SepLen);
+    Result := Result + ' ';
+  end;
+  if FFrameUnit <> fuNone then
+  begin
+    if FFrameUnit = fuRows then
+      Result := Result + SQLKeyword('ROWS ', Options)
+    else
+      Result := Result + SQLKeyword('RANGE ', Options);
+    if FFrameBound1 <> nil then
+    begin
+      Result := Result + SQLKeyword('BETWEEN ', Options) +
+        FFrameBound1.GetAsSQL(Options, AIndent) + SQLKeyword(' AND ', Options) +
+        FFrameBound2.GetAsSQL(Options, AIndent);
+    end
+    else Result := Result + FFrameStart.GetAsSQL(Options, AIndent);
+    Result := Result + ' ';
+  end;
+  SetLength(Result, Length(Result) - 1);
+end;
+
+{ TSQLWindowFunctionExpression }
+
+destructor TSQLWindowFunctionExpression.Destroy;
+begin
+  FreeAndNil(FFunc);
+  FreeAndNil(FOverExpr);
+  inherited Destroy;
+end;
+
+function TSQLWindowFunctionExpression.GetAsSQL(Options: TSQLFormatOptions;
+  AIndent: Integer): TSQLStringType;
+var
+  OverSQL: String;
+begin
+  OverSQL := FOverExpr.GetAsSQL(Options, AIndent);
+  if FOverExpr.WindowNameOnly then OverSQL := Trim(OverSQL)
+  else OverSQL := '(' + OverSQL + ')';
+  Result := FFunc.GetAsSQL(Options, AIndent) + SQLKeyWord(' OVER ', Options) +
+    OverSQL;
+end;
+
+{ TSQLSelectWindow }
+
+destructor TSQLSelectWindow.Destroy;
+begin
+  FreeAndNil(FWindowNames);
+  FreeAndNil(FWindowDefs);
+  inherited Destroy;
+end;
+
+function TSQLSelectWindow.GetAsSQL(Options: TSQLFormatOptions; AIndent: Integer
+  ): TSQLStringType;
+var
+  i: Integer;
+  Sep: String;
+begin
+  Sep := SQLListSeparator(Options);
+  Result := '';
+  for i := 0 to FWindowDefs.Count - 1 do
+    Result := Result + FWindowNames[i].GetAsSQL(Options, AIndent) +
+      SQLKeyWord(' AS (', Options) + FWindowDefs[i].GetAsSQL(Options, AIndent)
+      + ')' + Sep;
+  SetLength(Result, Length(Result) - Length(Sep));
 end;
 
 end.

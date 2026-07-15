@@ -146,6 +146,7 @@ type
     procedure ProcessJoinTableRef(Join: TSQLJoinTableReference; Fm: TdxForm; const AliasName: String);
     procedure ReplaceFieldNames(Stat: TSQLSelectStatement; Fm: TdxForm; const AliasName: String);
     function ProcessSQLExpression(Expr: TSQLExpression; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean): TSQLExpression;
+    procedure ProcessWindowDefination(Def: TSQLWindowDefination; Fm: TdxForm; const AliasName: String; out DetectNull: Boolean);
     procedure ParseSimpleTableRef(Stat: TSQLSelectStatement; T: TSQLSimpleTableReference);
     procedure ParseSelectTableRef(T: TSQLSelectTableReference);
     procedure ParseJoinTableRef(Stat: TSQLSelectStatement; T: TSQLJoinTableReference);
@@ -644,6 +645,10 @@ begin
     ProcessElement(Stat.GroupBy[i], Fm, AliasName, Dummy);
   for i := 0 to Stat.OrderBy.Count - 1 do
   	ProcessElement(Stat.OrderBy[i], Fm, AliasName, Dummy);
+  if Stat.Window <> nil then
+    for i := 0 to Stat.Window.WindowDefs.Count - 1 do
+      ProcessWindowDefination(TSQLWindowDefination(Stat.Window.WindowDefs[i]),
+        Fm, AliasName, Dummy);
 end;
 
 {function CreateIntLiteral(Parent: TSQLElement): TSQLLiteralExpression;
@@ -729,15 +734,25 @@ begin
     ParseSelectStatement(TSQLSelectionExpression(Expr).Select);
   end
   else if Expr is TSQLAggregateFunctionExpression then
-  	ProcessSQLExpression(TSQLAggregateFunctionExpression(Expr).Expression, Fm, AliasName, Dummy)
-	else if Expr is TSQLListExpression then
+    with TSQLAggregateFunctionExpression(Expr) do
+    begin
+  	  ProcessSQLExpression(Expression, Fm, AliasName, Dummy);
+      if Expression2 <> nil then
+        ProcessSQLExpression(Expression2, Fm, AliasName, Dummy);
+      if FilterExpression <> nil then
+        ProcessSQLExpression(FilterExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLListExpression then
   	with TSQLListExpression(Expr) do
       for i := 0 to List.Count - 1 do
         ProcessElement(List[i], Fm, AliasName, Dummy)
   else if Expr is TSQLFunctionCallExpression then
+  begin
   	with TSQLFunctionCallExpression(Expr) do
-      for i := 0 to Arguments.Count - 1 do
-      	ProcessElement(Arguments[i], Fm, AliasName, Dummy)
+      if Arguments <> nil then
+        for i := 0 to Arguments.Count - 1 do
+        	ProcessElement(Arguments[i], Fm, AliasName, Dummy)
+  end
   else if Expr is TSQLCastExpression then
     with TSQLCastExpression(Expr) do
       ProcessElement(Value, Fm, AliasName, Dummy)
@@ -756,14 +771,146 @@ begin
       end;
       if ElseExpression <> nil then ProcessSQLExpression(ElseExpression, Fm, AliasName, Dummy);
     end
-  else if Expr is TSQLListFuncExpression then
+  {else if Expr is TSQLListFuncExpression then
     with TSQLListFuncExpression(Expr) do
     begin
       ProcessElement(Arg1, Fm, AliasName, Dummy);
       ProcessElement(Arg2, Fm, AliasName, Dummy);
+    end  }
+  else if Expr is TSQLSubstringFunction then
+    with TSQLSubstringFunction(Expr) do
+    begin
+      ProcessSQLExpression(StringExpression, Fm, AliasName, Dummy);
+      if FromExpression <> nil then
+      begin
+        ProcessSQLExpression(FromExpression, Fm, AliasName, Dummy);
+        if ForExpression <> nil then
+          ProcessSQLExpression(ForExpression, Fm, AliasName, Dummy);
+      end
+      else if SimilarExpression <> nil then
+      begin
+        ProcessSQLExpression(SimilarExpression, Fm, AliasName, Dummy);
+        ProcessSQLExpression(EscapeExpression, Fm, AliasName, Dummy);
+      end
+    end
+  else if Expr is TSQLPositionFunction then
+    with TSQLPositionFunction(Expr) do
+    begin
+      ProcessSQLExpression(SubStringExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(StringExpression, Fm, AliasName, Dummy);
+      if StartPosExpression <> nil then
+        ProcessSQLExpression(StartPosExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLTrimFunction then
+    with TSQLTrimFunction(Expr) do
+    begin
+      if WhatExpression <> nil then
+        ProcessSQLExpression(WhatExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(StringExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLHashFunction then
+    with TSQLHashFunction(Expr) do
+    begin
+      ProcessSQLExpression(StringExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLOverlayFunction then
+    with TSQLOverlayFunction(Expr) do
+    begin
+      ProcessSQLExpression(StringExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(Replacement, Fm, AliasName, Dummy);
+      ProcessSQLExpression(FromExpression, Fm, AliasName, Dummy);
+      if ForExpression <> nil then
+        ProcessSQLExpression(ForExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLDateAddFunction then
+    with TSQLDateAddFunction(Expr) do
+    begin
+      ProcessSQLExpression(AmountExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(DateTimeExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLDateDiffFunction then
+    with TSQLDateDiffFunction(Expr) do
+    begin
+      ProcessSQLExpression(DateFromExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(DateToExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLFirstDayFunction then
+    with TSQLFirstDayFunction(Expr) do
+    begin
+      ProcessSQLExpression(DateTimeExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLLastDayFunction then
+    with TSQLLastDayFunction(Expr) do
+    begin
+      ProcessSQLExpression(DateTimeExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLCryptHashFunction then
+    with TSQLCryptHashFunction(Expr) do
+    begin
+      ProcessSQLExpression(ValueExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLCryptFunction then
+    with TSQLCryptFunction(Expr) do
+    begin
+      ProcessSQLExpression(ValueExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(KeyExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(IVExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(CTRLength, Fm, AliasName, Dummy);
+      ProcessSQLExpression(CounterExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLRSACryptFunction then
+    with TSQLRSACryptFunction(Expr) do
+    begin
+      ProcessSQLExpression(ValueExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(KeyExpression, Fm, AliasName, Dummy);
+      if LParamExpression <> nil then
+        ProcessSQLExpression(LParamExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLRSASignHashFunction then
+    with TSQLRSASignHashFunction(Expr) do
+    begin
+      ProcessSQLExpression(ValueExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(KeyExpression, Fm, AliasName, Dummy);
+      if LengthExpression <> nil then
+        ProcessSQLExpression(LengthExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLRSAVerifyHashFunction then
+    with TSQLRSAVerifyHashFunction(Expr) do
+    begin
+      ProcessSQLExpression(ValueExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(SignatureExpression, Fm, AliasName, Dummy);
+      ProcessSQLExpression(KeyExpression, Fm, AliasName, Dummy);
+      if LengthExpression <> nil then
+        ProcessSQLExpression(LengthExpression, Fm, AliasName, Dummy);
+    end
+  else if Expr is TSQLWindowFunctionExpression then
+    with TSQLWindowFunctionExpression(Expr) do
+    begin
+      ProcessSQLExpression(Func, Fm, AliasName, Dummy);
+      ProcessWindowDefination(OverExpr, Fm, AliasName, Dummy);
     end
   else if Expr is TSQLLiteralExpression then
     DetectNull := TSQLLiteralExpression(Expr).Literal is TSQLNullLiteral;
+end;
+
+procedure TdxSQLParser.ProcessWindowDefination(Def: TSQLWindowDefination;
+  Fm: TdxForm; const AliasName: String; out DetectNull: Boolean);
+var
+  i: Integer;
+  Dummy: Boolean;
+begin
+  if Def.PartitionListExpr <> nil then
+    for i := 0 to Def.PartitionListExpr.Count - 1 do
+      ProcessElement(Def.PartitionListExpr[i], Fm, AliasName, Dummy);
+  if Def.OrderListExpr <> nil then
+    for i := 0 to Def.OrderListExpr.Count - 1 do
+      ProcessElement(TSQLOverOrderElement(Def.OrderListExpr[i]).Expr, Fm, AliasName, Dummy);
+  if (Def.FrameBound1 <> nil) and (Def.FrameBound1.Expr <> nil) then
+    ProcessSQLExpression(Def.FrameBound1.Expr, Fm, AliasName, Dummy);
+  if (Def.FrameBound2 <> nil) and (Def.FrameBound2.Expr <> nil) then
+    ProcessSQLExpression(Def.FrameBound2.Expr, Fm, AliasName, Dummy);
+  if (Def.FrameStart <> nil) and (Def.FrameStart.Expr <> nil) then
+    ProcessSQLExpression(Def.FrameStart.Expr, Fm, AliasName, Dummy);
 end;
 
 procedure TdxSQLParser.ParseSimpleTableRef(Stat: TSQLSelectStatement; T: TSQLSimpleTableReference);

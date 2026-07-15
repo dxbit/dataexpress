@@ -100,9 +100,9 @@ begin
       RegisterProperty('Handle', 'Integer', iptR);
       RegisterProperty('Pitch', 'TFontPitch', iptRW);
       RegisterProperty('PixelsPerInch', 'Integer', iptRW);
+      RegisterProperty('Height', 'Integer', iptRW);
     end;
     RegisterProperty('Color', 'TColor', iptRW);
-    RegisterProperty('Height', 'Integer', iptRW);
     RegisterProperty('Name', 'string', iptRW);
     RegisterProperty('Size', 'Integer', iptRW);
     RegisterProperty('Style', 'TFontStyles', iptrw);

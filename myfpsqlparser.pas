@@ -38,7 +38,8 @@ Type
 
   TExpressionOption = (eoCheckConstraint,eoTableConstraint,eoComputedBy,eoOnlyNull,
                        eoFieldValue,eoSelectvalue,eoParamValue,eoWhereClause,eoJoin,
-                       eoHaving,eoListValue, eoIF);
+                       eoHaving,eoListValue, eoIF,
+                       eoPosition,eoOver,eoSubString);      // 7bit
   TExpressionOptions = set of TExpressionOption;
   TSelectFlag = (sfSingleTon,sfUnion,sfInto);
   TSelectFlags = Set of TSelectFlag;
@@ -125,7 +126,7 @@ Type
     function ParseRevokeRoleStatement(AParent: TSQLElement): TSQLRoleRevokeStatement;
     function ParseRevokeTableStatement(AParent: TSQLElement): TSQLTableRevokeStatement;
     // SELECT parsing
-    function ParseExprAggregate(AParent: TSQLElement; EO: TExpressionOptions): TSQLAggregateFunctionExpression;
+    function ParseExprAggregate(AParent: TSQLElement; EO: TExpressionOptions; const AName: String): TSQLAggregateFunctionExpression;
     procedure ParseFromClause(AParent: TSQLSelectStatement; AList: TSQLElementList);
     procedure ParseGroupBy(AParent: TSQLSelectStatement; AList: TSQLElementList);
     procedure ParseOrderBy(AParent: TSQLSelectStatement; AList: TSQLElementList);
@@ -152,8 +153,23 @@ Type
     function ParseWithSelectElement(AParent: TSQLElement): TSQLWithSelectElement;
     function ParseWithSelectStatement(AParent: TSQLElement): TSQLWithSelectStatement;
     function ParseCaseWhenExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLCaseExpression;
-    function ParseSubStringExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLSubStringExpression;
-    function ParseListFuncExpression(AParent: TSQLElement; EO: TExpressionOptions): TSQLListFuncExpression;
+    function ParsePositionFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLPositionFunction;
+    function ParseSubStringFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLSubstringFunction;
+    function ParseTrimFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLTrimFunction;
+    function ParseHashFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLHashFunction;
+    function ParseOverlayFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLOverlayFunction;
+    function ParseDateAddFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLDateAddFunction;
+    function ParseDateDiffFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLDateDiffFunction;
+    function ParseFirstDayFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLFirstDayFunction;
+    function ParseLastDayFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLLastDayFunction;
+    function ParseCryptHashFunction(AParent: TSQLElement; EO: TExpressionOptions): TSQLCryptHashFunction;
+    function ParseCryptFunction(AParent: TSQLElement; EO: TExpressionOptions; IsEncrypt: Boolean): TSQLCryptFunction;
+    function ParseRSACryptFunction(AParent: TSQLElement; EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSACryptFunction;
+    function ParseRSASignHashFunction(AParent: TSQLElement; EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSASignHashFunction;
+    function ParseRSAVerifyHashFunction(AParent: TSQLElement; EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSAVerifyHashFunction;
+    function ParseWindowDefination(AParent: TSQLElement; EO: TExpressionOptions): TSQLWindowDefination;
+    function ParseWindowFuncExpression(AParent: TSQLElement; AFunc: TSQLExpression; EO: TExpressionOptions): TSQLWindowFunctionExpression;
+    function ParseSelectWindow(AParent: TSQLElement): TSQLSelectWindow;
     //
   Public
     Constructor Create(AInput: TStream);
@@ -249,6 +265,75 @@ begin
       Res:=I;
       Exit(True);
       end;
+end;
+
+function DateUnitValid(const S: String): Boolean;
+var
+  Dummy: TSQLExtractElement;
+begin
+  Result := StringToSQLExtractElement(UpperCase(S), Dummy);
+end;
+
+function DatePeriodValid(const S: String): Boolean;
+const
+  DatePeriods: array of String = ('YEAR', 'QUARTER', 'MONTH', 'WEEK');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(DatePeriods) do
+    if S = DatePeriods[i] then Exit(True);
+end;
+
+function CryptAlgorithmValid(const S: String): Boolean;
+const
+  Algorithms: array of String = ('MD5', 'SHA1', 'SHA256', 'SHA512', 'SHA3_224',
+    'SHA3_256', 'SHA3_384', 'SHA3_512');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(Algorithms) do
+    if S = Algorithms[i] then Exit(True);
+end;
+
+function DecryptAlgorithmValid(const S: String): Boolean;
+const
+  Algorithms: array of String = ('AES', 'ANUBIS', 'BLOWFISH', 'KHAZAD', 'RC5',
+    'RC6', 'SAFER+', 'TWOFISH', 'XTE', 'CHACHA20', 'RC4', 'SOBER128');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(Algorithms) do
+    if S = Algorithms[i] then Exit(True);
+end;
+
+function CryptModeValid(const S: String): Boolean;
+const
+  Modes: array of String = ('CBC', 'CFB', 'CTR', 'ECB', 'OFB');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(Modes) do
+    if S = Modes[i] then Exit(True);
+end;
+
+function CtrTypeValid(const S: String): Boolean;
+begin
+  Result := (S = 'CTR_BIG_ENDIAN') or (S = 'CTR_LITTLE_ENDIAN');
+end;
+
+function HashAlgorithmValid(const S: String): Boolean;
+const
+  Algorithms: array of String = ('MD5', 'SHA1', 'SHA256', 'SHA512');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(Algorithms) do
+    if S = Algorithms[i] then Exit(True);
 end;
 
 { TSQLParser }
@@ -351,8 +436,8 @@ begin
        Result := S;
        S.Select := ParseSelectStatement(AParent, []);
        Consume(tsqlBraceClose);
-       if CurrentToken = tsqlAs then GetNextToken
-       else if CurrentToken = tsqlIdentifier then
+       if CurrentToken = tsqlAs then GetNextToken;
+       if CurrentToken = tsqlIdentifier then
          begin
            //Expect(tsqlIdentifier);
            S.AliasName := CreateIdentifier(S, CurrentTokenString);
@@ -453,16 +538,6 @@ begin
     GetNextToken;
     If B then
       begin
-      if (CurrentToken=tsqlDistinct) then
-        begin
-        AParent.Distinct:=True;
-        GetNextToken;
-        end
-      else if (CurrentToken=tsqlAll) then
-        begin
-        AParent.All:=True;
-        GetNextToken;
-        end;
       // 7bit
       if (CurrentToken=tsqlFIRST) then
         begin
@@ -481,6 +556,16 @@ begin
           GetNextToken;
         end;
       //
+      if (CurrentToken=tsqlDistinct) then
+        begin
+        AParent.Distinct:=True;
+        GetNextToken;
+        end
+      else if (CurrentToken=tsqlAll) then
+        begin
+        AParent.All:=True;
+        GetNextToken;
+        end;
       B:=False;
       end;
     If (CurrentToken=tsqlMul) then
@@ -616,6 +701,15 @@ begin
         O.OrderBy:=obAscending;
       GetNextToken;
       end;
+    // 7bit
+    If CurrentToken=tsqlNulls then
+    begin
+      GetNextToken;
+      Expect([tsqlFirst, tsqlLast]);
+      if CurrentToken=tsqlFirst then O.Nulls:=npNullsFirst
+      else O.Nulls:=npNullsLast;
+      GetNextToken;
+    end;
   until (CurrentToken<>tsqlComma);
 end;
 
@@ -736,6 +830,10 @@ begin
       GetNextToken;
       Result.Having:=ParseExprLevel1(Result,[eoHaving]);
       end;
+    // 7bit
+    if (CurrentToken=tsqlWindow) then
+      Result.Window:=ParseSelectWindow(Result);
+    //
     if (CurrentToken=tsqlUnion) then
       begin
       GetNextToken;
@@ -1472,43 +1570,53 @@ var
 begin
 	Expect(tsqlIdentifier);
   Result := TSQLWithSelectElement(CreateElement(TSQLWithSelectElement, AParent));
-  Result.Name.Name:=CurrentTokenString;
-  GetNextToken;
-  if CurrentToken = tsqlBraceOpen then
-    begin
-      repeat
-      	GetNextToken;
-	      Expect(tsqlIdentifier);
-        Ident := CreateIdentifier(Result, CurrentTokenString);
-        Result.Fields.Add(Ident);
+  try
+    Result.Name.Name:=CurrentTokenString;
+    GetNextToken;
+    if CurrentToken = tsqlBraceOpen then
+      begin
+        repeat
+      	  GetNextToken;
+	        Expect(tsqlIdentifier);
+          Ident := CreateIdentifier(Result, CurrentTokenString);
+          Result.Fields.Add(Ident);
+          GetNextToken;
+          Expect([tsqlCOMMA, tsqlBraceClose]);
+        until CurrentToken = tsqlBraceClose;
         GetNextToken;
-        Expect([tsqlCOMMA, tsqlBraceClose]);
-      until CurrentToken = tsqlBraceClose;
-      GetNextToken;
-    end;
-  Consume(tsqlAs);
-  Consume(tsqlBraceOpen);
-  Expect(tsqlSELECT);
-  Result.Select := ParseSelectStatement(Result, []);
-  Consume(tsqlBraceClose);
+      end;
+    Consume(tsqlAs);
+    Consume(tsqlBraceOpen);
+    Expect(tsqlSELECT);
+    Result.Select := ParseSelectStatement(Result, []);
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 end;
 
 function TSQLParser.ParseWithSelectStatement(AParent: TSQLElement
   ): TSQLWithSelectStatement;
 begin
   Result := TSQLWithSelectStatement(CreateElement(TSQLWithSelectStatement, AParent));
-  GetNextToken;
-  if CurrentToken = tsqlRecursive then
-  begin
-    Result.Recursive:=True;
+  try
     GetNextToken;
+    if CurrentToken = tsqlRecursive then
+    begin
+      Result.Recursive:=True;
+      GetNextToken;
+    end;
+    repeat
+      Result.SelectList.Add(ParseWithSelectElement(Result));
+      Expect([tsqlSELECT, tsqlCOMMA]);
+      if CurrentToken = tsqlComma then GetNextToken
+      else Break;
+    until False;
+  except
+    FreeAndNil(Result);
+    raise;
   end;
-  repeat
-    Result.SelectList.Add(ParseWithSelectElement(Result));
-    Expect([tsqlSELECT, tsqlCOMMA]);
-    if CurrentToken = tsqlComma then GetNextToken
-    else Break;
-  until False;
 end;
 
 function TSQLParser.ParseCaseWhenExpression(AParent: TSQLElement;
@@ -1517,49 +1625,478 @@ var
   WhenExpr: TSQLCaseWhenExpression;
 begin
   Result := TSQLCaseExpression(CreateElement(TSQLCaseExpression, AParent));
-  GetNextToken;
-  if CurrentToken <> tsqlWhen then
-    Result.Expression := ParseExprLevel1(Result, EO);
-  while True do
-  begin
-    Consume([tsqlWhen, tsqlElse, tsqlEnd]);
-    if PreviousToken = tsqlEnd then
+  try
+    GetNextToken;
+    if CurrentToken <> tsqlWhen then
+      Result.Expression := ParseExprLevel1(Result, EO);
+    while True do
     begin
-      if Result.WhenList.Count = 0 then UnexpectedToken([tsqlEnd]);
-      Break;
-    end
-    else if PreviousToken = tsqlElse then
-    begin
-      if Result.WhenList.Count = 0 then UnexpectedToken([tsqlElse]);
-      Result.ElseExpression := ParseExprLevel1(Result, EO);
-    end
-    else
-    begin
-      if Result.ElseExpression <> nil then UnexpectedToken([PreviousToken]);
-      WhenExpr := TSQLCaseWhenExpression(CreateElement(TSQLCaseWhenExpression, AParent));
-      WhenExpr.WhenExpression := ParseExprLevel1(Result, EO);
-      Consume(tsqlThen);
-      WhenExpr.ThenExpression := ParseExprLevel1(Result, EO);
-      Result.WhenList.Add(WhenExpr);
+      Consume([tsqlWhen, tsqlElse, tsqlEnd]);
+      if PreviousToken = tsqlEnd then
+      begin
+        if Result.WhenList.Count = 0 then UnexpectedToken([tsqlEnd]);
+        Break;
+      end
+      else if PreviousToken = tsqlElse then
+      begin
+        if Result.WhenList.Count = 0 then UnexpectedToken([tsqlElse]);
+        Result.ElseExpression := ParseExprLevel1(Result, EO);
+      end
+      else
+      begin
+        if Result.ElseExpression <> nil then UnexpectedToken([PreviousToken]);
+        WhenExpr := TSQLCaseWhenExpression(CreateElement(TSQLCaseWhenExpression, AParent));
+        Result.WhenList.Add(WhenExpr);
+        WhenExpr.WhenExpression := ParseExprLevel1(Result, EO);
+        Consume(tsqlThen);
+        WhenExpr.ThenExpression := ParseExprLevel1(Result, EO);
+      end;
     end;
+  except
+    FreeAndNil(Result);
+    raise;
   end;
 end;
 
-function TSQLParser.ParseSubStringExpression(AParent: TSQLElement;
-  EO: TExpressionOptions): TSQLSubStringExpression;
+function TSQLParser.ParsePositionFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLPositionFunction;
 begin
-  Result := TSQLSubStringExpression(CreateElement(TSQLSubStringExpression, AParent));
-  GetNextToken;
-  Consume(tsqlBraceOpen);
-  Result.StringExpression := ParseExprLevel1(Result, EO);
-  Consume(tsqlFrom);
-  Result.FromExpression := ParseExprLevel1(Result, EO);
-  Consume(tsqlFor);
-  Result.ForExpression := ParseExprLevel1(Result, EO);
-  Consume(tsqlBraceClose);
+  Result := TSQLPositionFunction(CreateElement(TSQLPositionFunction, AParent));
+  try
+    GetNextToken;
+    Consume(tsqlBraceOpen);
+    Result.SubStringExpression := ParseExprLevel1(Result, EO);
+    Expect([tsqlCOMMA, tsqlIN]);
+    Result.InSyntax:=CurrentToken=tsqlIN;
+    GetNextToken;
+    Result.StringExpression := ParseExprLevel1(Result, EO);
+    if not Result.InSyntax and (CurrentToken=tsqlCOMMA) then
+    begin
+      GetNextToken;
+      Result.StartPosExpression := ParseExprLevel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 end;
 
-function TSQLParser.ParseListFuncExpression(AParent: TSQLElement;
+function TSQLParser.ParseSubStringFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLSubstringFunction;
+begin
+  Result := TSQLSubstringFunction(CreateElement(TSQLSubstringFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Result.StringExpression := ParseExprLevel1(Result, EO);
+    Expect([tsqlFrom, tsqlSimilar]);
+    if CurrentToken = tsqlFrom then
+    begin
+      GetNextToken;
+      Result.FromExpression := ParseExprLevel1(Result, EO);
+      if CurrentToken = tsqlFor then
+      begin
+        GetNextToken;
+        Result.ForExpression := ParseExprLevel1(Result, EO);
+      end;
+    end
+    else if CurrentToken = tsqlSimilar then
+    begin
+      GetNextToken;
+      Result.SimilarExpression := ParseExprLevel1(Result, EO);
+      Consume(tsqlEscape);
+      Result.EscapeExpression := ParseExprLevel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseTrimFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLTrimFunction;
+var
+  E: TSQLExpression;
+begin
+  Result := TSQLTrimFunction(CreateElement(TSQLTrimFunction, AParent));
+  E := nil;
+  try
+    Consume(tsqlBraceOpen);
+    if CurrentToken in [tsqlBoth, tsqlLeading, tsqlTrailing] then
+    begin
+      case CurrentToken of
+        tsqlBoth: Result.TrimWhere := twBoth;
+        tsqlLeading: Result.TrimWhere := twLeading;
+        tsqlTrailing: Result.TrimWhere := twTrailing;
+      end;
+      GetNextToken;
+    end;
+    if CurrentToken<>tsqlFROM then
+      E := ParseExprLevel1(Result, EO);
+    if CurrentToken=tsqlFROM then
+    begin
+      GetNextToken;
+      Result.StringExpression:=ParseExprLevel1(Result, EO);
+      Result.WhatExpression:=E;
+    end
+    else
+      Result.StringExpression:=E;
+    Consume(tsqlBraceClose);
+  except
+    if Result.StringExpression=nil then FreeAndNil(E);
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseHashFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLHashFunction;
+begin
+  Result := TSQLHashFunction(CreateElement(TSQLHashFunction, AParent));
+  try
+    GetNextToken;
+    Consume(tsqlBraceOpen);
+    Result.StringExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlUsing then
+    begin
+      GetNextToken;
+      Consume(tsqlCrc32);
+      Result.UsingCrc32:=True;
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseOverlayFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLOverlayFunction;
+begin
+  Result := TSQLOverlayFunction(CreateElement(TSQLOverlayFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Result.StringExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlPlacing);
+    Result.Replacement := ParseExprLevel1(Result, EO);
+    Consume(tsqlFrom);
+    Result.FromExpression := ParseExprLEvel1(Result, EO);
+    if CurrentToken = tsqlFor then
+    begin
+      GetNextToken;
+      Result.ForExpression := ParseExprLEvel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseDateAddFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLDateAddFunction;
+begin
+  Result := TSQLDateAddFunction(CreateElement(TSQLDateAddFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    //if CurrentToken in [tsqlYEAR..tsqlMILLISECOND] then
+    if (CurrentToken = tsqlIdentifier) and DateUnitValid(CurrentTokenString) then
+    begin
+      Result.DateUnit := CurrentTokenString;
+      GetNextToken;
+      Consume(tsqlCOMMA);
+      Result.AmountExpression := ParseExprLevel1(Result, EO);
+      Consume(tsqlCOMMA);
+      Result.DateTimeExpression := ParseExprLevel1(Result, EO);
+    end
+    else
+    begin
+      Result.HumanSyntax := True;
+      Result.AmountExpression := ParseExprLevel1(Result, EO);
+      if not DateUnitValid(CurrentTokenString) then
+        Error('Invalid date unit: ' + CurrentTokenString);
+      //Expect([tsqlYEAR..tsqlMILLISECOND]);
+      Result.DateUnit := CurrentTokenString;
+      GetNextToken;
+      Consume(tsqlTO);
+      Result.DateTimeExpression := ParseExprLevel1(Result, EO);
+    end;
+
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseDateDiffFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLDateDiffFunction;
+begin
+  Result := TSQLDateDiffFunction(CreateElement(TSQLDateDiffFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    //Expect([tsqlYEAR..tsqlMILLISECOND]);
+    if not DateUnitValid(CurrentTokenString) then
+      Error('Invalid date unit: ' + CurrentTokenString);
+    Result.DateUnit := CurrentTokenString;
+    GetNextToken;
+    if CurrentToken = tsqlCOMMA then
+    begin
+      GetNextToken;
+      Result.DateFromExpression := ParseExprLevel1(Result, EO);
+      Consume(tsqlCOMMA);
+      Result.DateToExpression := ParseExprLevel1(Result, EO);
+    end
+    else
+    begin
+      Consume(tsqlFrom);
+      Result.DateFromExpression := ParseExprLevel1(Result, EO);
+      Consume(tsqlTo);
+      Result.DateToExpression := ParseExprLevel1(Result, EO);
+      Result.HumanSyntax := True;
+    end;
+
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseFirstDayFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLFirstDayFunction;
+var
+  S: String;
+begin
+  Result := TSQLFirstDayFunction(CreateElement(TSQLFirstDayFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Consume(tsqlOF);
+    Expect(tsqlIdentifier);
+    S := UpperCase(CurrentTokenString);
+    if not DatePeriodValid(S) then
+      Error('Invalid period: ' + S);
+    Result.DatePeriod := S;
+    GetNextToken;
+    Consume(tsqlFrom);
+    Result.DateTimeExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseLastDayFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLLastDayFunction;
+var
+  S: String;
+begin
+  Result := TSQLLastDayFunction(CreateElement(TSQLLastDayFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Consume(tsqlOF);
+    Expect(tsqlIdentifier);
+    S := UpperCase(CurrentTokenString);
+    if not DatePeriodValid(S) then
+      Error('Invalid period: ' + S);
+    Result.DatePeriod := S;
+    GetNextToken;
+    Consume(tsqlFrom);
+    Result.DateTimeExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseCryptHashFunction(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLCryptHashFunction;
+begin
+  Result := TSQLCryptHashFunction(CreateElement(TSQLCryptHashFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Result.ValueExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlUsing);
+    Expect(tsqlIdentifier);
+    Result.Algorithm := UpperCase(CurrentTokenString);
+    if not CryptAlgorithmValid(Result.Algorithm) then
+      Error('Invalid crypt algorithm: ' + Result.Algorithm);
+    GetNextToken;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseCryptFunction(AParent: TSQLElement;
+  EO: TExpressionOptions; IsEncrypt: Boolean): TSQLCryptFunction;
+var
+  S: String;
+begin
+  Result := TSQLCryptFunction(CreateElement(TSQLCryptFunction, AParent));
+  Result.IsEncrypt := IsEncrypt;
+  try
+    Consume(tsqlBraceOpen);
+    Result.ValueExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlUsing then
+    begin
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      S := UpperCase(CurrentTokenString);
+      if not DecryptAlgorithmValid(S) then
+        Error('Invalid decrypt algorithm: ' + S);
+      Result.Algorithm := S;
+      GetNextToken;
+    end;
+    if CurrentToken = tsqlMode then
+    begin
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      S := UpperCase(CurrentTokenString);
+      if not CryptModeValid(S) then
+        Error('Invalid decrypt mode: ' + S);
+      Result.Mode := S;
+      GetNextToken;
+    end;
+    Consume(tsqlKey);
+    Result.KeyExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlIV then
+    begin
+      GetNextToken;
+      Result.IVExpression := ParseExprLevel1(Result, EO);
+    end;
+    if CurrentToken = tsqlIdentifier then
+    begin
+      S := UpperCase(CurrentTokenString);
+      if not CtrTypeValid(S) then
+        Error('Invalid CTR type: ' + S);
+      Result.CTRType := S;
+      GetNextToken;
+    end;
+    if CurrentToken = tsqlCtrLength then
+    begin
+      GetNextToken;
+      Result.CTRLength := ParseExprLevel1(Result, EO);
+    end;
+    if CurrentToken = tsqlCounter then
+    begin
+      GetNextToken;
+      Result.CounterExpression := ParseExprLevel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseRSACryptFunction(AParent: TSQLElement;
+  EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSACryptFunction;
+var
+  S: String;
+begin
+  Result := TSQLRSACryptFunction(CreateElement(TSQLRSACryptFunction, AParent));
+  Result.IsEncrypt := IsEncrypt;
+  try
+    Consume(tsqlBraceOpen);
+    Result.ValueExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlKey);
+    Result.KeyExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlLParam then
+    begin
+      GetNextToken;
+      Result.LParamExpression := ParseExprLevel1(Result, EO);
+    end;
+    if CurrentToken = tsqlHash then
+    begin
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      S := UpperCase(CurrentTokenString);
+      if not HashAlgorithmValid(S) then
+        Error('Invalid RSA crypt hash: ' + S);
+      Result.Algorithm := S;
+      GetNextToken;
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseRSASignHashFunction(AParent: TSQLElement;
+  EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSASignHashFunction;
+var
+  S: String;
+begin
+  Result := TSQLRSASignHashFunction(CreateElement(TSQLRSASignHashFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Result.ValueExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlKey);
+    Result.KeyExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlHash then
+    begin
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      S := UpperCase(CurrentTokenString);
+      if not HashAlgorithmValid(S) then
+        Error('Invalid RSA sign hash: ' + S);
+      Result.Algorithm := S;
+      GetNextToken;
+    end;
+    if CurrentToken = tsqlSaltLength then
+    begin
+      GetNextToken;
+      Result.LengthExpression := ParseExprLevel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseRSAVerifyHashFunction(AParent: TSQLElement;
+  EO: TExpressionOptions; IsEncrypt: Boolean): TSQLRSAVerifyHashFunction;
+var
+  S: String;
+begin
+  Result := TSQLRSAVerifyHashFunction(CreateElement(TSQLRSAVerifyHashFunction, AParent));
+  try
+    Consume(tsqlBraceOpen);
+    Result.ValueExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlSignature);
+    Result.SignatureExpression := ParseExprLevel1(Result, EO);
+    Consume(tsqlKey);
+    Result.KeyExpression := ParseExprLevel1(Result, EO);
+    if CurrentToken = tsqlHash then
+    begin
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      S := UpperCase(CurrentTokenString);
+      if not HashAlgorithmValid(S) then
+        Error('Invalid RSA verify hash: ' + S);
+      Result.Algorithm := S;
+      GetNextToken;
+    end;
+    if CurrentToken = tsqlSaltLength then
+    begin
+      GetNextToken;
+      Result.LengthExpression := ParseExprLevel1(Result, EO);
+    end;
+    Consume(tsqlBraceClose);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+{function TSQLParser.ParseListFuncExpression(AParent: TSQLElement;
   EO: TExpressionOptions): TSQLListFuncExpression;
 var
   L: TSQLElementList;
@@ -1578,6 +2115,202 @@ begin
   Consume(tsqlComma);
   Result.Arg2 := ParseExprLevel1(Result, EO);
   Consume(tsqlBraceClose);
+end; }
+
+function TSQLParser.ParseWindowDefination(AParent: TSQLElement;
+  EO: TExpressionOptions): TSQLWindowDefination;
+var
+  E: TSQLExpression;
+  OOE: TSQLOverOrderElement;
+begin
+  Result := TSQLWindowDefination(CreateElement(TSQLWindowDefination, AParent));
+  try
+    if (EO * [eoOver] <> []) and (CurrentToken = tsqlIdentifier) then
+    begin
+      Result.WindowName := CreateIdentifier(Result, CurrentTokenString);
+      Result.WindowNameOnly := True;
+      GetNextToken;
+      Exit;
+    end;
+
+    if CurrentToken = tsqlBraceOpen then
+    begin
+      GetNextToken;
+      if CurrentToken = tsqlIdentifier then
+      begin
+        Result.WindowName := CreateIdentifier(Result, CurrentTokenString);
+        GetNextToken;
+      end;
+      Expect([tsqlBraceClose, tsqlPartition, tsqlORDER, tsqlRows, tsqlRange]);
+      if CurrentToken = tsqlPartition then
+      begin
+        GetNextToken;
+        Expect(tsqlBy);
+        repeat
+          GetNextToken;
+          E := ParseExprLevel1(Result, EO);
+          if Result.PartitionListExpr = nil then
+            Result.PartitionListExpr := TSQLElementList.Create(True);
+          Result.PartitionListExpr.Add(E);
+          Expect([tsqlComma, tsqlBraceClose, tsqlORDER, tsqlRows, tsqlRange]);
+        until CurrentToken in [tsqlBraceClose, tsqlORDER, tsqlRows, tsqlRange];
+      end;
+      if CurrentToken = tsqlORDER then
+      begin
+        GetNextToken;
+        Expect(tsqlBy);
+        repeat
+          GetNextToken;
+          if Result.OrderListExpr = nil then
+            Result.OrderListExpr := TSQLElementList.Create(True);
+          OOE := TSQLOverOrderElement.Create(Result);
+          OOE.Expr := ParseExprLevel1(OOE, EO);;
+          Result.OrderListExpr.Add(OOE);
+
+          if CurrentToken = tsqlASC then
+          begin
+            OOE.OrderBy := obAscending;
+            GetNextToken;
+          end
+          else if CurrentToken = tsqlDESC then
+          begin
+            OOE.OrderBy := obDescending;
+            GetNextToken;
+          end;
+
+          if CurrentToken = tsqlNulls then
+          begin
+            GetNextToken;
+            Expect([tsqlFIRST, tsqlLAST]);
+            if CurrentToken = tsqlFIRST then OOE.NullsPlacement := npNullsFirst
+            else if CurrentToken = tsqlLAST then OOE.NullsPlacement := npNullsLast;
+            GetNextToken;
+          end;
+
+          Expect([tsqlComma, tsqlBraceClose, tsqlRows, tsqlRange]);
+        until CurrentToken in [tsqlBraceClose, tsqlRows, tsqlRange];
+      end;
+      if CurrentToken in [tsqlRows, tsqlRange] then
+      begin
+        if CurrentToken = tsqlRows then Result.FrameUnit := fuRows
+        else Result.FrameUnit := fuRange;
+        GetNextToken;
+        if CurrentToken = tsqlBETWEEN then
+        begin
+          GetNextToken;
+          Result.FrameBound1 := TSQLOverFrameBoundElement.Create(Result);
+          if CurrentToken = tsqlUnbounded then
+          begin
+            GetNextToken;
+            Consume(tsqlPreceding);
+            Result.FrameBound1.Bound := fbUnboundedPreceding;
+          end
+          else if CurrentToken = tsqlCurrent then
+          begin
+            GetNextToken;
+            Consume(tsqlRow);
+            Result.FrameBound1.Bound := fbCurrentRow;
+          end
+          else
+          begin
+            Result.FrameBound1.Expr := ParseExprLevel1(Result.FrameBound1, EO);
+            Expect([tsqlPreceding, tsqlFollowing]);
+            if CurrentToken = tsqlPreceding then
+              Result.FrameBound1.Bound := fbPreceding
+            else
+              Result.FrameBound1.Bound := fbFollowing;
+            GetNextToken;
+          end;
+
+          Consume(tsqlAND);
+
+          Result.FrameBound2 := TSQLOverFrameBoundElement.Create(Result);
+          if CurrentToken = tsqlUnbounded then
+          begin
+            GetNextToken;
+            Consume(tsqlFollowing);
+            Result.FrameBound2.Bound := fbUnboundedFollowing;
+          end
+          else if CurrentToken = tsqlCurrent then
+          begin
+            GetNextToken;
+            Consume(tsqlRow);
+            Result.FrameBound2.Bound := fbCurrentRow;
+          end
+          else
+          begin
+            Result.FrameBound2.Expr := ParseExprLevel1(Result.FrameBound2, EO);
+            Expect([tsqlPreceding, tsqlFollowing]);
+            if CurrentToken = tsqlPreceding then
+              Result.FrameBound2.Bound := fbPreceding
+            else
+              Result.FrameBound2.Bound := fbFollowing;
+            GetNextToken;
+          end;
+        end;
+      end;
+      Consume(tsqlBraceClose);
+    end;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function IsWindowFunction(AFuncName: String): Boolean;
+const
+  WindowFuncs: array of String = ({'SUM', 'AVG', 'MAX', 'MIN', 'COUNT', 'LIST',}
+    'DENSE_RANK', 'RANK', 'PERCENT_RANK', 'CUME_DIST', 'NTILE', 'ROW_NUMBER',
+    'LEAD', 'LAG', 'FIRST_VALUE', 'LAST_VALUE', 'NTH_VALUE');
+var
+  i: Integer;
+begin
+  Result := False;
+  AFuncName := UpperCase(AFuncName);
+  for i := 0 to High(WindowFuncs) do
+    if AFuncName = WindowFuncs[i] then Exit(True);
+end;
+
+function TSQLParser.ParseWindowFuncExpression(AParent: TSQLElement;
+  AFunc: TSQLExpression; EO: TExpressionOptions): TSQLWindowFunctionExpression;
+var
+  FuncName: TSQLStringType;
+begin
+  Result := TSQLWindowFunctionExpression.Create(AParent);
+  try
+    Result.Func := AFunc;
+    if AFunc is TSQLFunctionCallExpression then
+    begin
+      FuncName := TSQLFunctionCallExpression(AFunc).Identifier;
+      if not IsWindowFunction(FuncName) then Error('%s is not a window function.', [FuncName]);
+    end;
+    Consume(tsqlOVER);
+    Result.OverExpr := ParseWindowDefination(AParent, EO + [eoOver]);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+function TSQLParser.ParseSelectWindow(AParent: TSQLElement): TSQLSelectWindow;
+begin
+  Result := TSQLSelectWindow(CreateElement(TSQLSelectWindow,AParent));
+  Result.WindowNames := TSQLElementList.Create(True);
+  Result.WindowDefs := TSQLElementList.Create(True);
+
+  try
+    repeat
+      GetNextToken;
+      Expect(tsqlIdentifier);
+      Result.WindowNames.Add(CreateIdentifier(Result, CurrentTokenString));
+      GetNextToken;
+      Consume(tsqlAS);
+      Result.WindowDefs.Add( ParseWindowDefination(Result,[]) );
+    until CurrentToken <> tsqlCOMMA;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 end;
 
 function TSQLParser.ParseWhenStatement(AParent: TSQLElement): TSQLWhenStatement;
@@ -2376,12 +3109,23 @@ var
   O : TSQLBinaryOperation;
   U : TSQLUnaryExpression;
   Inverted,bw,doin : Boolean;
+  CollationName: String;
 
 begin
   {$ifdef debugexpr}  Writeln('Level 2 ',TokenInfos[CurrentToken],': ',CurrentTokenString);{$endif debugexpr}
   Result:=ParseExprLevel3(AParent,EO);
   try
-    if (CurrentToken in sqlComparisons) then
+    CollationName:='';
+    if CurrentToken=tsqlCOLLATE then
+    begin
+      GetNextToken;
+      Expect(tsqlidentifier);
+      CollationName:=CurrentTokenString;
+      GetNextToken;
+    end;
+    if (CurrentToken=tsqlIN) and (EO * [eoPosition] <> []) then  // 7bit
+    else if (CurrentToken=tsqlSimilar) and (EO * [eoSubString] <> []) then // 7bit
+    else if (CurrentToken in sqlComparisons) then
       begin
       tt:=CurrentToken;
       Inverted:=CurrentToken=tsqlnot;
@@ -2408,7 +3152,16 @@ begin
 
       // Step past expected STARTING WITH
       If (tt=tsqlStarting) and (CurrentToken=tsqlWith) then
+        GetNextToken
+      // 7bit SIMILAR TO
+      Else If (tt=tsqlSimilar) and (CurrentToken=tsqlTo) then
+        GetNextToken
+      Else If (tt=tsqlIS) and (CurrentToken=tsqlDISTINCT) then
+      begin
         GetNextToken;
+        Consume(tsqlFROM);
+        tt:=tsqlDISTINCT;
+      end;
 
       bw:=False;
       doin:=false;
@@ -2426,6 +3179,8 @@ begin
         tsqlContaining : O:=boContaining;
         tsqlStarting : O:=boStarting;
         tsqlBetween : bw:=true;
+        tsqlSimilar : O:=boSimilar;
+        tsqlDISTINCT : O:=boDistinct;
       Else
         Error(SErrUnknownComparison)
       end;
@@ -2473,6 +3228,8 @@ begin
       If Inverted then
         if (Assigned(B)) and (B.Operation=boIs) then
           B.Operation:=boIsNot
+        else if Assigned(B) and (B.Operation=boDistinct) then
+          B.Operation:=boNotDistinct
         else
           begin
           U:=TSQLUnaryExpression(CreateElement(TSQLUnaryExpression,AParent));
@@ -2481,6 +3238,7 @@ begin
           Result:=U;
           end;
       end;
+      If (Result = B) and (CollationName <> '') then B.Collation := CreateIdentifier(B, CollationName); // 7bit
   Except
     Result.Free;
     Raise;
@@ -2718,43 +3476,75 @@ end;
 
 
 function TSQLParser.ParseExprAggregate(AParent: TSQLElement;
-  EO: TExpressionOptions): TSQLAggregateFunctionExpression;
+  EO: TExpressionOptions; const AName: String): TSQLAggregateFunctionExpression;
 begin
   Result:=TSQLAggregateFunctionExpression(CreateElement(TSQLAggregateFunctionExpression,AParent));
   try
-    Case CurrentToken of
+    {Case CurrentToken of
       tsqlCount : Result.Aggregate:=afCount;
       tsqlSum : Result.Aggregate:=afSum;
       tsqlAvg : Result.Aggregate:=afAvg;
       tsqlMax : Result.Aggregate:=afMax;
       tsqlMin : Result.Aggregate:=afMin;
-    end;
-    GetNextToken;
+      tsqlList : Result.Aggregate:=afList;
+
+    end;  }
+    Result.FuncName := AName;
+    //GetNextToken;
     Consume(tsqlBraceOpen);
     If CurrentToken=tsqlMul then
       begin
-      If Result.Aggregate<>afCount then
+      //If Result.Aggregate<>afCount then
+      if Result.FuncName <> 'COUNT' then
         Error(SErrAsteriskOnlyInCount);
-      Result.OPtion:=aoAsterisk;
+      Result.Option:=aoAsterisk;
       GetNextToken;
       end
     else
       begin
-      if (CurrentToken in [tsqlAll,tsqlDistinct]) then
+        if (CurrentToken in [tsqlAll,tsqlDistinct]) then
+          begin
+          If CurrentToken=tsqlAll then
+            Result.Option:=aoAll
+          else
+            Result.Option:=aoDistinct;
+          GetNextToken;
+          end;
+        Result.Expression:=ParseExprLevel1(Result,EO);
+        if CurrentToken = tsqlCOMMA then
         begin
-        If CurrentToken=tsqlAll then
-          Result.Option:=aoAll
-        else
-          Result.Option:=aoDistinct;
-        GetNextToken;
+          GetNextToken;
+          Result.Expression2:=ParseExprLevel1(Result,EO);
         end;
-      Result.Expression:=ParseExprLevel1(Result,EO);
       end;
     Consume(tsqlBraceClose);
+    // 7bit
+    if CurrentToken = tsqlFilter then
+    begin
+      GetNextToken;
+      Consume(tsqlBraceOpen);
+      Consume(tsqlWHERE);
+      Result.FilterExpression:=ParseExprLevel1(Result,EO);
+      Consume(tsqlBraceClose);
+    end;
   except
     FreeAndNil(Result);
     Raise;
   end;
+end;
+
+function IsAggregateFunction(const Str: String): Boolean;
+const
+  Funcs: array of String = ('AVG','MAX','MIN','SUM','COUNT','LIST',
+    'CORR','COVAR_POP','COVAR_SAMP','STDDEV_POP','STDDEV_SAMP',
+    'VAR_POP','VAR_SAMP','REGR_AVGX','REGR_AVGY','REGR_COUNT','REGR_INTERCEPT',
+    'REGR_R2','REGR_SLOPE','REGR_SXX','REGR_SXY','REGR_SYY');
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to High(Funcs) do
+    if Str = Funcs[i] then Exit(True);
 end;
 
 function TSQLParser.ParseExprPrimitive(AParent: TSQLElement;
@@ -2765,6 +3555,7 @@ Var
   N : String;
   C : TSQLElementClass;
   E : TSQLExtractElement;
+  Fn: TSQLExpression;
 
 begin
   Result:=Nil;
@@ -2825,15 +3616,25 @@ begin
         TSQLSelectionExpression(Result).Select:=ParseSelectStatement(Result,[]);
         Consume(tsqlBraceClose);
         end;
-      tsqlCount,
+      {tsqlCount,
       tsqlSum,
       tsqlAvg,
       tsqlMax,
-      tsqlMin :
+      tsqlMin,
+      tsqlList,
+      tsqlCORR..tsqlREGR_SYY:
         begin
-        If not ([eoSelectValue,eoHaving]*EO <> []) then
-          Error(SErrNoAggregateAllowed);
-        Result:=ParseExprAggregate(APArent,EO);
+          If not ([eoSelectValue,eoHaving]*EO <> []) then
+            Error(SErrNoAggregateAllowed);
+          Result:=ParseExprAggregate(AParent,EO);
+          // 7bit
+          if CurrentToken = tsqlOVER then
+          begin
+            Fn := Result;
+            Result := nil;
+            Result := ParseWindowFuncExpression(AParent, Fn, EO);
+          end;
+          //
         end;
       tsqlUpper :
         begin
@@ -2848,7 +3649,7 @@ begin
           Result:=TSQLFunctionCallExpression(CreateElement(TSQLFunctionCallExpression,AParent));
           TSQLFunctionCallExpression(Result).IDentifier:='UPPER';
           TSQLFunctionCallExpression(Result).Arguments:=L;
-        end;
+        end;}
       tsqlGenID :
         begin
         GetNextToken;
@@ -2914,18 +3715,65 @@ begin
           end
         else
           begin
-          L:=ParseValueList(AParent,EO);
-          GetNextToken; // Consume );
-          // Function call
-          Result:=TSQLFunctionCallExpression(CreateElement(TSQLFunctionCallExpression,AParent));
-          TSQLFunctionCallExpression(Result).IDentifier:=N;
-          TSQLFunctionCallExpression(Result).Arguments:=L;
+            // 7bit
+            N := UpperCase(N);
+            if IsAggregateFunction(N) then
+            begin
+              If not ([eoSelectValue,eoHaving]*EO <> []) then
+                Error(SErrNoAggregateAllowed);
+              Result:=ParseExprAggregate(AParent,EO,N);
+            end
+            else if N = 'TRIM' then
+              Result := ParseTrimFunction(AParent, EO)
+            else if N = 'SUBSTRING' then
+              Result := ParseSubStringFunction(AParent, EO + [eoSubString])
+            else if N = 'OVERLAY' then
+              Result := ParseOverlayFunction(AParent, EO)
+            else if N = 'DATEADD' then
+              Result := ParseDateAddFunction(AParent, EO)
+            else if N = 'DATEDIFF' then
+              Result := ParseDateDiffFunction(AParent, EO)
+            else if N = 'FIRST_DAY' then
+              Result := ParseFirstDayFunction(AParent, EO)
+            else if N = 'LAST_DAY' then
+              Result := ParseLastDayFunction(AParent, EO)
+            else if N = 'CRYPT_HASH' then
+              Result := ParseCryptHashFunction(AParent, EO)
+            else if N = 'DECRYPT' then
+              Result := ParseCryptFunction(AParent, EO, False)
+            else if N = 'ENCRYPT' then
+              Result := ParseCryptFunction(AParent, EO, True)
+            else if N = 'RSA_DECRYPT' then
+              Result := ParseRSACryptFunction(AParent, EO, False)
+            else if N = 'RSA_ENCRYPT' then
+              Result := ParseRSACryptFunction(AParent, EO, True)
+            else if N = 'RSA_SIGN_HASH' then
+              Result := ParseRSASignHashFunction(AParent, EO, True)
+            else if N = 'RSA_VERIFY_HASH' then
+              Result := ParseRSAVerifyHashFunction(AParent, EO, True)
+            else
+            begin
+              L:=ParseValueList(AParent,EO);
+              GetNextToken; // Consume );
+              // Function call
+              Result:=TSQLFunctionCallExpression(CreateElement(TSQLFunctionCallExpression,AParent));
+              TSQLFunctionCallExpression(Result).IDentifier:=N;
+              TSQLFunctionCallExpression(Result).Arguments:=L;
+            end;
+            // 7bit window functions
+            if CurrentToken = tsqlOVER then
+            begin
+              Fn := Result;
+              Result := nil;
+              Result := ParseWindowFuncExpression(AParent, Fn, EO);
+            end;
+            //
           end;
         end;
       tsqlCase:
         Result := ParseCaseWhenExpression(AParent, EO);
       // 7bit
-      tsqlLeft, tsqlRight, tsqlPosition:
+      tsqlLeft, tsqlRight:
         begin
           N := CurrentTokenString;
           GetNextToken;
@@ -2940,12 +3788,10 @@ begin
           TSQLFunctionCallExpression(Result).IDentifier:=N;
           TSQLFunctionCallExpression(Result).Arguments:=L;
         end;
-      tsqlList:
-        Result := ParseListFuncExpression(AParent, EO);
-      tsqlSubstring:
-        Result := ParseSubStringExpression(AParent, EO);
-      //tsqlPosition:
-      //  Result := ParsePositionExpression(AParent, EO);
+      tsqlPosition:
+        Result := ParsePositionFunction(AParent, EO + [eoPosition]);
+      tsqlHash:
+        Result := ParseHashFunction(AParent, EO);
       //
       else
         UnexpectedToken;

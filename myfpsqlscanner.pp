@@ -49,9 +49,9 @@ type
    tsqlEQ,tsqlGE,tsqlLE,tsqlNE,
    { Reserved words/keywords start here. They must be last }
    { Note: if adding before tsqlALL or after tsqlWHEN please update FirstKeyword/LastKeyword }
-   tsqlALL, tsqlAND, tsqlANY, tsqlASC, tsqlASCENDING, tsqlAVG, tsqlALTER, tsqlAdd, tsqlActive, tsqlAction, tsqlAs,tsqlAt, tsqlAuto, tsqlAfter,tsqlAdmin,
+   tsqlALL, tsqlAND, tsqlANY, tsqlASC, tsqlASCENDING, tsqlALTER, tsqlAdd, tsqlActive, tsqlAction, tsqlAs,tsqlAt, tsqlAuto, tsqlAfter,tsqlAdmin,
    tsqlBETWEEN, tsqlBinary, tsqlBY, tsqlBLOB, tsqlBegin, tsqlBefore,
-   tsqlCOLLATE, tsqlCONTAINING, tsqlCOUNT, tsqlCREATE, tsqlCOLUMN, tsqlCONSTRAINT, tsqlChar,tsqlCHARACTER, tsqlCHECK, tsqlComputed,tsqlCASCADE, tsqlCast, tsqlCommit,tsqlConnect,tsqlCache,tsqlConditional,tsqlCString,
+   tsqlCOLLATE, tsqlCONTAINING, tsqlCREATE, tsqlCOLUMN, tsqlCONSTRAINT, tsqlChar,tsqlCHARACTER, tsqlCHECK, tsqlComputed,tsqlCASCADE, tsqlCast, tsqlCommit,tsqlConnect,tsqlCache,tsqlConditional,tsqlCString,
    tsqlDESC, tsqlDESCENDING, tsqlDISTINCT, tsqlDEFAULT, tsqlDELETE, tsqlDO, tsqlDouble, tsqlDECLARE, tsqlDROP, tsqlDomain, tsqlDecimal, tsqlDate,tsqlDatabase,
    tsqlESCAPE, tsqlEXISTS, tsqlELSE, tsqlException,   tsqlExternal, tsqlExecute, tsqlEnd,tsqlExit,tsqlEntrypoint,tsqlExtract,
    tsqlFROM, tsqlFULL, tsqlFOREIGN, tsqlFOR, tsqlFUNCTION, tsqlFLOAT, tsqlFile,tsqlFreeIt,
@@ -61,16 +61,20 @@ type
    tsqlJOIN,
    tsqlKEY,
    tsqlLEFT, tsqlLIKE, tsqlLength,
-   tsqlMAX, tsqlMIN, tsqlMERGE, tsqlManual, tsqlModuleName,
+   tsqlMERGE, tsqlManual, tsqlModuleName,
    tsqlNOT, tsqlNULL, tsqlNUMERIC , tsqlNChar, tsqlNATIONAL,tsqlNO, tsqlNatural,
    tsqlOFF {not an FB reserved word; used in isql scripts}, tsqlON, tsqlOR, tsqlORDER, tsqlOUTER, tsqlOption,
    tsqlPrecision, tsqlPRIMARY,  tsqlProcedure, tsqlPosition, tsqlPlan, tsqlPassword, tsqlPage,tsqlPages,tsqlPageSize,tsqlPostEvent,tsqlPrivileges,tsqlPublic,
    tsqlRIGHT, tsqlROLE, tsqlReferences, tsqlRollBack, tsqlRelease,  tsqlretain,  tsqlReturningValues,tsqlReturns, tsqlrevoke,
-   tsqlSELECT, tsqlSET, tsqlSINGULAR, tsqlSOME, tsqlSTARTING, tsqlSUM, tsqlSKIP,tsqlSUBTYPE,tsqlSize,tsqlSegment, tsqlSORT, tsqlSnapShot,tsqlSchema,tsqlShadow,tsqlSuspend,tsqlSQLCode,tsqlSmallint,
+   tsqlSELECT, tsqlSET, tsqlSINGULAR, tsqlSOME, tsqlSTARTING, tsqlSKIP,tsqlSUBTYPE,tsqlSize,tsqlSegment, tsqlSORT, tsqlSnapShot,tsqlSchema,tsqlShadow,tsqlSuspend,tsqlSQLCode,tsqlSmallint,
    tSQLTABLE, tsqlText, tsqlTrigger, tsqlTime, tsqlTimeStamp, tsqlType, tsqlTo, tsqlTransaction, tsqlThen,
-   tsqlUNION, tsqlUPDATE, tsqlUPPER,  tsqlUNIQUE, tsqlUSER,
+   tsqlUNION, tsqlUPDATE, tsqlUNIQUE, tsqlUSER,
    tsqlValue, tsqlVALUES, tsqlVARIABLE,  tsqlVIEW, tsqlVARCHAR,TSQLVARYING,
-   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlRecursive, tsqlWhen, tsqlCase, tsqlList, tsqlSubString, tsqlFIRST
+   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlRecursive, tsqlWhen, tsqlCase, tsqlOVER, tsqlPartition, tsqlNulls, tsqlLAST, tsqlRows, tsqlRange,
+   tsqlUnbounded, tsqlPreceding, tsqlFollowing, tsqlCurrent, tsqlRow,
+   tsqlSimilar, tsqlBoth,tsqlLeading,tsqlTrailing,tsqlFilter,tsqlWindow,
+   tsqlUsing, tsqlCrc32, tsqlPlacing, tsqlOF, tsqlMode, tsqlIV, tsqlCtrLength,
+   tsqlCounter, tsqlLParam, tsqlHash, tsqlSaltLength, tsqlSignature, tsqlFIRST
  );
    TSQLTokens = set of TSQLToken;
 
@@ -78,8 +82,9 @@ const
   FirstKeyword = tsqlAll;
   LastKeyWord = tsqlFIRST;
   sqlComparisons = [tsqleq,tsqlGE,tsqlLE,tsqlNE,tsqlGT,tsqlLT,tsqlIn,tsqlIS,
-                    tsqlbetween,tsqlLike,tsqlContaining,tsqlStarting,tsqlNOT];
-  sqlInvertableComparisons = [tsqlLike,tsqlContaining,tsqlStarting,tsqlIN,tsqlIS, tsqlBetween];
+                    tsqlbetween,tsqlLike,tsqlContaining,tsqlStarting,tsqlNOT,
+                    tsqlSimilar,tsqlDISTINCT];
+  sqlInvertableComparisons = [tsqlLike,tsqlContaining,tsqlStarting,tsqlIN,tsqlIS, tsqlBetween, tsqlSimilar, tsqlDISTINCT];
 
   // Strings that represent tokens in TSQLToken
   TokenInfos: array[TSQLToken] of string = ('unknown',
@@ -94,9 +99,9 @@ const
        '+','-','*','/','||',
        '=','>=','<=','<>',
        // Identifiers last:
-       'ALL', 'AND', 'ANY', 'ASC', 'ASCENDING', 'AVG', 'ALTER', 'ADD','ACTIVE','ACTION', 'AS', 'AT', 'AUTO', 'AFTER', 'ADMIN',
+       'ALL', 'AND', 'ANY', 'ASC', 'ASCENDING', 'ALTER', 'ADD','ACTIVE','ACTION', 'AS', 'AT', 'AUTO', 'AFTER', 'ADMIN',
        'BETWEEN', 'BINARY', 'BY', 'BLOB','BEGIN', 'BEFORE',
-       'COLLATE', 'CONTAINING', 'COUNT', 'CREATE', 'COLUMN', 'CONSTRAINT', 'CHAR','CHARACTER','CHECK', 'COMPUTED','CASCADE','CAST', 'COMMIT', 'CONNECT', 'CACHE','CONDITIONAL', 'CSTRING',
+       'COLLATE', 'CONTAINING', 'CREATE', 'COLUMN', 'CONSTRAINT', 'CHAR','CHARACTER','CHECK', 'COMPUTED','CASCADE','CAST', 'COMMIT', 'CONNECT', 'CACHE','CONDITIONAL', 'CSTRING',
        'DESC', 'DESCENDING', 'DISTINCT',  'DEFAULT', 'DELETE', 'DO', 'DOUBLE', 'DECLARE', 'DROP', 'DOMAIN', 'DECIMAL', 'DATE','DATABASE',
        'ESCAPE', 'EXISTS', 'ELSE', 'EXCEPTION', 'EXTERNAL','EXECUTE', 'END','EXIT','ENTRY_POINT','EXTRACT',
        'FROM', 'FULL','FOREIGN', 'FOR', 'FUNCTION', 'FLOAT','FILE', 'FREE_IT',
@@ -106,16 +111,20 @@ const
        'JOIN',
        'KEY',
        'LEFT', 'LIKE', 'LENGTH',
-       'MAX', 'MIN', 'MERGE', 'MANUAL', 'MODULE_NAME',
+       'MERGE', 'MANUAL', 'MODULE_NAME',
        'NOT', 'NULL', 'NUMERIC','NCHAR','NATIONAL', 'NO', 'NATURAL',
        'OFF', 'ON', 'OR', 'ORDER', 'OUTER', 'OPTION',
        'PRECISION', 'PRIMARY', 'PROCEDURE','POSITION','PLAN', 'PASSWORD','PAGE','PAGES','PAGE_SIZE','POST_EVENT','PRIVILEGES','PUBLIC',
        'RIGHT', 'ROLE', 'REFERENCES', 'ROLLBACK','RELEASE', 'RETAIN', 'RETURNING_VALUES', 'RETURNS','REVOKE',
-       'SELECT', 'SET', 'SINGULAR', 'SOME', 'STARTING', 'SUM', 'SKIP','SUB_TYPE', 'SIZE', 'SEGMENT', 'SORT', 'SNAPSHOT','SCHEMA','SHADOW','SUSPEND','SQLCODE','SMALLINT',
+       'SELECT', 'SET', 'SINGULAR', 'SOME', 'STARTING', 'SKIP','SUB_TYPE', 'SIZE', 'SEGMENT', 'SORT', 'SNAPSHOT','SCHEMA','SHADOW','SUSPEND','SQLCODE','SMALLINT',
        'TABLE', 'TEXT', 'TRIGGER', 'TIME', 'TIMESTAMP', 'TYPE', 'TO', 'TRANSACTION', 'THEN',
-       'UNION', 'UPDATE', 'UPPER', 'UNIQUE', 'USER',
+       'UNION', 'UPDATE', 'UNIQUE', 'USER',
        'VALUE','VALUES','VARIABLE', 'VIEW','VARCHAR','VARYING',
-       'WHERE', 'WITH', 'WHILE','WORK','RECURSIVE','WHEN','CASE','LIST','SUBSTRING','FIRST'
+       'WHERE', 'WITH', 'WHILE','WORK','RECURSIVE','WHEN','CASE','OVER','PARTITION','NULLS','LAST','ROWS','RANGE',
+       'UNBOUNDED','PRECEDING','FOLLOWING','CURRENT','ROW',
+       'SIMILAR', 'BOTH','LEADING','TRAILING','FILTER','WINDOW',
+       'USING', 'CRC32', 'PLACING', 'OF', 'MODE', 'IV', 'CTR_LENGTH',
+       'COUNTER', 'LPARAM', 'HASH', 'SALT_LENGTH', 'SIGNATURE', 'FIRST'
   );
 
 Type

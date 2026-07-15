@@ -11,7 +11,8 @@ modify.txt
 dataexpress
 dxupdate
 dataexpress.cfg
-DEMO_DB.FDB
+*.FDB
+*.DXDB
 lib
 backup
 tools
