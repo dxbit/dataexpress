@@ -92,6 +92,7 @@ begin
   R.Offset(FOffset, FOffset);
   X := FControl.HorzScrollBar.Position + X;
   Y := FControl.VertScrollBar.Position + Y;
+
   if (X >= R.Right) and (X <= R.Right + 8) and (Y >= R.Top) and
     (Y <= R.Bottom) then
   begin
@@ -112,6 +113,7 @@ begin
     begin
       FControl.Cursor := crSizeWE;
       R.Right := X - 1;
+      if R.Width < ScaleToScreen(20) then R.Width := ScaleToScreen(20);
       FForm.Width := R.Width;
       {$ifdef linux}
       FControl.DesignFm.Width := R.Width;
@@ -121,6 +123,7 @@ begin
     begin
       FControl.Cursor := crSizeNS;
       R.Bottom := Y - 1;
+      if R.Height < ScaleToScreen(20) then R.Height := ScaleToScreen(20);
       FForm.Height := R.Height;
       {$ifdef linux}
       FControl.DesignFm.Height := R.Height;
