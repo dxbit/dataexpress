@@ -89,6 +89,16 @@ type
     property Numeric: Boolean read FNumeric write FNumeric;
   end;
 
+  { TTextEdit }
+
+  TTextEdit = class(TStringCellEditor)
+  private
+    procedure MenuHandler(Sender: TObject);
+    procedure MenuPopup(Sender: TObject);
+  public
+    constructor Create(Aowner: TComponent); override;
+  end;
+
   { TFilterRange }
 
   TFilterRange = class(TCustomControl)
@@ -227,6 +237,7 @@ type
     FButtons: TToolBar;
     FEncodePeriod: Boolean;
     FFieldsEdit: TFilterComboBox;
+    FTextEdit: TTextEdit;
     FNumEdit: TFilterRange;
     FDateEdit: TFilterPeriod;
     FBoolEdit: TFilterComboBox;
@@ -243,6 +254,7 @@ type
     procedure FillListEdit;
     procedure MenuClick(Sender: TObject);
     procedure EditorEditingDone(Sender: TObject);
+    function InitTextEdit: TWinControl;
     function InitNumEdit: TWinControl;
     function InitDateEdit: TWinControl;
     function InitTimeEdit: TWinControl;
@@ -772,6 +784,11 @@ begin
     Cells[Col, Row] := FTimeEdit.Value;
 end;
 
+function TFilterControl.InitTextEdit: TWinControl;
+begin
+  Result := FTextEdit;
+end;
+
 function TFilterControl.InitNumEdit: TWinControl;
 begin
   FNumEdit.Value := Cells[Col, Row];
@@ -899,7 +916,8 @@ begin
       flText, flFile, flImage:
         begin
           Cmp := TComponent(LookupField(Obj, S));
-          if Cmp is TdxComboBox then Editor := InitListEdit;
+          if Cmp is TdxComboBox then Editor := InitListEdit
+          else Editor := InitTextEdit;
         end;
     end;
   end;
@@ -1062,6 +1080,8 @@ begin
   FFieldsEdit.Style := csDropDownList;
   {$endif}
   FFieldsEdit.OnEditingDone:=@FieldsEditingDone;
+  FTextEdit := TTextEdit.Create(Self);
+  FTextEdit.OnChange:=@EditorChange;
   FNumEdit := TFilterRange.Create(Self);
   FNumEdit.OnEditingDone:=@EditorEditingDone;
   FNumEdit.OnChange:=@EditorChange;
@@ -1755,6 +1775,34 @@ end;
 procedure TFilterEdit.Undo;
 begin
   Text := FOldText;
+end;
+
+{ TTextEdit }
+
+procedure TTextEdit.MenuHandler(Sender: TObject);
+begin
+  case TMenuItem(Sender).Tag of
+    0: CutToClipboard;
+    1: CopyToClipboard;
+    2: PasteFromClipboard;
+  end;
+end;
+
+procedure TTextEdit.MenuPopup(Sender: TObject);
+begin
+  PopupMenu.Items[0].Enabled := SelText <> '';
+  PopupMenu.Items[1].Enabled := SelText <> '';
+end;
+
+constructor TTextEdit.Create(Aowner: TComponent);
+begin
+  inherited Create(Aowner);
+  PopupMenu := TPopupMenu.Create(Self);
+  PopupMenu.Images := Images16;
+  PopupMenu.Items.Add( CreateMenuItem(PopupMenu, rsCut, 0, ShortCut(VK_X, [ssCtrl]), @MenuHandler, IMG16_CUT) );
+  PopupMenu.Items.Add( CreateMenuItem(PopupMenu, rsCopy, 1, ShortCut(VK_C, [ssCtrl]), @MenuHandler, IMG16_COPY) );
+  PopupMenu.Items.Add( CreateMenuItem(PopupMenu, rsPaste, 2, ShortCut(VK_V, [ssCtrl]), @MenuHandler, IMG16_PASTE) );
+  PopupMenu.OnPopup:=@MenuPopup;
 end;
 
 { TFilterRange }
