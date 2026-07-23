@@ -65,6 +65,7 @@ type
     destructor Destroy; override;
     procedure Undo; override;
     function Validate: Boolean;
+    property BaseEditor;
     property Button;
   end;
 

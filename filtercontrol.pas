@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Grids, strconsts, StdCtrls, dxctrls, myclasses,
   Controls, DXReports, Menus, Graphics, ComCtrls, timeedit, Dialogs,
-  LclType, EditBtn, Db, SqlDb, MemDS, MyCtrls;
+  LclType, EditBtn, Db, SqlDb, MemDS, MyCtrls, LMessages, WSGrids;
 
 type
 
@@ -86,6 +86,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function Validate: Boolean;
     procedure Undo; override;
+    function ValidChar(Ch: Char): Boolean;
     property Numeric: Boolean read FNumeric write FNumeric;
   end;
 
@@ -117,6 +118,7 @@ type
     procedure SetValue(AValue: String);
   protected
     procedure DoOnResize; override;
+    procedure WndProc(var Message: TLMessage); override;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetPos(var Msg: TGridMessage); message GM_SETPOS;
     procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
@@ -148,6 +150,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function Validate: Boolean;
     procedure Undo; override;
+    property BaseEditor;
   end;
 
   TPeriodType = (ptNone, ptToday, ptThisWeek, ptThisMonth, ptThisYear);
@@ -176,6 +179,7 @@ type
     procedure SetValue(AValue: String);
   protected
     procedure DoOnResize; override;
+    procedure WndProc(var Message: TLMessage); override;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetPos(var Msg: TGridMessage); message GM_SETPOS;
     procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
@@ -213,6 +217,7 @@ type
     procedure SetValue(AValue: String);
   protected
     procedure DoOnResize; override;
+    procedure WndProc(var Message: TLMessage); override;
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetPos(var Msg: TGridMessage); message GM_SETPOS;
     procedure msg_GetGrid(var Msg: TGridMessage); message GM_GETGRID;
@@ -1316,6 +1321,20 @@ begin
   Height := FBeginT.Height;
 end;
 
+procedure TTimeIntervalEdit.WndProc(var Message: TLMessage);
+var
+  Ch: String;
+begin
+  with Message do
+    if msg=LM_CHAR then
+    begin
+      Ch := UnicodeToUtf8(WParam);
+      TWSCustomGridClass(FGrid.WidgetSetClass).SendCharToEditor(FBeginT.BaseEditor, Ch);
+      Exit;
+    end;
+  inherited WndProc(Message);
+end;
+
 procedure TTimeIntervalEdit.msg_SetGrid(var Msg: TGridMessage);
 begin
   FGrid:=Msg.Grid;
@@ -1628,6 +1647,20 @@ begin
   Height := FBegin.Height;
 end;
 
+procedure TFilterPeriod.WndProc(var Message: TLMessage);
+var
+  Ch: String;
+begin
+  with Message do
+    if msg=LM_CHAR then
+    begin
+      Ch := UnicodeToUtf8(WParam);
+      TWSCustomGridClass(FGrid.WidgetSetClass).SendCharToEditor(FBegin.BaseEditor, Ch);
+      Exit;
+    end;
+  inherited WndProc(Message);
+end;
+
 procedure TFilterPeriod.msg_SetGrid(var Msg: TGridMessage);
 begin
   FGrid:=Msg.Grid;
@@ -1741,8 +1774,7 @@ procedure TFilterEdit.KeyPress(var Key: char);
 begin
   if FNumeric then
   begin
-    if (Key < #32) or (Key in ['0'..'9', ',', '-', '+']) then
-    else Key := #0;
+    if not ValidChar(Key) then Key := #0;
   end;
 
   inherited KeyPress(Key);
@@ -1775,6 +1807,11 @@ end;
 procedure TFilterEdit.Undo;
 begin
   Text := FOldText;
+end;
+
+function TFilterEdit.ValidChar(Ch: Char): Boolean;
+begin
+  Result := Ch in [#8, #9, '0'..'9', DefaultFormatSettings.DecimalSeparator, '-', '+']
 end;
 
 { TTextEdit }
@@ -1922,6 +1959,20 @@ begin
   FEnd.Left := ClientWidth div 2 + 2;
   FEnd.Width := FBegin.Width;
   Height := FBegin.Height;
+end;
+
+procedure TFilterRange.WndProc(var Message: TLMessage);
+var
+  Ch: String;
+begin
+  with Message do
+    if msg=LM_CHAR then
+    begin
+      Ch := UnicodeToUtf8(WParam);
+      TWSCustomGridClass(FGrid.WidgetSetClass).SendCharToEditor(FBegin, Ch);
+      Exit;
+    end;
+  inherited WndProc(Message);
 end;
 
 procedure TFilterRange.msg_SetGrid(var Msg: TGridMessage);
