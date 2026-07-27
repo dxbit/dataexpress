@@ -512,14 +512,51 @@ begin
 end;
 
 procedure TMainFr.FillDataMenu;
+
+  procedure _CreateMenuItem(const GroupPath: String; Fm: TdxForm);
+  var
+    SL: TStringList;
+    MI, SubMI: TMenuItem;
+    i: Integer;
+  begin
+    SL := TStringList.Create;
+    SplitStr(GroupPath, '\', SL);
+    MI := MainFm.DataMnu;
+    for i := 0 to SL.Count - 1 do
+    begin
+      SubMI := MI.Find(SL[i]);
+      if SubMI = nil then
+      begin
+        SubMI := TMenuItem.Create(MainFm.MainMenu1);
+        SubMI.Caption := SL[i];
+        MI.Add(SubMI);
+      end;
+      MI := SubMI;
+    end;
+    SL.Free;
+
+    SubMI := TMenuItem.Create(MainFm.MainMenu1);
+    SubMI.Caption := Fm.GetRecordsCaption;
+    SubMI.Tag := Fm.Id;
+    SubMI.OnClick:=@DataMenuClick;
+    MI.Add(SubMI);
+  end;
+
 var
-  DMnu: TMenuItem;
+  {DMnu: TMenuItem;
   SL: TStringList;
   MI: TMenuItem;
-  Fm: TdxForm;
-  i: Integer;
+  Fm: TdxForm; }
+  i, j: Integer;
+  Gr: TFormGroup;
 begin
-  DMnu := MainFm.DataMnu;
+  for i := 0 to DXMain.Groups.Count - 1 do
+  begin
+    Gr := DXMain.Groups[i];
+    for j := 0 to Gr.IdList.Count - 1 do
+      _CreateMenuItem(Gr.Name, FormMan.FindForm(Gr.IdList[j]));
+  end
+  {DMnu := MainFm.DataMnu;
   SL := TStringList.Create;
   FormMan.FormsToList(SL);
   for i := 0 to SL.Count - 1 do
@@ -534,7 +571,7 @@ begin
     MI.OnClick:=@DataMenuClick;
     DMnu.Add(MI);
   end;
-  SL.Free;
+  SL.Free;       }
 end;
 
 procedure TMainFr.FillReportMenu;
