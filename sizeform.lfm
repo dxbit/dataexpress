@@ -1,0 +1,135 @@
+object SizeFm: TSizeFm
+  Left = 362
+  Height = 279
+  Top = 277
+  Width = 316
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Задать размер'
+  ClientHeight = 279
+  ClientWidth = 316
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
+  OnCreate = FormCreate
+  object Label1: TLabel
+    AnchorSideTop.Control = WidthEdt
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = PointLbl
+    Left = 72
+    Height = 15
+    Top = 98
+    Width = 45
+    Anchors = [akTop, akRight]
+    Caption = 'Ширина'
+  end
+  object WidthEdt: TSpinEdit
+    AnchorSideLeft.Control = PointLbl
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = TopEdt
+    AnchorSideTop.Side = asrBottom
+    Left = 138
+    Height = 23
+    Top = 94
+    Width = 91
+    BorderSpacing.Top = 16
+    MaxValue = 10000
+    MinValue = 1
+    TabOrder = 2
+    Value = 1
+  end
+  object Label2: TLabel
+    AnchorSideTop.Control = HeightEdt
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = PointLbl
+    Left = 77
+    Height = 15
+    Top = 137
+    Width = 40
+    Anchors = [akTop, akRight]
+    Caption = 'Высота'
+  end
+  object HeightEdt: TSpinEdit
+    AnchorSideLeft.Control = PointLbl
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = WidthEdt
+    AnchorSideTop.Side = asrBottom
+    Left = 138
+    Height = 23
+    Top = 133
+    Width = 91
+    BorderSpacing.Top = 16
+    MaxValue = 10000
+    MinValue = 1
+    TabOrder = 3
+    Value = 1
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 239
+    Width = 304
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 4
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object PointLbl: TLabel
+    AnchorSideLeft.Side = asrCenter
+    Left = 117
+    Height = 15
+    Top = 184
+    Width = 21
+    Caption = '       '
+  end
+  object Label3: TLabel
+    AnchorSideTop.Control = LeftEdt
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = PointLbl
+    Left = 110
+    Height = 15
+    Top = 20
+    Width = 7
+    Anchors = [akTop, akRight]
+    Caption = 'X'
+  end
+  object LeftEdt: TSpinEdit
+    AnchorSideLeft.Control = PointLbl
+    AnchorSideLeft.Side = asrBottom
+    Left = 138
+    Height = 23
+    Top = 16
+    Width = 91
+    TabOrder = 0
+    Value = 1
+  end
+  object Label4: TLabel
+    AnchorSideTop.Control = TopEdt
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = PointLbl
+    Left = 110
+    Height = 15
+    Top = 59
+    Width = 7
+    Anchors = [akTop, akRight]
+    Caption = 'Y'
+  end
+  object TopEdt: TSpinEdit
+    AnchorSideLeft.Control = PointLbl
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = LeftEdt
+    AnchorSideTop.Side = asrBottom
+    Left = 138
+    Height = 23
+    Top = 55
+    Width = 91
+    BorderSpacing.Top = 16
+    TabOrder = 1
+    Value = 1
+  end
+end

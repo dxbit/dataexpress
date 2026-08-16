@@ -453,6 +453,11 @@ msgstr "Добавить источник"
 msgid "Application folder"
 msgstr "Папка приложения"
 
+#: strconsts.rsapplicationnotfound
+#, object-pascal-format
+msgid "Application %s not found. Check File -> Settings -> Templates -> Open template with."
+msgstr "Приложение %s не найдено. Проверьте Файл -> Настройки -> Шаблоны -> Открыть шаблон в."
+
 #: strconsts.rsapplicationsfilter
 msgid "Applications (*.exe)|*.exe|Batch files (*.bat, *.cmd)|*.bat;*.cmd|All files (*.*)|*.*"
 msgstr "Приложения (*.exe)|*.exe|Пакетные файлы (*.bat, *.cmd)|*.bat;*.cmd|Все файлы (*.*)|*.*"
@@ -2224,6 +2229,10 @@ msgstr "Введите минимальное и максимальное зна
 msgid "Enter name"
 msgstr "Введите имя"
 
+#: strconsts.rsenternamefilterpreset
+msgid "Enter name of filter preset."
+msgstr "Введите название предустановки фильтра."
+
 #: strconsts.rsenterprecisionnum
 msgid "Enter precision of number"
 msgstr "Введите точность числа"
@@ -2836,6 +2845,11 @@ msgstr "Фильтр по итогам"
 #: strconsts.rsfiltername
 msgid "Filter name"
 msgstr "Название фильтра"
+
+#: strconsts.rsfilterpresetexists
+#, object-pascal-format
+msgid "Filter preset already exists: %s."
+msgstr "Предустановка фильтра уже существует: %s."
 
 #: strconsts.rsfilterpresets
 msgid "Filter presets"
@@ -4981,6 +4995,10 @@ msgstr "Всплывающая подсказка"
 #: strconsts.rsposition
 msgid "Position"
 msgstr "Положение"
+
+#: strconsts.rspositionsize
+msgid "Position and size"
+msgstr "Позиция и размер"
 
 #: strconsts.rsprecisionmustnotexceed
 msgid "Precision must not exceed 10 digits."

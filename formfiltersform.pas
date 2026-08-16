@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ButtonPanel, Menus, ExtCtrls, Buttons, strconsts, dxctrls;
+  ButtonPanel, Menus, ExtCtrls, Buttons, strconsts, dxctrls, LazUtf8;
 
 type
 
@@ -74,6 +74,8 @@ type
     procedure SaveList;
     procedure EditFilter;
     procedure SetControlState;
+    function CheckName(const AName: String; SkipIndex: Integer): Boolean;
+    function InputName(var AName: String; SkipIndex: Integer): Boolean;
     { private declarations }
   public
     { public declarations }
@@ -105,8 +107,8 @@ procedure TFormFiltersFm.MenuItem1Click(Sender: TObject);
 var
   S: String;
 begin
-  S := InputBox(rsFilterName, rsEnterFilterName, '');
-  if S <> '' then
+  S := '';
+  if InputName(S, - 1) then
   begin
     List.Items.Add(S);
     FFilters.Add('');
@@ -120,8 +122,8 @@ procedure TFormFiltersFm.MenuItem2Click(Sender: TObject);
 var
   S: String;
 begin
-  S := InputBox(rsFilterName, rsEnterFilterName, List.Items[List.ItemIndex]);
-  if S <> '' then
+  S := List.Items[List.ItemIndex];
+  if InputName(S, List.ItemIndex) then
   begin
     List.Items[List.ItemIndex] := S;
     FModified := True;
@@ -181,11 +183,15 @@ var
 begin
   i := List.ItemIndex;
   S := List.Items[i];
-  SS := FFilters[i];
-  List.Items.Add(S);
-  FFilters.Add(SS);
-  List.ItemIndex := List.Count - 1;
-  FModified := True;
+  if InputName(S, -1) then
+  begin
+    SS := FFilters[i];
+    List.Items.Add(S);
+    FFilters.Add(SS);
+    List.ItemIndex := List.Count - 1;
+    EditFilter;
+    FModified := True;
+  end;
 end;
 
 procedure TFormFiltersFm.ListDblClick(Sender: TObject);
@@ -253,7 +259,7 @@ begin
   List.Clear;
   for i := 0 to FFm.Filters.Count - 1 do
   begin
-    List.Items.Add(FFm.Filters.Names[i]);
+    List.Items.Add(UnEscapeEqual(FFm.Filters.Names[i]));
     FFilters.Add(FFm.Filters.ValueFromIndex[i]);
   end;
 end;
@@ -266,7 +272,7 @@ begin
   L := FFm.Filters;
   L.Clear;
   for i := 0 to List.Count - 1 do
-    L.Add(List.Items[i] + '=' + FFilters[i]);
+    L.Add(EscapeEqual(List.Items[i]) + '=' + FFilters[i]);
 end;
 
 procedure TFormFiltersFm.EditFilter;
@@ -307,6 +313,38 @@ begin
   BitBtn5.Enabled := MenuItem7.Enabled;
   BitBtn6.Enabled := MenuItem8.Enabled;
   BitBtn7.Enabled := b;
+end;
+
+function TFormFiltersFm.CheckName(const AName: String; SkipIndex: Integer
+  ): Boolean;
+var
+  i: Integer;
+begin
+  if Trim(AName) = '' then
+  begin
+    ErrMsg(rsEnterNameFilterPreset);
+    Exit(False);
+  end;
+  for i := 0 to List.Count - 1 do
+  begin
+    if i = SkipIndex then Continue;
+    if Utf8CompareText(AName, List.Items[i]) = 0 then
+    begin
+      ErrMsgFmt(rsFilterPresetExists, [AName]);
+      Exit(False);
+    end;
+  end;
+  Result := True;
+end;
+
+function TFormFiltersFm.InputName(var AName: String; SkipIndex: Integer
+  ): Boolean;
+begin
+  repeat
+    if not InputQuery(rsFilterName, rsEnterFilterName, AName) then Exit(False);
+    if CheckName(AName, SkipIndex) then Break;
+  until False;
+  Result := True;
 end;
 
 procedure TFormFiltersFm.ShowForm(Fm: TdxForm);

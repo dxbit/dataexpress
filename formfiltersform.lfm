@@ -7,10 +7,10 @@ object FormFiltersFm: TFormFiltersFm
   Caption = 'FormFiltersFm'
   ClientHeight = 334
   ClientWidth = 380
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object List: TListBox
     Left = 8
     Height = 280
@@ -58,8 +58,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 8
       Width = 112
       Caption = 'Добвить'
-      OnClick = ButtonClick
       TabOrder = 0
+      OnClick = ButtonClick
     end
     object BitBtn2: TBitBtn
       Tag = 1
@@ -68,8 +68,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 94
       Width = 112
       Caption = 'Переименовать'
-      OnClick = ButtonClick
       TabOrder = 1
+      OnClick = ButtonClick
     end
     object BitBtn3: TBitBtn
       Tag = 2
@@ -78,8 +78,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 62
       Width = 112
       Caption = 'Удалить'
-      OnClick = ButtonClick
       TabOrder = 2
+      OnClick = ButtonClick
     end
     object BitBtn4: TBitBtn
       Tag = 3
@@ -88,8 +88,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 35
       Width = 112
       Caption = 'Изменить'
-      OnClick = ButtonClick
       TabOrder = 3
+      OnClick = ButtonClick
     end
     object Label1: TLabel
       Left = 8
@@ -110,8 +110,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 153
       Width = 112
       Caption = 'Вверх'
-      OnClick = ButtonClick
       TabOrder = 5
+      OnClick = ButtonClick
     end
     object BitBtn6: TBitBtn
       Tag = 5
@@ -120,8 +120,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 180
       Width = 112
       Caption = 'Вниз'
-      OnClick = ButtonClick
       TabOrder = 6
+      OnClick = ButtonClick
     end
     object BitBtn7: TBitBtn
       Tag = 6
@@ -130,8 +130,8 @@ object FormFiltersFm: TFormFiltersFm
       Top = 121
       Width = 112
       Caption = 'Копировать'
-      OnClick = ButtonClick
       TabOrder = 4
+      OnClick = ButtonClick
     end
   end
   object PopupMenu1: TPopupMenu

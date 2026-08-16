@@ -37,6 +37,7 @@ type
     LayoutMnu: TMenuItem;
     LayoutManMnu: TMenuItem;
     LayoutCreateMnu: TMenuItem;
+    PosSizeMnu: TMenuItem;
     Separator1: TMenuItem;
     ToolbarImages: TImageList;
     MenuImages: TImageList;
@@ -136,6 +137,7 @@ type
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem27Click(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
+    procedure PosSizeMnuClick(Sender: TObject);
     procedure MenuItem30Click(Sender: TObject);
     procedure MenuItem37Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
@@ -228,7 +230,7 @@ uses
   mytypes, LConvEncoding, actionseditform, dxmains, dbctrlsex, dxfiles,
   dximages, templatefieldsform, appimagelists, dxreports, findactionsform,
   findexprform, findscriptform, zipper, myzipper, LazFileUtils, LazUtf8,
-  formlayoutform, formlayoutsform;
+  formlayoutform, formlayoutsform, sizeform;
 
 {$R *.lfm}
 
@@ -790,6 +792,21 @@ begin
   end;
 end;
 
+procedure TDesignFr.PosSizeMnuClick(Sender: TObject);
+var
+  mr: Integer;
+begin
+  if FormDesign.Count = 0 then
+    mr := ShowSizeForm(FormDesign.Form)
+  else
+    mr := ShowSizeForm(FormDesign.Selection[0]);
+  if mr = mrOk then
+  begin
+    FormDesign.UpdateDesigner;
+    UpdateStatusBar;
+  end;
+end;
+
 {procedure DeleteAllDetailForms(Fm: TdxForm);
 var
   i: Integer;
@@ -1083,6 +1100,7 @@ begin
   MenuItem33.Enabled:=(FormDesign.Count = 1) and ((C is TdxEdit) or (C is TdxComboBox));
   MenuItem34.Enabled:=(FormDesign.Count = 1) and ((C is TdxMemo) or (C is TdxEdit));
   MenuItem37.Enabled := (FormDesign.Count > 0) and HasAnchors(FormDesign.Control);
+  PosSizeMnu.Enabled := FormDesign.Count <= 1;
 
   n := GetFirstComponentHiddenState;
   HideMnu.Enabled := n >= 0;
@@ -2557,6 +2575,7 @@ begin
   LayoutMnu.Caption := rsFormLayout;
   LayoutCreateMnu.Caption := rsCreate;
   LayoutManMnu.Caption := rsLayoutsManagement;
+  PosSizeMnu.Caption := rsPositionSize;
 
   DateEditMnu := TDateEditMenu.Create(nil);
   //CalcEditMnu := TCalcEditMenu.Create(nil);
@@ -2599,6 +2618,7 @@ begin
     Parent := TabSheet3;
     Align := alClient;
     OnSelectComponent:=@ComponentTreeSelectComponent;
+    PopupMenu := PopupMenu1;
   end;
 
   Panel1.Width := AppConfig.LeftPanelWidth;

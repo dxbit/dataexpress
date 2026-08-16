@@ -428,6 +428,11 @@ msgstr ""
 msgid "Application folder"
 msgstr ""
 
+#: strconsts.rsapplicationnotfound
+#, object-pascal-format
+msgid "Application %s not found. Check File -> Settings -> Templates -> Open template with."
+msgstr ""
+
 #: strconsts.rsapplicationsfilter
 msgid "Applications (*.exe)|*.exe|Batch files (*.bat, *.cmd)|*.bat;*.cmd|All files (*.*)|*.*"
 msgstr ""
@@ -2179,6 +2184,10 @@ msgstr ""
 msgid "Enter name"
 msgstr ""
 
+#: strconsts.rsenternamefilterpreset
+msgid "Enter name of filter preset."
+msgstr ""
+
 #: strconsts.rsenterprecisionnum
 msgid "Enter precision of number"
 msgstr ""
@@ -2779,6 +2788,11 @@ msgstr ""
 
 #: strconsts.rsfiltername
 msgid "Filter name"
+msgstr ""
+
+#: strconsts.rsfilterpresetexists
+#, object-pascal-format
+msgid "Filter preset already exists: %s."
 msgstr ""
 
 #: strconsts.rsfilterpresets
@@ -4906,6 +4920,10 @@ msgstr ""
 
 #: strconsts.rsposition
 msgid "Position"
+msgstr ""
+
+#: strconsts.rspositionsize
+msgid "Position and size"
 msgstr ""
 
 #: strconsts.rsprecisionmustnotexceed

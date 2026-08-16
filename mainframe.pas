@@ -811,7 +811,7 @@ begin
 
   // Здесь в Tag записывается индекс фильтра формы
   for i := 0 to Fm.Filters.Count - 1 do
-    FilterMnu.Items.Add( CreateMenuItem(FilterMnu, Fm.Filters.Names[i], i, 0,
+    FilterMnu.Items.Add( CreateMenuItem(FilterMnu, UnEscapeEqual(Fm.Filters.Names[i]), i, 0,
       @FilterMnuHandler) );
 
   for i := 1 to DSP.DataSetCount - 1 do

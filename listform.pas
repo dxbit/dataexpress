@@ -68,6 +68,7 @@ type
     procedure Done;
     function ShowForm: Integer;
     procedure RefreshLookups(TId: Integer);
+    function CloseQuery: Boolean; override;
     property Key: Variant read FKey write FKey;
     property ValueField: Integer read FValueField write FValueField;
     property Value: Variant read FValue;
@@ -127,9 +128,14 @@ begin
   end
   else if Key = VK_ESCAPE then
   begin
-    if FButtons.CancelButton.Visible then
-	  	ModalResult := mrCancel
-    else ModalResult := mrClose;
+    if FFm.Grid.EditorMode then FFm.Grid.CancelEditing
+    else if FFm.State in [dsInsert, dsEdit] then FFm.Cancel
+    else
+    begin
+      if FButtons.CancelButton.Visible then
+	    	ModalResult := mrCancel
+      else ModalResult := mrClose;
+    end;
   end;
 end;
 
@@ -138,9 +144,14 @@ procedure TListWindow.GridKeyDown2(Sender: TObject; var Key: Word;
 begin
   if Key = VK_ESCAPE then
   begin
-    if FButtons.CancelButton.Visible then
-	  	ModalResult := mrCancel
-    else ModalResult := mrClose;
+    if FFm.Grid.EditorMode then FFm.Grid.CancelEditing
+    else if FFm.State in [dsInsert, dsEdit] then FFm.Cancel
+    else
+    begin
+      if FButtons.CancelButton.Visible then
+	    	ModalResult := mrCancel
+      else ModalResult := mrClose;
+    end;
   end;
 end;
 
@@ -618,6 +629,23 @@ end;
 procedure TListWindow.RefreshLookups(TId: Integer);
 begin
   Vw(FVw).DataSetProc.RefreshLookups(TId);
+end;
+
+function TListWindow.CloseQuery: Boolean;
+begin
+  Result:=inherited CloseQuery;
+  if FFm.State in [dsInsert, dsEdit] then
+  begin
+
+    if ModalResult = mrOk then
+    begin
+      Result := FFm.Validate;
+      if Result then FFm.Post;
+    end
+    else
+      FFm.Cancel;
+
+  end;
 end;
 
 end.

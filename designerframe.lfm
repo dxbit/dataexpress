@@ -538,6 +538,10 @@ object DesignFr: TDesignFr
     object MenuItem26: TMenuItem
       Caption = '-'
     end
+    object PosSizeMnu: TMenuItem
+      Caption = 'Позиция и размер'
+      OnClick = PosSizeMnuClick
+    end
     object MenuItem27: TMenuItem
       Caption = 'Шрифт'
       OnClick = MenuItem27Click

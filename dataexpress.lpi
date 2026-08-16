@@ -224,7 +224,7 @@
         <PackageName Value="LCL"/>
       </Item16>
     </RequiredPackages>
-    <Units Count="208">
+    <Units Count="209">
       <Unit0>
         <Filename Value="DataExpress.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1596,6 +1596,13 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FormLayouts"/>
       </Unit207>
+      <Unit208>
+        <Filename Value="sizeform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SizeFm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SizeForm"/>
+      </Unit208>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

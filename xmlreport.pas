@@ -274,7 +274,12 @@ begin
     App := AppConfig.AppHtmlFile;
   if App <> '' then
   begin
-    ShellExec('open', App, QuoteStr(FileName), '', 1)
+    if FileExists(App) then
+      ShellExec('open', App, QuoteStr(FileName), '', 1)
+    else
+      MessageDlg(rsOpenTemplate, Format(rsApplicationNotFound, [App]),
+        mtError, [mbOk], 0);
+      //ErrMsgFmt(rsUnableToOpenPrintDocument, [App], True, 'Print');
   end
   else
     ShellExec('open', FileName, '', '',1);

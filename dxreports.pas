@@ -2705,12 +2705,12 @@ begin
       RD.Grid.DeleteColumn(Col);
 
       repeat
-        Tot := RD.Totals.FindTotal(Col.FieldNameDS);
+        Tot := RD.Totals.FindTotal(FlNm);
         if Tot <> nil then RD.Totals.RemoveTotal(Tot);
       until Tot = nil;
 
       repeat
-        CD := RD.Coloring.FindColoring(Col.FieldNameDS);
+        CD := RD.Coloring.FindColoring(FlNm);
         if CD <> nil then RD.Coloring.DeleteColoring(CD);
       until CD = nil;
     end;

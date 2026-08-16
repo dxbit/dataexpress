@@ -12,7 +12,7 @@ uses
   UpdateManForm, MsgForm, UpdateOptionsForm, UpdateManager, MyZipper, AppUtils,
   MyLogger, PascalScriptFCL, LCbxListSourceMoreForm, EmbedImagesForm,
   lazcontrols, StructTree, PanelForm, FormLayoutForm, FormLayoutsForm, 
-FormLayouts;
+FormLayouts, SizeForm;
 
 {$R *.res}
 

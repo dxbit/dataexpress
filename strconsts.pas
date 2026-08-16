@@ -1921,6 +1921,10 @@ resourcestring
   rsCantUseGetFunc = 'Cannot use function "Get" when grouping by date.';
   rsNoEdit = 'No edit';
   rsFormatSQLError = 'SQL expression formatting failure';
+  rsFilterPresetExists = 'Filter preset already exists: %s.';
+  rsEnterNameFilterPreset = 'Enter name of filter preset.';
+  rsApplicationNotFound = 'Application %s not found. Check File -> Settings -> Templates -> Open template with.';
+  rsPositionSize = 'Position and size';
 
 implementation
 

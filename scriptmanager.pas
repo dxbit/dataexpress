@@ -2665,7 +2665,8 @@ var
     FS := TFileStream.Create(FileName, fmOpenRead + fmShareDenyNone);
     DecryptStream(FS, SS, DXMain.Key);
     Result.Source := SS.DataString;
-    Result.SourceData.LoadFromFile(FileName + '.cfg');
+    if FileExists(FileName + '.cfg') then
+      Result.SourceData.LoadFromFile(FileName + '.cfg');
     FS.Free;
     SS.Free;
   end;

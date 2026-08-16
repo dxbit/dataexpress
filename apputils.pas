@@ -279,6 +279,8 @@ function ExtractDBName(DBPath: String): String;
 function IsFormFixedHeight(AForm: TdxForm): Boolean;
 procedure SetFormFixedHeight(AForm: TdxForm; Value: Boolean);
 function IsWindowsXP: Boolean;
+function EscapeEqual(const S: String): String;
+function UnEscapeEqual(const S: String): String;
 
 implementation
 
@@ -5038,6 +5040,16 @@ begin
   {$else}
   Result := False;
   {$endif}
+end;
+
+function EscapeEqual(const S: String): String;
+begin
+  Result := StringReplace(S, '=', #1, [rfReplaceAll]);
+end;
+
+function UnEscapeEqual(const S: String): String;
+begin
+  Result := StringReplace(S, #1, '=', [rfReplaceAll]);
 end;
 
 end.
