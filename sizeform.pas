@@ -38,7 +38,7 @@ function ShowSizeForm(C: TControl): Integer; overload;
 implementation
 
 uses
-  apputils, dxctrls, formdesigner;
+  apputils, dxctrls, formdesigner, designerframe;
 
 function ShowSizeForm(C: TControl): Integer;
 begin
@@ -85,7 +85,16 @@ begin
   Result := ShowModal;
   if Result = mrOk then
   begin
-    if not (C is TdxForm) then FormDesign.DoChangingComponents;
+    if C is TdxForm then
+    begin
+      {$ifdef linux}
+      DesignFr.DesignBox.DesignFm.Width := WidthEdt.Value;
+      DesignFr.DesignBox.DesignFm.Height := HeightEdt.Value;
+      {$endif}
+    end
+    else if (C.Left <> LeftEdt.Value) or (C.Top <> TopEdt.Value) or
+    (C.Width <> WidthEdt.Value) or (C.Height <> HeightEdt.Value) then
+      FormDesign.DoChangingComponents;
 
     C.Left := LeftEdt.Value;
     C.Top := TopEdt.Value;

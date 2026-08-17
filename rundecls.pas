@@ -3005,6 +3005,8 @@ begin
   Exec.RegisterFunctionName('RECT', @RegFunctions86_64, Pointer(6), nil);
 
   Exec.RegisterFunctionName('FREEANDNIL', @RegFunctions86_64, Pointer(7), nil);
+
+  Exec.RegisterDelphiFunction(@MyPosEx, 'PosEx', cdRegister);
 end;
 
 end.

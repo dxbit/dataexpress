@@ -384,6 +384,7 @@ Procedures & Functions
 		function PadR(S: String; I: LongInt): String
 		function PadZ(S: String; I: LongInt): String
 		function Pos(SubStr, S: String): LongInt
+		function PosEx(const SubStr, S: String; Offset: LongWord): LongInt
 		function Replicate(C: Char; I: LongInt): string
 		procedure SetLength(S: String; NewLength: Integer);
 		procedure SplitStr(const S: String; Delim: Char; SL: TStrings)
@@ -823,6 +824,8 @@ TSession = class(TObject)
 	property FormCount: Integer [r]
 	property Forms[Index: Integer]: TdxForm [r]
 	property Request: TFPHTTPConnectionRequest [r]
+	property OnAfterHandleRequest: TWebServerRequestHandler [rw]
+	property OnBeforeHandleRequest: TWebServerRequestHandler [rw]
 	property OnCreateForm: TCreateFormEvent [rw]
 	property OnDatabaseClose: TNotifyEvent [rw]
 	property OnDestroyForm: TCreateFormEvent [rw]

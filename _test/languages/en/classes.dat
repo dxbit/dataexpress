@@ -783,6 +783,7 @@ Procedures & Functions
 		function PadR(S: String; I: LongInt): String
 		function PadZ(S: String; I: LongInt): String
 		function Pos(SubStr, S: String): LongInt
+		function PosEx(const SubStr, S: String; Offset: LongWord): LongInt
 		function Replicate(C: Char; I: LongInt): string
 		procedure SetLength(S: String; NewLength: Integer);
 		procedure SplitStr(const S: String; Delim: Char; SL: TStrings)

@@ -137,6 +137,8 @@ function MyFileSetDate(const FileName: String; Age: Int64): LongInt;
 function CommandExecute(const FileName, Params, WorkDir: String; out OutputString: String; out ExitStatus: Integer): Integer;
 function FileExecute(const FileName, Params, WorkDir: String): Integer;
 
+function MyPosEx(const SubStr, S: String; Offset: LongWord): LongInt;
+
 implementation
 
 uses
@@ -1056,6 +1058,11 @@ begin
   finally
     p.free;
   end;
+end;
+
+function MyPosEx(const SubStr, S: String; Offset: LongWord): LongInt;
+begin
+  Result := PosEx(SubStr, S, Offset);
 end;
 
 end.
