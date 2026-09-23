@@ -356,6 +356,8 @@ procedure TCustomListBoxSortedR(Self: TCustomListBox; var T: Boolean); begin T :
 procedure TCustomListBoxSortedW(Self: TCustomListBox; T: Boolean); begin Self.Sorted := T; end;
 procedure TCustomListBoxStyleR(Self: TCustomListBox; var T: TListBoxStyle); begin T := Self.Style; end;
 procedure TCustomListBoxStyleW(Self: TCustomListBox; T: TListBoxStyle); begin Self.Style := T; end;
+{function TCustomListBoxItemAtPos(Self: TCustomListBox; Pos: TPoint; Existing: Boolean): Integer;
+begin Result := Self.ItemAtPos(Pos, Existing) end;}
 
 procedure RIRegisterTCUSTOMLISTBOX(Cl: TPSRuntimeClassImporter);
 begin

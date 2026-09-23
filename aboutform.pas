@@ -32,6 +32,7 @@ type
   TAboutFm = class(TForm)
     AppVersion: TLabel;
     Label2: TLabel;
+    BitsLbl: TLabel;
     MailImg: TImage;
     MailLbl: TLabel;
     Panel1: TPanel;
@@ -96,6 +97,11 @@ begin
   SetupPicture(LogoImg.Picture, 'logo64');
   SetupPicture(MailImg.Picture, 'mail16');
   SetupPicture(WebImg.Picture, 'web16');
+  {$ifdef cpux86_64}
+  BitsLbl.Caption := '64-bit';
+  {$else}
+  BitsLbl.Caption := '32-bit';
+  {$endif}
 end;
 
 procedure TAboutFm.MailLblClick(Sender: TObject);

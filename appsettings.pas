@@ -291,13 +291,14 @@ type
 
 function UnderWine: Boolean;
 var
-  H: cardinal;
+  H: TLibHandle;
 begin
   Result := False;
   H := LoadLibrary('ntdll.dll');
   if H <> NilHandle then
   begin
-    Result := Assigned(GetProcAddress(H, 'wine_get_version'));
+    Result := Assigned(GetProcAddress(H, 'wine_get_version')) or
+      Assigned(GetProcAddress(H, 'wine_nt_to_unix_file_name'));
     FreeLibrary(H);
   end;
 end;

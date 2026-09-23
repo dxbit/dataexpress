@@ -413,7 +413,7 @@ resourcestring
   rsRangeMsg = '[%s] should be in the range from %s to %s.';
   rsRangeMsg2 = 'Value should be in the range from %s to %s.';
   rsFieldSizeRangeMsg = 'Value should be in the range from 1 to 2000.';
-  rsInvalidCharInFieldName = 'You can not use the following characters in the names of fields: '' " | ! < > [ ] { } / =';
+  rsInvalidCharInFieldName = 'You can not use the following characters in the names of fields: '' " | ! < > [ ] { } / = ;';
   rsInvalidCharInFormName = 'You can not use the following characters in the names of forms, queries and reports: '' " | ! < > [ ] { } / \ ? : *';
   //rsInvalidChars2 = 'This property is not available because the label caption contains invalid characters.';
   rsEnterName = 'Enter name';
@@ -1925,6 +1925,12 @@ resourcestring
   rsEnterNameFilterPreset = 'Enter name of filter preset.';
   rsApplicationNotFound = 'Application %s not found. Check File -> Settings -> Templates -> Open template with.';
   rsPositionSize = 'Position and size';
+  rsWaiting = 'Waiting...';
+  rsTypeMinChars = 'Type %d+ characters to search';
+  rsLoadAllList = 'Load all list';
+  rsWorkingWithLargeLists = 'Working with large lists';
+  rsDelaySearch = 'Delay before search (ms)';
+  rsMinSearchLength = 'The minimum number of characters for a search';
 
 implementation
 

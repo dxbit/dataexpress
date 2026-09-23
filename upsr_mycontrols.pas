@@ -117,6 +117,10 @@ procedure TControlOnDblClickR(Self: TControl; var T: TNotifyEvent); begin T := T
 procedure TControlOnDblClickW(Self: TControl; T: TNotifyEvent); begin THackControl(Self).OnDblClick := T; end;
 procedure TControlOnEditingDoneR(Self: TControl; var T: TNotifyEvent); begin T := THackControl(Self).OnEditingDone; end;
 procedure TControlOnEditingDoneW(Self: TControl; T: TNotifyEvent); begin THackControl(Self).OnEditingDone := T; end;
+function TControlClientToScreen(Self: TControl; const Value: TPoint): TPoint;
+begin Result := Self.ClientToScreen(Value); end;
+{function TControlScreenToClient(Self: TControl; Value: TPoint): TPoint;
+begin Result := Self.ScreenToClient(Value); end;}
 
 procedure RIRegisterTControl(Cl: TPSRuntimeClassImporter);
 begin
@@ -170,7 +174,7 @@ begin
     RegisterEventPropertyHelper(@TControlOnEditingDoneR, @TControlOnEditingDoneW, 'OnEditingDone');
 
     RegisterMethod(@TControl.HasParent, 'HasParent');
-    RegisterMethod(@TCONTROL.CLIENTTOSCREEN, 'ClientToScreen');
+    RegisterMethod(@TCONTROLCLIENTTOSCREEN, 'ClientToScreen');
     RegisterMethod(@TCONTROL.SCREENTOCLIENT, 'ScreenToClient');
     RegisterMethod(@TCONTROL.GetTopParent, 'GetTopParent');
   end;
@@ -203,6 +207,9 @@ procedure TWinControlOnExitW(Self: TWinControl; T: TNotifyEvent); begin Self.OnE
 procedure TWinControlOnEnterR(Self: TWinControl; var T: TNotifyEvent); begin T := Self.OnEnter; end;
 procedure TWinControlOnEnterW(Self: TWinControl; T: TNotifyEvent); begin Self.OnEnter := T; end;
 
+procedure TWINCONTROLPAINTTO(Self: TWinControl; DC: HDC; X, Y: Integer);
+begin Self.PaintTo(DC, X, Y); end;
+
 procedure RIRegisterTWinControl(Cl: TPSRuntimeClassImporter); // requires TControl
 begin
   with Cl.Add(TWinControl) do
@@ -215,7 +222,7 @@ begin
     RegisterMethod(@TWINCONTROL.FOCUSED, 'Focused');
     RegisterPropertyHelper(@TWINCONTROLCONTROLS_R, nil, 'Controls');
     RegisterPropertyHelper(@TWINCONTROLCONTROLCOUNT_R, nil, 'ControlCount');
-    RegisterMethod(@TWINCONTROL.PAINTTO, 'PaintTo');
+    RegisterMethod(@TWINCONTROLPAINTTO, 'PaintTo');
 		RegisterVirtualMethod(@TWinControl.SetFocus, 'SetFocus');
 		RegisterMethod(@TWINCONTROL.CONTAINSCONTROL, 'ContainsControl');
     RegisterPropertyHelper(@TWINCONTROLBRUSH_R, nil, 'Brush');

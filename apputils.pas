@@ -73,7 +73,7 @@ function Str2Bool(const S: String): Boolean;
 function CheckFileName(const S: String): Boolean;
 procedure CalcLabelExpr(C: TdxLabel; aDS: TDataSet; aParentForm: TdxForm);
 function GetTopControl(WC: TWinControl): TWinControl;
-function GetObjFieldValue(Obj: TComponent; aKey: Integer; FullPath: Boolean): String;
+function GetObjFieldValue(Obj: TComponent; aKey: Integer; FullPath: Boolean): Variant;
 //function GetObjFieldKey(Obj: TdxLookupComboBox; aValue: String): Variant;
 procedure ClearObjectFieldId(Fm: TdxForm; OId, FId: Integer);
 //function ShiftColor(Color: TColor; N: Integer): TColor;
@@ -1188,13 +1188,13 @@ begin
 end;
 
 function GetObjFieldValue(Obj: TComponent; aKey: Integer; FullPath: Boolean
-  ): String;
+  ): Variant;
 var
-  SQL: String;
+  SQL, S: String;
   n, p: Integer;
   SrcFm: TdxForm;
 begin
-  Result := '';
+  Result := Null;
   if (aKey = 0) or (GetSourceTId(Obj) = 0) or (GetSourceFId(Obj) = 0) then Exit;
   SrcFm := FormMan.FindForm(GetSourceTId(Obj));
   SQL := SqlLookupSelect(Obj, nil, nil, nil, False, aKey);
@@ -1204,18 +1204,23 @@ begin
     	Result := Fields[1].AsString;
     Free;
   end;
+
+  if Result = Null then Exit;
+
   if (not FullPath) and (SrcFm.ParentField > 0) and
     (GetFormParentFieldFieldId(SrcFm) = GetSourceFId(Obj)) then
   begin
-    p := Pos('\', Result);
+    S := Result;
+
+    p := Pos('\', S);
     n := 0;
     while p > 0 do
 		begin
-    	Delete(Result, 1, p);
+    	Delete(S, 1, p);
       Inc(n);
-      p := Pos('\', Result);
+      p := Pos('\', S);
     end;
-  	Result := DupeString('  ', n) + Result;
+  	Result := DupeString('  ', n) + S;
   end;
 end;
 
@@ -1264,7 +1269,7 @@ begin
     Exit(False);
   end;
   for i := 1 to Length(S) do
-    if S[i] in ['''', '"', '|', '!', '<', '>', '[', ']', '{', '}', '/', '='] then
+    if S[i] in ['''', '"', '|', '!', '<', '>', '[', ']', '{', '}', '/', '=', ';'] then
     begin
       ErrMsgFmt(rsInvalidCharInFieldName, [S[i], S]);
       Exit(False);

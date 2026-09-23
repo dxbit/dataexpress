@@ -1279,23 +1279,10 @@ begin
 
   for i := 0 to RD.GetFieldCount - 1 do
   begin
-    if RD.GetFieldVisible(i) and (RD.GetFieldType(i) = flNumber) then
+    if RD.GetFieldVisible(i) and (RD.GetFieldType(i) in [flNumber, flCounter]) then
       SL.Add(RD.GetFieldNameDS(i) + '=' + RD.GetFieldName(i));
   end;
 
-  {for i := 0 to RD.Sources[0]^.Fields.Count - 1 do
-  begin
-    F := RD.Sources[0]^.Fields[i]^;
-    LowF := GetLowField(@F)^;
-    if F.Visible and (LowF.Tp = flNumber) then
-      SL.Add('f' + IntToStr(F.Id) + '=' + F.Name);
-  end;
-  for i := 0 to RD.CalcFields.Count - 1 do
-  begin
-    CF := RD.CalcFields[i]^;
-    if CF.Tp = flNumber then
-      SL.Add('cf' + IntToStr(CF.Id) + '=' + CF.Name);
-  end;  }
   SL.CustomSort(@CustomSortStrings);
   Items.AddStrings(SL);
   SL.Free;

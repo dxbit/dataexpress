@@ -8,10 +8,10 @@ object ChartFm: TChartFm
   ClientHeight = 550
   ClientWidth = 950
   Font.Color = clBlack
+  Position = poOwnerFormCenter
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  Position = poOwnerFormCenter
-  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 4
     Height = 512

@@ -178,6 +178,21 @@ object AboutFm: TAboutFm
       ParentFont = False
       OnClick = WebSiteLblClick
     end
+    object BitsLbl: TLabel
+      AnchorSideLeft.Side = asrCenter
+      Left = 317
+      Height = 29
+      Top = 5
+      Width = 82
+      Anchors = [akTop, akRight]
+      Caption = '32-bit'
+      Font.Color = clSilver
+      Font.Height = -24
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object CloseBn: TBitBtn
     Left = 318

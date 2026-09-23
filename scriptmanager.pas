@@ -1970,6 +1970,11 @@ begin
   FPre.Clear;
   {$ifdef windows}
   FPre.Defines.Add('WINDOWS');
+    {$ifdef win64}
+    FPre.Defines.Add('WIN64');
+    {$else}
+    FPre.Defines.Add('WIN32');
+    {$endif}
   {$else}
   FPre.Defines.Add('LINUX');
   {$endif}

@@ -1118,7 +1118,7 @@ begin
     8: MenuItem1.Click;
     9: MenuItem2.Click;
     10: ShowSQLEditor;
-    11: DesignFr.Save(False);
+    11: DesignFr.Save(False, False);
     12: MenuItem28.Click;
   end;
 end;

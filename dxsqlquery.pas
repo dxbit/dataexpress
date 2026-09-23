@@ -55,14 +55,14 @@ type
     function ToSQL: String;
     procedure ApplyKeyValues;
     function GetAsDT(Index: String): TDateTime;
-    function GetAsF(Index: String): Extended;
+    function GetAsF(Index: String): Double;
     function GetAsI(Index: String): Integer;
     function GetAsS(Index: String): String;
     function GetField(Index: Integer): TField;
     function GetFields(Name: String): Variant;
     function GetState: TDataSetState;
     procedure SetAsDT(Index: String; AValue: TDateTime);
-    procedure SetAsF(Index: String; AValue: Extended);
+    procedure SetAsF(Index: String; AValue: Double);
     procedure SetAsI(Index: String; AValue: Integer);
     procedure SetAsS(Index: String; AValue: String);
     procedure SetFields(Name: String; AValue: Variant);
@@ -97,7 +97,7 @@ type
     property Fields[Name: String]: Variant read GetFields write SetFields; default;
     property Field[Index: Integer]: TField read GetField;
     property AsI[Index: String]: Integer read GetAsI write SetAsI;
-    property AsF[Index: String]: Extended read GetAsF write SetAsF;
+    property AsF[Index: String]: Double read GetAsF write SetAsF;
     property AsDT[Index: String]: TDateTime read GetAsDT write SetAsDT;
     property AsS[Index: String]: String read GetAsS write SetAsS;
     property DataSet: TMySQLQuery read FDataSet;
@@ -1366,7 +1366,7 @@ begin
   Result := FDataSet.FieldByName(Index).AsDateTime;
 end;
 
-function TdxSQLQuery.GetAsF(Index: String): Extended;
+function TdxSQLQuery.GetAsF(Index: String): Double;
 begin
   Result := FDataSet.FieldByName(Index).AsFloat;
 end;
@@ -1442,7 +1442,7 @@ begin
 	FDataSet.FieldByName(Index).AsDateTime := AValue;
 end;
 
-procedure TdxSQLQuery.SetAsF(Index: String; AValue: Extended);
+procedure TdxSQLQuery.SetAsF(Index: String; AValue: Double);
 begin
   FDataSet.FieldByName(Index).AsFloat := AValue;
 end;

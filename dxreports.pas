@@ -482,7 +482,7 @@ type
     function GetEditable: Boolean;
     function GetFields(aName: String): Variant;
     function GetAsDT(Index: String): TDateTime;
-    function GetAsF(Index: String): Extended;
+    function GetAsF(Index: String): Double;
     function GetAsI(Index: String): Integer;
     function GetAsS(Index: String): String;
     function GetNoEdit: Boolean;
@@ -535,7 +535,7 @@ type
     property QueryName: String read GetQueryName;
     property Fields[aName: String]: Variant read GetFields; default;
     property AsI[Index: String]: Integer read GetAsI;
-    property AsF[Index: String]: Extended read GetAsF;
+    property AsF[Index: String]: Double read GetAsF;
     property AsDT[Index: String]: TDateTime read GetAsDT;
     property AsS[Index: String]: String read GetAsS;
     property State: TDataSetState read GetState;
@@ -2467,7 +2467,7 @@ function CreateReportForm(RD: TReportData; out SQL: String): TdxForm;
     C.SourceFId := Cmp.SourceFId;
     if Value > '' then
     begin
-      S := GetObjFieldValue(C, StrToInt(Value), True);
+      S := VarToStr( GetObjFieldValue(C, StrToInt(Value), True) );
       Result := Format('%s as f%d,', [Value, n]) +
         Format('(CAST(''%s'' as VARCHAR(%d))) as f%dl,', [S, Utf8Length(S), n])
     end
@@ -3450,7 +3450,7 @@ begin
   Result := Nz(Fields[Index], 0);
 end;
 
-function TdxQueryGrid.GetAsF(Index: String): Extended;
+function TdxQueryGrid.GetAsF(Index: String): Double;
 begin
   Result := Nz(Fields[Index], 0);
 end;
@@ -4671,7 +4671,7 @@ procedure TReportData.SaveToStream(St: TStream);
     begin
       F := FSqlFields[i];
       WrStr('<sqlfield name="' + StrToXml(F.Name) + '" field="' + StrToXml(F.FieldNameDS) +
-        '" tp="' + IntToStr(Ord(F.Tp)) + '" format="' + StrToXml(F.DisplayFormat) + '">');
+        '" tp="' + IntToStr(Ord(F.Tp)) + '" format="' + StrToXml(F.DisplayFormat) + '"/>');
     end;
     WrStr('</sqlfields>');
   end;

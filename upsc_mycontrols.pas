@@ -122,8 +122,8 @@ begin
     RegisterProperty('OnEditingDone', 'TNotifyEvent', iptRW);
 
     RegisterMethod('function HasParent: Boolean');
-    RegisterMethod('function ClientToScreen(Point: TPoint): TPoint');
-    RegisterMethod('function ScreenToClient(Point: TPoint): TPoint');
+    RegisterMethod('function ClientToScreen(const Point: TPoint): TPoint');
+    RegisterMethod('function ScreenToClient(const Point: TPoint): TPoint');
     RegisterMethod('function GetTopParent: TControl');
   end;
 end;
@@ -196,7 +196,7 @@ begin
     RegisterProperty('OnUTF8KeyPress', 'TUTF8KeyPressEvent', iptRW);
 
     RegisterMethod('procedure SetFocus; virtual;');
-    RegisterMethod('procedure PaintTo(DC: LongInt; X,Y: Integer)');
+    RegisterMethod('procedure PaintTo(DC: HDC; X,Y: Integer)');
 
     RegisterMethod('function ContainsControl(Control: TControl): Boolean');
 

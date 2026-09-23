@@ -29,7 +29,6 @@ uses
 
 procedure SIRegister_Graphics_TypesAndConsts(Cl: TPSPascalCompiler);
 procedure SIRegister_Graphics_TypesAndConstsWeb(Cl: TPSPascalCompiler);
-procedure SIRegisterTGRAPHICSOBJECT(Cl: TPSPascalCompiler);
 procedure SIRegisterTFont(Cl: TPSPascalCompiler; Web: Boolean);
 procedure SIRegisterTPEN(Cl: TPSPascalCompiler; Web: Boolean);
 procedure SIRegisterTBRUSH(Cl: TPSPascalCompiler; Web: Boolean);
@@ -82,17 +81,9 @@ begin
    cl.AddTypeS('TBrushStyle', '(bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross)');
 end;
 
-procedure SIRegisterTGRAPHICSOBJECT(Cl: TPSPascalCompiler);
-begin
-  with Cl.AddClassN(cl.FindClass('TPersistent'), 'TGraphicsObject') do
-  begin
-    RegisterProperty('OnChange', 'TNotifyEvent', iptrw);
-  end;
-end;
-
 procedure SIRegisterTFont(Cl: TPSPascalCompiler; Web: Boolean);
 begin
-  with Cl.AddClassN(cl.FindClass('TGraphicsObject'), 'TFont') do
+  with Cl.AddClassN(cl.FindClass('TPersistent'), 'TFont') do
   begin
     if not Web then
     begin
@@ -142,7 +133,7 @@ end;
 
 procedure SIRegisterTPEN(Cl: TPSPascalCompiler; Web: Boolean);
 begin
-  with Cl.AddClassN(cl.FindClass('TGraphicsObject'), 'TPen') do
+  with Cl.AddClassN(cl.FindClass('TPersistent'), 'TPen') do
   begin
     if not Web then
     begin
@@ -157,7 +148,7 @@ end;
 
 procedure SIRegisterTBRUSH(Cl: TPSPascalCompiler; Web: Boolean);
 begin
-  with Cl.AddClassN(cl.FindClass('TGraphicsObject'), 'TBrush') do
+  with Cl.AddClassN(cl.FindClass('TPersistent'), 'TBrush') do
   begin
     if not Web then
     begin
@@ -295,7 +286,6 @@ end;
 procedure SIRegister_Graphics(Cl: TPSPascalCompiler; Streams: Boolean);
 begin
   SIRegister_Graphics_TypesAndConsts(Cl);
-  SIRegisterTGRAPHICSOBJECT(Cl);
   SIRegisterTGraphic(Cl);
   SIRegisterTFont(Cl, False);
   SIRegisterTPEN(cl, False);

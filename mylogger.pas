@@ -33,11 +33,13 @@ type
   private
     FFileName: String;
     FLock: TRTLCriticalSection;
+    FEnabled: Boolean;
   public
     constructor Create;
     destructor Destroy; override;
     procedure WriteToFile(const S: String);
     property FileName: String read FFileName write FFileName;
+    property Enabled: Boolean read FEnabled write FEnabled;
   end;
 
 var
@@ -67,7 +69,8 @@ var
   Buf: String;
   FS: TFileStream;
 begin
-  if (FFileName = '') or not AppConfig.LogErrors then Exit;
+  //if (FFileName = '') or not AppConfig.LogErrors then Exit;
+  if (FFileName = '') or not FEnabled then Exit;
 
   EnterCriticalSection(FLock);
   FS := nil;

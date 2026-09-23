@@ -341,7 +341,7 @@ implementation
 
 uses
   sqlgen, dbengine, apputils, formmanager, strutils, DateUtils, mytypes,
-  LazUtf8, appimagelists;
+  LazUtf8, appimagelists, Variants;
 
 type
   THackGrid = class(TCustomGrid);
@@ -2393,7 +2393,7 @@ begin
   begin
     Fm := FormMan.FindForm(SourceTId);
     ShowTree := (Fm.ParentField > 0) and (GetFormParentFieldFieldId(Fm) = SourceFId);
-    S := GetObjFieldValue(Self, KeyValue, True);
+    S := VarToStr( GetObjFieldValue(Self, KeyValue, True) );
     if ShowTree then S := Abrakadabra(S, '\');
 	  Field.Value := S;
   end;
@@ -2483,6 +2483,8 @@ begin
   SourceTId := Src.SourceTId;
   SourceFId := Src.SourceFId;
   DropDownCount := Src.DropDownCount;
+  SearchDelay := Src.SearchDelay;
+  MinSearchLength := Src.MinSearchLength;
 end;
 
 end.

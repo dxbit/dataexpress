@@ -8,6 +8,7 @@ Base types
 	Char = 1 byte: #0..#255
 	Double = 8 bytes: 5.0E-324..1.7E308
 	Extended = 10 bytes: 1.9E-4932..1.1E4932
+	Extended = Double (Win64)
 	Int64 = 8 bytes: -2^63..2^63
 	Integer = 4 bytes: -2147483648..2147483647
 	LongInt = 4 bytes: -2147483648..2147483647
@@ -31,7 +32,9 @@ Reserved words
 	case x of
 	const
 	continue
+	except
 	exit
+	finally
 	for .. to/downto .. do
 	function
 	if .. then .. else ..
@@ -39,6 +42,7 @@ Reserved words
 	record .. end
 	repeat .. until
 	set of ..
+	try
 	type
 	uses
 	var
@@ -77,7 +81,7 @@ Constants
 		faDirectory = $00000010
 		faArchive   = $00000020
 		faSymLink   = $00000400
-		faAnyFile   = $0000003f
+		faAnyFile   = $000001ff
 	File mode
 		fmCreate = $FF00
 		fmOpenRead = 0
@@ -335,14 +339,14 @@ Procedures & Functions
 	Math
 		function Abs(E: Extended): Extended
 		function Cos(E: Extended): Extended
-		function Frac(E: Double): Double
+		function Frac(E: Extended): Extended
 		function Int(E: Extended): Extended
 		function Pi: Extended
-		function Power(base, exponent: Double): Double
+		function Power(base, exponent: Extended): Extended
 		function Random(n: LongInt): LongInt
 		function Round(E: Extended): LongInt
-		function RoundTo(AValue: Double; Digits: Integer): Double
-		function SameValue(A, B: Double; Epsilon: Double): Boolean
+		function RoundTo(AValue: Extended; Digits: Integer): Extended
+		function SameValue(A, B: Extended; Epsilon: Extended): Boolean
 		function Sin(E: Extended): Extended
 		function Sqrt(E: Extended): Extended
 		function Trunc(E: Extended): LongInt
@@ -371,9 +375,9 @@ Procedures & Functions
 		function DateToStr(D: TDateTime): string
 		procedure Delete(var S: String; iFrom, iCount: LongInt)
 		function FloatToStr(E: Extended): string
-		function FillZeros(E: Double; N: Integer): String
+		function FillZeros(E: Extended; N: Integer): String
 		function Format(const Fmt: String; Args: array of const): String
-		function FormatFloat(Const Format: String; Value: Double): String
+		function FormatFloat(Const Format: String; Value: Extended): String
 		function Int64ToStr(I: Int64): string
 		function IntToHex(I: Int64; Digits: Integer): String
 		function IntToStr(I: Int64): string
@@ -404,7 +408,7 @@ Procedures & Functions
 		function Trim(S: String): String
 		function TryStrToDate(const S: string; out Value: TDateTime): Boolean
 		function TryStrToDateTime(const S: string; out Value: TDateTime): Boolean
-		function TryStrToFloat(const S: String; out Value: Double): Boolean
+		function TryStrToFloat(const S: String; out Value: Extended): Boolean
 		function TryStrToInt(const s: string; out i: LongInt) : boolean
 		function TryStrToInt64(const s: string; out i: Int64) : boolean
 		function TryStrToTime(const S: string; out Value: TDateTime): Boolean
@@ -412,18 +416,16 @@ Procedures & Functions
 		function WStrGet(var S: String; I: Integer): WideChar
 		procedure WStrSet(C: String; I: Integer; var S: String)
 	Totals
-		function DAvg(DataSet: TObject; const FieldName: String): Double
+		function DAvg(DataSet: TObject; const FieldName: String): Extended
 		function DCount(DataSet: TObject): Integer
 		function DMax(DataSet: TObject; const FieldName: String): Variant
 		function DMerge(DataSet: TObject; const FieldName, Delimiter: String): String
 		function DMin(DataSet: TObject; const FieldName: String): Variant
-		function DSum(DataSet: TObject; const FieldName: String): Double
+		function DSum(DataSet: TObject; const FieldName: String): Extended
 	UTF8-strings
 		function RurToWords(Money: Currency): String
-		procedure StringToUtf8Char(const S: String; var Utf8Char: TUtf8Char)
-		function ToWordsRu(Money: Currency): String
+		function ToWords(Money: Currency): String
 		function UTF16ToUTF8(const S: UnicodeString): String
-		function Utf8CharToString(Utf8Char: TUtf8Char): String
 		function UTF8Copy(const S: String; StartCharIndex, CharCount: LongInt): String
 		function UTF8CompareStr(const S1, S2: string): LongInt
 		function UTF8CompareText(const S1, S2: string): LongInt
@@ -615,7 +617,6 @@ TFilterObject = class(TObject)
 	property Fields[Index: Integer]: TFilterField [r] default
 TFont = class(TPersistent)
 	property Color: TColor [rw]
-	property Height: Integer [rw]
 	property Name: String [rw]
 	property Size: Integer [rw]
 	property Style: TFontStyles [rw] 
@@ -974,9 +975,8 @@ TdxDBImage = class(TControl)
 	property FieldName: String [r]
 	property Id: Integer [r]
 	property PrintSize: Integer [rw]
-	property ReadOnly: Boolean [rw]
 	property Required: Boolean [r]
-	property ShowThumbnail: Boolean [rw]
+	property ShowThumbnail: Boolean [r]
 	property SourceFileName: String [r]
 	property StorageFolder: String [r]
 	property StorageType: Integer [r]
@@ -1007,7 +1007,7 @@ TdxFile = class(TControl)
 	procedure SaveToStream(St: TStream)
 	function WasChanged: Boolean
 	property CheckExpression: String [r]
-	property Description: String [rw]
+	property Description: String [r]
 	property FieldName: String [r]
 	property FieldSize: Integer [r]
 	property Id: Integer [r]
@@ -1143,7 +1143,9 @@ TdxLookupComboBox = class(TControl)
 	property Filter: String [rw]
 	property HideList: Boolean [rw]
 	property Id: Integer [r]
+	property MinSearchLength: Cardinal [rw]
 	property Required: Boolean [r]
+	property SearchDelay: Cardinal [rw]
 	property SourceFieldName: String [r]
 	property SourceFormName: String [r]
 	property OnCreateForm: TCreateFormEvent [rw]

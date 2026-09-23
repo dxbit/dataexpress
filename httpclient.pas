@@ -332,7 +332,12 @@ begin
   inherited Create(nil);
   FStream := TStringStream.Create('');
   FThreads := TThreadList.Create;
-  if not IsSSLLoaded then InitSSLInterface;
+  if not IsSSLLoaded then
+    {$IFDEF WIN64}
+    InitSSLInterface(AppPath + 'libssl-4-x64.dll', AppPath + 'libcrypto-4-x64.dll');
+    {$ELSE}
+    InitSSLInterface;
+    {$ENDIF}
 end;
 
 destructor THttpClient.Destroy;

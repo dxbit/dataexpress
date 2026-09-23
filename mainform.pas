@@ -173,6 +173,7 @@ type
     procedure AddRecent;
     procedure SaveConfig;
     procedure SetAppCaption(const aCaption: String);
+    procedure ImportProjectFromCommandLine;
   public
     { public declarations }
     procedure ShowDesigner;
@@ -305,6 +306,20 @@ end;
 function IsConnectName(const DBPath: String): Boolean;
 begin
   Result := Copy(DBPath, 1, 1) = '$';
+end;
+
+procedure SetLogFileName(const DBName: String);
+var
+  S: String;
+begin
+  if CmdParamExists('log:') then
+  begin
+    S := GetCmdParam('log:');
+    if not FilenameIsAbsolute(S) then S := AppPath + S;
+  end
+  else
+    S := AppPath + 'logs' + PathDelim + ReplacePathDelimiters(ExtractFileNameOnly(DBName)) + '.log';
+  MyLog.FileName := S;
 end;
 
 { TMainFm }
@@ -534,7 +549,7 @@ begin
     	mrYes:
         begin
           //DesignFr.UpdateAnchoredComponents(DesignFr.CurForm);
-          CanClose := DesignFr.Save(True);
+          CanClose := DesignFr.Save(True, False);
         end;
       mrCancel: CanClose := False;
     end;
@@ -555,16 +570,21 @@ end;
 procedure TMainFm.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FFr);
-  if not DBase.Conn.ConnectLost then
-    try
-      if (UserMan <> nil) and (UserMan.CurrentUser <> nil) and (DBase.Connected) then
-        UserMan.UnRegisterUser;
-    except
-      on E: Exception do
-        ErrMsg(rsErrorCloseApp + ExceptionToString(E, True, False), True, 'CloseApp');
-    end;
-  LogString('', 'CloseApp');
-  SaveConfig;
+
+  if not CmdParamExists('dxp:') then
+  begin
+    if not DBase.Conn.ConnectLost then
+      try
+        if (UserMan <> nil) and (UserMan.CurrentUser <> nil) and (DBase.Connected) then
+          UserMan.UnRegisterUser;
+      except
+        on E: Exception do
+          ErrMsg(rsErrorCloseApp + ExceptionToString(E, True, False), True, 'CloseApp');
+      end;
+    LogString('', 'CloseApp');
+    SaveConfig;
+  end;
+
   HelpMan.Free;
   FreeAndNil(DXMain);
   FreeAndNil(ScriptMan);
@@ -876,6 +896,14 @@ var
   R: TRecentData;
   CI: TConnectInfo;
 begin
+  if CmdParamExists('dxp:') then
+  begin
+    ImportProjectFromCommandLine;
+    Hide;
+    Application.Terminate;
+    Exit;
+  end;
+
   // На случай, если окно скроют, а потом покажут.
   if not FIsLoadApp then Exit;
 
@@ -1133,7 +1161,7 @@ begin
   finally
     Free;
   end;
-  DesignFr.ImportProject(FlNm);
+  DesignFr.ImportProject(FlNm, False);
   {$endif}
 end;
 
@@ -1474,6 +1502,7 @@ begin
   if ShowSettingsForm = mrOk then
   begin
     if DesignFr <> nil then DesignFr.UpdateDesigner;
+    MyLog.Enabled := AppConfig.LogErrors
   end;
 end;
 
@@ -1566,7 +1595,8 @@ begin
     end;
   end;
 
-  MyLog.FileName := AppPath + 'logs' + PathDelim + ExtractFileNameOnly(DBName) + '.log';
+  SetLogFileName(DBName);
+  MyLog.Enabled := AppConfig.LogErrors;
 
   // Подключение
 
@@ -2039,6 +2069,125 @@ begin
   Application.Title := aCaption;
 end;
 
+procedure TMainFm.ImportProjectFromCommandLine;
+var
+  DBName, UserName, Pwd, DBPwd, Dxp: String;
+  U: TdxUser;
+  SL: TStringList;
+begin
+  DBName := ParamStrUtf8(1);
+  SetLogFileName(DBName);
+  MyLog.Enabled := True;
+
+  DBPwd := GetCmdParam('pwd:');
+  UserName := GetCmdParam('u:');
+  Pwd := GetCmdParam('p:');
+  Dxp := GetCmdParam('dxp:');
+  if not FilenameIsAbsolute(Dxp) then Dxp := AppPath + Dxp;
+
+  try
+
+  try
+    DBase.Database := DBName;
+    DBase.Pwd := DBPwd;
+	  DBase.Connect(False);
+    LogString(DBase.Database, 'Connect');
+  except
+    on E: Exception do
+    begin
+      LogString(E.Message, 'Connect');
+      Exit;
+    end;
+  end;
+
+  if DBase.CheckVersion < DX_VERSION then
+  begin
+    LogString('Only the latest database versions are supported.', 'CheckVersion');
+    Exit;
+  end;
+
+  try
+    UserMan.LoadFromDb;
+  except
+    on E: Exception do
+    begin
+      LogString(E.Message, 'LoadUsers');
+      Exit;
+    end;
+  end;
+
+  if UserMan.Users.Count > 0 then
+  begin
+    if (UserName = '') or (Pwd = '') then
+    begin
+      LogString('The user or password is not specified.', 'Login');
+      Exit;
+    end;
+
+    U := UserMan.Users.FindUserByName(UserName);
+    if (Pwd <> '') and (U <> nil) and (md5print(md5string(Pwd)) = U.Password) then
+    begin
+      if U.RoleId >= 0 then
+      begin
+        LogString('The user must be a developer.', 'Login');
+        Exit;
+      end;
+      UserMan.CurrentUserId:=U.Id
+    end
+    else
+    begin
+      LogString('Invalid user or password.', 'Login');
+      Exit;
+    end;
+  end;
+
+  try
+
+    DXMain.LoadFromDB;
+    if not CanCache then
+    begin
+      ImageMan.LoadFromDB;
+      FormMan.LoadFromDB;
+      ReportMan.LoadFromDB;
+      ScriptMan.LoadFromDB;
+    end
+    else
+      LoadMetaFromCache;
+
+    ScaleForms(FormMan, DXMain.DesignTimePPI);
+    ScaleReports(ReportMan, DXMain.DesignTimePPI, Screen.PixelsPerInch);
+
+  except
+    on E: Exception do
+    begin
+      LogString(E.Message, 'LoadMetaData');
+      Exit;
+    end;
+  end;
+
+  ShowDesigner;
+  if DesignFr.ImportProject(Dxp, True) then
+  begin
+    ScriptMan.CompileExpr;
+    if not ScriptMan.HasErrors then
+    begin
+      if DesignFr.Save(False, True) then
+        LogString('OK', 'ImportProject')
+    end
+    else
+    begin
+      SL := TStringList.Create;
+      ScriptMan.MessagesToList(SL, True);
+      LogString(SL.Text, 'CompileErrors');
+      SL.Free;
+    end;
+  end;
+
+  finally
+    if DBase.Connected then DBase.Disconnect;
+  end;
+end;
+
 procedure TMainFm.CloseDatabase(ClearConnectInfo: Boolean);
 begin
   try
@@ -2110,7 +2259,7 @@ begin
   {$IFDEF DXFull}
   if DesignFr <> nil then
   begin
-    if not DesignFr.Save(True) then Exit;
+    if not DesignFr.Save(True, False) then Exit;
     //DesignFr.Done;
   end;
   FreeAndNil(FFr);

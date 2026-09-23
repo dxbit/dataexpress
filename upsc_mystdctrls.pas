@@ -384,7 +384,7 @@ begin
     RegisterProperty('Style', 'TListBoxStyle', iptRW);
 
     RegisterMethod('procedure Clear');
-    RegisterMethod('function ItemAtPos(Pos: TPoint; Existing: Boolean): Integer');
+    RegisterMethod('function ItemAtPos(const Pos: TPoint; Existing: Boolean): Integer');
     RegisterMethod('function ItemRect(Index: Integer): TRect');
     RegisterProperty('Canvas', 'TCanvas', iptr);
     RegisterProperty('TopIndex', 'Integer', iptrw);

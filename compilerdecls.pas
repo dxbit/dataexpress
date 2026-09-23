@@ -894,7 +894,7 @@ begin
     RegisterProperty('Selection', 'TKGridRect', iptRW);
     RegisterProperty('SelectionCount', 'Integer', iptR);
     RegisterProperty('SelectionRect', 'TRect', iptR);
-    RegisterProperty('Selections', 'TKGridRect, Integer', iptRW);
+    RegisterProperty('Selections', 'TKGridRect Integer', iptRW);
     RegisterProperty('SizingStyle', 'TKGridSizingStyle', iptRW);
     RegisterProperty('TopRow', 'Integer', iptRW);
     RegisterProperty('VisibleColCount', 'Integer', iptR);
@@ -958,7 +958,7 @@ begin
     SetDefaultPropery('Fields');
     RegisterProperty('Field', 'TField Integer', iptR);
     RegisterProperty('AsI', 'Integer String', iptRW);
-    RegisterProperty('AsF', 'Extended String', iptRW);
+    RegisterProperty('AsF', 'Double String', iptRW);
     RegisterProperty('AsDT', 'TDateTime String', iptRW);
     RegisterProperty('AsS', 'String String', iptRW);
     RegisterProperty('State', 'TDataSetState', iptR);
@@ -1052,7 +1052,7 @@ begin
     RegisterProperty('Fields', 'Variant String', iptR);
     SetDefaultPropery('Fields');
     RegisterProperty('AsI', 'Integer String', iptR);
-    RegisterProperty('AsF', 'Extended String', iptR);
+    RegisterProperty('AsF', 'Double String', iptR);
     RegisterProperty('AsDT', 'TDateTime String', iptR);
     RegisterProperty('AsS', 'String String', iptR);
     RegisterProperty('ManualRefresh', 'Boolean', iptRW);
@@ -1111,7 +1111,7 @@ begin
     RegisterProperty('FieldSize', 'Integer', iptR);
     RegisterProperty('SourceFileName', 'String' ,iptR);
     RegisterProperty('StoredFileName', 'String' ,iptR);
-    RegisterProperty('Description', 'String' ,iptRW);
+    RegisterProperty('Description', 'String', iptRW);
   end;
 end;
 
@@ -1606,6 +1606,9 @@ begin
     RegisterProperty('HideButton', 'Boolean', iptRW);
     RegisterProperty('HideList', 'Boolean', iptRW);
     RegisterProperty('DropDownList', 'TDropDownList', iptR);
+    RegisterProperty('TypedText', 'String', iptR);
+    RegisterProperty('SearchDelay', 'Cardinal', iptRW);
+    RegisterProperty('MinSearchLength', 'Cardinal', iptRW);
 
     //RegisterProperty('OnDropDown', 'TNotifyEvent', iptRW);
     //RegisterProperty('OnChange', 'TNotifyEvent', iptRW);
@@ -1990,7 +1993,7 @@ begin
     SetDefaultPropery('Fields');
     RegisterProperty('Field', 'TField String', iptR);
     RegisterProperty('AsI', 'Integer String', iptR);
-    RegisterProperty('AsF', 'Extended String', iptR);
+    RegisterProperty('AsF', 'Double String', iptR);
     RegisterProperty('AsDT', 'TDateTime String', iptR);
     RegisterProperty('AsS', 'String String', iptR);
     RegisterProperty('OldValues', 'Variant String', iptR);
@@ -2996,10 +2999,7 @@ begin
   Cl.AddDelphiFunction('function TryStrToDateTime(const S: string; out Value: TDateTime): Boolean');
   Cl.AddDelphiFunction('function TryStrToInt(const s: string; Out i : LongInt) : boolean');
   Cl.AddDelphiFunction('function TryStrToInt64(const s: string; Out i : Int64) : boolean');
-  if not Web then
-    Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Extended): Boolean')
-  else
-    Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Double): Boolean');
+  Cl.AddDelphiFunction('Function TryStrToFloat(Const S : String; Out Value: Extended): Boolean');
   Cl.AddDelphiFunction('function StrToDateTime(const S: String): TDateTime');
   Cl.AddDelphiFunction('function IntToHex(Value: Int64; Digits: Integer): String');
 
@@ -3202,6 +3202,8 @@ begin
     RegisterProperty('Editable', 'Boolean', iptR);
     RegisterProperty('SourceFormName', 'String', iptR);
     RegisterProperty('SourceFieldName', 'String', iptR);
+    RegisterProperty('SearchDelay', 'Cardinal', iptRW);
+    RegisterProperty('MinSearchLength', 'Cardinal', iptRW);
     RegisterProperty('OnCreateForm', 'TCreateFormEvent', iptRW);
   end;
   with Cl.AddClassN(Cl.FindClass('TControl'), 'TdxObjectField') do

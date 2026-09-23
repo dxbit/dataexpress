@@ -174,7 +174,7 @@ type
     procedure UpdateToolbarState;
     procedure UpdateTreeStates;
     //function CompareForms: String;
-    function CheckBeforeChangeStruct: Boolean;
+    function CheckBeforeChangeStruct(CmdLine: Boolean): Boolean;
     procedure ChangeStruct;
     procedure InitFields;
     procedure ChangeFieldsSize;
@@ -192,12 +192,12 @@ type
     procedure Init;
     procedure Done;
     procedure ShowForm(Id: Integer);
-    procedure SaveFormsAgain;
-    function Save(ConfirmEmptyGroups: Boolean): Boolean;
+    procedure SaveFormsAgain(CmdLine: Boolean);
+    function Save(ConfirmEmptyGroups, CmdLine: Boolean): Boolean;
     procedure UpdateAnchoredComponents(Fm: TdxForm);
     procedure UpdateStatusBar;
     procedure ExportProject(const aFileName: String);
-    procedure ImportProject(const aFileName: String);
+    function ImportProject(const aFileName: String; CmdLine: Boolean): Boolean;
     procedure MergeProjects(const aFileName: String);
     procedure SetExpertMode(Value: Boolean);
     procedure TestForm(const FormName: String);
@@ -908,7 +908,7 @@ end;
 
 procedure TDesignFr.SaveBnClick(Sender: TObject);
 begin
-  Save(False);
+  Save(False, False);
 end;
 
 procedure TDesignFr.StyleBnClick(Sender: TObject);
@@ -1235,7 +1235,8 @@ begin
   end;
 end;
 
-procedure TDesignFr.ImportProject(const aFileName: String);
+function TDesignFr.ImportProject(const aFileName: String; CmdLine: Boolean
+  ): Boolean;
 
   procedure CompareForms(Fm, OldFm: TdxForm);
   var
@@ -1700,13 +1701,18 @@ var
   TempDir: String;
   Ver: Integer;
 begin
-  if Cache.StructChanged then
-  begin
-    Info(rsSaveChangesBeforeImportMsg);
-    Exit;
-  end;
+  Result := False;
 
-  if ScriptFm <> nil then ScriptFm.SaveAll;
+  if not CmdLine then
+  begin
+    if Cache.StructChanged then
+    begin
+      Info(rsSaveChangesBeforeImportMsg);
+      Exit;
+    end;
+
+    if ScriptFm <> nil then ScriptFm.SaveAll;
+  end;
 
   TempDir := GetTempDir + 'dx' + IntToStr(Random(1000000)) + DirectorySeparator;
 
@@ -1724,9 +1730,18 @@ begin
 
   Ver := GetVersionFromFile(TempDir);
 
-  if Ver < 31 then
+  if not CmdLine then
   begin
-    ErrMsg(rsDBNotSupport);
+    if Ver < 31 then
+    begin
+      ErrMsg(rsDBNotSupport);
+      DeleteDirectory(TempDir, False);
+      Exit;
+    end;
+  end
+  else if Ver < DX_VERSION then
+  begin
+    LogString('Only the latest database versions are supported.', 'ImportProject');
     DeleteDirectory(TempDir, False);
     Exit;
   end;
@@ -1749,17 +1764,28 @@ begin
   CursorBn.Down := True;
 
   DeleteDirectory(TempDir, False);
-  if AppConfig.ExpertMode and (ScriptFm <> nil) then
-    ScriptFm.Reset(False);
-  UpdateTemplateFieldsForm;
-  if FindActionsFm <> nil then FindActionsFm.Reset;
-  if FindExprFm <> nil then FindExprFm.Reset;
-  if FindScriptFm <> nil then FindScriptFm.Reset;
-  MessageDlg(rsImportProject, rsImportPrjOk, mtInformation, [mbOk], 0);
+
+  if not CmdLine then
+  begin
+    if AppConfig.ExpertMode and (ScriptFm <> nil) then
+      ScriptFm.Reset(False);
+    UpdateTemplateFieldsForm;
+    if FindActionsFm <> nil then FindActionsFm.Reset;
+    if FindExprFm <> nil then FindExprFm.Reset;
+    if FindScriptFm <> nil then FindScriptFm.Reset;
+    MessageDlg(rsImportProject, rsImportPrjOk, mtInformation, [mbOk], 0);
+  end;
+
+  Result := True;
 
   except
     on E: Exception do
-      ErrMsg(rsImportProjectError + ExceptionToString(E, True, False));
+    begin
+      if not CmdLine then
+        ErrMsg(rsImportProjectError + ExceptionToString(E, True, False))
+      else
+        LogString(E.Message, 'ImportProject');
+    end;
   end;
 end;
 
@@ -2019,7 +2045,7 @@ begin
   begin
     if Confirm(rsWarning, rsSaveChangesBeforeTestMsg) = mrYes then
     begin
-      if not Save(False) then Exit;
+      if not Save(False, False) then Exit;
     end
     else Exit;
   end;
@@ -2122,7 +2148,7 @@ begin
   end;
 end;  }
 
-function TDesignFr.CheckBeforeChangeStruct: Boolean;
+function TDesignFr.CheckBeforeChangeStruct(CmdLine: Boolean): Boolean;
 var
   i, RecSz, j: Integer;
   DCI: TDesignCacheItem;
@@ -2159,8 +2185,11 @@ begin
       if FCI.Cnt > 255 then
       begin
         Fm := FormMan.FindForm(FCI.Id);
-        ErrMsg(rsSaveProjectError + Spaces + Format(rsTableChangesLimitMsg,
-          [Fm.FormCaption]) + Spaces + rsNotLoseChanges);
+        if not CmdLine then
+          ErrMsg(rsSaveProjectError + Spaces + Format(rsTableChangesLimitMsg,
+            [Fm.FormCaption]) + Spaces + rsNotLoseChanges)
+        else
+          LogString('Table modification limit exceeded. Form: ' + Fm.FormCaption, 'ValidateProject');
         Exit(False);
       end;
     end;
@@ -2183,9 +2212,12 @@ begin
     RecSz := CalcRecordSize(Fm, True, False);
     if RecSz > 65535 then
     begin
-      ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KOldMsg, [Fm.FormCaption,
-        RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
-        rsNotLoseChanges);
+      if not CmdLine then
+        ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KOldMsg, [Fm.FormCaption,
+          RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
+          rsNotLoseChanges)
+      else
+        LogString('The record size exceeds 64 KB. Form: ' + Fm.FormCaption, 'ValidateProject');
       Exit(False);
     end;
 
@@ -2193,9 +2225,12 @@ begin
     RecSz := CalcRecordSize(Fm, False, False);
     if RecSz > 65535 then
     begin
-      ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KMsg, [Fm.FormCaption,
-        RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
-        rsNotLoseChanges);
+      if not CmdLine then
+        ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KMsg, [Fm.FormCaption,
+          RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
+          rsNotLoseChanges)
+      else
+        LogString('The record size exceeds 64 KB. Form: ' + Fm.FormCaption, 'ValidateProject');
       Exit(False);
     end;
 
@@ -2212,8 +2247,11 @@ begin
           if FCI.Cnt > 255 then
           begin
             S := GetResizedFields(Fm, j);
-            ErrMsg(rsCheckResizeFieldsError + AroundSpaces(S) + Format(rsTableChangesLimitMsg,
-              [Fm.FormCaption]));
+            if not CmdLine then
+              ErrMsg(rsCheckResizeFieldsError + AroundSpaces(S) + Format(rsTableChangesLimitMsg,
+                [Fm.FormCaption]))
+            else
+              LogString('Table modification limit exceeded. Form: ' + Fm.FormCaption, 'ValidateProject');
             Exit(False);
           end;
         end;
@@ -2232,9 +2270,12 @@ begin
       RecSz := CalcRecordSize(Fm, False, True);
       if RecSz > 65535 then
       begin
-        ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KObjMsg, [Fm.FormCaption,
-         RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
-         rsNotLoseChanges);
+        if not CmdLine then
+          ErrMsg(rsSaveProjectError + Spaces + Format(rsLimit64KObjMsg, [Fm.FormCaption,
+           RecSz, RecSz - 65535, (RecSz - 65535) / 4]) + Spaces +
+           rsNotLoseChanges)
+        else
+          LogString('The record size exceeds 64 KB. Form: ' + Fm.FormCaption, 'ValidateProject');
         Exit(False);
       end;
     end;
@@ -2399,20 +2440,23 @@ begin
   SL.Free;
 end;
 
-function TDesignFr.Save(ConfirmEmptyGroups: Boolean): Boolean;
+function TDesignFr.Save(ConfirmEmptyGroups, CmdLine: Boolean): Boolean;
 var
   Gr, Fields: String;
 begin
   Result := False;
 
-  if not DXMain.CanProjectSave then Exit;
-  if ConfirmEmptyGroups and (FormsTreeView.HasEmptyGroups(Gr)) then
-    begin
-			if Confirm(rsWarning, Format(rsEmptyGroupsNotSaved,
-      	[LineEnding + LineEnding + Gr + LineEnding])) = mrNo then Exit;
-    end;
+  if not CmdLine then
+  begin
+    if not DXMain.CanProjectSave then Exit;
+    if ConfirmEmptyGroups and (FormsTreeView.HasEmptyGroups(Gr)) then
+      begin
+			  if Confirm(rsWarning, Format(rsEmptyGroupsNotSaved,
+      	  [LineEnding + LineEnding + Gr + LineEnding])) = mrNo then Exit;
+      end;
+  end;
 
-  if not CheckBeforeChangeStruct then Exit;
+  if not CheckBeforeChangeStruct(CmdLine) then Exit;
 
   if FCurForm <> nil then
   begin
@@ -2423,16 +2467,12 @@ begin
   FFormsTree.SaveTree;
 
   if ScriptFm <> nil then ScriptFm.SaveAll;
-  // В случае ошибок bin-ы не будут обновлены.
-  {if AppConfig.Caching and ScriptMan.NeedCompile then
-    ScriptMan.CompileAll;    }
 
   try
     ImageMan.SaveToDb;
     FormMan.SaveToDb;
     ReportMan.SaveToDB;
     UserMan.SaveToDb;
-    //if ScriptFm <> nil then ScriptFm.SaveAll;
     ScriptMan.SaveToDB;
     DXMain.SaveToDb;
     ChangeStruct;
@@ -2444,7 +2484,10 @@ begin
   except
     on E: Exception do
     begin
-      ErrMsg(rsSaveProjectError + ExceptionToString(E, True, True) + rsNotLoseChanges);
+      if not CmdLine then
+        ErrMsg(rsSaveProjectError + ExceptionToString(E, True, True) + rsNotLoseChanges)
+      else
+        LogString(E.Message, 'SaveProject');
       Exit;
     end;
   end;
@@ -2456,13 +2499,19 @@ begin
     except
       on E: Exception do
       begin
-        ErrMsg(rsInitFieldsError + ExceptionToString(E, True, False));
+        if not CmdLine then
+          ErrMsg(rsInitFieldsError + ExceptionToString(E, True, False))
+        else
+          LogString(E.Message, 'InitFields');
         CancelResizeFields(Fields);
         if Fields <> '' then
         begin
-          ErrMsgFmt(rsResizeFieldsError, [ExceptionToString(E, True, True), Fields]);
-          Info(rsSaveFormsAgain);
-          SaveFormsAgain;
+          if not CmdLine then
+          begin
+            ErrMsgFmt(rsResizeFieldsError, [ExceptionToString(E, True, True), Fields]);
+            Info(rsSaveFormsAgain);
+          end;
+          SaveFormsAgain(CmdLine);
         end;
         Exit;
       end;
@@ -2474,9 +2523,14 @@ begin
       on E: Exception do
       begin
         CancelResizeFields(Fields);
-        ErrMsgFmt(rsResizeFieldsError, [ExceptionToString(E, True, True), Fields]);
-        Info(rsSaveFormsAgain);
-        SaveFormsAgain;
+        if not CmdLine then
+        begin
+          ErrMsgFmt(rsResizeFieldsError, [ExceptionToString(E, True, True), Fields]);
+          Info(rsSaveFormsAgain);
+        end
+        else
+          LogString(E.Message, 'ChangeFieldsSize');
+        SaveFormsAgain(CmdLine);
         Exit;
       end;
     end;
@@ -2768,15 +2822,21 @@ begin
   Fm.SetFormChanged;
 end;
 
-procedure TDesignFr.SaveFormsAgain;
+procedure TDesignFr.SaveFormsAgain(CmdLine: Boolean);
 begin
   try
     FormMan.SaveToDb;
     DBase.Commit;
-    Info(rsSaveFormsOk);
+    if not CmdLine then
+      Info(rsSaveFormsOk);
   except
     on E: Exception do
-      ErrMsg(rsSaveFormsError + ExceptionToString(E, True, True) + rsNotLoseChanges);
+    begin
+      if not CmdLine then
+        ErrMsg(rsSaveFormsError + ExceptionToString(E, True, True) + rsNotLoseChanges)
+      else
+        LogString(E.Message, 'SaveFormsAgain');
+    end;
   end;
 end;
 

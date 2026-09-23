@@ -128,6 +128,18 @@ procedure TJSONDataIsNull_R(Self: TJSONData; var T: Boolean); begin T := Self.Is
 procedure TJSONDataAsJSON_R(Self: TJSONData; var T: String); begin T := Self.AsJSON; end;
 procedure TJSONDataClear(Self: TJSONData); begin Self.Clear; end;
 function TJSONDataClone(Self: TJSONData): TJSONData; begin Result := Self.Clone; end;
+{$IFDEF CPUX86_64}
+procedure TJSONDataFormatJSON(Self: TJSONData; var Res: String; Options: Integer; IdentSize: Integer);
+begin
+  // Дополнительная опция foFormatFloat, которой нет в fpjson, но есть у меня в скриптах.
+  if (Options and 32) = 32 then JSONFormatFloatEnabled := True;
+  try
+    Res := Self.FormatJSON(TFormatOptions(Options), IdentSize);
+  finally
+    JSONFormatFloatEnabled := False;
+  end;
+end;
+{$ELSE}
 function TJSONDataFormatJSON(Self: TJSONData; Options: Integer; IdentSize: Integer): String;
 begin
   // Дополнительная опция foFormatFloat, которой нет в fpjson, но есть у меня в скриптах.
@@ -138,6 +150,7 @@ begin
     JSONFormatFloatEnabled := False;
   end;
 end;
+{$ENDIF}
 
 Function VariantToJSON(V: Variant) : TJSONData;
 begin
@@ -1038,8 +1051,8 @@ procedure TdxSQLQueryFields_W(Self: TdxSQLQuery; T: Variant; I: String); begin S
 procedure TdxSQLQueryField_R(Self: TdxSQLQuery; var T: TField; I: Integer); begin T := Self.Field[I]; end;
 procedure TdxSQLQueryAsI_R(Self: TdxSQLQuery; var T: Integer; I: String); begin T := Self.AsI[I]; end;
 procedure TdxSQLQueryAsI_W(Self: TdxSQLQuery; T: Integer; I: String); begin Self.AsI[I] := T; end;
-procedure TdxSQLQueryAsF_R(Self: TdxSQLQuery; var T: Extended; I: String); begin T := Self.AsF[I]; end;
-procedure TdxSQLQueryAsF_W(Self: TdxSQLQuery; T: Extended; I: String); begin Self.AsF[I] := T; end;
+procedure TdxSQLQueryAsF_R(Self: TdxSQLQuery; var T: Double; I: String); begin T := Self.AsF[I]; end;
+procedure TdxSQLQueryAsF_W(Self: TdxSQLQuery; T: Double; I: String); begin Self.AsF[I] := T; end;
 procedure TdxSQLQueryAsDT_R(Self: TdxSQLQuery; var T: TDateTime; I: String); begin T := Self.AsDT[I]; end;
 procedure TdxSQLQueryAsDT_W(Self: TdxSQLQuery; T: TDateTime; I: String); begin Self.AsDT[I] := T; end;
 procedure TdxSQLQueryAsS_R(Self: TdxSQLQuery; var T: String; I: String); begin T := Self.AsS[I]; end;
@@ -1147,7 +1160,7 @@ end;  }
 procedure TdxQueryGridQueryName_R(Self: TdxQueryGrid; var T: String); begin T := Self.QueryName; end;
 procedure TdxQueryGridFields_R(Self: TdxQueryGrid; var T: Variant; I: String); begin T := Self.Fields[I]; end;
 procedure TdxQueryGridAsI_R(Self: TdxQueryGrid; var T: Integer; I: String); begin T := Self.AsI[I]; end;
-procedure TdxQueryGridAsF_R(Self: TdxQueryGrid; var T: Extended; I: String); begin T := Self.AsF[I]; end;
+procedure TdxQueryGridAsF_R(Self: TdxQueryGrid; var T: Double; I: String); begin T := Self.AsF[I]; end;
 procedure TdxQueryGridAsDT_R(Self: TdxQueryGrid; var T: TDateTime; I: String); begin T := Self.AsDT[I]; end;
 procedure TdxQueryGridAsS_R(Self: TdxQueryGrid; var T: String; I: String); begin T := Self.AsS[I]; end;
 procedure TdxQueryGridOnCreateForm_R(Self: TdxQueryGrid; var T: TCreateFormEvent); begin T := Self.OnCreateForm; end;
@@ -1740,6 +1753,7 @@ procedure TdxLookupComboBoxSourceFieldName_R(Self: TdxLookupComboBox; var T: Str
 procedure TdxLookupComboBoxOnNeedData_R(Self: TdxLookupComboBox; var T: TNeedDataEvent); begin T := Self.OnNeedData; end;
 procedure TdxLookupComboBoxOnNeedData_W(Self: TdxLookupComboBox; T: TNeedDataEvent); begin Self.OnNeedData := T; end;
 procedure TdxLookupComboBoxDropDownList_R(Self: TdxLookupComboBox; var T: TDropDownList); begin T := Self.DropDownList; end;
+procedure TdxLookupComboBoxTypedText_R(Self: TdxLookupComboBox; var T: String); begin T := Self.TypedText; end;
 
 procedure TDropDownColumnsItems_R(Self: TDropDownListColumns; var T: TDropDownListColumn; I: Integer); begin T := Self.Items[I]; end;
 procedure TDropDownColumnsItems_W(Self: TDropDownListColumns; T: TDropDownListColumn; I: Integer); begin Self.Items[I] := T; end;
@@ -1786,6 +1800,7 @@ begin
     RegisterPropertyHelper(@TdxLookupComboBoxSourceFormName_R, nil, 'SourceFormName');
     RegisterPropertyHelper(@TdxLookupComboBoxSourceFieldName_R, nil, 'SourceFieldName');
     RegisterPropertyHelper(@TdxLookupComboBoxDropDownList_R, nil, 'DropDownList');
+    RegisterPropertyHelper(@TdxLookupComboBoxTypedText_R, nil, 'TypedText');
     RegisterEventPropertyHelper(@TdxLookupComboBoxOnCreateListWindow_R, @TdxLookupComboBoxOnCreateListWindow_W,
       'OnCreateListWindow');
     RegisterEventPropertyHelper(@TdxLookupComboBoxOnCreateForm_R, @TdxLookupComboBoxOnCreateForm_W,
@@ -2010,7 +2025,7 @@ procedure TdxFormFields_R(Self: TdxForm; var T: Variant; I: String); begin T := 
 procedure TdxFormFields_W(Self: TdxForm; const T: Variant; I: String); begin Self.Fields[I]:= T; end;
 procedure TdxFormField_R(Self: TdxForm; var T: TField; I: String); begin T := Self.Field[I]; end;
 procedure TdxFormAsI_R(Self: TdxForm; var T: Integer; I: String); begin T := Self.AsI[I]; end;
-procedure TdxFormAsF_R(Self: TdxForm; var T: Extended; I: String); begin T := Self.AsF[I]; end;
+procedure TdxFormAsF_R(Self: TdxForm; var T: Double; I: String); begin T := Self.AsF[I]; end;
 procedure TdxFormAsDT_R(Self: TdxForm; var T: TDateTime; I: String); begin T := Self.AsDT[I]; end;
 procedure TdxFormAsS_R(Self: TdxForm; var T: String; I: String); begin T := Self.AsS[I]; end;
 procedure TdxFormOldValues_R(Self: TdxForm; var T: Variant; I: String); begin T := Self.OldValues[I]; end;
@@ -2706,7 +2721,8 @@ var
 begin
   Result := True;
   case PtrUInt(p.Ext1) of
-    1: Stack.SetReal(-1, _MyFrac(Stack.GetReal(-2)));                                         // Frac
+    // Закомментировал, потому что баг исправлен в линукс64-ветке
+    {1: Stack.SetReal(-1, _MyFrac(Stack.GetReal(-2)));                                         // Frac
     2: Stack.SetReal(-1, Power(Stack.GetReal(-2), Stack.GetReal(-3)));                        // Power
     3: Stack.SetReal(-1, MathRound(Stack.GetReal(-2), Stack.GetInt(-3)));                     // Round
     4: Stack.SetReal(-1, DAvg(Stack.GetClass(-2), Stack.GetString(-3)));                      // DAvg
@@ -2717,7 +2733,7 @@ begin
         resData := @PPSVariantData(Stack.Items[Stack.Count - 1])^.Data;
         resData := Pointer(resData^);
         TRect(resData^) := R; // или, что то же самое, Move(R, resData^, SizeOf(R));
-      end;
+      end;   }
     7:                                                                                        // FreeAndNil
       begin
         val := NewTPSVariantIFC(Stack[Stack.Count-1],true);
@@ -2850,17 +2866,17 @@ begin
   Exec.RegisterDelphiFunction(@EvalExpr, 'EvalExpr', cdRegister);
 
   Exec.RegisterDelphiFunction(@DCount, 'DCount', cdRegister);
-  //Exec.RegisterDelphiFunction(@DSum, 'DSum', cdRegister);
-  //Exec.RegisterDelphiFunction(@DAvg, 'DAvg', cdRegister);
+  Exec.RegisterDelphiFunction(@DSum, 'DSum', cdRegister);     // Extended
+  Exec.RegisterDelphiFunction(@DAvg, 'DAvg', cdRegister);     // Extended
   Exec.RegisterDelphiFunction(@DMax, 'DMax', cdRegister);
   Exec.RegisterDelphiFunction(@DMin, 'DMin', cdRegister);
   Exec.RegisterDelphiFunction(@DMerge, 'DMerge', cdRegister);
   Exec.RegisterDelphiFunction(@ToWordsRu, 'ToWords', cdRegister);
   Exec.RegisterDelphiFunction(@RurToWords, 'RurToWords', cdRegister);
   Exec.RegisterDelphiFunction(@Nz, 'Nz', cdRegister);
-  //Exec.RegisterDelphiFunction(@MathRound, 'RoundTo', cdRegister);
-  //Exec.RegisterDelphiFunction(@_MyFrac, 'Frac', cdRegister);
-  //Exec.RegisterDelphiFunction(@Power, 'Power', cdRegister);
+  Exec.RegisterDelphiFunction(@MathRound, 'RoundTo', cdRegister);        // Extended
+  Exec.RegisterDelphiFunction(@_MyFrac, 'Frac', cdRegister);             // Extended
+  Exec.RegisterDelphiFunction(@Power, 'Power', cdRegister);              // Extended
   Exec.RegisterDelphiFunction(@YearsBetweenEx, 'YearsBetween', cdRegister);
   Exec.RegisterDelphiFunction(@MonthsBetweenEx, 'MonthsBetween', cdRegister);
   Exec.RegisterDelphiFunction(@WeeksBetweenEx, 'WeeksBetween', cdRegister);
@@ -2946,7 +2962,7 @@ begin
   Exec.RegisterDelphiFunction(@MySameValue, 'SameValue', cdRegister);
 
   Exec.RegisterDelphiFunction(@Point, 'Point', cdRegister);
-  //Exec.RegisterDelphiFunction(@Rect, 'Rect', cdRegister);
+  Exec.RegisterDelphiFunction(@Rect, 'Rect', cdRegister);         // record 16 byte
 
   Exec.RegisterDelphiFunction(@GetId, 'GetComponentId', cdRegister);
   Exec.RegisterDelphiFunction(@GetFieldName, 'GetComponentFieldName', cdRegister);
@@ -2997,12 +3013,13 @@ begin
   Exec.RegisterDelphiFunction(@Sleep, 'Delay', cdRegister);
 
   // Функции с результатом Extended (для совместимости с линукс x86_64.
-  Exec.RegisterFunctionName('FRAC', @RegFunctions86_64, Pointer(1), nil);
+  // Закомментировал, потому что баг исправлен в линук64-ветке
+  {Exec.RegisterFunctionName('FRAC', @RegFunctions86_64, Pointer(1), nil);
   Exec.RegisterFunctionName('POWER', @RegFunctions86_64, Pointer(2), nil);
   Exec.RegisterFunctionName('ROUNDTO', @RegFunctions86_64, Pointer(3), nil);
   Exec.RegisterFunctionName('DAVG', @RegFunctions86_64, Pointer(4), nil);
   Exec.RegisterFunctionName('DSUM', @RegFunctions86_64, Pointer(5), nil);
-  Exec.RegisterFunctionName('RECT', @RegFunctions86_64, Pointer(6), nil);
+  Exec.RegisterFunctionName('RECT', @RegFunctions86_64, Pointer(6), nil);}
 
   Exec.RegisterFunctionName('FREEANDNIL', @RegFunctions86_64, Pointer(7), nil);
 

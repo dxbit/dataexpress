@@ -25,7 +25,6 @@ uses
 
 
 
-procedure RIRegisterTGRAPHICSOBJECT(Cl: TPSRuntimeClassImporter);
 procedure RIRegisterTFont(Cl: TPSRuntimeClassImporter);
 procedure RIRegisterTPEN(Cl: TPSRuntimeClassImporter);
 procedure RIRegisterTBRUSH(Cl: TPSRuntimeClassImporter);
@@ -133,19 +132,6 @@ begin
     RegisterPropertyHelper(@TCanvasHandleR, @TCanvasHandleW, 'Handle');
     RegisterPropertyHelper(@TCanvasPixelsR, @TCanvasPixelsW, 'Pixels');
     RegisterPropertyHelper(@TCanvasTextStyleR, @TCanvasTextStyleW, 'TextStyle');
-  end;
-end;
-
-
-procedure TGRAPHICSOBJECTONCHANGE_W(Self: TGraphicsObject; T: TNotifyEvent); begin Self.OnChange := t; end;
-procedure TGRAPHICSOBJECTONCHANGE_R(Self: TGraphicsObject; var T: TNotifyEvent); begin T :=Self.OnChange; end;
-
-
-procedure RIRegisterTGRAPHICSOBJECT(Cl: TPSRuntimeClassImporter);
-begin
-  with Cl.Add(TGRAPHICSOBJECT) do
-  begin
-    RegisterPropertyHelper(@TGRAPHICSOBJECTONCHANGE_R, @TGRAPHICSOBJECTONCHANGE_W, 'OnChange');
   end;
 end;
 
@@ -262,7 +248,6 @@ end;
 
 procedure RIRegister_Graphics(Cl: TPSRuntimeClassImporter; Streams: Boolean);
 begin
-  RIRegisterTGRAPHICSOBJECT(cl);
   RIRegisterTFont(Cl);
   RIRegisterTCanvas(cl);
   RIRegisterTPEN(cl);

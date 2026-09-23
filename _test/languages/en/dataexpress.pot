@@ -1696,6 +1696,10 @@ msgstr ""
 msgid "Default value"
 msgstr ""
 
+#: strconsts.rsdelaysearch
+msgid "Delay before search (ms)"
+msgstr ""
+
 #: strconsts.rsdelcond
 msgid "Delete condition"
 msgstr ""
@@ -3749,7 +3753,7 @@ msgid "Intervals"
 msgstr ""
 
 #: strconsts.rsinvalidcharinfieldname
-msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / ="
+msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / = ;"
 msgstr ""
 
 #: strconsts.rsinvalidcharinformname
@@ -4019,6 +4023,10 @@ msgstr ""
 msgid "The list source is not configured correctly."
 msgstr ""
 
+#: strconsts.rsloadalllist
+msgid "Load all list"
+msgstr ""
+
 #: strconsts.rsloaddataerrormsg
 #, object-pascal-format
 msgid "Could not load script code.%sError message: %sModule name: %sModule kind: %s"
@@ -4225,6 +4233,10 @@ msgstr ""
 
 #: strconsts.rsminlength
 msgid "Min length"
+msgstr ""
+
+#: strconsts.rsminsearchlength
+msgid "The minimum number of characters for a search"
 msgstr ""
 
 #: strconsts.rsmodified
@@ -6401,6 +6413,11 @@ msgstr ""
 msgid "Triangle"
 msgstr ""
 
+#: strconsts.rstypeminchars
+#, object-pascal-format
+msgid "Type %d+ characters to search"
+msgstr ""
+
 #: strconsts.rstypename
 msgid "Type name"
 msgstr ""
@@ -6651,6 +6668,10 @@ msgstr ""
 msgid "Visible captions"
 msgstr ""
 
+#: strconsts.rswaiting
+msgid "Waiting..."
+msgstr ""
+
 #: strconsts.rswarning
 msgid "Warning"
 msgstr ""
@@ -6722,6 +6743,10 @@ msgstr ""
 
 #: strconsts.rswordxml
 msgid "Word XML"
+msgstr ""
+
+#: strconsts.rsworkingwithlargelists
+msgid "Working with large lists"
 msgstr ""
 
 #: strconsts.rsyes

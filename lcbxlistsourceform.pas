@@ -31,10 +31,16 @@ uses
 
 type
   TLCbxListSourceFm = class(TForm)
+    Bevel1: TBevel;
+    Label10: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     ShowAsTreeListChk: TCheckBox;
     MoreBn: TBitBtn;
     ButtonPanel1: TButtonPanel;
     ListMsgTxt: TStaticText;
+    SearchDelayEdt: TSpinEdit;
+    MinSearchLenEdt: TSpinEdit;
     UpdateTree: TComboBox;
     HideList: TCheckBox;
     HideButton: TCheckBox;
@@ -206,6 +212,9 @@ begin
   Label4.Caption := rsExtraListWidth;
   Label5.Caption := rsRowCountInList;
   Label7.Caption := rsTreeInListWindow;
+  Label8.Caption := rsDelaySearch;
+  Label9.Caption := rsWorkingWithLargeLists;
+  Label10.Caption := rsMinSearchLength;
   ListMsgTxt.Caption := rsListSourceClickMoreBn;
   UpdateTree.Items[0] := rsRefreshTreeFirstShow;
   UpdateTree.Items[1] := rsRefreshTreeEveryShow;
@@ -466,6 +475,8 @@ begin
   ShowAsTreeListChk.Checked := LCbx.ShowAsTreeList;
   if LCbx.UpdateTree then UpdateTree.ItemIndex := 1
   else UpdateTree.ItemIndex := 0;
+  SearchDelayEdt.Value := LCbx.SearchDelay;
+  MinSearchLenEdt.Value := LCbx.MinSearchLength;
 
   if LCbxListSourceMoreFm = nil then
     LCbxListSourceMoreFm := TLCbxListSourceMoreFm.Create(Application);
@@ -488,6 +499,8 @@ begin
   LCbx.HideButton := HideButton.Checked;
   LCbx.UpdateTree := UpdateTree.ItemIndex = 1;
   LCbx.ShowAsTreeList := ShowAsTreeListChk.Checked;
+  LCbx.SearchDelay := SearchDelayEdt.Value;
+  LCbx.MinSearchLength := MinSearchLenEdt.Value;
 
   LCbxListSourceMoreFm.Save(LCbx);
 

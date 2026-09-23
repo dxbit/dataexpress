@@ -1739,6 +1739,10 @@ msgstr "Заголовок по умолчанию"
 msgid "Default value"
 msgstr "Значение по умолчанию"
 
+#: strconsts.rsdelaysearch
+msgid "Delay before search (ms)"
+msgstr "Задержка перед поиском (мс)"
+
 #: strconsts.rsdelcond
 msgid "Delete condition"
 msgstr "Условие удаления"
@@ -3815,7 +3819,9 @@ msgid "Intervals"
 msgstr "Интервалы"
 
 #: strconsts.rsinvalidcharinfieldname
-msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / ="
+#, fuzzy
+#| msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / ="
+msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / = ;"
 msgstr "Нельзя использовать в именах полей следующие символы: ' \" | ! < > [ ] { } / ="
 
 #: strconsts.rsinvalidcharinformname
@@ -4088,6 +4094,10 @@ msgstr "Нажмите кнопку \"Дополнительно\", чтобы �
 msgid "The list source is not configured correctly."
 msgstr "Источник списка настроен некорректно."
 
+#: strconsts.rsloadalllist
+msgid "Load all list"
+msgstr "Загрузить весь список"
+
 #: strconsts.rsloaddataerrormsg
 #, object-pascal-format
 msgid "Could not load script code.%sError message: %sModule name: %sModule kind: %s"
@@ -4295,6 +4305,10 @@ msgstr "Минимум"
 #: strconsts.rsminlength
 msgid "Min length"
 msgstr "Мин. длина"
+
+#: strconsts.rsminsearchlength
+msgid "The minimum number of characters for a search"
+msgstr "Минимальное количество символов для поиска"
 
 #: strconsts.rsmodified
 msgid "Modified"
@@ -6493,6 +6507,11 @@ msgstr "При наличии дерева в окне списка"
 msgid "Triangle"
 msgstr "Треугольник"
 
+#: strconsts.rstypeminchars
+#, object-pascal-format
+msgid "Type %d+ characters to search"
+msgstr "Введите %d+ символов для поиска"
+
 #: strconsts.rstypename
 msgid "Type name"
 msgstr "Имя типа"
@@ -6747,6 +6766,10 @@ msgstr "Видимые кнопки"
 msgid "Visible captions"
 msgstr "Видимые надписи"
 
+#: strconsts.rswaiting
+msgid "Waiting..."
+msgstr "Ожидание..."
+
 #: strconsts.rswarning
 msgid "Warning"
 msgstr "Внимание"
@@ -6819,6 +6842,10 @@ msgstr "Перенос слов"
 #: strconsts.rswordxml
 msgid "Word XML"
 msgstr "Word XML"
+
+#: strconsts.rsworkingwithlargelists
+msgid "Working with large lists"
+msgstr "Работа с большими списками"
 
 #: strconsts.rsyes
 msgctxt "strconsts.rsyes"

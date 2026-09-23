@@ -29,9 +29,40 @@
       <Language Value="0419"/>
       <StringTable CompanyName="Pavel Duborkin" FileDescription="DataExpress application updater" LegalCopyright="Copyright © 2023-2024 Pavel Duborkin" OriginalFilename="dxupdate.exe" ProductName="DXUpdate" ProductVersion="24.11.2"/>
     </VersionInfo>
-    <BuildModes Count="2">
+    <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
-      <Item2 Name="Linux QT">
+      <Item2 Name="Win64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="_test64\dxupdate"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="x86_64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <ExecuteAfter>
+              <Command Value="copy.bat"/>
+            </ExecuteAfter>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Linux QT">
         <MacroValues Count="1">
           <Macro1 Name="LCLWidgetType" Value="qt5"/>
         </MacroValues>
@@ -66,7 +97,7 @@
             </ExecuteAfter>
           </Other>
         </CompilerOptions>
-      </Item2>
+      </Item3>
       <SharedMatrixOptions Count="1">
         <Item1 ID="573138821059" Modes="Linux QT" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
       </SharedMatrixOptions>

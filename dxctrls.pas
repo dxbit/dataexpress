@@ -507,6 +507,7 @@ type
     FRealDropDownCount: Integer;
     FFrags: TStringList;
     FOldChangeBounds: TNotifyEvent;
+    FLoadListMode, FForceLoadList: Boolean;
     {$ifdef linux}
     FSearchEdit: TEdit;
     FSearchMenu: TPopupMenu;
@@ -526,7 +527,6 @@ type
       aState: TGridDrawState);
     procedure GridUtf8KeyPress(Sender: TObject; var UTF8Key: TUTF8Char);
     procedure SetControl(AValue: TdxLookupComboBox);
-    procedure SetPosition;
     procedure AcceptSelected;
     procedure FindItem;
     procedure GridKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -542,6 +542,9 @@ type
     destructor Destroy; override;
     procedure ShowForm;
     function IsMouseEntered: Boolean;
+    procedure SetPosition;
+    procedure SetLoadListMode;
+    procedure ClearList;
     property Control: TdxLookupComboBox read FControl write SetControl;
     property Grid: TDropDownList read FGrid write FGrid;
   end;
@@ -581,6 +584,8 @@ type
     FListFields: TLCbxListFields;
     FListKeyField: String;
     FListSource: Integer;
+    FMinSearchLength: Cardinal;
+    FSearchDelay: Cardinal;
     FShowAsTreeList: Boolean;
     FListWidthExtra: Integer;
     //FLookupCache: Boolean;
@@ -607,6 +612,7 @@ type
     FFiltering: Boolean;				// Когда пользователь что-то вводит в поле, флаг устанавливается и позволяет фильтровать данные в списке
     FKeyDown: Boolean;
     FKeepList: Boolean;
+    FTypedText: String;
     {$ifdef linux}
     FUtf8Key: TUtf8Char;        // Передается в поле поиска окна списка (для линукс)
     FSkipKillFocus, FSkipUtf8Key: Boolean;		// Для linux
@@ -616,6 +622,7 @@ type
     FUpdateTree: Boolean;
     FPopup: TPopupMenu;
     FKeyTimer: TTimer;
+    FSearchTimer: TTimer;
     procedure DoButtonClick(Sender: TObject);
     procedure DoDropDownButtonClick(Sender: TObject);
     procedure DropDownButtonMouseDown(Sender: TObject; Button: TMouseButton;
@@ -629,6 +636,7 @@ type
     procedure MenuClick(Sender: TObject);
     procedure MenuPopup(Sender: TObject);
     procedure ReadInsertValues(Reader: TReader);
+    procedure SearchTimerTimer(Sender: TObject);
     procedure SetEditable(AValue: Boolean);
     procedure SetFieldName(AValue: String);
     procedure SetFieldsTables(AValue: TStrings);
@@ -636,6 +644,7 @@ type
     procedure SetHideList(AValue: Boolean);
     procedure SetKeyValue(AValue: Variant);
     procedure SetListFields(AValue: TLCbxListFields);
+    procedure SetSearchDelay(AValue: Cardinal);
     procedure WriteInsertValues(Writer: TWriter);
     procedure CreateListForm;
     procedure ShowListForm;
@@ -643,6 +652,7 @@ type
     procedure ProcessKillFocus;
     function IsListVisible: Boolean;
     procedure SetControlState;
+    function CanSearchText: Boolean;
   protected
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -664,6 +674,8 @@ type
     procedure WMSetFocus(var Message: TLMSetFocus); message LM_SETFOCUS;
     procedure WMKillFocus(var Message: TLMKillFocus); message LM_KILLFOCUS;
     function GetDrawText: String; override;
+    procedure DoNeedData;
+    procedure SetGridStatusText(const AText: String; NeedInvalidate, ForceShow: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -688,6 +700,7 @@ type
     property DropDownList: TDropDownList read GetGrid;
     property Changing: Boolean read FChanging write FChanging;
     property AsCellEditor: Boolean read FAsCellEditor write FAsCellEditor;
+    property TypedText: String read FTypedText;
     //property Grid: TDropDownList read FGrid;
 
     //property ItemIndex: Integer read FItemIndex write FItemIndex;
@@ -736,6 +749,8 @@ type
     property ListKeyField: String read FListKeyField write FListKeyField;
 
     property ShowAsTreeList: Boolean read FShowAsTreeList write FShowAsTreeList default False;
+    property SearchDelay: Cardinal read FSearchDelay write SetSearchDelay default 0;
+    property MinSearchLength: Cardinal read FMinSearchLength write FMinSearchLength default 0;
     //property AutoComplete: Boolean read FAutoComplete write FAutoComplete stored False;
     //property ItemHeight: Integer read FItemHeight write FItemHeight stored False;
 
@@ -985,7 +1000,7 @@ type
     FUseSelCond: Boolean;
     //FGridBmp: TBitmap;
     function GetAsDT(Index: String): TDateTime;
-    function GetAsF(Index: String): Extended;
+    function GetAsF(Index: String): Double;
     function GetAsI(Index: String): Integer;
     function GetAsS(Index: String): String;
     function GetEditWindow: TObject;
@@ -1029,7 +1044,7 @@ type
     property Fields[Index: String]: Variant read GetFields write SetFields;
     property Field[Index: String]: TField read GetField;
     property AsI[Index: String]: Integer read GetAsI;
-    property AsF[Index: String]: Extended read GetAsF;
+    property AsF[Index: String]: Double read GetAsF;
     property AsDT[Index: String]: TDateTime read GetAsDT;
     property AsS[Index: String]: String read GetAsS;
     property OldValues[Index: String]: Variant read GetOldValues;
@@ -1585,7 +1600,7 @@ procedure SetTextHint(C: TComponent; const S: String);
 implementation
 
 uses
-  TypInfo, formmanager, Dialogs, appsettings,
+  TypInfo, formmanager, Dialogs, exprfuncs, appsettings,
   FileUtil, BGRABitmapTypes, FPReadJpeg,
   FPImage, BGRAReadPNG, {dximages, dxfiles, }apputils, reportmanager,
   DXReports, DateUtils, pivotgrid, sqlgen, datasetprocessor,
@@ -2500,7 +2515,6 @@ end;
 procedure TdxLCbxListForm.FormChangeBounds(Sender: TObject);
 begin
   if FOldChangeBounds <> nil then FOldChangeBounds(Sender);
-  //FCancel := True;
   if Visible then
   begin
     SetFocusControl('');
@@ -2514,18 +2528,48 @@ procedure TdxLCbxListForm.DoNeedData;
 var
   S: String;
 begin
+  if FControl.FFiltering then S := FSearchEdit.Text
+  else S := '';
+  //SplitStr(S, ' ', FFrags);
+  FControl.FTypedText := S;
+  {$ifdef linux}
+  if not FControl.CanSearchText then
+  begin
+    if not FLoadListMode then
+    begin
+      SetLoadListMode;
+      SetPosition;
+    end;
+  end
+  else
+  {$endif}
+  if (FControl.SearchDelay = 0) or not FControl.FFiltering then
+    FControl.DoNeedData
+  else
+  begin
+    FControl.SetGridStatusText(rsWaiting, True, False);
+    FControl.FSearchTimer.Enabled := False;
+    FControl.FSearchTimer.Enabled := True;
+  end;
+end;
+
+{var
+  S: String;
+begin
   with FControl do
     if OnNeedData <> nil then
     begin
       if FFiltering then S := FSearchEdit.Text
       else S := '';
       SplitStr(S, ' ', FFrags);
-      FGrid.LoadingState := False;
+      SetTypedText(S);
+      FTypedText := S;
       FControl.OnNeedData(FControl, S);
+      FGrid.StatusText := '';
       Self.Height := GetListHeight;
       if S = '' then FindItem;
     end;
-end;
+end;    }
 
 procedure TdxLCbxListForm.ChangeTimerTimer(Sender: TObject);
 begin
@@ -2711,6 +2755,29 @@ begin
   end;
 end;
 
+procedure TdxLCbxListForm.SetLoadListMode;
+begin
+  ClearList;
+  FGrid.Columns.Add;
+  FGrid.RowCount := 2;
+  FGrid.Cells[0, 0] := rsLoadAllList;
+  FGrid.Cells[0, 1] := Format(rsTypeMinChars, [FControl.FMinSearchLength]);
+  FLoadListMode := True;
+end;
+
+procedure TdxLCbxListForm.ClearList;
+begin
+  with FGrid do
+  begin
+    Options := Options - [loTitles];
+    Columns.Clear;
+    RowCount := 0;
+    StatusText := '';
+  end;
+  FLoadListMode := False;
+  FForceLoadList := False;
+end;
+
 procedure TdxLCbxListForm.AcceptSelected;
 var
   id: Integer;
@@ -2718,7 +2785,18 @@ var
 begin
   with FGrid do
   begin
-	  if (RowCount > 0) and (ColCount > 0) then
+    if FLoadListMode then
+    begin
+      //ClearList;
+      if Row = 0 then
+      begin
+        FForceLoadList := True;
+        FControl.DoNeedData;
+      end;
+      Exit;
+    end;
+
+    if (RowCount > 0) and (ColCount > 0) then
     begin
       id := RecId[Row];
       if not FControl.ShowAsTreeList then
@@ -2829,6 +2907,8 @@ begin
   FSearchEdit.Text := '';
   FControl.FFiltering := False;
   {$endif}
+  if FControl.SearchDelay > 0 then
+    FControl.FSearchTimer.Enabled := False;
   if FControlForm <> nil then
     FControlForm.RemoveHandlerOnChangeBounds(@FormChangeBounds);
 end;
@@ -2846,7 +2926,9 @@ begin
   begin
     Key := 0;
     SetFocusControl('');
-  end;
+  end
+  // Защита от AV при переходе в дизайнер.
+  else if Key = VK_F11 then Key := 0;
 end;
 
 procedure TdxLCbxListForm.GridMouseUp(Sender: TObject; Button: TMouseButton;
@@ -2918,7 +3000,7 @@ procedure TdxLCbxListForm.ShowForm;
 begin
   SetPosition;
 
-  FRealDropDownCount := Round(Height / FGrid.DefaultRowHeight);
+{  FRealDropDownCount := Round(Height / FGrid.DefaultRowHeight);
 
   FFrags.Clear;
 
@@ -2930,9 +3012,7 @@ begin
       FGrid.TopRow := FGrid.FixedRows;
     end;
     SplitStr(FControl.Text, ' ', FFrags);
-  end
-  else
-	  FindItem;
+  end;}
 
   if not Visible then
     Show;
@@ -3009,8 +3089,9 @@ begin
   if AValue = FFieldName then Exit;
   FFieldName := AValue;
   C := FindComponentByFieldName(TdxFormTreeFields(Collection).Tree.Form, AValue);
-  if C <> nil then FFieldId := GetId(C)
-  else FFieldId := 0;
+  if C = nil then raise Exception.CreateFmt('TdxFormTreeField.SetFieldName' +
+    Spaces + rsFieldNotFound, [AValue]);
+  FFieldId := GetId(C);
 end;
 
 function TdxFormTreeField.FieldSourceToStr: String;
@@ -4827,6 +4908,12 @@ begin
   SL.Free;
 end;
 
+procedure TdxLookupComboBox.SearchTimerTimer(Sender: TObject);
+begin
+  FSearchTimer.Enabled := False;
+  DoNeedData;
+end;
+
 procedure TdxLookupComboBox.SetEditable(AValue: Boolean);
 begin
   if FEditable=AValue then Exit;
@@ -4874,6 +4961,16 @@ begin
   FListFields.Assign(AValue);
 end;
 
+procedure TdxLookupComboBox.SetSearchDelay(AValue: Cardinal);
+begin
+  if FSearchDelay=AValue then Exit;
+  FSearchDelay:=AValue;
+  if FSearchTimer = nil then FSearchTimer := TTimer.Create(Self);
+  FSearchTimer.Enabled := False;
+  FSearchTimer.Interval := AValue;
+  FSearchTimer.OnTimer := @SearchTimerTimer;
+end;
+
 procedure TdxLookupComboBox.WriteInsertValues(Writer: TWriter);
 var
   i: Integer;
@@ -4910,18 +5007,28 @@ begin
   if FFiltering then S := Text
   else S := '';
 
-	CreateListForm;
+  CreateListForm;
   FForm.PopupParent := TCustomForm(Self.GetTopParent);
 
+  //if FForm.FLoadListMode or not IsListVisible then
+  //  FForm.ClearList;
+
+  SetTypedText(S);
+  FTypedText := S;
+
   {$ifdef windows}
-  if FOnNeedData <> nil then FOnNeedData(Self, S);
-  //if FGrid.RowCount = FGrid.FixedRows then Exit;
+  if FFiltering and CanSearchText or (FMinSearchLength = 0) then
+  begin
+    if (FSearchDelay = 0) or not FFiltering then DoNeedData
+    else
+    begin
+      SetGridStatusText(rsWaiting, False, False);
+      FSearchTimer.Enabled := True;
+    end;
+  end
+  else
+    FForm.SetLoadListMode;
   {$else}
-  //if Text <> '' then Text := Field.AsString;
-  FGrid.Columns.Clear;
-  FGrid.Options := FGrid.Options - [loTitles];
-  FGrid.RowCount := 0;
-  FGrid.LoadingState := True;
   FForm.FChangeTimer.Enabled := True;
   {$endif}
 
@@ -5029,6 +5136,11 @@ begin
   Pop.Items[6].Enabled := src and ae and (not ReadOnly) and (not hbns) and Pop.Items[6].Visible;
   Pop.Items[7].Enabled := src and ae and (KeyValue <> Null) and Pop.Items[7].Visible;
   Pop.Items[9].Enabled := src and (KeyValue <> Null);
+end;
+
+function TdxLookupComboBox.CanSearchText: Boolean;
+begin
+  Result := Utf8Length(Trim(FTypedText)) >= FMinSearchLength;
 end;
 
 procedure TdxLookupComboBox.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -5234,6 +5346,9 @@ begin
 
     FChanging := False;
 
+    if FSearchDelay <> 0 then
+      FSearchTimer.Enabled := False;
+
     if Trim(Text) <> '' then
     begin
 	    FFiltering := True;
@@ -5256,7 +5371,7 @@ begin
 
   FKeyDown := False;
   //if FForm <> nil then FForm.Enabled := (not FKeyDown) and (FGrid.RowCount > FGrid.FixedRows);
-  if (IsListVisible{FForm <> nil}) and (FGrid.RowCount = FGrid.FixedRows) then CloseListForm;
+  //if (IsListVisible{FForm <> nil}) and (FGrid.RowCount = FGrid.FixedRows) then CloseListForm;
   if {FForm <> nil} IsListVisible then FForm.Enabled := True;
   {$else}
   if Key = VK_RETURN then
@@ -5379,6 +5494,64 @@ begin
   Result:=FieldName;
 end;
 
+procedure TdxLookupComboBox.DoNeedData;
+begin
+  //if FGrid.LoadListMode then FGrid.ClearList;
+  FForm.FFrags.Clear;
+
+  if CanSearchText or FForm.FForceLoadList then
+  begin
+    //if FForm.FLoadListMode then FForm.ClearList;
+    FForm.FForceLoadList := False;
+    FForm.FLoadListMode := False;
+    if FOnNeedData <> nil then
+    begin
+      if FFiltering then
+      begin
+        if FGrid.RowCount > FGrid.FixedRows then
+        begin
+          FGrid.Row := FGrid.FixedRows;
+          FGrid.TopRow := FGrid.FixedRows;
+        end;
+        SplitStr(FTypedText, ' ', FForm.FFrags);
+      end;
+
+      SetGridStatusText(rsLoading, True, False);
+      SetTypedText(FTypedText);
+      FOnNeedData(Self, FTypedText);
+      if (FGrid.RowCount <= FGrid.FixedRows) and FFiltering then
+        SetGridStatusText(rsNothingFound, False, True)
+      else
+        SetGridStatusText('', False, True);
+    end;
+  end
+  else
+  begin
+    FForm.SetLoadListMode;
+    //SetGridStatusText(Format(rsTypeMinChars, [FMinSearchLength]), True, True);
+  end;
+  if IsListVisible then
+  begin
+    FForm.SetPosition;
+    FForm.FRealDropDownCount := Round(FForm.Height / FGrid.DefaultRowHeight);
+  end;
+  if not FFiltering then FForm.FindItem;
+end;
+
+procedure TdxLookupComboBox.SetGridStatusText(const AText: String;
+  NeedInvalidate, ForceShow: Boolean);
+begin
+  if ForceShow or (FSearchDelay > 0) or (FMinSearchLength > 0) then
+    FGrid.StatusText := AText
+  else
+    FGrid.StatusText := '';
+  if NeedInvalidate then
+  begin
+    FGrid.Invalidate;
+    Application.ProcessMessages;
+  end;
+end;
+
 procedure TdxLookupComboBox.ClearData;
 begin
   if Field.DataSet.State in [dsInsert, dsEdit] then
@@ -5437,8 +5610,8 @@ begin
     Align := alClient;
     FixedRows := 0;
     FixedCols := 0;
-    RowCount := 1;
-    ColCount := 1;
+    RowCount := 0;
+    ColCount := 0;
     DefaultRowHeight := -1;
   end;
 
@@ -5474,7 +5647,7 @@ begin
   begin
     FKeyTimer := TTimer.Create(Self);
     FKeyTimer.Enabled := False;
-    FKeyTimer.Interval := 100;
+    FKeyTimer.Interval := 200;
     FKeyTimer.OnTimer:=@KeyTimerTimer;
   end;
 end;
@@ -6291,7 +6464,7 @@ begin
   Result := Nz(Fields[Index], 0);
 end;
 
-function TdxForm.GetAsF(Index: String): Extended;
+function TdxForm.GetAsF(Index: String): Double;
 begin
 	Result := Nz(Fields[Index], 0);
 end;
@@ -6541,10 +6714,11 @@ begin
   if C is TdxLookupComboBox then
   begin
     if aValue <> Null then
-      FDataSet.FieldByName(FieldStr(C) + 'l').Value := GetObjFieldValue(C, AValue, True)
+    begin
+      FDataSet.FieldByName(FieldStr(C) + 'l').Value := GetObjFieldValue(C, AValue, True);
+    end
     else
       FDataSet.FieldByName(FieldStr(C) + 'l').Value := Null;
-      //TdxLookupComboBox(C).ClearData;
   end;
   FDataSet.FieldByName(FieldStr(C)).Value := AValue;
 end;

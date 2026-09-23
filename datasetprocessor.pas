@@ -813,7 +813,6 @@ begin
   end
   else if (Cbx.ListKeyField <> '') and (Cbx.ListFields.Count > 0) then
   begin
-    SetTypedText(Text);
     Fm := TdxForm(LR.Control.Owner);
     QGrid := FindQueryGrid(Fm, Cbx.ListSource);
 
@@ -1802,9 +1801,9 @@ begin
 
   if IsTree then AddColumn('', -1, False, False);
 
+  Grid.Options := Grid.Options - [loTitles];
   if (LCbx.ListFields.Count = 0) or (LCbx.ListSource > 0) and (LCbx.ListFields.Count = 1)
     or (GetVisibleColumnsCount = 1) then
-    Grid.Options := Grid.Options - [loTitles]
   else
     Grid.Options := Grid.Options + [loTitles];
 
@@ -5272,6 +5271,8 @@ begin
     C.ListSource := ListSource;
     C.ListKeyField := ListKeyField;
     C.ShowAsTreeList := ShowAsTreeList;
+    C.SearchDelay := SearchDelay;
+    C.MinSearchLength := MinSearchLength;
 	  C.OnNeedData := OnNeedData;
     C.OnKeyMatch := OnKeyMatch;
     C.OnSetKey := @LCbxSetKey;

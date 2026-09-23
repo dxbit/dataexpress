@@ -166,11 +166,11 @@ type
   private
     FHighlightColor: TColor;
     FHighlightSearchedText: Boolean;
-    FLoadingState: Boolean;
     FSelectedHighlightColor: TColor;
     FInactiveSelectedColor: TColor;
     FOptions: TDropDownListOptions;
     FSelColor: TColor;
+    FStatusText: String;
     function GetColumns: TDropDownListColumns;
     function GetRecId(Index: Integer): Integer;
     procedure SetColumns(AValue: TDropDownListColumns);
@@ -180,9 +180,7 @@ type
     function GetDefaultRowHeight: integer; override;
     procedure WMVScroll(var message: TLMVScroll); message LM_VSCROLL;
     function CreateColumns: TGridColumns; override;
-    {$ifdef linux}
     procedure DrawAllRows; override;
-    {$endif}
     procedure DrawCellText(aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState;
       aText: String); override;
     function GetTruncCellHintText(ACol, ARow: Integer): string; override;
@@ -193,8 +191,8 @@ type
     //procedure Assign(Source: TPersistent); override;
     property RecId[Index: Integer]: Integer read GetRecId write SetRecId;
     property SelColor: TColor read FSelColor write FSelColor; // Это SelectedColor
-    property LoadingState: Boolean read FLoadingState write FLoadingState;
   published
+    property StatusText: String read FStatusText write FStatusText;
     property Columns: TDropDownListColumns read GetColumns write SetColumns;
     property Options: TDropDownListOptions read FOptions write SetOptions;
     property InactiveSelectedColor: TColor read FInactiveSelectedColor write FInactiveSelectedColor;
@@ -939,32 +937,45 @@ begin
   Result := TDropDownListColumns.Create(Self, TDropDownListColumn);
 end;
 
-{$ifdef linux}
 procedure TDropDownList.DrawAllRows;
 var
   TS: TTextStyle;
   S: String;
   R: TRect;
+  TextW, TextH, xpad, ypad: Integer;
 begin
   inherited DrawAllRows;
-  if RowCount <= FixedRows then
+  if FStatusText <> '' then
   begin
     TS := Default(TTextStyle);
-    //TS.Clipping := True;
     TS.Layout := tlCenter;
     TS.Alignment := taCenter;
     Canvas.Font := Font;
     Canvas.Font.Color := clSilver;
-    if FLoadingState then
-      S := rsLoading
+    Canvas.Brush.Color := clWhite;
+    Canvas.Pen.Color := clSilver;
+    S := FStatusText;
+    TextH := Canvas.TextHeight('Yy');
+    if RowCount <= FixedRows then
+    begin
+      R := ClientRect;
+      R.Top := R.Bottom - DefaultRowHeight - constCellPadding;
+      Canvas.TextRect(R, 0, 0, S, TS);
+    end
     else
-      S := rsNothingFound;
-    R := ClientRect;
-    R.Top := R.Bottom - DefaultRowHeight - constCellPadding;
-    Canvas.TextRect(R, 0, 0, S, TS);
+    begin
+      TextW := Canvas.TextWidth(S);
+      xpad := ScaleToScreen(8);
+      ypad := ScaleToScreen(4);
+      R.Left := (ClientWidth - TextW) div 2 - xpad;
+      R.Top := (ClientHeight - TextH) div 2 - ypad;
+      R.Right := R.Left + TextW + xpad * 2;
+      R.Bottom := R.Top + TextH + ypad * 2;
+      Canvas.Rectangle(R);
+      Canvas.TextRect(R, 0, 0, S, TS);
+    end;
   end;
 end;
-{$endif}
 
 procedure TDropDownList.DrawCellText(aCol, aRow: Integer; aRect: TRect;
   aState: TGridDrawState; aText: String);

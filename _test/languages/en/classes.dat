@@ -9,6 +9,7 @@ Base types
 	Char = 1 byte: #0..#255
 	Double = 8 bytes: 5.0E-324..1.7E308
 	Extended = 10 bytes: 1.9E-4932..1.1E4932
+	Extended = Double (Win64)
 	Int64 = 8 bytes: -2^63..2^63
 	Integer = 4 bytes: -2147483648..2147483647
 	LongInt = 4 bytes: -2147483648..2147483647
@@ -32,7 +33,9 @@ Reserved words
 	case x of
 	const
 	continue
+	except
 	exit
+	finally
 	for .. to/downto .. do
 	function
 	if .. then .. else ..
@@ -40,6 +43,7 @@ Reserved words
 	record .. end
 	repeat .. until
 	set of ..
+	try
 	type
 	uses
 	var
@@ -129,7 +133,7 @@ Constants
 		faDirectory = $00000010
 		faArchive   = $00000020
 		faSymLink   = $00000400
-		faAnyFile   = $0000003f
+		faAnyFile   = $000001ff
 	File mode
 		fmCreate = $FF00
 		fmOpenRead = 0
@@ -820,7 +824,7 @@ Procedures & Functions
 	UTF8-strings
 		function RurToWords(Money: Currency): String
 		procedure StringToUtf8Char(const S: String; var Utf8Char: TUtf8Char)
-		function ToWordsRu(Money: Currency): String
+		function ToWords(Money: Currency): String
 		function UTF16ToUTF8(const S: UnicodeString): String
 		function Utf8CharToString(Utf8Char: TUtf8Char): String
 		function UTF8Copy(const S: String; StartCharIndex, CharCount: LongInt): String
@@ -901,7 +905,7 @@ TBitmap = class(TGraphic)
 	property Monochrome: Boolean [rw]
 	property Palette: HPALETTE [rw]
 	property TransparentColor: TColor [rw]
-TBrush = class(TGraphicObject)
+TBrush = class(TPersistent)
 	property Color: TColor [rw]
 	property Style: TBrushStyle [rw]
 TButton = class(TCustomButton)
@@ -985,13 +989,13 @@ TComboBox = class(TCustomComboBox)
 	property Tag: LongInt [rw] 
 #TControl = class(TComponent)
 	procedure BringToFront
-	function ClientToScreen(Point: TPoint): TPoint
+	function ClientToScreen(const Point: TPoint): TPoint
 	function GetTopParent: TControl
 	function HasParent: Boolean
 	procedure Hide
 	procedure Invalidate
 	procedure Refresh
-	function ScreenToClient(Point: TPoint): TPoint
+	function ScreenToClient(const Point: TPoint): TPoint
 	procedure SendToBack
 	procedure SetBounds(X,Y,w,h: Integer)
 	procedure Show
@@ -1155,7 +1159,7 @@ TCsvData = class(TObject)
 	property Count: Integer [r]
 #TCustomListBox = class(TWinControl)
 	procedure Clear
-	function ItemAtPos(Pos: TPoint; Existing: Boolean): Integer
+	function ItemAtPos(const Pos: TPoint; Existing: Boolean): Integer
 	function ItemRect(Index: Integer): TRect
 	property BorderStyle: TBorderStyle [rw]
 	property Canvas: TCanvas [r]
@@ -1254,12 +1258,21 @@ TDOMNodeList = class(TObject)
 	property Count: LongWord [r]
 	property Item[Index: LongWord]: TDOMNode [r] default
 TDropDownList = class(TCustomControl)
+	property AlternateColor: TColor [rw]
+	property Cells[Col, Row]: String [rw]
 	property Columns: TDropDownListColumns [rw]
+	property DefaultRowHeight: Integer [rw]
+	property FixedColor: TColor [rw]
+	property FixedGridLineColor: TColor [rw]
+	property GridLineColor: TColor [rw]
+	property GridLineStyle: TPenStyle [rw]
 	property HighlightColor: TColor [rw]
 	property HighlightSearchedText: Boolean [rw]
 	property InactiveSelectedColor: TColor [rw]
 	property Options: TDropDownListOptions [rw]
+	property OnDrawCell: TOnDrawCell [rw]
 	property RecId[Index: Integer]: Integer [rw]
+	property RowCount: Integer [rw]
 	property SelectedColor: TColor [rw]
 	property SelectedHighlightColor: TColor [rw]
 	property TitleFont: TFont [rw]
@@ -1341,7 +1354,7 @@ TFilterObject = class(TObject)
 	function FindField(const FieldName: String): TFilterField
 	property Count: Integer [r]
 	property Fields[Index: Integer]: TFilterField [r] default
-TFont = class(TGraphicObject)
+TFont = class(TPersistent)
 	property Color: TColor [rw]
 	property Handle: Integer [rw]
 	property Height: Integer [rw]
@@ -1401,8 +1414,6 @@ TFormView = class(TCustomPanel)
 	property Width: Integer [rw]
 #TGraphicControl = class(TControl)
 	property Canvas: TCanvas [r]
-#TGraphicObject = class(TPersistent)
-	property OnChange: TNotifyEvent [rw]
 TGridColumn = class(TCollectionItem)
 	property Alignment: TAlignment [rw]
 	property Color: TColor [rw]
@@ -1791,7 +1802,7 @@ TPanel = class(TCustomPanel)
 	property BevelWidth: Integer [rw]
 TPanelBitBtn = class(TCustomBitBtn)
 	property Glyph: TBitmap [rw]
-TPen = class(TGraphicObject)
+TPen = class(TPersistent)
 	property Color: TColor [rw]
 	property Mode: TPenMode [rw]
 	property Style: TPenStyle [rw]
@@ -2246,7 +2257,7 @@ TTreeView = class(TCustomTreeView)
 	property Options: TTreeViewOptions [rw]
 	property TreeLineColor: TColor [rw]
 	property TreeLinePenStyle: TPenStyle [rw]
-TUploadFile = class(TCollectionItem)
+TUploadedFile = class(TCollectionItem)
 	property ContentType: String [rw]
 	property Description: String [rw]
 	property Disposition: String [rw]
@@ -2254,14 +2265,14 @@ TUploadFile = class(TCollectionItem)
 	property FileName: String [rw]
 	property LocalFileName: String [rw]
 	property Size: Int64 [rw]
-	property Stream: Tstream [r]
+	property Stream: TStream [r]
 TUploadedFiles = class(TCollection)
 	property Files[Index: Integer]: TUploadFile [r] default
 #TWinControl = class(TControl)
 	function CanFocus: Boolean
 	function ContainsControl(Control: TControl): Boolean
 	function Focused: Boolean
-	procedure PaintTo(DC: LongInt; X,Y: Integer)
+	procedure PaintTo(DC: HDC; X,Y: Integer)
 	procedure SetFocus
 	property BorderWidth: Integer [rw]
 	property Brush: TBrush [r]
@@ -2440,7 +2451,7 @@ TdxForm = class(TCustomPanel)
 	function Validate: Boolean
 	function WhoEdit(RecId: Integer): String
 	property AsDT[Name: String]: TDateTime [r]
-	property AsF[Name: String]: Extended [r]
+	property AsF[Name: String]: Double [r]
 	property AsI[Name: String]: Integer [r]
 	property AsS[Name: String]: String [r]
 	property CustomFilter: String [rw]
@@ -2558,10 +2569,12 @@ TdxLookupComboBox = class(TDBEdit)
 	property HideList: Boolean [rw]
 	property Id: Integer [r]
 	property KeyValue: Variant [rw]
+	property MinSearchLength: Cardinal [rw]
 	property OnCreateForm: TCreateFormEvent [rw]
 	property OnCreateListWindow: TCreateListwindowEvent [rw]
 	property OnNeedData: TNeedDataEvent [rw]
 	property Required: Boolean [r]
+	property SearchDelay: Cardinal [rw]
 	property SourceFormName: String [r]
 	property SourceFieldName: String [r]
 TdxMemo = class(TCustomMemo)
@@ -2631,7 +2644,7 @@ TdxQueryGrid = class(TDBGrid)
 	function Validate: Boolean
 	property AllowChangeSort: Boolean [rw]
 	property AsDT[Name: String]: TDateTime [r]
-	property AsF[Name: String]: Extended [r]
+	property AsF[Name: String]: Double [r]
 	property AsI[Name: String]: Integer [r]
 	property AsS[Name: String]: String [r]
 	property Editable: Boolean [r]
@@ -2682,7 +2695,7 @@ TdxSQLQuery = class(TObject)
 	function RecNo: Integer
 	function RecordCount: Integer
 	property AsDT[Name: String]: TDateTime [rw]
-	property AsF[Name: String]: Extended [rw]
+	property AsF[Name: String]: Double [rw]
 	property AsI[Name: String]: Integer [rw]
 	property AsS[Name: String]: String [rw]
 	property Field[Index: Integer]: TField [r]
