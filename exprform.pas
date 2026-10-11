@@ -142,7 +142,7 @@ function ShowExprForm(ExprType: TExprType; C: TComponent; var aExpr: String;
 implementation
 
 uses
-  funcsform, totalform, apputils, helpmanager,
+  funcsform, totalform, apputils, helpmanager, SynEditMarkupHighAll,
   sqlgen, formmanager, LazUtf8, scriptmanager, appsettings, dbfuncform,
   formfieldvalueform, queryfieldvalueform, reportmanager;
 
@@ -301,6 +301,17 @@ begin
   FHigh := TdxExprHighlighter.Create(Self);
   Memo1.Highlighter := FHigh;
   Memo1.Font.Quality:=fqDefault;
+
+  // Подсветка текущего слова в редакторе
+  with TSynEditMarkupHighlightAllCaret(
+    Memo1.MarkupByClass[TSynEditMarkupHighlightAllCaret]) do
+  begin
+    FullWord := True;
+    WaitTime := 1000;
+    MarkupInfo.FrameColor := clSilver;
+    MarkupInfo.Background := $EEEEEE;
+    MarkupInfo.FrameEdges := sfeAround;
+  end;
 
   MenuItem9.Caption := rsTotalFunc;
   MenuItem10.Caption := rsDBFunction;

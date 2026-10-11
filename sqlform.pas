@@ -135,7 +135,8 @@ function ShowSqlForm: Integer;
 implementation
 
 uses
-  Clipbrd, expressions, apputils, helpmanager, appsettings, StrUtils, myfpsqltree;
+  Clipbrd, expressions, apputils, helpmanager, appsettings, StrUtils,
+  myfpsqltree, SynEditMarkupHighAll;
 
 function ShowSqlForm: Integer;
 begin
@@ -186,6 +187,18 @@ begin
     Tree.OnDblClick := @StructDblClick;
   end;
   FSqlFields := TSQLFieldList.Create;
+
+  // Подсветка текущего слова в редакторе
+  with TSynEditMarkupHighlightAllCaret(
+    Edit.MarkupByClass[TSynEditMarkupHighlightAllCaret]) do
+  begin
+    FullWord := True;
+    WaitTime := 1000;
+    MarkupInfo.FrameColor := clSilver;
+    MarkupInfo.Background := $EEEEEE;
+    MarkupInfo.FrameEdges := sfeAround;
+  end;
+
   Caption := rsSQLEditor;
   ExecuteBn.Hint := rsExecuteSQL;
   CopyBn.Hint := rsCopyToPasteScript;

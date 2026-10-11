@@ -169,7 +169,7 @@ type
     FModulesWidth, FClassTreeWidth, FMsgsHeight: Integer;
     FFullScreen: Boolean;
     FRealBounds: TRect;
-    procedure DoSearchText(ContinueSearch, Backward: Boolean);
+    procedure DoSearchText(ContinueSearch, Backward, SearchLoop: Boolean);
     //procedure MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure MemoProcessCommand(Sender: TObject;
       var Command: TSynEditorCommand; var AChar: TUTF8Char; Data: pointer);
@@ -269,7 +269,7 @@ end;
 
 { TScriptFm }
 
-procedure TScriptFm.DoSearchText(ContinueSearch, Backward: Boolean);
+procedure TScriptFm.DoSearchText(ContinueSearch, Backward, SearchLoop: Boolean);
 var
   n: Integer;
 begin
@@ -283,9 +283,15 @@ begin
     Include(FSearchOptions, ssoBackwards)
   else
     Exclude(FSearchOptions, ssoBackwards);
-  n := Memo.SearchReplace(FSearchText, FReplaceText, FSearchOptions);
+  if not SearchLoop then
+    n := Memo.SearchReplace(FSearchText, FReplaceText, FSearchOptions)
+  else
+    n := Memo.SearchReplaceEx(FSearchText, FReplaceText, FSearchOptions, Point(1, 1));
   if n = 0 then
-    MessageDlg(rsWarning, Format(rsSearchTextNotFound, [FSearchText]), mtInformation, [mbOk], 0)
+  begin
+    if MessageDlg(rsWarning, Format(rsSearchTextNotFound, [FSearchText]), mtInformation, [mbYes, mbNo], 0) = mrYes then
+      DoSearchText(True, Backward, True);
+  end;
 end;
 
 function FindBreakPointMark(Memo: TSynEdit; Line: Integer): TSynEditMark;
@@ -377,7 +383,7 @@ begin
         FReplaceText := '';
       FSearchOptions:=Opt;
       FSearchText:=SearchText.Text;
-      DoSearchText(False, False);
+      DoSearchText(False, False, False);
       //end;
   end;
 end;
@@ -1176,7 +1182,11 @@ begin
     BorderSpacing.Bottom := 4;
     BorderSpacing.Right := 4;
     Left := Splitter3.Left + 100;
-    HelpPanelHeight := AppConfig.SEClassesHelpHeight;
+    //if AppConfig.SEClassesHelpHeight > 0 then
+      HelpPanelHeight := AppConfig.SEClassesHelpHeight;
+    //else
+      //HelpPanelHeight := 10;
+
     HideBaseClasses := AppConfig.SEClassesHideBaseClasses;
     HideAncestors := AppConfig.SEClassesHideAncestors;
     HideContextHelp := AppConfig.SEClassesHideHelp;
@@ -1420,14 +1430,14 @@ procedure TScriptFm.MenuItem20Click(Sender: TObject);
 begin
   Exclude(FSearchOptions, ssoEntireScope);
   Exclude(FSearchOptions, ssoSelectedOnly);
-  DoSearchText(True, False);
+  DoSearchText(True, False, False);
 end;
 
 procedure TScriptFm.MenuItem21Click(Sender: TObject);
 begin
   Exclude(FSearchOptions, ssoEntireScope);
   Exclude(FSearchOptions, ssoSelectedOnly);
-  DoSearchText(True, True);
+  DoSearchText(True, True, False);
 end;
 
 procedure TScriptFm.MenuItem22Click(Sender: TObject);
@@ -1642,7 +1652,10 @@ begin
   Kind := _Delete(FModules.Tree.Selected);
 
   if Kind = skExpr then
-    ScriptMan.CompileExpr
+  begin
+    ScriptMan.CompileExpr;
+    FillCompilerMessages;
+  end
   else if (Kind = skWebForm) and (FModules.WebFmNode.Count = 0) then
     FModules.DeleteWebFmNode
   else if (Kind = skWebExpr) and (FModules.WebExprNode.Count = 0) then

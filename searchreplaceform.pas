@@ -131,6 +131,7 @@ begin
   Start.Caption:=rsStart;
   Start.Items[0] := rsFromBegin;
   Start.Items[1] := rsFromCursor;
+  Start.ItemIndex := 1;
   Where.Caption := rsSearchArea;
   Where.Items[0] := rsEntireScope;
   Where.Items[1] := rsInSelected;

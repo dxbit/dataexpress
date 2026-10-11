@@ -979,7 +979,7 @@ begin
   FreeAndNil(ExtRunMan);
   FreeAndNil(MainModule);
   ClearMnu(TemplatesMnu);
-  VarList.Free;
+  FreeAndNil(VarList);
   MainFr := nil;
   inherited Destroy;
 end;

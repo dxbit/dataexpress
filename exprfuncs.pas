@@ -1688,6 +1688,7 @@ end;
 
 procedure SetTypedText(S: String);
 begin
+  if VarList = nil then Exit;
   S := Trim(S);
   SetVar('__TypedText__', IIF(S <> '', S, Null));
 end;

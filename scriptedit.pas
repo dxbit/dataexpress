@@ -24,7 +24,8 @@ interface
 
 uses
   Classes, SysUtils, Controls, Graphics, SynEdit, SynHighlighterPas, SynEditMarks,
-  SynEditMiscClasses, scriptmanager, SynEditMouseCmds, SynEditTypes, LazUtf8;
+  SynEditMiscClasses, scriptmanager, SynEditMouseCmds, SynEditTypes, LazUtf8,
+  SynEditMarkupHighAll, SynPluginSyncroEdit;
 
 type
   TBreakpointChangedEvent = procedure (Sender: TObject; Line: Integer) of object;
@@ -65,7 +66,7 @@ type
 implementation
 
 uses
-  apputils;
+  apputils, appimagelists;
 
 const
   IDX_BREAKPOINT = 10;
@@ -174,6 +175,7 @@ end;
 constructor TScriptEdit.Create(AOwner: TComponent);
 var
   i: Integer;
+  Bmp: TCustomBitmap;
 begin
   inherited Create(AOwner);
   // Удаляем "фишку" редактора - вставку выделенного по нажатию средней кнопки мыши.
@@ -203,6 +205,28 @@ begin
     StringAttri.Foreground := clBlue;
     SymbolAttri.Foreground := clRed;
     NestedComments := False;
+  end;
+
+  // Синхронное редактирование
+  with TSynPluginSyncroEdit.Create(Self) do
+  begin
+    Bmp := TBitmap.Create;
+    Images16.GetBitmap(IMG16_MEMO, Bmp);
+    GutterGlyph.Assign(Bmp);
+    Bmp.Free;
+    Enabled:=True;
+  end;
+
+  // Подсветка текущего слова в редакторе
+  with TSynEditMarkupHighlightAllCaret(
+    MarkupByClass[TSynEditMarkupHighlightAllCaret]) do
+  begin
+    FullWord := True;
+    IgnoreKeywords := True;
+    WaitTime := 1000;
+    MarkupInfo.FrameColor := clSilver;
+    MarkupInfo.Background := $EEEEEE;
+    MarkupInfo.FrameEdges := sfeAround;
   end;
 
   BookMarkOptions.BookmarkImages := FImageList;

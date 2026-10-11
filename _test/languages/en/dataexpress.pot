@@ -5593,7 +5593,7 @@ msgstr ""
 
 #: strconsts.rssearchtextnotfound
 #, object-pascal-format
-msgid "Search text \"%s\" was not found."
+msgid "Search text \"%s\" was not found. Would you like to start the search over?"
 msgstr ""
 
 #: strconsts.rssection

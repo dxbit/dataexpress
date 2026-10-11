@@ -568,6 +568,7 @@ end;
 procedure TClassesTree.SetHelpPanelHeight(AValue: Integer);
 begin
   FHelpPan.Height := AValue;
+  FHelpSplit.Top := FHelpPan.Top - FHelpSplit.Height;
 end;
 
 procedure TClassesTree.SetHideContextHelp(AValue: Boolean);

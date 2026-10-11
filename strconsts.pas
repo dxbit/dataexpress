@@ -777,7 +777,7 @@ resourcestring
   rsCircularRefModules = 'Detected circular reference between modules %s and %'
     +'s.';
   rsHideAncestors = 'Hide ancestors';
-  rsSearchTextNotFound = 'Search text "%s" was not found.';
+  rsSearchTextNotFound = 'Search text "%s" was not found. Would you like to start the search over?';
   rsFind = 'Find';
   rsReplace = 'Replace';
   rsReplaceAll = 'Replace All';

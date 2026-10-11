@@ -3819,10 +3819,8 @@ msgid "Intervals"
 msgstr "Интервалы"
 
 #: strconsts.rsinvalidcharinfieldname
-#, fuzzy
-#| msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / ="
 msgid "You can not use the following characters in the names of fields: ' \" | ! < > [ ] { } / = ;"
-msgstr "Нельзя использовать в именах полей следующие символы: ' \" | ! < > [ ] { } / ="
+msgstr "Нельзя использовать в именах полей следующие символы: ' \" | ! < > [ ] { } / = ;"
 
 #: strconsts.rsinvalidcharinformname
 msgid "You can not use the following characters in the names of forms, queries and reports: ' \" | ! < > [ ] { } / \\ ? : *"
@@ -5677,9 +5675,8 @@ msgid "Search text"
 msgstr "Искать текст"
 
 #: strconsts.rssearchtextnotfound
-#, object-pascal-format
-msgid "Search text \"%s\" was not found."
-msgstr "Искомый текст \"%s\" не найден"
+msgid "Search text \"%s\" was not found. Would you like to start the search over?"
+msgstr "Искомый текст \"%s\" не найден. Хотите начать поиск заново?"
 
 #: strconsts.rssection
 msgid "Section"
