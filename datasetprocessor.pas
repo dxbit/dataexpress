@@ -6746,6 +6746,7 @@ begin
       G.TitleHeight:=Fm.Grid.TitleHeight;
       G.TitleWordWrap:=Fm.Grid.TitleWordWrap;
       G.FastScroll:=Fm.Grid.FastScroll;
+      G.AdjustRowsHeight:=Fm.Grid.AdjustRowsHeight;
     end;
   end;
 end;

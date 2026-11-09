@@ -269,6 +269,10 @@ msgstr ""
 msgid "Adjust by component width"
 msgstr ""
 
+#: strconsts.rsadjustrowsheight
+msgid "Adjust rows height"
+msgstr ""
+
 #: strconsts.rsafterimporterrsmsg
 msgid "When importing, errors occurred. The following rows were not imported:"
 msgstr ""

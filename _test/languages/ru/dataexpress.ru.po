@@ -293,6 +293,10 @@ msgstr "Добавить модуль WebMain"
 msgid "Adjust by component width"
 msgstr "Установить по ширине компонента"
 
+#: strconsts.rsadjustrowsheight
+msgid "Adjust rows height"
+msgstr "Подогнать высоту строк"
+
 #: strconsts.rsafterimporterrsmsg
 msgid "When importing, errors occurred. The following rows were not imported:"
 msgstr "При импорте произошли ошибки. Следующие строки не были импортированы:"

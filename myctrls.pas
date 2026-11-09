@@ -364,6 +364,7 @@ type
 
   TMyDBGrid = class(TDBGrid)
   private
+    FAdjustRowsHeight: Boolean;
     FAllowChangeSort: Boolean;
     FHidden: Boolean;
     FInactiveSelectedTextColor: TColor;
@@ -459,6 +460,7 @@ type
     function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
     procedure DoEditorHide; override;
     procedure LinkActive(Value: Boolean); override;
+    procedure DoAdjustRowsHeight;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -534,6 +536,7 @@ type
     property Options: TDbGridOptions read GetOptions write SetOptions;
     property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap default False;
     property FastScroll: Boolean read FFastScroll write SetFastScroll default False;
+    property AdjustRowsHeight: Boolean read FAdjustRowsHeight write FAdjustRowsHeight default False;
   end;
 
   { TTreeSearchForm }
@@ -602,7 +605,7 @@ implementation
 
 uses
   QuickSearchForm, apputils, dateutils, LazUtf8, Dialogs, imagemanager, base64,
-  appimagelists, appsettings, Clipbrd, dxctrls;
+  appimagelists, appsettings, Clipbrd, dxctrls, Math;
 
 procedure DrawArrowDown(C: TCanvas; X, Y: Integer; AColor: TColor);
 begin
@@ -2337,6 +2340,7 @@ begin
   	(DataSource.DataSet.Active) then
 	  DataSource.DataSet.UpdateCursorPos;
   inherited DoOnResize;
+  if FAdjustRowsHeight then DoAdjustRowsHeight;
 end;
 
 function TMyDBGrid.GetBufferCount: Integer;
@@ -2571,6 +2575,59 @@ procedure TMyDBGrid.LinkActive(Value: Boolean);
 begin
   inherited LinkActive(Value);
   if FFastScroll and not Value then ResetRecordBookmark;
+  if FAdjustRowsHeight then DoAdjustRowsHeight;
+end;
+
+procedure TMyDBGrid.DoAdjustRowsHeight;
+var
+  i, RowsH, EdgeH, dy, SumDy: Integer;
+begin
+  if RowCount = FixedRows then Exit;
+
+  BeginUpdate;
+  for i := FixedRows to RowCount - 1 do
+    RowHeights[i] := DefaultRowHeight;
+
+  RowsH := 0;
+  for i := 0 to FixedRows - 1 do
+    RowsH := RowsH + RowHeights[i];
+
+  RowsH := RowsH + (RowCount - FixedRows) * DefaultRowHeight;
+
+  EdgeH := ClientHeight - RowsH;
+  if (EdgeH >= DefaultRowHeight) or (EdgeH <= 0) then
+  begin
+    EndUpdate;
+    Exit;
+  end;
+
+  dy := Max(EdgeH div (RowCount - 1), 1);
+  SumDy := 0;
+
+  for i := RowCount - 1 downto FixedRows do
+  begin
+    RowHeights[i] := DefaultRowHeight + dy;
+    SumDy := SumDy + dy;
+    if SumDy >= EdgeH then Break;
+  end;
+
+  if SumDy < EdgeH then
+  begin
+    dy := Max((EdgeH - SumDy) div (RowCount - 1), 1);
+    for i := RowCount - 1 downto FixedRows do
+    begin
+      RowHeights[i] := RowHeights[i] + dy;
+      SumDy := SumDy + dy;
+      if SumDy >= EdgeH then Break;
+    end;
+  end;
+
+  RowHeights[RowCount - 1] := RowHeights[RowCount - 1] + Abs(SumDy - EdgeH);
+  {Debug(SumDy);
+  Debug(EdgeH);
+  Debug(RowHeights[RowCount - 1]);}
+
+  EndUpdate;
 end;
 
 { TMyGrid }

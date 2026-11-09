@@ -224,6 +224,7 @@ type
 
   TRpGrid = class
   private
+    FAdjustRowsHeight: Boolean;
     FAllowChangeSort: Boolean;
     FAlternateColor: TColor;
     FCellEllipsis: Boolean;
@@ -305,6 +306,7 @@ type
     property TitleWordWrap: Boolean read FTitleWordWrap write FTitleWordWrap;
     property Editable: Boolean read FEditable write FEditable;
     property FastScroll: Boolean read FFastScroll write FFastScroll;
+    property AdjustRowsHeight: Boolean read FAdjustRowsHeight write FAdjustRowsHeight;
   end;
 
 
@@ -825,6 +827,7 @@ begin
   if G.Indicator then Grid.Options := Grid.Options + [dgIndicator];
   if G.Editable then Grid.Options := Grid.Options + [dgEditing];
   Grid.FastScroll := G.FastScroll;
+  Grid.AdjustRowsHeight := G.AdjustRowsHeight;
 
   L1 := G.SortCols;
   L2 := Grid.SortCols;
@@ -4222,6 +4225,7 @@ begin
     G.TitleWordWrap:=GetBool(Atts, 'titlewordwrap', False);
     G.Editable:=GetBool(Atts, 'editable');
     G.FastScroll:=GetBool(Atts, 'fastscroll');
+    G.AdjustRowsHeight:=GetBool(Atts, 'adjustrowsheight', False);
   end
   else if LocalName = 'column' then
   begin
@@ -4567,6 +4571,7 @@ procedure TReportData.SaveToStream(St: TStream);
       '" titlewordwrap="' + Bool2Str(G.TitleWordWrap) +
       '" editable="' + Bool2Str(G.Editable) +
       '" fastscroll="' + Bool2Str(G.FastScroll) +
+      '" adjustrowsheight="' + Bool2Str(G.AdjustRowsHeight) +
       '">');
     WrFont(G.Font, 'font');
     WrFont(G.TitleFont, 'titlefont');
