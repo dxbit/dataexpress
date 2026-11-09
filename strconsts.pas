@@ -1931,6 +1931,13 @@ resourcestring
   rsWorkingWithLargeLists = 'Working with large lists';
   rsDelaySearch = 'Delay before search (ms)';
   rsMinSearchLength = 'The minimum number of characters for a search';
+  rsUserProfile = 'User profile';
+  rsChangeToLocalSettings = 'Now the program will read all the settings from '
+    +'the user''s profile. The program needs to be restarted. No settings or '
+    +'program states will be saved until the program is restarted.';
+  rsChangeToGlobalSettings = 'Now the program will read all the settings from '
+    +'the program directory. The program needs to be restarted. No settings or'
+    +' program states will be saved until the program is restarted.';
 
 implementation
 

@@ -41,6 +41,7 @@ type
 procedure TestNil(P: Pointer; const Msg: String);
 procedure DebugFile(const FileName: String; Value: Variant);
 function AppPath: String;
+function AppUserCfgPath: String;
 procedure ErrMsg(const Msg: String; Log: Boolean = False; const Context: String = '');
 procedure ErrMsgFmt(const Msg: String; Params: array of const; Log: Boolean = False; const Context: String = '');
 procedure ClearList(L: TList);
@@ -285,7 +286,7 @@ function UnEscapeEqual(const S: String): String;
 implementation
 
 uses
-  Dialogs, LazUtf8, {$ifdef windows}ShellApi,{$endif} appsettings, FileUtil, dximages,
+  Dialogs, LazUtf8, {$ifdef windows}ShellApi, WinDirs,{$endif} appsettings, FileUtil, dximages,
   expressions, dbengine, Math, sqlgen, dxusers,
   pivotgrid, Variants, maskedit, outputform, mytypes, StrUtils,
   BGRABitmap, LConvEncoding, dxfiles, myctrls, dateutils, scriptmanager,
@@ -320,6 +321,16 @@ end;
 function AppPath: String;
 begin
   Result := ExtractFilePath(ParamStr(0));
+end;
+
+function AppUserCfgPath: String;
+begin
+  {$ifdef windows}
+  Result := IncludeTrailingPathDelimiter(GetWindowsSpecialDir(CSIDL_LOCAL_APPDATA)) +
+    'DataExpress' + PathDelim;
+  {$else}
+  Result := IncludeTrailingPathDelimiter(GetUserDir) + '.dataexpress' + PathDelim;
+  {$endif}
 end;
 
 procedure ErrMsg(const Msg: String; Log: Boolean; const Context: String);

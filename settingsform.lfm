@@ -1,14 +1,14 @@
 object SettingsFm: TSettingsFm
-  Left = 392
+  Left = 414
   Height = 370
-  Top = 170
+  Top = 147
   Width = 461
   BorderIcons = [biSystemMenu]
   Caption = 'SettingsFm'
   ClientHeight = 370
   ClientWidth = 461
   Position = poOwnerFormCenter
-  LCLVersion = '4.3.0.0'
+  LCLVersion = '4.5.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   object ButtonPanel1: TButtonPanel
@@ -115,7 +115,7 @@ object SettingsFm: TSettingsFm
         Left = 8
         Height = 19
         Top = 86
-        Width = 163
+        Width = 162
         BorderSpacing.Top = 8
         Caption = 'Подтверждать при выходе'
         TabOrder = 2
@@ -236,7 +236,7 @@ object SettingsFm: TSettingsFm
         Left = 8
         Height = 15
         Top = 35
-        Width = 176
+        Width = 175
         BorderSpacing.Top = 8
         Caption = 'Путь к базе данных обновления'
         ParentColor = False
@@ -385,9 +385,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Side = asrBottom
         Left = 16
         Height = 19
-        Top = 75
-        Width = 232
-        BorderSpacing.Top = 32
+        Top = 67
+        Width = 230
+        BorderSpacing.Top = 24
         Caption = 'Поддержка новых баз данных (*.DXDB)'
         TabOrder = 1
       end
@@ -396,9 +396,9 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Side = asrBottom
         Left = 16
         Height = 19
-        Top = 126
+        Top = 110
         Width = 139
-        BorderSpacing.Top = 32
+        BorderSpacing.Top = 24
         Caption = 'Логирование ошибок'
         TabOrder = 2
       end
@@ -407,11 +407,35 @@ object SettingsFm: TSettingsFm
         AnchorSideTop.Side = asrBottom
         Left = 16
         Height = 19
-        Top = 177
+        Top = 153
         Width = 191
-        BorderSpacing.Top = 32
+        BorderSpacing.Top = 24
         Caption = 'Проверять ярлыки при запуске'
         TabOrder = 3
+      end
+      object LocalSettingsChk: TCheckBox
+        AnchorSideTop.Control = CheckShortcutsChk
+        AnchorSideTop.Side = asrBottom
+        Left = 16
+        Height = 19
+        Top = 196
+        Width = 264
+        BorderSpacing.Top = 24
+        Caption = 'Хранить настройки в профиле пользователя'
+        TabOrder = 4
+        OnChange = LocalSettingsChkChange
+      end
+      object IniPathLbl: TLabel
+        AnchorSideTop.Control = LocalSettingsChk
+        AnchorSideTop.Side = asrBottom
+        Left = 40
+        Height = 15
+        Top = 219
+        Width = 53
+        BorderSpacing.Top = 4
+        Caption = 'IniPathLbl'
+        Font.Color = clGray
+        ParentFont = False
       end
     end
   end

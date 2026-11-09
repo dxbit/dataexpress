@@ -941,6 +941,14 @@ msgstr "Изменение проекта запрещено!"
 msgid "Change password"
 msgstr "Изменить пароль"
 
+#: strconsts.rschangetoglobalsettings
+msgid "Now the program will read all the settings from the program directory. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgstr "Теперь программа будет читать все настройки из каталога программы. Требуется перезапуск программы. До перезапуска никакие настройки и состояния программы сохранены не будут."
+
+#: strconsts.rschangetolocalsettings
+msgid "Now the program will read all the settings from the user's profile. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgstr "Теперь программа будет читать все настройки из профиля пользователя. Требуется перезапуск программы. До перезапуска никакие настройки и состояния программы сохранены не будут."
+
 #: strconsts.rscharforblanks
 msgid "Character for blanks"
 msgstr "Символ пробела"
@@ -5675,6 +5683,7 @@ msgid "Search text"
 msgstr "Искать текст"
 
 #: strconsts.rssearchtextnotfound
+#, object-pascal-format
 msgid "Search text \"%s\" was not found. Would you like to start the search over?"
 msgstr "Искомый текст \"%s\" не найден. Хотите начать поиск заново?"
 
@@ -6673,6 +6682,10 @@ msgstr "Монитор пользователей"
 #: strconsts.rsusername
 msgid "Username"
 msgstr "Имя пользователя"
+
+#: strconsts.rsuserprofile
+msgid "User profile"
+msgstr "Профиль пользователя"
 
 #: strconsts.rsusers
 msgid "Users"

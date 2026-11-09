@@ -911,6 +911,14 @@ msgstr ""
 msgid "Change password"
 msgstr ""
 
+#: strconsts.rschangetoglobalsettings
+msgid "Now the program will read all the settings from the program directory. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgstr ""
+
+#: strconsts.rschangetolocalsettings
+msgid "Now the program will read all the settings from the user's profile. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgstr ""
+
 #: strconsts.rscharforblanks
 msgid "Character for blanks"
 msgstr ""
@@ -6579,6 +6587,10 @@ msgstr ""
 
 #: strconsts.rsusername
 msgid "Username"
+msgstr ""
+
+#: strconsts.rsuserprofile
+msgid "User profile"
 msgstr ""
 
 #: strconsts.rsusers

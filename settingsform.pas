@@ -34,6 +34,8 @@ type
   TSettingsFm = class(TForm)
     ButtonPanel1: TButtonPanel;
     Caching: TCheckBox;
+    IniPathLbl: TLabel;
+    LocalSettingsChk: TCheckBox;
     CheckShortcutsChk: TCheckBox;
     LogErrorsChk: TCheckBox;
     SupportDXDB: TCheckBox;
@@ -74,6 +76,7 @@ type
     procedure InfoLangBnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
+    procedure LocalSettingsChkChange(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
@@ -202,9 +205,10 @@ end;
 procedure TSettingsFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if ModalResult <> mrOk then Exit;
-  if ComboBox1.ItemIndex < 0 then
+  if (ComboBox1.ItemIndex < 0) and not AppConfig.LocalUserSettingsChanged then
   begin
     ErrMsg(rsSelectLang);
+    Pages.ActivePage := IntfTab;
     ComboBox1.SetFocus;
     CanClose := False;
   end;
@@ -213,6 +217,14 @@ end;
 procedure TSettingsFm.HelpButtonClick(Sender: TObject);
 begin
   OpenHelp('settings');
+end;
+
+procedure TSettingsFm.LocalSettingsChkChange(Sender: TObject);
+begin
+  if LocalSettingsChk.Checked then
+    IniPathLbl.Caption := AppUserCfgPath + 'dataexpress.cfg'
+  else
+    IniPathLbl.Caption := AppPath + 'dataexpress.cfg'
 end;
 
 procedure TSettingsFm.MenuItem1Click(Sender: TObject);
@@ -253,10 +265,14 @@ end;
 
 function TSettingsFm.ShowForm: Integer;
 var
-  Theme, S: String;
   OldItemIndex: Integer;
   LI: TLanguageInfo;
 begin
+  if AppConfig.LocalUserSettings in [lusLocal, lusPreGlobal] then
+    Caption := rsSettings + ' (' + rsUserProfile + ')'
+  else
+    Caption := rsSettings;
+
   with ComboBox1 do
   begin
 	  LangMan.LangsToList(Items);
@@ -289,6 +305,10 @@ begin
   SupportDXDB.Checked := AppConfig.SupportDXDB;
   LogErrorsChk.Checked := AppConfig.LogErrors;
   CheckShortcutsChk.Checked := AppConfig.CheckShortcuts;
+  LocalSettingsChk.Checked := AppConfig.LocalUserSettings in [lusLocal, lusPreLocal];
+  LocalSettingsChk.OnChange(LocalSettingsChk);
+  LocalSettingsChk.Visible := IsDeveloper;
+  IniPathLbl.Visible := IsDeveloper;
 
   DesignTab.TabVisible := IsDeveloper and not IsEmptyApp;
   if Pages.ActivePage = DesignTab then Pages.ActivePage := IntfTab;
@@ -325,8 +345,28 @@ begin
   AppConfig.SupportDXDB := SupportDXDB.Checked;
   AppConfig.LogErrors := LogErrorsChk.Checked;
   AppConfig.CheckShortcuts := CheckShortcutsChk.Checked;
+  if LocalSettingsChk.Checked then
+  begin
+    if AppConfig.LocalUserSettings = lusGlobal then
+    begin
+      AppConfig.LocalUserSettings := lusPreLocal;
+      Info(rsChangeToLocalSettings);
+    end
+    else
+      AppConfig.LocalUserSettings := lusLocal;
+  end
+  else
+  begin
+    if AppConfig.LocalUserSettings = lusLocal then
+    begin
+      AppConfig.LocalUserSettings := lusPreGlobal;
+      Info(rsChangeToGlobalSettings);
+    end
+    else
+      AppConfig.LocalUserSettings := lusGlobal;
+  end;
 
-  if ComboBox1.ItemIndex <> OldItemIndex then
+  if (ComboBox1.ItemIndex <> OldItemIndex) and not AppConfig.LocalUserSettingsChanged then
     Info(rsNewLangApply);
 end;
 

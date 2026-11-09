@@ -27,7 +27,15 @@ uses
 
 type
 
-  { TRecentData }
+  { TIniFileEx }
+
+  TIniFileEx = class(TIniFile)
+  public
+    procedure WriteString(const Section, Ident, Value: String); override;
+    function ReadString(const Section, Ident, Default: string): string; override;
+  end;
+
+ { TRecentData }
 
   TRecentData = class
   public
@@ -63,6 +71,8 @@ type
   end;
 
   TStartupAction = (saOpenLastDB, saOpenConnectList);
+
+  TLocalUserSettingsState = (lusUnknown, lusGlobal, lusLocal, lusPreGlobal, lusPreLocal);
 
   { TAppSettings }
 
@@ -104,6 +114,7 @@ type
     //FHideParents: Boolean;
     FLanguage: String;
     FLeftPanelWidth: Integer;
+    FLocalUserSettings: TLocalUserSettingsState;
     FLogErrors: Boolean;
     FMainFormPosCorrected: Boolean;
     FOutputBounds: TRect;
@@ -161,6 +172,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+    function GetIni: TIniFileEx;
     procedure Save;
     procedure Load;
     procedure SaveConnections;
@@ -173,6 +185,7 @@ type
     function DeleteRecent(const aDBName: String): Boolean;
     procedure ClearRecents;
     procedure ClearConnectInfo;
+    function LocalUserSettingsChanged: Boolean;
     property Database: String read FDatabase write FDatabase;
     //property Remote: Boolean read FRemote write FRemote;
     property TemplateDir: String read FTemplateDir write FTemplateDir;
@@ -269,6 +282,9 @@ type
     property SQLModeEditorHeight: Integer read FSQLModeEditorHeight write FSQLModeEditorHeight;
     property SQLModeEditorRightPanelWidth: Integer read FSQLModeEditorRightPanelWidth
       write FSQLModeEditorRightPanelWidth;
+    // Прочее
+    property LocalUserSettings: TLocalUserSettingsState read FLocalUserSettings write
+      FLocalUserSettings;
   end;
 
 var
@@ -278,16 +294,6 @@ implementation
 
 uses
   LazUtf8, apputils, crypt, dynlibs;
-
-type
-
-  { TIniFileEx }
-
-  TIniFileEx = class(TIniFile)
-  public
-    procedure WriteString(const Section, Ident, Value: String); override;
-    function ReadString(const Section, Ident, Default: string): string; override;
-  end;
 
 function UnderWine: Boolean;
 var
@@ -516,6 +522,31 @@ begin
   inherited Destroy;
 end;
 
+function TAppSettings.GetIni: TIniFileEx;
+var
+  Ini: TIniFileEx;
+  B: Boolean;
+begin
+  if FLocalUserSettings = lusUnknown then
+  begin
+    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    B := Ini.ReadBool('UI', 'LocalUserSettings', False);
+    FLocalUserSettings := IIF(B, lusLocal, lusGlobal);
+    if not B then Exit(Ini);
+  end;
+
+  if FLocalUserSettings = lusGlobal then
+    Result := TIniFileEx.Create(AppPath + 'dataexpress.cfg')
+  else if FLocalUserSettings = lusLocal then
+  begin
+    ForceDirectories(AppUserCfgPath);
+    Result := TIniFileEx.Create(AppUserCfgPath + 'dataexpress.cfg');
+  end
+  // lusPreGlobal, lusPreLocal
+  else
+    Result := nil;
+end;
+
 procedure TAppSettings.Save;
 
   function GetOutputBoundsStr: String;
@@ -533,7 +564,15 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
+    if not Assigned(Ini) then
+    begin
+      Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+      Ini.WriteBool('UI', 'LocalUserSettings', FLocalUserSettings = lusPreLocal);
+      Ini.Free;
+      Exit;
+    end;
+
     with Ini do
     try
       CacheUpdates:=True;
@@ -553,6 +592,7 @@ begin
       {$ifdef linux}
       WriteBool('UI', 'CheckShortcuts', FCheckShortcuts);
       {$endif}
+      //WriteBool('UI', 'LocalUserSettings', FLocalUserSettings = lusLocal);
       WriteInteger('UI', 'StartupAction', Ord(FStartupAction));
       WriteBool('UI', 'WasError', FWasError);
       WriteBool('UI', 'ExpertMode', FExpertMode);
@@ -666,15 +706,16 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
     SL := TStringList.Create;
     with Ini do
     try
       FLanguage := ReadString('UI', 'Language', 'ru');
       FFormLeft := ReadInteger('UI', 'FormLeft', -1);
       FFormTop := ReadInteger('UI', 'FormTop', -1);
-      FFormWidth := ReadInteger('UI', 'FormWidth', 770);
-      FFormHeight := ReadInteger('UI', 'FormHeight', 590);
+      FFormWidth := ReadInteger('UI', 'FormWidth', 1024);
+      FFormHeight := ReadInteger('UI', 'FormHeight', 650);
       FFormState := TWindowState(ReadInteger('UI', 'FormState', 0));
       FConfirmExit := ReadBool('UI', 'ConfirmExit', False);
       FCaching := ReadBool('UI', 'CacheMetadata', False);
@@ -796,7 +837,9 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
+    if not Assigned(Ini) then Exit;
     SL := TStringList.Create;
     with Ini do
     try
@@ -828,7 +871,8 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
     try
       ReadConnections(Ini);
     finally
@@ -845,13 +889,18 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
-    FTWLeft := Ini.ReadInteger('Template Wizard', 'Left', 200);
-    FTWTop := Ini.ReadInteger('Template Wizard', 'Top', 200);
-    FTWWidth := Ini.ReadInteger('Template Wizard', 'Width', 320);
-    FTWHeight := Ini.ReadInteger('Template Wizard', 'Height', 520);
-    FTWTopPanHeight := Ini.ReadInteger('Template Wizard', 'Top Panel Height', 150);
-    FTWTopPan2Height := Ini.ReadInteger('Template Wizard', 'Top Panel 2 Height', 150);
+    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
+    try
+      FTWLeft := Ini.ReadInteger('Template Wizard', 'Left', 200);
+      FTWTop := Ini.ReadInteger('Template Wizard', 'Top', 200);
+      FTWWidth := Ini.ReadInteger('Template Wizard', 'Width', 320);
+      FTWHeight := Ini.ReadInteger('Template Wizard', 'Height', 520);
+      FTWTopPanHeight := Ini.ReadInteger('Template Wizard', 'Top Panel Height', 150);
+      FTWTopPan2Height := Ini.ReadInteger('Template Wizard', 'Top Panel 2 Height', 150);
+    finally
+      Ini.Free;
+    end;
   except
     on E: Exception do
       ErrMsgFmt(rsErrorReadingCfg, [LineEnding + LineEnding + E.Message]);
@@ -863,13 +912,19 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
-    Ini.WriteInteger('Template Wizard', 'Left', FTWLeft);
-    Ini.WriteInteger('Template Wizard', 'Top', FTWTop);
-    Ini.WriteInteger('Template Wizard', 'Width', FTWWidth);
-    Ini.WriteInteger('Template Wizard', 'Height', FTWHeight);
-    Ini.WriteInteger('Template Wizard', 'Top Panel Height', FTWTopPanHeight);
-    Ini.WriteInteger('Template Wizard', 'Top Panel 2 Height', FTWTopPan2Height);
+    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := GetIni;
+    if not Assigned(Ini) then Exit;
+    try
+      Ini.WriteInteger('Template Wizard', 'Left', FTWLeft);
+      Ini.WriteInteger('Template Wizard', 'Top', FTWTop);
+      Ini.WriteInteger('Template Wizard', 'Width', FTWWidth);
+      Ini.WriteInteger('Template Wizard', 'Height', FTWHeight);
+      Ini.WriteInteger('Template Wizard', 'Top Panel Height', FTWTopPanHeight);
+      Ini.WriteInteger('Template Wizard', 'Top Panel 2 Height', FTWTopPan2Height);
+    finally
+      Ini.Free;
+    end;
   except
     on E: Exception do
       ErrMsgFmt(rsErrorWritingCfg, [LineEnding + LineEnding + E.Message]);
@@ -966,6 +1021,11 @@ begin
   Pwd := '';
   TemplateDir := '';
   OutputDir := '';
+end;
+
+function TAppSettings.LocalUserSettingsChanged: Boolean;
+begin
+  Result := FLocalUserSettings in [lusPreLocal, lusPreGlobal];
 end;
 
 end.
