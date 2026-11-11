@@ -205,7 +205,7 @@ end;
 procedure TSettingsFm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if ModalResult <> mrOk then Exit;
-  if (ComboBox1.ItemIndex < 0) and not AppConfig.LocalUserSettingsChanged then
+  if ComboBox1.ItemIndex < 0 then
   begin
     ErrMsg(rsSelectLang);
     Pages.ActivePage := IntfTab;
@@ -352,7 +352,7 @@ begin
       AppConfig.LocalUserSettings := lusPreLocal;
       Info(rsChangeToLocalSettings);
     end
-    else
+    else if AppConfig.LocalUserSettings = lusPreGlobal then
       AppConfig.LocalUserSettings := lusLocal;
   end
   else
@@ -362,11 +362,11 @@ begin
       AppConfig.LocalUserSettings := lusPreGlobal;
       Info(rsChangeToGlobalSettings);
     end
-    else
+    else if AppConfig.LocalUserSettings = lusPreLocal then
       AppConfig.LocalUserSettings := lusGlobal;
   end;
 
-  if (ComboBox1.ItemIndex <> OldItemIndex) and not AppConfig.LocalUserSettingsChanged then
+  if ComboBox1.ItemIndex <> OldItemIndex then
     Info(rsNewLangApply);
 end;
 

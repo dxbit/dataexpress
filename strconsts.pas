@@ -1933,12 +1933,12 @@ resourcestring
   rsMinSearchLength = 'The minimum number of characters for a search';
   rsUserProfile = 'User profile';
   rsChangeToLocalSettings = 'Now the program will read all the settings from '
-    +'the user''s profile. The program needs to be restarted. No settings or '
-    +'program states will be saved until the program is restarted.';
+    +'the user''s profile. The changes will take effect after restarting the program.';
   rsChangeToGlobalSettings = 'Now the program will read all the settings from '
-    +'the program directory. The program needs to be restarted. No settings or'
-    +' program states will be saved until the program is restarted.';
+    +'the program directory. The changes will take effect after restarting the program.';
   rsAdjustRowsHeight = 'Adjust rows height';
+  rsCopyCfgFileError = 'The program settings could not be copied to the user'''
+    +'s local profile. Default settings will be used.';
 
 implementation
 

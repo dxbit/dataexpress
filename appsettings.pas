@@ -115,6 +115,7 @@ type
     FLanguage: String;
     FLeftPanelWidth: Integer;
     FLocalUserSettings: TLocalUserSettingsState;
+    FOldLocalUserSettings: TLocalUserSettingsState;
     FLogErrors: Boolean;
     FMainFormPosCorrected: Boolean;
     FOutputBounds: TRect;
@@ -169,6 +170,8 @@ type
     procedure SetGridSizeY(AValue: Integer);
     procedure SetPwd(AValue: String);
     procedure ReadConnections(Ini: TIniFile);
+    function GetGlobalFileName: String;
+    function GetLocalFileName: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -185,7 +188,6 @@ type
     function DeleteRecent(const aDBName: String): Boolean;
     procedure ClearRecents;
     procedure ClearConnectInfo;
-    function LocalUserSettingsChanged: Boolean;
     property Database: String read FDatabase write FDatabase;
     //property Remote: Boolean read FRemote write FRemote;
     property TemplateDir: String read FTemplateDir write FTemplateDir;
@@ -293,7 +295,7 @@ var
 implementation
 
 uses
-  LazUtf8, apputils, crypt, dynlibs;
+  LazUtf8, apputils, crypt, dynlibs, FileUtil;
 
 function UnderWine: Boolean;
 var
@@ -475,14 +477,24 @@ begin
   SL.Free;
 end;
 
+function TAppSettings.GetGlobalFileName: String;
+begin
+  Result := AppPath + 'dataexpress.cfg'
+end;
+
+function TAppSettings.GetLocalFileName: String;
+begin
+  Result := AppUserCfgPath + 'dataexpress.cfg';
+end;
+
 constructor TAppSettings.Create;
 begin
   FRecents := TList.Create;
   FConnects := TConnections.Create;
 
   FLanguage := '';
-  FFormWidth := 770;
-  FFormHeight := 590;
+  FFormWidth := 1024;
+  FFormHeight := 650;
   FFormState := wsNormal;
   FConfirmExit := False;
   FStartupAction := saOpenLastDB;
@@ -529,22 +541,30 @@ var
 begin
   if FLocalUserSettings = lusUnknown then
   begin
-    Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
+    Ini := TIniFileEx.Create(GetGlobalFileName);
     B := Ini.ReadBool('UI', 'LocalUserSettings', False);
-    FLocalUserSettings := IIF(B, lusLocal, lusGlobal);
-    if not B then Exit(Ini);
+    if B then
+    begin
+      FLocalUserSettings := lusLocal;
+      FOldLocalUserSettings := FLocalUserSettings;
+      Ini.Free;
+
+      if not FileExists(GetLocalFileName) and FileExists(GetGlobalFileName) then
+        SafeCopyFile(GetGlobalFileName, GetLocalFileName, [cffCreateDestDirectory],
+          rsCopyCfgFileError, 'Config');
+    end
+    else
+    begin
+      FLocalUserSettings := lusGlobal;
+      FOldLocalUserSettings := FLocalUserSettings;
+      Exit(Ini);
+    end;
   end;
 
-  if FLocalUserSettings = lusGlobal then
-    Result := TIniFileEx.Create(AppPath + 'dataexpress.cfg')
-  else if FLocalUserSettings = lusLocal then
-  begin
-    ForceDirectories(AppUserCfgPath);
-    Result := TIniFileEx.Create(AppUserCfgPath + 'dataexpress.cfg');
-  end
-  // lusPreGlobal, lusPreLocal
+  if FLocalUserSettings in [lusGlobal, lusPreLocal] then
+    Result := TIniFileEx.Create(GetGlobalFileName)
   else
-    Result := nil;
+    Result := TIniFileEx.Create(GetLocalFileName);
 end;
 
 procedure TAppSettings.Save;
@@ -564,14 +584,18 @@ var
   Ini: TIniFileEx;
 begin
   try
-    Ini := GetIni;
-    if not Assigned(Ini) then
+    if FLocalUserSettings <> FOldLocalUserSettings then
     begin
-      Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
-      Ini.WriteBool('UI', 'LocalUserSettings', FLocalUserSettings = lusPreLocal);
-      Ini.Free;
-      Exit;
+      with TIniFileEx.Create(GetGlobalFileName) do
+      try
+        WriteBool('UI', 'LocalUserSettings', FLocalUserSettings in [lusLocal, lusPreLocal]);
+      finally
+        Free;
+      end;
+      FOldLocalUserSettings := FLocalUserSettings;
     end;
+
+    Ini := GetIni;
 
     with Ini do
     try
@@ -706,7 +730,6 @@ var
   Ini: TIniFileEx;
 begin
   try
-    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
     Ini := GetIni;
     SL := TStringList.Create;
     with Ini do
@@ -837,9 +860,7 @@ var
   Ini: TIniFileEx;
 begin
   try
-    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
     Ini := GetIni;
-    if not Assigned(Ini) then Exit;
     SL := TStringList.Create;
     with Ini do
     try
@@ -871,7 +892,6 @@ var
   Ini: TIniFileEx;
 begin
   try
-    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
     Ini := GetIni;
     try
       ReadConnections(Ini);
@@ -889,7 +909,6 @@ var
   Ini: TIniFileEx;
 begin
   try
-    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
     Ini := GetIni;
     try
       FTWLeft := Ini.ReadInteger('Template Wizard', 'Left', 200);
@@ -912,9 +931,7 @@ var
   Ini: TIniFileEx;
 begin
   try
-    //Ini := TIniFileEx.Create(AppPath + 'dataexpress.cfg');
     Ini := GetIni;
-    if not Assigned(Ini) then Exit;
     try
       Ini.WriteInteger('Template Wizard', 'Left', FTWLeft);
       Ini.WriteInteger('Template Wizard', 'Top', FTWTop);
@@ -1021,11 +1038,6 @@ begin
   Pwd := '';
   TemplateDir := '';
   OutputDir := '';
-end;
-
-function TAppSettings.LocalUserSettingsChanged: Boolean;
-begin
-  Result := FLocalUserSettings in [lusPreLocal, lusPreGlobal];
 end;
 
 end.

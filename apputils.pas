@@ -27,7 +27,7 @@ uses
   Controls, Graphics, StdCtrls, Forms, LclIntf, ComCtrls, Buttons, SynEdit,
   LclType, ImgList, formmanager, reportmanager, process, Utf8Process, TypInfo,
   Types, IBConnection, crossapi, FormLayouts {$ifdef linux}, BaseUnix{$endif},
-  uPSRuntime, Grids;
+  uPSRuntime, Grids, FileUtil;
 
 //const
   //BUILD_DATE = '22.3.12';
@@ -282,12 +282,14 @@ procedure SetFormFixedHeight(AForm: TdxForm; Value: Boolean);
 function IsWindowsXP: Boolean;
 function EscapeEqual(const S: String): String;
 function UnEscapeEqual(const S: String): String;
+function SafeCopyFile(const SrcFileName, DestFileName: String; Flags: TCopyFileFlags;
+  const MsgWhenError, Context: String): Boolean;
 
 implementation
 
 uses
-  Dialogs, LazUtf8, {$ifdef windows}ShellApi, WinDirs,{$endif} appsettings, FileUtil, dximages,
-  expressions, dbengine, Math, sqlgen, dxusers,
+  Dialogs, LazUtf8, {$ifdef windows}ShellApi, WinDirs,{$endif} appsettings,
+  dximages, expressions, dbengine, Math, sqlgen, dxusers,
   pivotgrid, Variants, maskedit, outputform, mytypes, StrUtils,
   BGRABitmap, LConvEncoding, dxfiles, myctrls, dateutils, scriptmanager,
   SQLDb, appimagelists, dxactions, dxmains, LazFileUtils, imagemanager,
@@ -5066,6 +5068,29 @@ end;
 function UnEscapeEqual(const S: String): String;
 begin
   Result := StringReplace(S, #1, '=', [rfReplaceAll]);
+end;
+
+function SafeCopyFile(const SrcFileName, DestFileName: String;
+  Flags: TCopyFileFlags; const MsgWhenError, Context: String): Boolean;
+var
+  ErrStr: String;
+begin
+  Result := False;
+  ErrStr := '';
+  try
+    Result := CopyFile(SrcFileName, DestFileName, Flags, True)
+  except
+    on E: Exception do
+      ErrStr := E.Message;
+  end;
+
+  if not Result then
+  begin
+    if ErrStr = '' then
+      ErrMsg(MsgWhenError, True, Context)
+    else
+      ErrMsg(MsgWhenError + Spaces + rsErrorDetails + Spaces + ErrStr, True, Context);
+  end;
 end;
 
 end.

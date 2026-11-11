@@ -916,11 +916,11 @@ msgid "Change password"
 msgstr ""
 
 #: strconsts.rschangetoglobalsettings
-msgid "Now the program will read all the settings from the program directory. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgid "Now the program will read all the settings from the program directory. The changes will take effect after restarting the program."
 msgstr ""
 
 #: strconsts.rschangetolocalsettings
-msgid "Now the program will read all the settings from the user's profile. The program needs to be restarted. No settings or program states will be saved until the program is restarted."
+msgid "Now the program will read all the settings from the user's profile. The changes will take effect after restarting the program."
 msgstr ""
 
 #: strconsts.rscharforblanks
@@ -1379,6 +1379,10 @@ msgstr ""
 
 #: strconsts.rscopycells
 msgid "Copy cells"
+msgstr ""
+
+#: strconsts.rscopycfgfileerror
+msgid "The program settings could not be copied to the user's local profile. Default settings will be used."
 msgstr ""
 
 #: strconsts.rscopyconnect

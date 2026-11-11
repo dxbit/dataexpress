@@ -406,6 +406,7 @@ type
     function GetSelectedRowCount: Integer;
     function GetVisibleCaptions: TGridButtonSet;
     procedure ReadSortCols(Reader: TReader);
+    procedure SetAdjustRowsHeight(AValue: Boolean);
     procedure SetAlignButtons(AValue: TAlignment);
     procedure SetButtonFont(AValue: TFont);
     procedure SetColumns(AValue: TMyDBGridColumns);
@@ -460,6 +461,7 @@ type
     function EditorCanAcceptKey(const ch: TUTF8Char): boolean; override;
     procedure DoEditorHide; override;
     procedure LinkActive(Value: Boolean); override;
+    procedure ResetRowsHeight;
     procedure DoAdjustRowsHeight;
   public
     constructor Create(AOwner: TComponent); override;
@@ -536,7 +538,7 @@ type
     property Options: TDbGridOptions read GetOptions write SetOptions;
     property TitleWordWrap: Boolean read FTitleWordWrap write SetTitleWordWrap default False;
     property FastScroll: Boolean read FFastScroll write SetFastScroll default False;
-    property AdjustRowsHeight: Boolean read FAdjustRowsHeight write FAdjustRowsHeight default False;
+    property AdjustRowsHeight: Boolean read FAdjustRowsHeight write SetAdjustRowsHeight default False;
   end;
 
   { TTreeSearchForm }
@@ -1737,6 +1739,14 @@ begin
   SL.Free;
 end;
 
+procedure TMyDBGrid.SetAdjustRowsHeight(AValue: Boolean);
+begin
+  if FAdjustRowsHeight=AValue then Exit;
+  FAdjustRowsHeight:=AValue;
+  if AValue then DoAdjustRowsHeight
+  else ResetRowsHeight;
+end;
+
 procedure TMyDBGrid.SetAlignButtons(AValue: TAlignment);
 begin
   if FAlignButtons=AValue then Exit;
@@ -1759,6 +1769,7 @@ procedure TMyDBGrid.SetDefRowHeight(AValue: Integer);
 begin
   inherited DefaultRowHeight := AValue;
   UpdateTitleHeight;
+  if FAdjustRowsHeight then DoAdjustRowsHeight;
 end;
 
 procedure TMyDBGrid.SetFastScroll(AValue: Boolean);
@@ -1772,6 +1783,7 @@ procedure TMyDBGrid.SetOptions(AValue: TDbGridOptions);
 begin
   inherited Options := AValue;
   UpdateTitleHeight;
+  if FAdjustRowsHeight then DoAdjustRowsHeight;
 end;
 
 procedure TMyDBGrid.SetTitleHeight(AValue: Integer);
@@ -1779,6 +1791,7 @@ begin
   if FTitleHeight=AValue then Exit;
   FTitleHeight:=AValue;
   UpdateTitleHeight;
+  if FAdjustRowsHeight then DoAdjustRowsHeight;
 end;
 
 procedure TMyDBGrid.SetTitleWordWrap(AValue: Boolean);
@@ -2578,15 +2591,24 @@ begin
   if FAdjustRowsHeight then DoAdjustRowsHeight;
 end;
 
+procedure TMyDBGrid.ResetRowsHeight;
+var
+  i: Integer;
+begin
+  BeginUpdate;
+  for i := FixedRows to RowCount - 1 do
+    RowHeights[i] := DefaultRowHeight;
+  EndUpdate;
+end;
+
 procedure TMyDBGrid.DoAdjustRowsHeight;
 var
   i, RowsH, EdgeH, dy, SumDy: Integer;
 begin
-  if RowCount = FixedRows then Exit;
+  if (RowCount = FixedRows) or (ComponentState * [csDesigning, csLoading] <> []) then Exit;
 
   BeginUpdate;
-  for i := FixedRows to RowCount - 1 do
-    RowHeights[i] := DefaultRowHeight;
+  ResetRowsHeight;
 
   RowsH := 0;
   for i := 0 to FixedRows - 1 do
@@ -2601,7 +2623,7 @@ begin
     Exit;
   end;
 
-  dy := Max(EdgeH div (RowCount - 1), 1);
+  dy := Max(EdgeH div (RowCount - FixedRows), 1);
   SumDy := 0;
 
   for i := RowCount - 1 downto FixedRows do
@@ -2613,7 +2635,7 @@ begin
 
   if SumDy < EdgeH then
   begin
-    dy := Max((EdgeH - SumDy) div (RowCount - 1), 1);
+    dy := Max((EdgeH - SumDy) div (RowCount - FixedRows), 1);
     for i := RowCount - 1 downto FixedRows do
     begin
       RowHeights[i] := RowHeights[i] + dy;
@@ -2623,9 +2645,6 @@ begin
   end;
 
   RowHeights[RowCount - 1] := RowHeights[RowCount - 1] + Abs(SumDy - EdgeH);
-  {Debug(SumDy);
-  Debug(EdgeH);
-  Debug(RowHeights[RowCount - 1]);}
 
   EndUpdate;
 end;
